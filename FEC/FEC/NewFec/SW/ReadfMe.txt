@@ -1,0 +1,6 @@
+14:37 ý10/ý01/ý2012
+
+
+BSP - project specified extentions of STM32F2xx_StdPeriph_Driver library.
+
+TEST - test application main routines for a packages.

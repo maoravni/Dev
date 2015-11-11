@@ -1,0 +1,11 @@
+\Q/PhantomTcpServer/Debug/\E.*
+\Q/PhantomTcpServer/Release/\E.*
+\Q/EWARM/Debug/\E.*
+\Q/Debug/\E.*
+\Q/Release/\E.*
+\Q/settings/\E.*
+\Q/Win32 Debug/\E.*
+\Q/Debug IAR Eval Board/\E.*
+\Q/Debug _NEW_IBD_CONTROL_/\E.*
+\Q/PhantomTcpServer/\E.*
+\Q/Debug No DHCP/\E.*

@@ -1,0 +1,7 @@
+device=MK64FN1M0xxx12
+speed auto
+r
+h
+loadbin build_K64F_FRDM/boot.bin,0
+go
+exit

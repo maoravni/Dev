@@ -1,0 +1,22 @@
+10:29 ý21/ý03/ý2012
+Hi All,
+ 
+Analysis of the results of the previous stage of debugging revealed:
+ 
+1.    The 25MHz_OUT signal is a delayed version of the X1/ REF_CLK input.
+ 
+While this clock may be used for other purposes, it should not be used as the timing reference for RMII control and data signals (details see in attached file).
+ 
+2.    For proper synchronization MCU and PHY need to:
+ 
+2.1.        Remove resistor R424.
+ 
+2.2.        Connect U1/35 (ETH_RMII_REF_CLK) to U10/34 (oscillator 50MHz).
+ 
+3.    To analyze the efficiency and quality (stability) of it is expedient to use the functions Loopback and BIST of PHY (DP83848C).
+ 
+4.    BIST testing can be performed with the part in the internal loopback mode or externally looped back using a loopback cable fixture.
+ 
+5.    BIST mode and loopback cable fixture will now test the improvements made ??in the previous step (details see in attached file).
+ 
+6.    We need to verify the absence (if necessary remove) resistors: R423, R426, R427.

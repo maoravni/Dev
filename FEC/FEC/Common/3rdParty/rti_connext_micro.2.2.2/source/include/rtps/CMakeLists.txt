@@ -1,0 +1,6 @@
+LIST(APPEND rtps_HEADER include/rtps/rtps_log_impl.h)
+LIST(APPEND rtps_HEADER include/rtps/rtps_rtps_impl.h)
+LIST(APPEND rtps_HEADER include/rtps/rtps_config.h)
+LIST(APPEND rtps_HEADER include/rtps/rtps_dll.h)
+LIST(APPEND rtps_HEADER include/rtps/rtps_log.h)
+LIST(APPEND rtps_HEADER include/rtps/rtps_rtps.h)

@@ -1,0 +1,1 @@
+#define APPSTACKSIZE 0x1000

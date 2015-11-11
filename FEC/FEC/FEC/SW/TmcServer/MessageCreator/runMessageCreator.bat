@@ -1,0 +1,1 @@
+%1\Spitfire.Tools.MessageCodeGenerator.MessageCreator.exe -f TMSFieldAttribute -m TMSMessageAttribute -c "%1\Resources\MessageCreator\CPPConversion.xml" -o GeneratedMessages -s %1\Lib\Services\TMS -l cpp
