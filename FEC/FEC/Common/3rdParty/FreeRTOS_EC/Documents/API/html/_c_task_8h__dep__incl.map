@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$_a_managed_task_8h.html" title="AManagedTask.h" alt="" coords="167,80,293,107"/>
-<area shape="rect" id="node13" href="$_c_task_8cpp_source.html" title="CTask.cpp" alt="" coords="318,80,404,107"/>
-<area shape="rect" id="node5" href="$_a_managed_task_8cpp_source.html" title="AManagedTask.cpp" alt="" coords="4,155,144,181"/>
-<area shape="rect" id="node7" href="$_c_free_r_t_o_s_8cpp_source.html" title="CFreeRTOS.cpp" alt="" coords="170,155,291,181"/>
-<area shape="rect" id="node9" href="$_c_message_task_8h.html" title="CMessageTask.h" alt="" coords="316,155,444,181"/>
-<area shape="rect" id="node11" href="$_c_message_task_8cpp_source.html" title="CMessageTask.cpp" alt="" coords="309,229,451,256"/>
-</map>

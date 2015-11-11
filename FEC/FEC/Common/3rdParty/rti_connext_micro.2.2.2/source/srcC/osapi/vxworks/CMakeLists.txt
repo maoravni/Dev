@@ -1,8 +1,0 @@
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxHeap.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxMutex.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxProcess.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxSemaphore.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxSystem.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxThread.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxStdio.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/vxworks/vxSystem.pkg.h)

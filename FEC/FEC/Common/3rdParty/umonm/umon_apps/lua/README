@@ -1,7 +1,0 @@
-This directory contains source and makefile to build a small
-uMon-resident application that runs the LUA interpreter.
-I created this build by mimicing what is done when LUA is
-built with "make ansi".
-
-Refer to makefile for details on how to build for various CPU
-architectures and target configurations.
