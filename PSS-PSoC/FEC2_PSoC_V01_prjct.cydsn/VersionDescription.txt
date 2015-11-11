@@ -1,0 +1,58 @@
+ICD Implemented:
+1. Get PSoC Version (without the right version header file yet) 
+2. Configure Temperature Sensor
+3. Read Single Device
+4. Write Single Device
+
+The temperature module is up:
+1. Can be configured and get an hard limit.  
+2. Can measure temperature and output Chopped PWM.
+3. Returns the error and warnning bits in the sensor status byte.
+4. If hard limit of the temperature sensor individual channel is crossed action is taken indipendently.
+5. at the moment the first channel is configured and is crossed the PWM output is turned OFF (error bit is ON) until a new config command arive from ST.
+
+Temperature package is almost ready.
+can sense the peak of the current loop.
+*****************************************
+
+main:
+-----
+entered the millisecond flag Timer event to the forever loop 
+
+System Module:
+--------------
+--
+
+Temperature Module:
+-------------------
+revised the temperature resistance to degrees conversion in terms of the variable type. 
+Now the temperature conversion is good (without steps) and therefore do not edit the marked code.
+
+Analog IO Module:
+------------------
+sorted out the data averaging (no summation) 
+splited StoredCurrents4MMCU into two- StoredInputCurrents4MMCU and StoredBridgeCurrents4MMCU
+
+Monitor Module:
+------------------
+Defined the arrays size with number only. 
+set the correct order for the SAR2_AMuxHw inputs.
+
+Digital Module:
+------------------
+added the Init_Digital_Module function to initiate the PWM's. 
+
+Communiction + ICD:
+--------------
+added more commands:
+Ex_ReadAnalogInputs()
+Ex_ReadBridgeCurrents()
+Ex_ReadCurrentLoops()
+Ex_ReadConnectorsID()
+implemented the analog I/O and the monitor module Read and write commands. 
+
+
+
+
+
+

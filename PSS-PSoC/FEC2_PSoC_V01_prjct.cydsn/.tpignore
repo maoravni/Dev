@@ -1,0 +1,9 @@
+\Q/CortexM3/\E.*
+\Q/codegentemp/\E.*
+\Q/Generated_Source/\E.*
+\Q/FEC2_PSoC1_prjct_timing.html\E
+\Q/FEC2_PSoC1_prjct.cycdx\E
+\Q/FEC2_PSoC1_prjct.cyfit\E
+\Q/FEC2_PSoC1_prjct.cyprj.\E.*
+\Q/FEC2_PSoC1_prjct.rpt\E
+\Q/FEC2_PSoC1_prjct.svd\E

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Project>
+  <Desktop>
+    <Static>
+      <Debug-Log>
+        <PreferedWindows>
+          <Position>3</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows>
+            <Window>
+              <Factory>Build</Factory>
+            </Window>
+          </Windows>
+        </PreferedWindows>
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1861</ColumnWidth1></Debug-Log>
+      <Build>
+        <ColumnWidth0>20</ColumnWidth0>
+        <ColumnWidth1>1395</ColumnWidth1>
+        <ColumnWidth2>372</ColumnWidth2>
+        <ColumnWidth3>93</ColumnWidth3>
+      </Build>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>290</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Disassembly>
+        <PreferedWindows>
+          <Position>2</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows/>
+        </PreferedWindows>
+        <ShowCodeCoverage>1</ShowCodeCoverage>
+        <ShowInstrProfiling>1</ShowInstrProfiling>
+        <col-names>
+          <item>Disassembly</item>
+          <item>_I0</item>
+        </col-names>
+        <col-widths>
+          <item>500</item>
+          <item>20</item>
+        </col-widths>
+        <DisasmHistory/>
+      </Disassembly>
+      <StaticWatch>
+        <expressions>
+          
+          
+          
+          
+        <item>StoredTemps4MMCU</item><item>StoredDigiIn4MMCU</item><item>FanSpeed</item><item>FanEnable</item><item>ValvePosContrl</item><item>StoredAnalogIn4MMCU</item><item></item></expressions>
+        <col-names>
+          
+          
+          
+          
+        <item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names>
+        <col-widths>
+          
+          
+          
+          
+        <item>193</item><item>150</item><item>100</item><item>151</item></col-widths>
+      </StaticWatch>
+      <DRIVER_TIMELINE_GRAPH>
+        <PreferedWindows>
+          <Position>3</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows/>
+        </PreferedWindows>
+      </DRIVER_TIMELINE_GRAPH>
+      <Extra-Trace>
+        <PreferedWindows>
+          <Position>3</Position>
+          <ScreenPosX>0</ScreenPosX>
+          <ScreenPosY>0</ScreenPosY>
+          <Windows/>
+        </PreferedWindows>
+        <col-names>
+          <item>Comment</item>
+          <item>Cycles</item>
+          <item>SWO Packet</item>
+          <item>Trace</item>
+          <item>Value</item>
+        </col-names>
+        <col-widths>
+          <item>400</item>
+          <item>100</item>
+          <item>100</item>
+          <item>300</item>
+          <item>100</item>
+        </col-widths>
+      </Extra-Trace>
+      <WATCH_1>
+        <expressions>
+          <item>FanSpeed</item>
+          <item/>
+        </expressions>
+        <col-names>
+          <item>Expression</item>
+          <item>Location</item>
+          <item>Type</item>
+          <item>Value</item>
+        </col-names>
+        <col-widths>
+          <item>100</item>
+          <item>150</item>
+          <item>100</item>
+          <item>100</item>
+        </col-widths>
+      </WATCH_1>
+      <QuickWatch>
+        <col-names>
+          <item>Expression</item>
+          <item>Location</item>
+          <item>Type</item>
+          <item>Value</item>
+        </col-names>
+        <col-widths>
+          <item>100</item>
+          <item>150</item>
+          <item>100</item>
+          <item>100</item>
+        </col-widths>
+        <QWatchHistory>
+          <item>FanSpeed</item>
+        </QWatchHistory>
+      </QuickWatch>
+    </Static>
+    <Windows>
+      
+      
+      
+    <Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-8042-29412</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-7478-3205</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>1</SelectedTab></Wnd3><Wnd4>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-19313-29406</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>FEC2_PSoC_Control</ExpandedNode><ExpandedNode>FEC2_PSoC_Control/FEC2_PSoC_Control</ExpandedNode><ExpandedNode>FEC2_PSoC_Control/FEC2_PSoC_Control/Source</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd4><Wnd5>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-26402-29477</Identity>
+            <TabName>Live Watch</TabName>
+            <Factory>StaticWatch</Factory>
+          </Tab>
+          <Tab>
+            <Identity>TabID-1979-4945</Identity>
+            <TabName>Watch 1</TabName>
+            <Factory>WATCH_1</Factory>
+          </Tab>
+          <Tab>
+            <Identity>TabID-14066-5128</Identity>
+            <TabName>Quick Watch</TabName>
+            <Factory>QuickWatch</Factory>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd5></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\..\..\..\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\doc\infocenter\index.ENU.html</Filename></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Temperature_Module_Handler.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>205</YPos2><SelStart2>8970</SelStart2><SelEnd2>8970</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Digital_IO_Module_Handler.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>28</YPos2><SelStart2>1389</SelStart2><SelEnd2>1389</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Generated_Source\PSoC5\DOD_DigitalOutputsDriver.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>451</YPos2><SelStart2>9946</SelStart2><SelEnd2>9946</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Analog_IO_Module_Handler.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>5783</SelStart2><SelEnd2>5783</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\System_Handler.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>148</YPos2><SelStart2>4479</SelStart2><SelEnd2>4493</SelEnd2></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Analog_IO_Module_Handler.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>27</YPos2><SelStart2>2234</SelStart2><SelEnd2>2234</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\DSP.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>578</SelStart2><SelEnd2>578</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>11</YPos2><SelStart2>898</SelStart2><SelEnd2>898</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-03368BF0><key>iaridepm.enu1</key></Toolbar-03368BF0></Sizes></Row0><Row1><Sizes><Toolbar-1B187640><key>debuggergui.enu1</key></Toolbar-1B187640></Sizes></Row1><Row2><Sizes><Toolbar-1B186C18><key>armjlink.enu1</key></Toolbar-1B186C18></Sizes></Row2></Top><Left><Row0><Sizes><Wnd4><Rect><Top>-2</Top><Left>-2</Left><Bottom>562</Bottom><Right>364</Right><x>-2</x><y>-2</y><xscreen>167</xscreen><yscreen>164</yscreen><sizeHorzCX>104375</sizeHorzCX><sizeHorzCY>200734</sizeHorzCY><sizeVertCX>228750</sizeVertCX><sizeVertCY>690330</sizeVertCY></Rect></Wnd4></Sizes></Row0></Left><Right><Row0><Sizes><Wnd5><Rect><Top>-2</Top><Left>-2</Left><Bottom>562</Bottom><Right>593</Right><x>-2</x><y>-2</y><xscreen>167</xscreen><yscreen>164</yscreen><sizeHorzCX>104375</sizeHorzCX><sizeHorzCY>200734</sizeHorzCY><sizeVertCX>371875</sizeVertCX><sizeVertCY>690330</sizeVertCY></Rect></Wnd5></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>162</Bottom><Right>1602</Right><x>-2</x><y>-2</y><xscreen>1604</xscreen><yscreen>164</yscreen><sizeHorzCX>1002500</sizeHorzCX><sizeHorzCY>200734</sizeHorzCY><sizeVertCX>104375</sizeVertCX><sizeVertCY>200734</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Project>
+
+

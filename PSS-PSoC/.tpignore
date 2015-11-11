@@ -1,0 +1,107 @@
+#\Q/CortexM3/\E.*
+#\Q/codegentemp/\E.*
+#\Q/Generated_Source/\E.*
+#\Q/FEC2_PSoC1_prjct_timing.html\E
+#\Q/FEC2_PSoC1_prjct.cycdx\E
+#\Q/FEC2_PSoC1_prjct.cyfit\E
+#\Q/FEC2_PSoC1_prjct.cyprj.\E.*
+#\Q/FEC2_PSoC1_prjct.rpt\E
+#\Q/FEC2_PSoC1_prjct.svd\E
+################################################################################
+# This .tfignore file was automatically created by Microsoft(R) Visual Studio.
+#
+# Local items matching filespecs in this file will not be added to version
+# control. This file can be checked in to share exclusions with others.
+#
+# Wildcard characters are * and ?. Patterns are matched recursively unless the
+# pattern is prefixed by the \ character.
+#
+# You can prepend a path to a pattern to make it more specific. If you do,
+# wildcard characters are not permitted in the path portion.
+#
+# The # character at the beginning of a line indicates a comment.
+#
+# The ! prefix negates a pattern. This can be used to re-include an item after
+# it was excluded by a .tfignore file higher in the tree, or by the Team
+# Project Collection's global exclusions list.
+#
+# The / character is interpreted as a \ character on Windows platforms.
+#
+# Examples:
+#
+#  # Excludes all files ending in .txt in Alpha\Beta and all its subfolders.
+#  Alpha\Beta\*.txt
+#
+#  # Excludes all files ending in .cpp in this folder only.
+#  \*.cpp
+#
+#  # Excludes all files ending in .cpp in this folder and all subfolders.
+#  *.cpp
+#
+#  # If "Contoso" is a folder, then Contoso and all its children are excluded.
+#  # If it is a file, then only the "Contoso" in this folder is excluded.
+#  \Contoso
+#
+#  # If Help.exe is excluded by a higher .tfignore file or by the Team Project
+#  # Collection global exclusions list, then this pattern re-includes it in
+#  # this folder only.
+#  !\Help.exe    
+#
+################################################################################
+# definitions for CYPRESS development environment
+
+# Excluded folders
+*codegentemp
+*Generated_Source
+\DP8051
+\ARM_GCC*
+\Debug
+
+# Excluded extensions
+*.cycdx
+*.rpt
+*.svd
+*.scat
+*.ld
+*.icf
+*.hex
+*.rpt
+*.log
+*.zip
+*.rar
+*.cyfit
+*.cywrk.*
+*.cyprj.*
+
+*timing.html
+\Q/FEC2_PSoC_V01_prjct.cydsn/codegentemp/\E.*
+\Q/FEC2_PSoC_V01_prjct.cydsn/CortexM3/\E.*
+\Q/FEC2_PSoC_V01_prjct.cydsn/Generated_Source/\E.*
+\Q/FEC2_PSoC_V01_prjct.cydsn/Export/\E.*
+\Q/FEC2_PSoC_V02_prjct.cydsn/codegentemp/\E.*
+\Q/FEC2_PSoC_V02_prjct.cydsn/CortexM3/\E.*
+\Q/FEC2_PSoC_V02_prjct.cydsn/Export/\E.*
+\Q/FEC2_PSoC_V02_prjct.cydsn/Generated_Source/\E.*
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct_timing.html\E
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.cycdx\E
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.cyfit\E
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.cyprj.maora\E
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.rpt\E
+\Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.svd\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct_timing.html\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct.cycdx\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct.cyfit\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct.cyprj.maora\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct.rpt\E
+\Q/FEC2_PSoC_V02_prjct.cydsn/FEC2_PSoC_V02_prjct.svd\E
+\Q/PsocBootloader.cydsn/codegentemp/\E.*
+\Q/PsocBootloader.cydsn/CortexM3/\E.*
+\Q/PsocBootloader.cydsn/Export/\E.*
+\Q/PsocBootloader.cydsn/Generated_Source/\E.*
+\Q/PsocBootloader.cydsn/PsocBootloader_timing.html\E
+\Q/PsocBootloader.cydsn/PsocBootloader.cycdx\E
+\Q/PsocBootloader.cydsn/PsocBootloader.cyfit\E
+\Q/PsocBootloader.cydsn/PsocBootloader.cyprj.maora\E
+\Q/PsocBootloader.cydsn/PsocBootloader.rpt\E
+\Q/PsocBootloader.cydsn/PsocBootloader.svd\E
+\Q/Debug/\E.*

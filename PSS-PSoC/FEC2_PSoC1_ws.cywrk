@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspc" version="5" xml_contents_version="3" name="FEC2_PSoC1_ws" persistent="" platform="NOT_USED">
+<current_project name=".\FEC2_PSoC_V01_prjct.cydsn\FEC2_PSoC_V01_prjct.cyprj" />
+<wrkspc_folders />
+<files />
+<projects>
+<v>.\FEC2_PSoC_V01_prjct.cydsn\FEC2_PSoC_V01_prjct.cyprj</v>
+<v>.\FEC2_PSoC_V02_prjct.cydsn\FEC2_PSoC_V02_prjct.cyprj</v>
+<v>.\PsocBootloader.cydsn\PsocBootloader.cyprj</v>
+</projects>
+<workspace_id v="576ac6a5-3f7c-4d05-9217-09c9916bfdf3" />
+<WriteAppVersionLastSavedWith v="3.1.0.1722" />
+<WriteAppMarketingVersionLastSavedWith v="3.1 SP1" />
+<CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjDependencyList" version="4">
+<wrkspc_dependencies>
+<wrkspc_dependency project="FEC2_PSoC_V01_prjct.cydsn\FEC2_PSoC_V01_prjct.cyprj" dependency=".\PsocBootloader.cydsn\PsocBootloader.cyprj" />
+<wrkspc_dependency project="FEC2_PSoC_V02_prjct.cydsn\FEC2_PSoC_V02_prjct.cyprj" dependency=".\PsocBootloader.cydsn\PsocBootloader.cyprj" />
+</wrkspc_dependencies>
+</CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316>
+<CyGuid_63b68103-67f5-4406-8da6-5c8625765b82 type_name="CyDesigner.Common.ProjMgmt.Model.CyIgnoredSystemDepsList" version="1">
+<wrkspc_dependencies />
+</CyGuid_63b68103-67f5-4406-8da6-5c8625765b82>
+</CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd>
+</CyXmlSerializer>
