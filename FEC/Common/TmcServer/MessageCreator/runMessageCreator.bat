@@ -1,1 +1,0 @@
-%1\Spitfire.Tools.MessageCodeGenerator.MessageCreator.exe -f PSSFieldAttribute -m PSSMessageAttribute -c "%1\Resources\MessageCreator\CPPConversion.xml" -o GeneratedMessages -s %1\Lib\Services\PSS -l cpp

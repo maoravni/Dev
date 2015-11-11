@@ -1,1 +1,0 @@
-extern void InitializeVituralComPort(void);

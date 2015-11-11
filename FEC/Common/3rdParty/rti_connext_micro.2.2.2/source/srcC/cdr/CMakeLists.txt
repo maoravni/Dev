@@ -1,6 +1,0 @@
-LIST(APPEND cdr_SOURCE srcC/cdr/Cdr_Type.c)
-LIST(APPEND cdr_SOURCE srcC/cdr/Stream.c)
-LIST(APPEND cdr_SOURCE srcC/cdr/Serialize.c)
-LIST(APPEND cdr_SOURCE srcC/cdr/Encapsulation.c)
-LIST(APPEND cdr_SOURCE srcC/cdr/md5.c)
-LIST(APPEND cdr_SOURCE srcC/cdr/md5.pkg.h)

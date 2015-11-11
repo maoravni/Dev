@@ -1,3 +1,0 @@
-set CMD "call -A ROMBASE srvrs"
-echo $CMD
-exit -e "$CMD"

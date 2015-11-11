@@ -1,4 +1,0 @@
-#define DEFAULT_BAUD_RATE 19200
-#define CONSOLE_UART	LPC_UART0
-
-#define MONARGV0 "umon"

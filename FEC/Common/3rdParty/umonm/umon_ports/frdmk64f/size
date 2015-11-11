@@ -1,5 +1,0 @@
-arm-none-eabi-size arp.o
-for file in *.o
-do
-	arm-none-eabi-size $file | grep $file
-done

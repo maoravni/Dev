@@ -1,8 +1,0 @@
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosHeap.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosMutex.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosProcess.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosSemaphore.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosSystem.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosThread.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosStdio.c)
-LIST(APPEND osapi_SOURCE srcC/osapi/freertos/freertosSemaphore.pkg.h)
