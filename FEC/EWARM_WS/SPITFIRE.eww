@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\..\FEC\EWARM\fec.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\FEC_BOOT\EWARM\FEC_BOOT.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\Mosquito\EWARM\Mosquito.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\Phantom\EWARM\Phantom.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\Phantom\PhantomTcpServer\PhantomTcpServer.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+

@@ -1,0 +1,79 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[JLinkDriver]
+WatchCond=_ 0
+Watch0=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+Watch1=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
+[DebugChecksum]
+Checksum=194361429
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[Interrupts]
+Enabled=1
+[MemoryMap]
+Enabled=0
+Base=0
+UseAuto=0
+TypeViolation=1
+UnspecRange=1
+ActionState=1
+[Trace1]
+Enabled=0
+ShowSource=1
+[struct_types]
+Fmt0=GPIO_InitTypeDef-GPIO_Pin	4	0
+Fmt1=GPIO_TypeDef-BSRRH	1	0
+Fmt2=GPIO_TypeDef-BSRRL	1	0
+Fmt3=GPIO_TypeDef-IDR	4	0
+Fmt4=GPIO_TypeDef-MODER	4	0
+Fmt5=GPIO_TypeDef-ODR	1	0
+Fmt6=GPIO_TypeDef-OSPEEDR	4	0
+Fmt7=GPIO_TypeDef-OTYPER	4	0
+Fmt8=GPIO_TypeDef-PUPDR	4	0
+Fmt9=USB_OTG_DREGS-DIEPMSK	5	0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=0
+Graph=0
+Symbiont=0
+Exclusions=
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\Common\Utilities\Third_Party\STM32_USB_OTG_Driver\src\usb_dcd_int.c}.301.3" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\SW\CMSIS\stm32f2xx_it.c}.80.3" 0 0 1 "" 0 "" 0
+Bp2=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\Common\Utilities\Third_Party\STM32_USB_OTG_Driver\src\usb_dcd_int.c}.773.3" 0 0 1 "" 0 "" 0
+Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\Common\Utilities\Third_Party\STM32_USB_OTG_Driver\src\usb_dcd_int.c}.773.3" 0 0 1 "" 0 "" 0
+Count=4
+[Aliases]
+Count=0
+SuppressDialog=0

@@ -1,0 +1,8 @@
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Log.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Thread.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Timer.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Heap.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/System.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Log.pkg.h)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/Thread.pkg.h)
+LIST(APPEND osapi_SOURCE srcC/osapi/common/System.pkg.h)

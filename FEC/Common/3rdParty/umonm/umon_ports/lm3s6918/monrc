@@ -1,0 +1,15 @@
+
+set ETHERADD 00:60:1D:02:09:10
+gosub USE_FIXED_IP
+exit
+
+# USE_DHCP:
+echo Running DHCP...
+set IPADD DHCP
+return
+
+# USE_FIXED_IP:
+set IPADD 135.222.138.20
+set GIPADD 135.222.138.1
+set NETMASK 255.255.255.0
+return
