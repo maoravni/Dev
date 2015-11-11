@@ -1,0 +1,6 @@
+device=LM3S6918
+speed 30000
+r
+h
+go
+exit

@@ -1,0 +1,8 @@
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixHeap.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixMutex.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixProcess.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixSemaphore.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixSystem.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixThread.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixStdio.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/posix/posixSystem.pkg.h)

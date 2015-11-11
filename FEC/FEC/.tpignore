@@ -1,0 +1,11 @@
+\Q/Debug/\E.*
+\Q/EWARM/Debug/\E.*
+\Q/settings/\E.*
+\Q/EWARM/ATP_VERSION/\E.*
+\Q/EWARM/CALIBRATION TEST/\E.*
+\Q/BTC new approch/\E.*
+\Q/Debug With Watchdog/\E.*
+\Q/DebugRtiPoc/\E.*
+\Q/DebugWithWatchdog/\E.*
+\Q/DebugUffsPoc/\E.*
+\Q/DebugLwip14/\E.*

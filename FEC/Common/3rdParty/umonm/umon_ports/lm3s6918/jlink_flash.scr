@@ -1,0 +1,7 @@
+device=LM3S6918
+speed 30000
+r
+h
+loadbin build_LM3S6918/boot.bin,0
+go
+exit

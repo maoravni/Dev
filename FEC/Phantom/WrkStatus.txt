@@ -1,0 +1,2 @@
+19:12 ý17/ý05/ý2012
+'Read via TCP'-commands don't works awter WriteSingleReg Command.

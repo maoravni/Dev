@@ -1,0 +1,16 @@
+tfs base $ARG1 FBASE
+if $FBASE seq \$FBASE goto NOFILE
+set CMD "call -A 0x38000 $ARG1"
+echo Running $ARG1...
+echo
+echo *************************************
+echo
+tfs cat $ARG1
+echo
+echo *************************************
+echo
+exit -e "$CMD"
+
+# NOFILE:
+echo File not found: $ARG1
+exit

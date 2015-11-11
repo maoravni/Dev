@@ -1,0 +1,7 @@
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisHeap.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisMutex.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisProcess.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisSemaphore.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisSystem.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisThread.c)
+LIST(APPEND osapi_SOURCE srcC/osapi/stellaris/stellarisStdio.c)
