@@ -1,5 +1,0 @@
-flash erase 21
-tfs base demo.bin BASE
-tfs size demo.bin SIZE
-flash write 0x38000 $BASE $SIZE
-call 0x38000 

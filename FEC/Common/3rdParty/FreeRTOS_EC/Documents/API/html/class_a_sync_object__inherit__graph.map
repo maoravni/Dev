@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node5" href="$class_c_binary_semaphore.html" title="CBinarySemaphore" alt="" coords="5,155,144,181"/>
-<area shape="rect" id="node7" href="$class_c_counting_semaphore.html" title="CCountingSemaphore" alt="" coords="168,155,321,181"/>
-<area shape="rect" id="node9" href="$class_c_mutex.html" title="CMutex" alt="" coords="346,155,413,181"/>
-<area shape="rect" id="node11" href="$class_c_recursive_mutex.html" title="CRecursiveMutex" alt="" coords="439,155,567,181"/>
-<area shape="rect" id="node2" href="$class_i_free_r_t_o_s_obj.html" title="IFreeRTOSObj" alt="" coords="257,5,367,32"/>
-</map>

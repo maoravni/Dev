@@ -1,1 +1,0 @@
-#define DEFAULT_BAUD_RATE 115200
