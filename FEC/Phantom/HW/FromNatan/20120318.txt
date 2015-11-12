@@ -1,0 +1,62 @@
+10:47 ý21/ý03/ý2012
+
+
+From: Natan Osnis [mailto:natan_osnis@bezeqint.net] 
+Sent: Saturday, March 17, 2012 1:07 PM
+To: Avi Keren; Yossi Sarusi; Tal Berger; 'Igor Natachanny'
+Subject: Phantom board debugging.
+
+ 
+
+
+Hi All,
+
+
+ 
+
+
+1. STM3220G-EVAL board:
+
+
+ 
+
+
+  1.1. For working in RMII mode, when clock is provided by external oscillator U3, 
+
+         JP5 must not be fitted, resistor R212 has to be removed and SB1 closed.
+
+1.2. 50MHz external clock not work (U3). 
+
+2. Phantom:
+
+2.1. Electronic board executes the entire cycle of initialization, comes in the "Task manager" and is idle.
+  2.2. In an attempt to establish an Internet connection, your PC displays the message “Hardware error.”
+
+2.3. The reason and what should be done are set out in the attached document.
+
+
+3. Let me know if you want, so I continued to work.
+
+
+ 
+
+
+Best Regards
+
+
+ 
+
+
+Natan Osnis
+
+
+Phone/Fax:  04-624-7576 
+
+
+Mobile:         054-4523-881
+
+
+E-mail:         Natan_Osnis@bezeqint.net
+
+
+ 
