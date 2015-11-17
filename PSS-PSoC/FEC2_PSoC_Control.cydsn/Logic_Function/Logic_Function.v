@@ -423,7 +423,7 @@ module Logic_Function (
 				Squeegee_proximity_sensor_rear,		// DI_5
 				
 				Air_presure_indication;				// GI_2	
-		
+		ddddd
 		reg Squeegee_Engaged;
 		reg Tub_Engaged;
 		

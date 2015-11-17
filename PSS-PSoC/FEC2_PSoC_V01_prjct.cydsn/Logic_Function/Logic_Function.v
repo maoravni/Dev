@@ -163,7 +163,7 @@ module Logic_Function (
 					LIFT_PB_ON_ERROR_GEN_2:
 					begin
 						/* Check the lift bar protection */
-						if(Enable_Printbar_Down_Gen2(DI_0, DI_1, DI_2, DI_3, GI_1, GI_2))
+						if(Enable_Printbar_Down_Gen2(DI_0, DI_1, DI_2, DI_3, GI_0, GI_2))
 						begin
 							Timer_Trig <= `ZERO; 							
 							interrupt <= `ZERO;
@@ -386,7 +386,7 @@ module Logic_Function (
 				Tub_disengage_pistons_limit_switch_2,	// DI_2
 				Tub_engage_pistons_limit_switch_2,		// DI_3
 				
-				Blanket_Moving,						// GI_1
+				Blanket_Moving,						// GI_0
 				Air_presure_indication;				// GI_2	
 		
 		begin

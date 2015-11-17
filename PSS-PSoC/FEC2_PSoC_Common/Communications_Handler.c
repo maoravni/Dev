@@ -1022,7 +1022,7 @@ void Ex_EndBoardConfig()
 	isr_LogicFunc_Enable();
 
     // clean all current errors.
-    Ex_StartPSoCErrorRecovery();
+    //Ex_StartPSoCErrorRecovery();
 
 	// lower the safety output, which outputs the dry contact.
     Safety_Relay_TurnOFF();
