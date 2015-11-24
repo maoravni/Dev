@@ -200,6 +200,7 @@ void PsocAnalogInputsPeripheral::raiseError(E_PsocErrorBits error, bool state)
         for (i = 2; i < 3; ++i)
         {
             m_analogElementsArray[i]->updateErrorBits(E_PSSErrors_SensorMalfunction, state);
+            m_analogElementsArray[i]->setValueValid(!state);
         }
         break;
     }
