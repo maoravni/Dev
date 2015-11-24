@@ -1030,4 +1030,14 @@ void PsocManager::startRecovery()
 {
     //resetSpiCommunication();
     //downloadConfigurationToPsocs();
+    // TODO: Check if this function can be called from the same psoc manager task.
+    takeBlockingSemaphore();
+    for (int i = 0; i < m_totalNumberOfPsocs; ++i)
+    {
+        if (m_psocHandlers[i].getPsocCommState() == E_PsocCommState_Enabled)
+        {
+            m_psocHandlers[i].startErrorRecovery(&m_blockingCallCompleteSemaphore);
+        }
+    }
+    giveBlockingSemaphore();
 }
