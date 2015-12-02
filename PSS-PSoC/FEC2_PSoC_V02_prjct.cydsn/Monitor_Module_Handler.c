@@ -303,7 +303,7 @@ void Current_Sensors_GetRef(void)
 				if(CS_Always_ON_Counter > CS_NUM_OF_FALSE_CURRENTS)
 				{
 					/* Current Always ON */
-                    Safety_Relay_TurnON();
+                    //Safety_Relay_TurnON();
 					SystemErrorReg_Write(SSR_ALWAYS_ON_ERR_BIT_NUM,ENABLE,_16BIT1);
 				}
 				if(CS_Always_OFF_Counter > CS_NUM_OF_VAIN_ACTIV)

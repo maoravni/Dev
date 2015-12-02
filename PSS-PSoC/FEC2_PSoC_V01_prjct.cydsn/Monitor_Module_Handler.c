@@ -365,7 +365,7 @@ void Current_Sensors_Analysis(uint8 Src)
             // if the PWM output is more than 50%, don't raise the SSR Always On error.
             if (CurrentPwmValues[0] < 50)
             {
-                Safety_Relay_TurnON();
+                //Safety_Relay_TurnON();
                 SystemErrorReg_Write(SSR_ALWAYS_ON_ERR_BIT_NUM, ENABLE, _16BIT2);
             }
         }

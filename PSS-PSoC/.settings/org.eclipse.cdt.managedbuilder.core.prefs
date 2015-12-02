@@ -3,7 +3,15 @@ environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/C_INCLUDE/operation=remove
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/append=true
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/appendContributed=true
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/C_INCLUDE/delimiter=;
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/C_INCLUDE/operation=remove
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/append=true
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/appendContributed=true
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/LIBRARY_PATH/delimiter=;
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/LIBRARY_PATH/operation=remove
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/append=true
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1548083900/appendContributed=true
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/LIBRARY_PATH/delimiter=;
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/append=true
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.1738374369/appendContributed=true
