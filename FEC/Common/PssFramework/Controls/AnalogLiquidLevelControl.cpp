@@ -96,6 +96,7 @@ bool AnalogLiquidLevelControl::sendNotification()
     replyMessage.header.id.split.id = MSG_ControlStatusNotification;
     replyMessage.payload.pSSControlStatusNotificationMsg.pssId = getPssId();
     replyMessage.payload.pSSControlStatusNotificationMsg.setPoint = m_calculatedOutputLevel->getValueU32();
+    replyMessage.payload.pSSControlStatusNotificationMsg.dataType = E_ValueType_U32;
     replyMessage.payload.pSSControlStatusNotificationMsg.state = m_controlState;
     replyMessage.payload.pSSControlStatusNotificationMsg.exceptions = getControlExceptions();
     replyMessage.payload.pSSControlStatusNotificationMsg.cableId = Psc_ControllerId;

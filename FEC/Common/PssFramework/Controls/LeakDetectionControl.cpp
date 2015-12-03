@@ -126,6 +126,7 @@ bool LeakDetectionControl::sendNotification()
 
     replyMessage.header.id.split.id = MSG_ControlStatusNotification;
     replyMessage.payload.pSSControlStatusNotificationMsg.pssId = getPssId();
+    replyMessage.payload.pSSControlStatusNotificationMsg.dataType = E_ValueType_U32;
     replyMessage.payload.pSSControlStatusNotificationMsg.setPoint = 0;
     replyMessage.payload.pSSControlStatusNotificationMsg.state = m_controlState;
     replyMessage.payload.pSSControlStatusNotificationMsg.exceptions = getControlExceptions();

@@ -369,6 +369,7 @@ struct PSSDeviceStatusNotificationMsg {
 	unsigned short cableId;
 	unsigned short pssId;
 	char exceptions;
+	char dataType;
 	int value;
 	};
 
@@ -703,6 +704,7 @@ struct PSSControlStatusNotificationMsg {
 	unsigned short pssId;
 	float setPoint;
 	char exceptions;
+	char dataType;
 	char state;
 	};
 
@@ -800,6 +802,10 @@ struct RevolverSeqEndedMsg {
 	unsigned int originalRequestSN;
 	unsigned short cableId;
 	unsigned int status;
+	};
+
+struct RevolverSetMotorsOffMsg {
+	unsigned short cableId;
 	};
 
 struct RevolverSetParamsMsg {
@@ -945,6 +951,7 @@ union PSSMsgType{
 	struct RevolverInitMsg revolverInitMsg;
 	struct RevolverRecoveryMsg revolverRecoveryMsg;
 	struct RevolverSeqEndedMsg revolverSeqEndedMsg;
+	struct RevolverSetMotorsOffMsg revolverSetMotorsOffMsg;
 	struct RevolverSetParamsMsg revolverSetParamsMsg;
 	struct RevolverSetZeroPositionMsg revolverSetZeroPositionMsg;
 	struct RevolverStatusNotificationMsg revolverStatusNotificationMsg;

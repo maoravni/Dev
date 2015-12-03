@@ -118,10 +118,11 @@
 #define MSG_RevolverMoveToOn 0x19
 #define MSG_RevolverMoveToReady 0x16
 #define MSG_RevolverMoveToStandby 0x18
-#define MSG_RevolverSetHomePosition 0x1014
+#define MSG_RevolverSetHomePosition 0x14
 #define MSG_RevolverInit 0x6
 #define MSG_RevolverRecovery 0x13
 #define MSG_RevolverSeqEnded 0x2
+#define MSG_RevolverSetMotorsOff 0x21
 #define MSG_RevolverSetParams 0x15
 #define MSG_RevolverSetZeroPosition 0x7
 #define MSG_RevolverStatusNotification 0x3

@@ -340,6 +340,7 @@ bool ActivationWithFeedbackControl::sendNotification()
     replyMessage.payload.pSSControlStatusNotificationMsg.pssId = getPssId();
     replyMessage.payload.pSSControlStatusNotificationMsg.setPoint = m_activationState;
     replyMessage.payload.pSSControlStatusNotificationMsg.state = m_controlState;
+    replyMessage.payload.pSSControlStatusNotificationMsg.dataType = E_ValueType_U32;
 //    printf("control state: %d\n", m_controlState);
     replyMessage.payload.pSSControlStatusNotificationMsg.exceptions = getControlExceptions();
     replyMessage.payload.pSSControlStatusNotificationMsg.cableId = Psc_ControllerId;

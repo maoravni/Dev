@@ -260,6 +260,7 @@ bool PidControl::sendNotification()
 
     replyMessage.header.id.split.id = MSG_ControlStatusNotification;
     replyMessage.payload.pSSControlStatusNotificationMsg.pssId = getPssId();
+    replyMessage.payload.pSSControlStatusNotificationMsg.dataType = E_ValueType_Float;
     replyMessage.payload.pSSControlStatusNotificationMsg.setPoint = m_setpoint->getValue();
     replyMessage.payload.pSSControlStatusNotificationMsg.state = m_controlState;
     replyMessage.payload.pSSControlStatusNotificationMsg.exceptions = getControlExceptions();

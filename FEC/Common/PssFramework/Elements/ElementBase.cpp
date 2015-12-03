@@ -76,6 +76,7 @@ void ElementBase::sendDeviceStatus(uint32_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_U32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -94,6 +95,7 @@ void ElementBase::sendDeviceStatus(int32_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_S32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -113,6 +115,7 @@ void ElementBase::sendDeviceStatus(uint8_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_U8;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -132,6 +135,7 @@ void ElementBase::sendDeviceStatus(uint16_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_U16;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -151,6 +155,7 @@ void ElementBase::sendDeviceStatus(int8_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_S8;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -170,6 +175,7 @@ void ElementBase::sendDeviceStatus(int16_t value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_S16;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)
@@ -188,6 +194,7 @@ void ElementBase::sendDeviceStatus(float value)
     replyMessage.header.id.split.id = MSG_DeviceStatusNotification;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.cableId = Psc_ControllerId;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.pssId = m_pssId;
+    replyMessage.payload.pSSDeviceStatusNotificationMsg.dataType = E_ValueType_Float;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.value = val.u32;
     replyMessage.payload.pSSDeviceStatusNotificationMsg.exceptions = hasExceptions();
     replyMessage.header.length = sizeof(replyMessage.header)

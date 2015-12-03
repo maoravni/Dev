@@ -39,7 +39,7 @@ ModbusInverterControl::~ModbusInverterControl()
 
 bool ModbusInverterControl::setSetpoint(float value)
 {
-    if (m_stopping || m_controlState == E_ControlState_On)
+    if (/*m_stopping || */m_controlState == E_ControlState_On)
         return false;
 
     // if the old requested setpoint equals the new requested setpoint don't do anything.
@@ -48,8 +48,9 @@ bool ModbusInverterControl::setSetpoint(float value)
 
 // change the state
 // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
-    if (!m_stopping)
-        m_controlState = E_ControlState_Move2Ready;
+    //if (!m_stopping)
+    m_controlState = E_ControlState_Move2Ready;
+    m_stopping = false;
 
     // set the ranges to the input:
     if (m_setpoint->getValueF() != value)
@@ -124,7 +125,7 @@ void ModbusInverterControl::execute()
             if (m_enableOutput->getValueU32())
                 *m_enableOutput = 0;
         }
-        if (m_stopping && m_outputFrequency->getValueF() == 0)
+        if (m_stopping && m_outputFrequency->getValueI32() == 0)
         {
             m_stopping = false;
 //            endMove2Standby();
@@ -234,6 +235,7 @@ bool ModbusInverterControl::sendNotification()
 
     replyMessage.header.id.split.id = MSG_ControlStatusNotification;
     replyMessage.payload.pSSControlStatusNotificationMsg.pssId = getPssId();
+    replyMessage.payload.pSSControlStatusNotificationMsg.dataType = E_ValueType_Float;
     replyMessage.payload.pSSControlStatusNotificationMsg.setPoint = m_setpoint->getValueF();
     replyMessage.payload.pSSControlStatusNotificationMsg.state = m_controlState;
     replyMessage.payload.pSSControlStatusNotificationMsg.exceptions = getControlExceptions();
