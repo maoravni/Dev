@@ -203,7 +203,7 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
     while ((cableId = Psc_GetCableId()) == 0xffff);
 
     uint16_t port = M_DEFAULT_TMC_SERVER_PORT + cableId;
-    m_pTcpConnector = new CTcpConnector(port);
+    m_pTcpConnector = new CTcpConnectorRR(port);
 
     reset();
 

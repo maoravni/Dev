@@ -11,7 +11,7 @@
 #ifdef __cplusplus
 
 #include <AManagedTask.h>
-#include <CTcpConnector.h>
+#include <CTcpConnectorRR.h>
 #include <CUdpConnector.h>
 #include <stdarg.h>
 #include <CCountingSemaphore.h>
@@ -60,7 +60,7 @@ private:
     /**
      * TCP Connector
      */
-    CTcpConnector m_tcpConnector;
+    CTcpConnectorRR m_tcpConnector;
 
     /**
      * UDP Connector;
