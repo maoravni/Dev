@@ -23,7 +23,7 @@
 #include <StatusLed.h>
 #include "lwipCallback.h"
 
-uint32_t ctcpconnector_stack_wm;
+//uint32_t ctcpconnector_stack_wm;
 //CMutex CTcpConnector::m_tcpConnectorMutex;
 
 //extern __IO uint8_t EthLinkStatus;
@@ -74,14 +74,13 @@ void CTcpConnector::closeConnection()
     m_deadConnection = false;
 }
 
-int maxMessageSize = 0;
 void CTcpConnector::run()
 {
     while (1)
     {
-#if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
-        ctcpconnector_stack_wm = uxTaskGetStackHighWaterMark(0);
-#endif
+//#if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
+//        ctcpconnector_stack_wm = uxTaskGetStackHighWaterMark(0);
+//#endif
         m_tcpNetConn = netconn_new_with_callback(NETCONN_TCP, lwipCallbackHandler);
 
         // start listening for connections
@@ -116,8 +115,6 @@ void CTcpConnector::run()
                 T_CallbackQueueItem callbackQueueItem;
                 while (m_commandQueue.receive(&callbackQueueItem, 50) == pdPASS)
                 {
-                    if (m_commandQueue.messagesWaiting() > maxMessageSize)
-                        maxMessageSize = m_commandQueue.messagesWaiting();
                     // check if the queue was full before we pulled the command from it,
                     // yield so that waiting tasks will have a chance to send to the queue.
                     if (m_commandQueue.messagesWaiting() >= (M_COMMAND_QUEUE_DEPTH - 1))

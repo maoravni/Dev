@@ -34,6 +34,7 @@ private:
 
     void closeConnection();
 
+
 public:
     CTcpConnector(u16_t port);
     virtual ~CTcpConnector();

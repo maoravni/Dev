@@ -5,8 +5,8 @@
  *      Author: maora
  */
 
-#ifndef CTCPCONNECTOR_H_
-#define CTCPCONNECTOR_H_
+#ifndef CTCPCONNECTOR_RR_H_
+#define CTCPCONNECTOR_RR_H_
 
 #include "arch/cc.h"
 #include "CBaseConnector.h"
@@ -95,4 +95,4 @@ public:
     void killConnection() {m_deadConnection = true;}
 };
 
-#endif /* CTCPCONNECTOR_H_ */
+#endif /* CTCPCONNECTOR_RR_H_ */
