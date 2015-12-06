@@ -779,19 +779,6 @@ void Undefined_Error_Handler(void)
         SystemState.SystemErrors &= (~SSR_OVER_TEMP_ERR);
         ErrorCode(SSR_OVER_TEMP_ERR, DISABLE, FALSE);
     }
-
-    /* MISING_CURRENT_SENS_ERR */
-    if (ErrRegBitActvnArry[MISSING_CURRENT_SENS_ERR_BIT_NUM])
-    {
-        SystemState.SystemErrors |= MISSING_CURRENT_SENS_ERR;
-        //ErrorCode(MISSING_CURRENT_SENS_ERR, ENABLE, FALSE);
-    }
-    else
-    {
-        SystemState.SystemErrors &= (~MISSING_CURRENT_SENS_ERR);
-        //ErrorCode(MISSING_CURRENT_SENS_ERR, DISABLE, FALSE);
-    }
-
 }
 
 /*****************************************************************************

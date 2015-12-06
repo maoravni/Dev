@@ -1022,7 +1022,7 @@ void Ex_EndBoardConfig()
 	isr_LogicFunc_Enable();
 
     // clean all current errors.
-    Ex_StartPSoCErrorRecovery();
+    //Ex_StartPSoCErrorRecovery();
 
 	// lower the safety output, which outputs the dry contact.
     Safety_Relay_TurnOFF();
@@ -1741,9 +1741,8 @@ void Ex_StartPSoCErrorRecovery(void)
 	SystemErrorReg_Write(SSR_ALWAYS_ON_ERR_BIT_NUM, DISABLE, _16BIT1);
 
 	System_Status_Update();
-	PBIT_Disable();
-//	PBIT_Enable();
-//	ApplicatorEnable(FALSE);
+	PBIT_Enable();
+	ApplicatorEnable(FALSE);
 
 	#ifdef FEC2_PSoC_V01
 		CS_DAB_1_CS_ON_Counter = 0;
@@ -1759,9 +1758,6 @@ void Ex_StartPSoCErrorRecovery(void)
 	
 	/*clear ErrorFlashCode */
 	ErrorCode(0,0,1);		
-
-    // lower the safety output, which outputs the dry contact.
-    Safety_Relay_TurnOFF();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
