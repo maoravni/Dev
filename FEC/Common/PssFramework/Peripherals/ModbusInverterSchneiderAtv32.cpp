@@ -16,6 +16,7 @@
 #define M_INVERTER_OUTPUT_CURRENT_ADDRESS 3204
 #define M_INVERTER_AUTOTUNE 9608
 #define M_INVERTER_AUTOTUNE_STATE 9609
+#define M_INVERTER_AUTOMATIC_AUTOTUNE 9615
 
 struct T_Atv32RegisterSetup
 {
@@ -47,6 +48,7 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
         { 9003, 1 }, // default Dec Ramp Adapt to yes, if no breaking resistor is present.
         { 11230, 10}, // default fast stop ramp divider is 10.
         { 11204, 133}, // assign LI5 to fast stop.
+        { M_INVERTER_AUTOMATIC_AUTOTUNE, 1},
         { 0, 0 } };
 
 //static const T_Atv32RegisterSetup Atv32DryerRegisterSetup[] =
@@ -90,11 +92,12 @@ void ModbusInverterSchneiderAtv32::readInputs()
 {
     int16_t outFreq;
     int16_t outCurrent;
+    int16_t inverterData[3];
     uint32_t buffLength;
 
     E_ModbusError error;
 
-    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_FREQUENCY_ADDRESS, 1, (uint8_t*) &outFreq, buffLength);
+    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_FREQUENCY_ADDRESS, 3, (uint8_t*) &inverterData, buffLength);
     if (error != E_ModbusError_Ok)
     {
         ++m_numOfFailedReads;
@@ -110,13 +113,13 @@ void ModbusInverterSchneiderAtv32::readInputs()
         return;
     }
 
-    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_CURRENT_ADDRESS, 1, (uint8_t*) &outCurrent, buffLength);
-    if (error != E_ModbusError_Ok)
-    {
-        ++m_numOfFailedReads;
-        return;
-    }
-
+//    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_CURRENT_ADDRESS, 1, (uint8_t*) &outCurrent, buffLength);
+//    if (error != E_ModbusError_Ok)
+//    {
+//        ++m_numOfFailedReads;
+//        return;
+//    }
+//
     // if we're here it means the inverter went back to communication.
     if (m_numOfFailedReads > 0)
     {
@@ -128,8 +131,8 @@ void ModbusInverterSchneiderAtv32::readInputs()
     }
     m_numOfFailedReads = 0;
 
-    outFreq = SWAP_16(outFreq);
-    outCurrent = SWAP_16(outCurrent);
+    outFreq = SWAP_16(inverterData[0]);
+    outCurrent = SWAP_16(inverterData[2]);
     *m_outputFrequency = (float) (outFreq * m_frequencyMultiplier);
     *m_outputCurrent = (float) (outCurrent * m_currentMultiplier);
 

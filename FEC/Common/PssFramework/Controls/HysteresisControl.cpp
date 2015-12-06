@@ -33,6 +33,14 @@ HysteresisControl::~HysteresisControl()
 
 void HysteresisControl::updateNotification(ElementBase* element)
 {
+    if (element == m_output)
+    {
+        raiseError(element->getPssId(), E_PSSErrors_SensorMalfunction, !m_output->isValid());
+        if (!m_output->isValid())
+            move2Error(MSG_ActivatePIDControl, m_lastSn);
+        return;
+    }
+
     if (m_controlState == E_ControlState_On)
         return;
 

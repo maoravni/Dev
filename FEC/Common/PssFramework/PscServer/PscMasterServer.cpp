@@ -265,7 +265,7 @@ void PscMasterServer::sendMessage(PscMessageStruct& message)
     message.header.id.split.dst = 0x1;
     message.header.crc = 0;
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "sending message: message ID=%x length=%d sn=%d", message.header.id.split.id,
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "sending message: message ID=%x length=%d sn=%d", message.header.id.split.id,
             message.header.length, message.header.sn);
 
     m_pTcpConnector->send(&message, message.header.length);

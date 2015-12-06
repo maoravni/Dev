@@ -135,8 +135,8 @@ float PIDDynamicSampleTime::Compute(float input)
 
 //    if (CLogger::getInstance().checkLevel(M_LOGGER_LEVEL_VERBOSE))
 //    {
-        printf("PSSID=%d,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", m_pssId, currentTick - m_lastTick,
-                m_kp, m_ki, m_kd, m_kTrapezoidalRange, m_setpoint, m_input, m_output, m_PTerm, m_ITerm, m_DTerm);
+//        printf("PSSID=%d,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n", m_pssId, currentTick - m_lastTick,
+//                m_kp, m_ki, m_kd, m_kTrapezoidalRange, m_setpoint, m_input, m_output, m_PTerm, m_ITerm, m_DTerm);
 //    }
 
     /*Remember some variables for next time*/

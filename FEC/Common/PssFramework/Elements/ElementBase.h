@@ -19,7 +19,7 @@
 
 class ElementBase
 {
-private:
+protected:
     uint16_t m_elementIndex; //!< ID of the element in the element repository.
     uint16_t m_pssId; //!< ID of the element assigned by the SUM.
     portTickType m_lastNotificationTick; //!< the tick count of the last update

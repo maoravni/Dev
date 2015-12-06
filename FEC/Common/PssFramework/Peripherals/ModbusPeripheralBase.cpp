@@ -19,6 +19,8 @@ uint8_t m_minimumDelayBetweenRequests = 10;
 uint16_t m_responseTimeout = 250;
 portTickType ModbusPeripheralBase::m_lastGoodResponseTickCount = 0; //!< last good response tick count. Used for timeout when the device stops responding.
 
+int lastTransactionDelay;
+
 ModbusPeripheralBase::ModbusPeripheralBase(uint8_t slaveId)
 {
 //    m_transmissionCompleteSemaphore.attach(usartResponseCompleteSemaphore);
@@ -65,7 +67,7 @@ E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCod
     for (i = 0; i < m_numOfRetries; ++i)
     {
         if (i > 0)
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Modbus Device %d response error %d retry %d startAddress %d", m_slaveId, result, i, startAddress);
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "Modbus Device %d response error %d retry %d startAddress %d, lastTransactionDelay %d", m_slaveId, result, i, startAddress, lastTransactionDelay);
 
         // send the buffer to the device:
         usartResponseBuffer.resp_len = 0;
@@ -231,6 +233,7 @@ void ModbusPeripheralBase::transactionDelay()
     if (elapsedTicks < m_minimumDelayBetweenRequests)
     {
 //        printf("transaction delay: %d\n", m_minimumDelayBetweenRequests - elapsedTicks);
+        lastTransactionDelay = m_minimumDelayBetweenRequests - elapsedTicks;
         vTaskDelay(m_minimumDelayBetweenRequests - elapsedTicks);
     }
 }

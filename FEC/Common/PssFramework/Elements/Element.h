@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <Elements/ElementBase.h>
 #include <Elements/ValidationElement.h>
+#include <math.h>
 
 extern "C" uint16_t Psc_ControllerId;
 
@@ -19,6 +20,7 @@ class Element : public ElementBase
 {
 protected:
     _type m_value; //!< Value of the element.
+    _type m_notifiedValue;
 
 public:
     Element();
@@ -81,6 +83,9 @@ public:
     virtual void updateWarningBits(E_PSSErrors warning, bool state) {}
     virtual uint32_t getErrors() {return 0;}
     virtual uint32_t getWarnings() {return 0;}
+
+    virtual bool checkIfCanSendUpdate();
+
 
 private:
     virtual void _setValue(_type value)
@@ -185,6 +190,7 @@ inline float Element<_type>::getValueF() const
 template<class _type>
 inline void Element<_type>::sendDeviceStatus()
 {
+    m_notifiedValue = m_value;
     ElementBase::sendDeviceStatus(m_value);
 }
 
@@ -200,5 +206,13 @@ inline void Element<_type>::sendCurrentWarnings()
     ElementBase::sendWarning(Psc_ControllerId, getPssId(), 0);
 }
 
+template<class _type>
+inline bool Element<_type>::checkIfCanSendUpdate()
+{
+    if (m_minInterval == 0xff && (abs((float)m_notifiedValue-(float)m_value) >= 0.1))
+        return true;
+
+    return ElementBase::checkIfCanSendUpdate();
+}
 
 #endif /* ELEMENT_H_ */

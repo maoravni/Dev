@@ -13,6 +13,7 @@
 #include "ValidationElementBase.h"
 #include <PscServer/PscMessageStructs.h>
 #include <PscSubsystem.h>
+#include <math.h>
 //#include <PscServer/PscMasterServer.h>
 
 //enum E_ElementState
@@ -40,6 +41,7 @@ class ValidationElement: public ValidationElementBase
 {
 protected:
     _type m_value; //!< Value of the element.
+    _type m_notifiedValue;
 
     // Min/Max values for this element. Values outside these will be clamped.
     RangeChecker<_type> m_allowedRange;
@@ -203,6 +205,9 @@ public:
 private:
     void _setValue(_type value);
     void updateErrorBits();
+
+protected:
+    virtual bool checkIfCanSendUpdate();
 
 };
 
@@ -441,6 +446,15 @@ inline void ValidationElement<_type>::updateWarningBits(E_PSSErrors warning, boo
 
     if (m_warningBits != previousWarningBits && getPssId() != 0)
         sendWarning(Psc_ControllerId, getPssId(), m_warningBits);
+}
+
+template<class _type>
+inline bool ValidationElement<_type>::checkIfCanSendUpdate()
+{
+    if (m_minInterval == 0xff && (abs((float)m_notifiedValue-(float)m_value) >= 0.1))
+        return true;
+
+    return ElementBase::checkIfCanSendUpdate();
 }
 
 #endif /* VALIDATIONELEMENT_H_ */
