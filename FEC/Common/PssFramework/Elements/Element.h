@@ -209,7 +209,7 @@ inline void Element<_type>::sendCurrentWarnings()
 template<class _type>
 inline bool Element<_type>::checkIfCanSendUpdate()
 {
-    if (m_minInterval == 0xff && (abs((float)m_notifiedValue-(float)m_value) >= 0.1))
+    if (m_minInterval < 0 && (abs((float)m_notifiedValue-(float)m_value) >= 0.1))
         return true;
 
     return ElementBase::checkIfCanSendUpdate();

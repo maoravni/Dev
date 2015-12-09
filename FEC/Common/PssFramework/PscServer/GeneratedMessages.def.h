@@ -508,8 +508,8 @@ struct PSSActivateMonitoringMsg {
 	unsigned short cableId;
 	unsigned short pssId;
 	char active;
-	unsigned int minUpdateInterval;
-	unsigned int maxUpdateInterval;
+	int minUpdateInterval;
+	int maxUpdateInterval;
 	};
 
 struct PSSAutoTuneMsg {

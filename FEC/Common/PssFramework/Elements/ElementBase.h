@@ -141,9 +141,9 @@ public:
         return m_maxInterval * 100;
     }
 
-    void setMaxInterval(uint16_t maxInterval)
+    void setMaxInterval(int16_t maxInterval)
     {
-        m_maxInterval = (uint16_t)(maxInterval * 0.01);
+        m_maxInterval = (int16_t)(maxInterval * 0.01);
     }
 
     uint16_t getMinInterval() const
@@ -151,9 +151,12 @@ public:
         return m_minInterval * 100;
     }
 
-    void setMinInterval(uint16_t minInterval)
+    void setMinInterval(int16_t minInterval)
     {
-        m_minInterval = (uint16_t)(minInterval * 0.01);
+        if (minInterval < 0)
+            m_minInterval = -1;
+        else
+            m_minInterval = (int16_t)(minInterval * 0.01);
     }
 
     virtual void updateErrorBits(E_PSSErrors error, bool state) = 0;
