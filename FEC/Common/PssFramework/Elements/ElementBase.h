@@ -23,8 +23,8 @@ protected:
     uint16_t m_elementIndex; //!< ID of the element in the element repository.
     uint16_t m_pssId; //!< ID of the element assigned by the SUM.
     portTickType m_lastNotificationTick; //!< the tick count of the last update
-    uint8_t m_minInterval; //!< Minimum interval for sending updates.
-    uint8_t m_maxInterval; //!< Maximum interval that can pass without sending updates.
+    int8_t m_minInterval; //!< Minimum interval for sending updates.
+    int8_t m_maxInterval; //!< Maximum interval that can pass without sending updates.
 
 //    uint32_t m_errorBits;
 //    uint32_t m_warningBits;
