@@ -10,7 +10,11 @@
 #include <Peripherals/PeripheralRepository.h>
 #include <version.h>
 #include <logger.h>
+#ifndef WIN32
 #include <arm_itm.h>
+#else
+#define ITM_EVENT8(a,b)
+#endif
 
 #define M_NUMBER_OF_RETRIES 10
 
@@ -260,6 +264,7 @@ void PsocManager::startShutdown()
 // it should also always be called from within the PSoC Manager task.
 void PsocManager::resetSpiCommunication()
 {
+#ifndef WIN32
     M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Resetting SPI");
     // reset the SPI setup.
     PSOC_setupSpiWithDma();
@@ -271,6 +276,7 @@ void PsocManager::resetSpiCommunication()
         m_psocHandlers[i].m_spiComFailures = 0;
     }
     downloadConfigurationToPsocs();
+#endif
 }
 
 void PsocManager::execute(int psocIndex)

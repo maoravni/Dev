@@ -261,6 +261,7 @@ inline void ValidationElement<_type>::updateHardProtectionRange(float low, float
 template<class _type>
 inline void ValidationElement<_type>::sendDeviceStatus()
 {
+    m_notifiedValue = m_value;
     ValidationElementBase::sendDeviceStatus(m_value);
 }
 

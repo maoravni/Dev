@@ -204,3 +204,7 @@ float Psc_GetBoardVoltage33V()
 {
     return a2d_filtered_arr[ADC1_in13] * M_ADC_COUNTS_TO_33V;
 }
+
+void Psc_SubsystemCheckInit()
+{
+}

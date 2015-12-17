@@ -13,6 +13,9 @@
 #include <CBinarySemaphore.h>
 #include <task.h>
 #include <vector>
+#ifdef WIN32
+#include <win32/PortAllocations.h>
+#endif
 
 #if defined(FEC_BOARD) || defined(FEC2_BOARD)
 #define M_ModbusUart USART3

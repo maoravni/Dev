@@ -29,11 +29,14 @@ extern "C"
 {
 #endif
 
-#ifdef STM32F4XX
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
+	
 //#include <stdint.h>
 
 //#ifdef __cplusplus
@@ -79,6 +82,13 @@ typedef uint8_t U8;
 typedef uint16_t U16;
 typedef uint32_t U32;
 
+typedef unsigned   char    u8_t;
+typedef signed     char    s8_t;
+typedef unsigned   short   u16_t;
+typedef signed     short   s16_t;
+typedef unsigned   long    u32_t;
+typedef signed     long    s32_t;
+
 #ifndef __cplusplus
 typedef uint8_t bool;
 #endif
@@ -100,12 +110,13 @@ typedef int BOOL;
 typedef int STATUS;
 
 #define OK		0
-#define ERROR		(-1)
+//#define ERROR		(-1)
 
 typedef enum
 {
     OK_E = 0, NO_ROOM_E = -2, UNKNOWN_ERROR_E
 } STATUS_ET;
+
 
 #define   TST_STOP  0
 #define   TST_RUN   1

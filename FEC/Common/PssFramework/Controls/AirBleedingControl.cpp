@@ -38,6 +38,7 @@ void AirBleedingControl::updateNotification(ElementBase* element)
 
 bool AirBleedingControl::sendNotification()
 {
+	return true;
 }
 
 //void AirBleedingControl::addProtectionElement(ValidationElementBase* element)

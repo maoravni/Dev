@@ -32,11 +32,15 @@
 /*============================================================================*/
 /* --- GLOBAL_INCLUDE_FILES ------------------------------------------------- */
   #include "ll_typedef.h"
-#ifdef STM32F4XX
+
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
+
   #include "dg_in_ctrl.h"
 /* --- PACKAGE_INCLUDE_FILES ------------------------------------------------ */
 /* --- GLOBAL_EXTERNALS ----------------------------------------------------- */
@@ -111,7 +115,9 @@
     if((dig_in < 0)||(dig_in > NUMBER_OF_DG_INs))
       return LL_ERROR;
 
+#ifndef WIN32
     *res_ptr = GPIO_ReadInputDataBit(PortOf[dig_in], PinOf[dig_in]);
+#endif
  
 //    M_LOGGER_LOGF_UNSORTED (M_LOGGER_LEVEL_TRACE, "DIG_IN_%d = %d",(dig_in - NODE_ID_2), *res_ptr,0,0,0,0,0);
     

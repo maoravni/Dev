@@ -28,7 +28,14 @@ extern "C"
 {
 #endif
 
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
+#define __IO
+#else
+#include <stm32f2xx.h>
+#endif
 
 #define USER_FLASH_FIRST_PAGE_ADDRESS 0x08020000 /* Only as example see comment */
 #define USER_FLASH_LAST_PAGE_ADDRESS  0x08080000

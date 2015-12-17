@@ -7,21 +7,23 @@
 
 #include "CUdpConnector.h"
 #include "netconf.h"
-#ifdef STM32F4XX
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
+#define __root 
 #else
 #include <stm32f2xx.h>
 #endif
 //#include "StatusLed.h"
-#include "hmi.h"
 #include <string.h>
 #include <logger.h>
 #include <lwip/tcp.h>
 #include <lwip/stats.h>
 #include "lwip/api.h"
-#include <GnrlCfgDB.h>
 #include <dg_in_ctrl.h>
 #include <PscSubsystem.h>
+#include <leds.h>
 
 #define DHCP_TASK_PRIO   ( tskIDLE_PRIORITY + 2 )
 
@@ -195,7 +197,7 @@ void CUdpConnector::setPort(unsigned short port)
     m_port = port;
 }
 
-void CUdpConnector::setIpAddress(ip_addr& ipAddress)
+void CUdpConnector::setIpAddress(in_addr& ipAddress)
 {
     memcpy(&m_ipAddress, &ipAddress, sizeof(ip_addr));
 //    m_ipAddress = ipAddress;

@@ -443,10 +443,18 @@ uint8_t *puc;
 
 void fillHeapRegions()
 {
+#ifndef WIN32
     xHeapRegions[0].pucStartAddress = &__region_HEAP_1_start__;
     xHeapRegions[0].xSizeInBytes = (&__region_HEAP_1_end__-&__region_HEAP_1_start__+1) &~portBYTE_ALIGNMENT_MASK;
     xHeapRegions[1].pucStartAddress = &__region_HEAP_2_start__;
     xHeapRegions[1].xSizeInBytes = (&__region_HEAP_2_end__-&__region_HEAP_2_start__+1) &~portBYTE_ALIGNMENT_MASK;
+#else
+#define HeapRegionSize 0xff00
+	xHeapRegions[0].pucStartAddress = malloc(HeapRegionSize);
+	xHeapRegions[0].xSizeInBytes = HeapRegionSize;
+	xHeapRegions[1].pucStartAddress = malloc(HeapRegionSize);
+	xHeapRegions[1].xSizeInBytes = HeapRegionSize;
+#endif
 }
 
 void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions )

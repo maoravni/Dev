@@ -29,11 +29,15 @@
 #endif
    
 /* Includes ------------------------------------------------------------------*/
-#ifdef STM32F4XX
+
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

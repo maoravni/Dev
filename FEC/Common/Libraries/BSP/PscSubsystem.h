@@ -52,6 +52,8 @@ uint8_t Psc_GetNumberOfSlaves();
 float Psc_GetBoardVoltage24V();
 float Psc_GetBoardVoltage33V();
 
+void Psc_SubsystemCheckInit();
+
 #ifdef __cplusplus
 }
 #endif

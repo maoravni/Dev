@@ -9,8 +9,10 @@
 #define PSCMASTERSERVER_H_
 
 #include <stdint.h>
-#include <CTcpConnectorRR.h>
+#include <CTcpConnectorSocket.h>
+#ifndef WIN32
 #include <lwipopts.h>
+#endif
 #include "PscMessageStructs.h"
 #include "PscMessageHandler.h"
 
@@ -32,7 +34,7 @@ class PscMasterServer: public AManagedTask
 private:
     static PscMasterServer s_instance; //!< Instance of the master server singleton.
 
-    CTcpConnectorRR *m_pTcpConnector; //!< TCP Connector for the server
+    CTcpConnectorSocket *m_pTcpConnector; //!< TCP Connector for the server
 
     PscMessageStruct m_messageStruct; //!< The message going to/from the OPC.
     unsigned int m_lastRequestSerialNumber; //!< The last serial number of the request from the OPC.

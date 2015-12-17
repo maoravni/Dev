@@ -385,8 +385,8 @@ void USART3_IRQHandler()
 //          mb_node_1->resp_len = rbuf_1.in;
 //                puts("usart give");
                 xSemaphoreGiveFromISR(usartResponseCompleteSemaphore, &xHigherPriorityTaskWoken);
-//                if (xHigherPriorityTaskWoken)
-//                    taskYIELD();
+                if (xHigherPriorityTaskWoken)
+                    taskYIELD();
             }
             rbuf_3.out = rbuf_3.in = 0;
         }

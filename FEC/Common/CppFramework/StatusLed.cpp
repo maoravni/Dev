@@ -56,6 +56,9 @@ void StatusLed::run()
 
 	for (;;)
 	{
+#ifdef WIN32
+		printf("Led Toggle\n");
+#endif
 		/* Delay for half the flash period then turn the LED on. */
 		delayUntil(&xLastFlashTime, m_flashRate);
 		//GPIO_WriteBit(m_pPort, m_pin, m_bState ? Bit_SET : Bit_RESET);

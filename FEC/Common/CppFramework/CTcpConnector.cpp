@@ -7,19 +7,21 @@
 
 #include "CTcpConnector.h"
 #include "netconf.h"
-#ifdef STM32F4XX
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
+#define __root 
 #else
 #include <stm32f2xx.h>
 #endif
 
 //#include "StatusLed.h"
-#include "hmi.h"
 #include <string.h>
 #include <logger.h>
 #include "lwip/tcp.h"
 #include "lwip/stats.h"
-#include <lwip/sockets.h>
+//#include <lwip/sockets.h>
 #include <StatusLed.h>
 #include "lwipCallback.h"
 
@@ -76,7 +78,8 @@ void CTcpConnector::closeConnection()
 
 void CTcpConnector::run()
 {
-    while (1)
+	err_t netErr;
+	while (1)
     {
 //#if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
 //        ctcpconnector_stack_wm = uxTaskGetStackHighWaterMark(0);
@@ -95,11 +98,15 @@ void CTcpConnector::run()
         while (1)
         {
 
+			m_tcpNetConn->recv_timeout = 1000;
 #if LWIP_VER == 14
-            netconn_accept(m_tcpNetConn, &m_newTcpNetConn);
+			netErr = netconn_accept(m_tcpNetConn, &m_newTcpNetConn);
 #else
             m_newTcpNetConn = netconn_accept(m_tcpNetConn);
 #endif
+			if (ERR_IS_FATAL(netErr) || netErr == ERR_TIMEOUT)
+				continue;
+
             registerNetconn(m_newTcpNetConn, m_commandQueue);
 
 //            m_newTcpNetConn->recv_timeout = 10;
@@ -111,7 +118,6 @@ void CTcpConnector::run()
 
             while (m_newTcpNetConn)
             {
-                err_t netErr;
                 T_CallbackQueueItem callbackQueueItem;
                 while (m_commandQueue.receive(&callbackQueueItem, 50) == pdPASS)
                 {

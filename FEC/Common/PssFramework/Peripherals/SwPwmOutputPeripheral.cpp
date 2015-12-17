@@ -44,8 +44,12 @@ SwPwmOutputPeripheral::~SwPwmOutputPeripheral()
     }
 }
 
+#ifdef WIN32
+#define Var_GetBit_BB(VarAddr, BitNumber) 0
+#else
 #define Var_GetBit_BB(VarAddr, BitNumber)       \
           (*(__IO uint32_t *) (SRAM_BB_BASE | (((uint32_t)VarAddr - SRAM_BASE) << 5) | ((BitNumber) << 2)))
+#endif
 
 void SwPwmOutputPeripheral::run()
 {

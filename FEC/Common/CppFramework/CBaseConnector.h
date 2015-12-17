@@ -11,6 +11,18 @@
 #include <CQueue.h>
 #include <AManagedTask.h>
 #include <CBinarySemaphore.h>
+#ifdef WIN32
+#include <Win32MissingDefines.h>
+#include <ll_typedef.h>
+#else
+#include <lwip/opt.h>
+#endif
+
+struct T_UdpQueueItem
+{
+	char data[TCP_MSS];
+	u16_t length;
+};
 
 /**
  * This class implements a base class for all connector (communication) types

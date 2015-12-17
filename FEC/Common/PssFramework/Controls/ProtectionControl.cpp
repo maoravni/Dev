@@ -33,6 +33,7 @@ void ProtectionControl::execute()
 
 bool ProtectionControl::sendNotification()
 {
+	return true;
 }
 
 void ProtectionControl::updateNotification(ElementBase* element)

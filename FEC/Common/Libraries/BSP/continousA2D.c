@@ -33,8 +33,11 @@
 /* --- GLOBAL_INCLUDE_FILES ------------------------------------------------- */
 
 #include "ll_typedef.h"
-#ifdef STM32F4XX
+
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
@@ -60,29 +63,31 @@
 /* --- PRIVATE MACROS ------------------------------------------------------- */
 
 /* --- PRIVATE TYPES -------------------------------------------------------- */
+typedef struct
+{
+	uint16_t rtd_1; /* 1 */
+	uint16_t rtd_2; /* 2 */
+	uint16_t rtd_3; /* 3 */
+	uint16_t rtd_4; /* 4 */
+	uint16_t rtd_5; /* 5 */
+	uint16_t rtd_6; /* 6 */
+	uint16_t rtd_7; /* 7 */
+	uint16_t rtd_8; /* 8 */
+	uint16_t rtd_9; /* 9 */
+	uint16_t hum_sens_1; /* 10 */
+	uint16_t hum_sens_2; /* 11 */
+	uint16_t in_4_20mA_1; /* 12 */
+	uint16_t in_4_20mA_2; /* 13 */
+	uint16_t in_4_20mA_3; /* 14 */
+	uint16_t rtd_12; /* 15 */
+	uint16_t rtd_10; /* 16 */
+	uint16_t rtd_11; /* 17 */
+} _field;
+
 typedef union _a2d_data_
 {
-    struct
-    {
-        uint16_t rtd_1; /* 1 */
-        uint16_t rtd_2; /* 2 */
-        uint16_t rtd_3; /* 3 */
-        uint16_t rtd_4; /* 4 */
-        uint16_t rtd_5; /* 5 */
-        uint16_t rtd_6; /* 6 */
-        uint16_t rtd_7; /* 7 */
-        uint16_t rtd_8; /* 8 */
-        uint16_t rtd_9; /* 9 */
-        uint16_t hum_sens_1; /* 10 */
-        uint16_t hum_sens_2; /* 11 */
-        uint16_t in_4_20mA_1; /* 12 */
-        uint16_t in_4_20mA_2; /* 13 */
-        uint16_t in_4_20mA_3; /* 14 */
-        uint16_t rtd_12; /* 15 */
-        uint16_t rtd_10; /* 16 */
-        uint16_t rtd_11; /* 17 */
-    } field;
-    uint16_t whole[sizeof(field)];
+	_field field;
+	uint16_t whole[sizeof(_field)];
 } A2D_DATA_UT, A2D_DATA_PUT;
 
 typedef enum
@@ -174,6 +179,7 @@ uint32_t a2d_start(unsigned portSHORT stack_depth, unsigned portBASE_TYPE priori
  **/
 void a2d_init_hw(void)
 {
+#ifndef WIN32
     ADC_InitTypeDef ADC_InitStructure;
     ADC_CommonInitTypeDef ADC_CommonInitStructure;
     DMA_InitTypeDef DMA_InitStructure;
@@ -323,6 +329,7 @@ void a2d_init_hw(void)
 
     ADC_SoftwareStartConv(ADC3 );
     ADC_SoftwareStartConv(ADC1 );
+#endif
 }/************************ void a2d_init_hw(void) *****************************/
 
 /*============================================================================*/
@@ -335,6 +342,7 @@ void a2d_init_hw(void)
  *******************************************************************************/
 void a2d_task(void* pvParameters)
 {
+#ifndef WIN32
     signed portBASE_TYPE res_1, res_2;
 
     while (1)
@@ -358,6 +366,13 @@ void a2d_task(void* pvParameters)
         }
         vTaskDelay(1000);
     }/* while (1) */
+#else
+	while (1)
+	{
+		vTaskDelay(1000000);
+	}
+#endif
+
 }/******************* void a2d_task( void* pvParameters ) *******************/
 
 void a2d_config_lpf_window(int window)
@@ -386,6 +401,7 @@ float lowPassFilter(float newVal, float prevVal, float coeff)
 float vId;
 void DMA2_Stream0_IRQHandler(void)  //ADC1
 {
+#ifndef WIN32
     static portBASE_TYPE xHigherPriorityTaskWoken;
 
     DMA_ClearITPendingBit(DMA2_Stream0, DMA_IT_TCIF0 );
@@ -396,6 +412,7 @@ void DMA2_Stream0_IRQHandler(void)  //ADC1
 //    led_toggle(LABL_LED7);
 
     ADC_SoftwareStartConv(ADC1 );
+#endif
 }
 
 /*******************************************************************************
@@ -406,6 +423,7 @@ void DMA2_Stream0_IRQHandler(void)  //ADC1
 
 void DMA2_Stream1_IRQHandler(void)  //ADC3
 {
+#ifndef WIN32
     static portBASE_TYPE xHigherPriorityTaskWoken;
 
     DMA_ClearITPendingBit(DMA2_Stream1, DMA_IT_TCIF1 );
@@ -416,6 +434,7 @@ void DMA2_Stream1_IRQHandler(void)  //ADC3
 //    led_toggle(LABL_LED8);
 
     ADC_SoftwareStartConv(ADC3 );
+#endif
 }/*************** void DMA2_Stream1_IRQHandler(void) ************************/
 
 /*============================================================================*/

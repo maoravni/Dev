@@ -22,8 +22,9 @@
 
 #define M_MAX_NUMBER_OF_PSOC 10
 
-struct T_PsocHandler
+class T_PsocHandler
 {
+public:
 //    E_PsocState state;
     uint8_t cableId;
 //    E_PsocPrimaryFunction psocPrimaryFunction;
@@ -242,6 +243,8 @@ private:
     }
 
     void resetPsocOutputs(PsocHandler* psocHandler);
+
+	virtual portBASE_TYPE onCreate(const portCHAR * const pcName, unsigned portSHORT usStackDepth, unsigned portBASE_TYPE uxPriority) { return pdTRUE; }
 
     friend class PsocAppLoader;
 };

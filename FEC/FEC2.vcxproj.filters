@@ -1,0 +1,1026 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FEC2\Source\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\croutine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\event_groups.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\queue.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\tasks.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\timers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\portable\MSVC-MingW\port.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\CBaseConnector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\CLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\crc16.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\ErrorBitManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\EventData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\lwipCallback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\operatorNew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\PID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\PID_AutoTune_v0.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\PIDDynamicSampleTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\StatusLed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\AManagedTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\ASyncObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\ATimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CBinarySemaphore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CCountingSemaphore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CFreeRTOS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CMessageTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CMutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CRecursiveMutex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\FreeRTOS_EC\Source\CTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ActivationWithFeedbackControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\AirBleedingControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\AnalogLiquidLevelControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\AnalogOutInverterControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\CalculateOnTwoDevicesControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ControlBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ControlRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\DeviceProtectionChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\DeviceThresholdChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\EmergencyInputControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\HysteresisControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\LeakDetectionControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\LiftPbOnError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\LiftPbOnErrorCcsGen2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\LiquidLevel3Sensors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\LiquidLevelPumpControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ModbusInverterControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ObserveAndNotifyControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\OrderedShutdownControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\PidControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ProtectionCheckerBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ProtectionConstantDeltaChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ProtectionControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ProtectionCurrentLimitsChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\ProtectionProportionalChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Controls\SubtractTwoDevicesControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Elements\ElementBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Elements\ElementRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Elements\IObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Elements\ValidationElementBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocAnalogInputsPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocAnalogOutputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocCurrentInputsPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocDigitalInputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocDigitalOutputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocMessageHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocPeripheralErrorHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocPwmOutputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PSoC\PsocTemperaturePeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\AnalogInputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\AnalogInputPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\AnalogOutCurrentPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\DigitalInputsPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\DigitalOutputsPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\DryContactDigitalOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\GenericModbusPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\InputOutputPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\InputPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\InternalTemperatureSensors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\Mi3I2CIrPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\Mi3Sensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\Modbus6RTDPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\Modbus8TCPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusDataCardPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusInverterCommanderSK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusInverterPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusInverterSchneiderAtv32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusInverterUnidriveM200.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusPumaPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\ModbusSmcHrsChiller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\OutputPeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PeripheralBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\PeripheralRepository.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\SwPwmOutputPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Peripherals\VirtualPeripheral.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\BoardStateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\JsonSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\PscMasterServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\PscMessageHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\SubsystemInstantiator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Tasks\TestTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\Tasks\UpdateSchedulerTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\PortAllocations.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PssFramework\PscServer\JsonHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\AllocatorIntf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\BaAtoi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\BufPrint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\JDecoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\JEncoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\JParser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\3rdParty\JSON\src\JVal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\usart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\rtc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\leds.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\PscSubsystem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\flash_if.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\continousA2D.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\dg_in_ctrl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\opto_out.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\psocSpiWithDma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\AppLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\crc_ccitt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\BSP\Win32\board_setup.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\portable\MemMang\heap_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\CTcpConnectorSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CppFramework\CUdpConnectorSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLineParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\FreeRTOSV8.2.0\portable\MSVC-MingW\portmacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\arch\bpstruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\arch\cc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\arch\epstruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\arch\perf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\arch\sys_arch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\include\lwipopts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CBaseConnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\crc16.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CTcpConnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CUdpConnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\DynamicArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\ErrorBitManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\EventData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\lwipCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\PID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\PID_AutoTune_v0.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\PIDDynamicSampleTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\StateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\StatusLed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ConfigFiles\cpal_conf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ConfigFiles\FreeRTOSConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ConfigFiles\lwipopts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\AManagedTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\ASyncObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\ATimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CBinarySemaphore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CCountingSemaphore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CFreeRTOS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CMessageTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CMutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CRecursiveMutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CSharedResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\CTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\IFreeRTOSProtocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\IMessageTaskDelegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\Message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\FreeRTOS_EC\Source\MessageMacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\api_msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\arch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\dhcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\dns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\err.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\init.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\mem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\memp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\memp_std.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\netbuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\netdb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\netif.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\netifapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\opt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\pbuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\raw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\sio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\snmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\snmp_asn1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\snmp_msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\snmp_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\sockets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\stats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\sys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\tcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\tcp_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\tcpip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\timers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\lwip\udp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\autoip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\icmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\igmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\inet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\inet_chksum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\ip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\ip_addr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\ipv4\lwip\ip_frag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\netif\etharp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\netif\ppp_oe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\src\include\netif\slipif.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\netconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ActivationWithFeedbackControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\AirBleedingControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\AnalogLiquidLevelControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\AnalogOutInverterControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\CalculateOnTwoDevicesControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ControlBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ControlRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\DeviceProtectionChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\DeviceThresholdChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\EmergencyInputControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\HysteresisControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\LeakDetectionControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\LiftPbOnError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\LiftPbOnErrorCcsGen2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\LiquidLevel3Sensors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\LiquidLevelPumpControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ModbusInverterControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ObserveAndNotifyControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\OrderedShutdownControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\PidControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ProtectionCheckerBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ProtectionConstantDeltaChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ProtectionControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ProtectionCurrentLimitsChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\ProtectionProportionalChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Controls\SubtractTwoDevicesControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\Element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\ElementBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\ElementRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\IObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\RangeChecker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\ValidationElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Elements\ValidationElementBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocAnalogInputsPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocAnalogOutputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocCurrentInputsPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocDigitalInputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocDigitalOutputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocMessageHandlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocMessageStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocPeripheralErrorHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocPwmOutputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PSoC\PsocTemperaturePeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\AnalogInputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\AnalogInputPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\AnalogOutCurrentPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\DigitalInputsPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\DigitalOutputsPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\DryContactDigitalOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\GeneratedGratedPwm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\GenericModbusPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\InputOutputPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\InputPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\InternalTemperatureSensors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\Mi3I2CIrPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\Mi3Sensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\Modbus6RTDPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\Modbus8TCPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusDataCardPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusInverterCommanderSK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusInverterPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusInverterSchneiderAtv32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusInverterUnidriveM200.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusPumaPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\ModbusSmcHrsChiller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\OutputPeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PeripheralBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\PeripheralRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\SwPwmOutputPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Peripherals\VirtualPeripheral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\MessageCreator\GeneratedMessages.def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\MessageCreator\GeneratedMessages.msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\BoardStateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\GeneratedMessages.def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\GeneratedMessages.msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\JsonHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\JsonSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\PscMasterServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\PscMessageHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\PscMessageStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\PscServer\SubsystemInstantiator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Tasks\TestTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PssFramework\Tasks\UpdateSchedulerTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\PortAllocations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GEN_INC\ll_typedef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GEN_INC\Win32MissingDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\AllocatorIntf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\BaAtoi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\BufPrint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\JDecoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\JEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\JParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\JVal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\3rdParty\JSON\inc\TargConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\ethernetif.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FEC2\Source\main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\leds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\PscSubsystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\continousA2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\dg_in_ctrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\opto_out.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\a2d_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\board_setup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\dg_input_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\I2C_Handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\leds_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\opto_out_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\eeprom_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\AppLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\crc_ccitt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Libraries\BSP\Win32\os_cnfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CTcpConnectorRR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CTcpConnectorSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CppFramework\CUdpConnectorSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLineParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

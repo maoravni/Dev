@@ -11,16 +11,19 @@
 #ifdef __cplusplus
 
 #include <AManagedTask.h>
-#include <CTcpConnectorRR.h>
-#include <CUdpConnector.h>
+#include <CTcpConnectorSocket.h>
+#include <CUdpConnectorSocket.h>
 #include <stdarg.h>
 #include <CCountingSemaphore.h>
 //#include <vcp_srvcs.h>
-#ifdef STM32F4XX
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
+
 #include <string>
 
 #define M_LOGGER_QUEUE_SIZE 0x20
@@ -60,12 +63,12 @@ private:
     /**
      * TCP Connector
      */
-    CTcpConnectorRR m_tcpConnector;
+    CTcpConnectorSocket m_tcpConnector;
 
     /**
      * UDP Connector;
      */
-    CUdpConnector m_udpConnector;
+    CUdpConnectorSocket m_udpConnector;
 
     /**
      * The receive queue of the tcp connector, for configuring the logger.
@@ -89,7 +92,7 @@ private:
     //T_LoggerQueueItem m_loggerQueueItems[M_LOGGER_QUEUE_SIZE];
     //char tempMessage[1024];
     //u16_t m_currentQueueItem;
-    bool m_outputTcpEnable;    //!< enable output to TCP connections
+//    bool m_outputTcpEnable;    //!< enable output to TCP connections
     bool m_outputUdpEnable;
     bool m_outputUdpStringEnable;
     bool m_outputPrintfEnable;    //!< enable output to standard printf
@@ -153,7 +156,7 @@ public:
     /**
      * Update the logger UDP IP Address:
      */
-    void updateOutputUdpIpAddress(ip_addr& ipAddress);
+    void updateOutputUdpIpAddress(in_addr& ipAddress);
     /**
      * Enable logger output to UART.
      * @param enable

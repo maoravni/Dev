@@ -70,6 +70,7 @@
 #ifndef PORTMACRO_H
 #define PORTMACRO_H
 
+#include <stdint.h>
 #include <Windows.h>
 
 /******************************************************************************

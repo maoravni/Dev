@@ -33,11 +33,15 @@
 /* --- GLOBAL_INCLUDE_FILES ------------------------------------------------- */
 #include <stdio.h>
 #include "ll_typedef.h"
-#ifdef STM32F4XX
+
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
+
 //#include "free_rtos_exp.h"
 /* --- PACKAGE_INCLUDE_FILES ------------------------------------------------ */
 #include "..\BSP\bsp_srvcs.h"

@@ -203,13 +203,15 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
     while ((cableId = Psc_GetCableId()) == 0xffff);
 
     uint16_t port = M_DEFAULT_TMC_SERVER_PORT + cableId;
-    m_pTcpConnector = new CTcpConnectorRR(port);
+    m_pTcpConnector = new CTcpConnectorSocket(port);
 
     reset();
 
     // create the TCP connector
-    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, 6)) != pdPASS)
+    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, TCPIP_THREAD_PRIO)) != pdPASS)
         return res;
+
+    CLogger::getInstance().enableOutputUdp(true);
 
     // create the message handler task:
     m_messageHandler = (PscMessageHandler::getInstance());
@@ -225,7 +227,7 @@ PscMasterServer& PscMasterServer::getInstance()
     if (!s_instance.isValid())
     {
 // Create the task.
-        s_instance.create("PscServer", M_PSC_MASTER_SERVER_STACK_SIZE, 4);
+        s_instance.create("PscServer", M_PSC_MASTER_SERVER_STACK_SIZE, 2);
     }
 
     return s_instance;

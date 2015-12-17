@@ -39,8 +39,11 @@
 #include "lwip/sockets.h"
 
 #include "time.h"
-#ifdef STM32F4XX
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#pragma comment(lib, "Ws2_32.lib")
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
@@ -108,7 +111,8 @@ static void sntp_process(time_t t)
     /* change system time and/or the update the RTC clock */
     //SNTP_SYSTEM_TIME(t);
 
-    struct tm *pTimeStruct = localtime(&t);
+#ifndef WIN32
+	struct tm *pTimeStruct = localtime(&t);
     time_t timeStruct = mktime(pTimeStruct);
     RTC_TimeTypeDef stmTime;
     stmTime.RTC_Hours = pTimeStruct->tm_hour;
@@ -116,6 +120,7 @@ static void sntp_process(time_t t)
     stmTime.RTC_Seconds = pTimeStruct->tm_sec;
     /* display local time from GMT time */
     RTC_SetTime(RTC_Format_BIN, &stmTime);
+#endif
 
     LWIP_DEBUGF( SNTP_DEBUG, ("sntp_process: %s", ctime(&t)));
 }

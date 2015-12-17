@@ -8,11 +8,16 @@
 #ifndef LWIPCALLBACK_H_
 #define LWIPCALLBACK_H_
 
+#ifndef WIN32
 #include "arch/cc.h"
 #include "lwip/netbuf.h"
 #include "lwip/mem.h"
 #include "lwip/api.h"
+#endif
+#include <stdint.h>
 #include <PscServer/PscMessageStructs.h>
+#include <FreeRTOS.h>
+#include <queue.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -29,7 +34,7 @@ enum E_QueueCommandCommand
 struct T_TcpQueueItem
 {
     char data[sizeof(struct PscMessageStruct)];
-    u16_t length;
+    uint16_t length;
 };
 
 union T_QueueItemPayload
@@ -51,7 +56,7 @@ struct T_NetconnRegistryItem
     xQueueHandle queueHandle;
 };
 
-void lwipCallbackHandler(struct netconn * pNetConn, enum netconn_evt, u16_t len);
+void lwipCallbackHandler(struct netconn * pNetConn, enum netconn_evt, uint16_t len);
 void registerNetconn(struct netconn* pNetConn, xQueueHandle queueHandle);
 void unregisterNetconn(struct netconn* pNetConn);
 

@@ -10,6 +10,8 @@
 #include <math.h>
 #include <logger.h>
 
+float g_feedForwardInjection = 0;
+
 PIDDynamicSampleTime::PIDDynamicSampleTime()
 {
     m_input = 0;
@@ -46,6 +48,7 @@ float PIDDynamicSampleTime::Compute(float input)
     float calculatedSetpoint;
     float sampleTimeModifier;
     float dtermSampleTimeModifier;
+    float modifiedFFiterm;
 
     m_input = input;
 
@@ -84,14 +87,20 @@ float PIDDynamicSampleTime::Compute(float input)
         m_advBError = m_advBError * (m_kLinear + (1 - m_kLinear) * std::abs(m_advBError) / m_setpointRange);
 
         if ((m_error * m_error) > m_kTrapezoidalRange)
+        {
             m_ITerm = 0;
+            modifiedFFiterm = 0;
+        }
         else
         {
             m_ITerm += m_ki * ((m_error * sampleTimeModifier) / (1 + (10 * m_error * m_error) / m_kTrapezoidalRange));
-            if (m_ITerm > m_outMax)
-                m_ITerm = m_outMax;
-            else if (m_ITerm < m_outMin)
-                m_ITerm = m_outMin;
+
+            modifiedFFiterm = m_ITerm + g_feedForwardInjection;
+
+            if (modifiedFFiterm > m_outMax)
+                modifiedFFiterm = m_outMax;
+            else if (modifiedFFiterm < m_outMin)
+                modifiedFFiterm = m_outMin;
         }
     }
     else
@@ -115,13 +124,13 @@ float PIDDynamicSampleTime::Compute(float input)
     {
         m_PTerm = m_kp * m_advBError;
         m_DTerm = m_kd * m_dInput / sampleTimeModifier;
-        m_output = m_kp * m_advBError + m_ITerm - m_DTerm;
+        m_output = m_kp * m_advBError + modifiedFFiterm - m_DTerm;
     }
     else
     {
         m_PTerm = m_kp * m_error;
         m_DTerm = m_kd * m_dInput / sampleTimeModifier;
-        m_output = m_kp * m_error + m_ITerm - m_DTerm;
+        m_output = m_kp * m_error + modifiedFFiterm - m_DTerm;
     }
 
     // truncate output value:

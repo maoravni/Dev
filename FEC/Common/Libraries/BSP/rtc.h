@@ -30,6 +30,10 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
+#ifdef WIN32
+#include <stdint.h>
+#include <Win32MissingDefines.h>
+#endif
 
 /* --- INCLUDES ------------------------------------------------------------ */
 

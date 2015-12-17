@@ -20,6 +20,7 @@ enum E_PacketResult
     E_PacketResult_FlashWriteFailed,
     E_PacketResult_FlashWriteCompareFailed,
     E_PacketResult_CrcError,
+    E_PacketResult_MissingPacket,
 };
 
 class AppLoaderBase

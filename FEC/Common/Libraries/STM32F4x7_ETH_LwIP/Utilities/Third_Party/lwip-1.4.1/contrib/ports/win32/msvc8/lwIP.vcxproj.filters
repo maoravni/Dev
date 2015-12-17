@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="doc">
+      <UniqueIdentifier>{a99e1562-9877-4218-a3c4-da7047d71d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4ce46fe2-c36f-49d6-94e6-99b0446f7393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\api">
+      <UniqueIdentifier>{c7b26be9-c1bc-4b01-97c2-2a2bd7925e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{21836182-ea47-4bee-afdf-e31d51531804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\ipv4">
+      <UniqueIdentifier>{df6ef66d-789a-4740-8cd2-56f417148575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\ipv6">
+      <UniqueIdentifier>{bd5a6c88-9e08-4c3f-9e7f-52fdc91f3ccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\snmp">
+      <UniqueIdentifier>{785acb18-e326-4c95-89ce-bf0cc2cfde6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include">
+      <UniqueIdentifier>{c5aa352f-ecea-4d53-90df-c607b6fbf5fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\ipv4">
+      <UniqueIdentifier>{0bcbedc4-57df-4374-af43-c4ae189ed32e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\ipv4\lwip">
+      <UniqueIdentifier>{0631039a-9097-4914-8a1a-25e343c815b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\ipv6">
+      <UniqueIdentifier>{a9692c35-863b-4774-8936-c18f72ee9208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\ipv6\lwip">
+      <UniqueIdentifier>{baa5215a-fabd-458b-ae52-40f98c305ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\lwip">
+      <UniqueIdentifier>{f038ba9f-c6c2-473f-9b03-ef10359e645e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include\netif">
+      <UniqueIdentifier>{71c3890f-b719-434c-a590-cd5affcfbf54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\netif">
+      <UniqueIdentifier>{061bd1fd-2b4f-482e-aa67-6468b762cecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\netif\ppp">
+      <UniqueIdentifier>{db128bf6-9da4-4006-9add-ec1d730b393c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch">
+      <UniqueIdentifier>{9c252b03-77ac-4911-ae55-db526549f3f1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\CHANGELOG" />
+    <None Include="..\..\..\..\COPYING" />
+    <None Include="..\..\..\..\FILES" />
+    <None Include="..\..\..\..\README" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\api\api_lib.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\api_msg.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\err.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\netbuf.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\netdb.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\netifapi.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\sockets.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\api\tcpip.c">
+      <Filter>src\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\def.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\dhcp.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\dns.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\init.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\mem.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\memp.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\netif.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\pbuf.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\raw.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\stats.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\sys.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\tcp.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\tcp_in.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\tcp_out.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\timers.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\udp.c">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\autoip.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\icmp.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\igmp.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\inet.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\inet_chksum.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\ip.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\ip_addr.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv4\ip_frag.c">
+      <Filter>src\core\ipv4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv6\icmp6.c">
+      <Filter>src\core\ipv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv6\inet6.c">
+      <Filter>src\core\ipv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv6\ip6.c">
+      <Filter>src\core\ipv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\ipv6\ip6_addr.c">
+      <Filter>src\core\ipv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\asn1_dec.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\asn1_enc.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\mib2.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\mib_structs.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\msg_in.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\snmp\msg_out.c">
+      <Filter>src\core\snmp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\etharp.c">
+      <Filter>src\netif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ethernetif.c">
+      <Filter>src\netif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\slipif.c">
+      <Filter>src\netif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\auth.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\chap.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\chpms.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\fsm.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\ipcp.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\lcp.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\magic.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\md5.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\pap.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\ppp.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\ppp_oe.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\randm.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\netif\ppp\vj.c">
+      <Filter>src\netif\ppp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sio.c">
+      <Filter>arch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sys_arch.c">
+      <Filter>arch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\autoip.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\icmp.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\igmp.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\inet.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\inet_chksum.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\ip.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\ip_addr.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\ipv4\lwip\ip_frag.h">
+      <Filter>src\include\ipv4\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\api.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\api_msg.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\arch.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\debug.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\def.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\dhcp.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\dns.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\err.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\init.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\mem.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\memp.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\memp_std.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\netbuf.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\netdb.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\netif.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\netifapi.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\opt.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\pbuf.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\raw.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\sio.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\snmp.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\snmp_asn1.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\snmp_msg.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\snmp_structs.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\sockets.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\stats.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\sys.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\tcp.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\tcp_impl.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\tcpip.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\timers.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\lwip\udp.h">
+      <Filter>src\include\lwip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\netif\etharp.h">
+      <Filter>src\include\netif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\netif\ppp_oe.h">
+      <Filter>src\include\netif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\include\netif\slipif.h">
+      <Filter>src\include\netif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\auth.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\chap.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\chpms.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\fsm.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\ipcp.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\lcp.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\magic.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\md5.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\pap.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\ppp.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\ppp_impl.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\pppdebug.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\randm.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\netif\ppp\vj.h">
+      <Filter>src\netif\ppp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\arch\bpstruct.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\arch\cc.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\arch\epstruct.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lwipcfg_msvc.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lwipopts.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lwippools.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\arch\perf.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\arch\sys_arch.h">
+      <Filter>arch</Filter>
+    </ClInclude>
+    <ClInclude Include="ethernetif.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\doc\contrib.txt">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\doc\FILES">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\doc\rawapi.txt">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\doc\savannah.txt">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\doc\snmp_agent.txt">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\doc\sys_arch.txt">
+      <Filter>doc</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\core\ipv6\README">
+      <Filter>src\core\ipv6</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\include\ipv6\lwip\icmp.h">
+      <Filter>src\include\ipv6\lwip</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\include\ipv6\lwip\inet.h">
+      <Filter>src\include\ipv6\lwip</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\include\ipv6\lwip\ip.h">
+      <Filter>src\include\ipv6\lwip</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\include\ipv6\lwip\ip_addr.h">
+      <Filter>src\include\ipv6\lwip</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\src\netif\FILES">
+      <Filter>src\netif</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\lwipcfg_msvc.h.example">
+      <Filter>arch</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

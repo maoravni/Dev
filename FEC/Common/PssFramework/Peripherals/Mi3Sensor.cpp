@@ -8,13 +8,16 @@
 #include "Peripherals/Mi3Sensor.h"
 #include "Peripherals/Mi3I2CIrPeripheral.h"
 
-#ifdef FEC2_BOARD
+#if defined STM32F4XX
 #include <stm32f4xx.h>
+#elif defined WIN32
+#include <Win32MissingDefines.h>
 #else
 #include <stm32f2xx.h>
 #endif
 
 #include <fec2/I2C_Handler.h>
+#include <Win32/PortAllocations.h>
 
 #define I2C_TIMEOUT     10000
 #define TIMEOUT_CHECK(x)     x++; if(x > I2C_TIMEOUT){return(0);}
@@ -57,6 +60,7 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
 //Mi3TxPacket      MasterTxMsg;
 void I2C1_init(void)
 {
+#ifndef WIN32
     GPIO_InitTypeDef GPIO_InitStruct;
     I2C_InitTypeDef I2C_InitStruct;
 
@@ -102,10 +106,12 @@ void I2C1_init(void)
     I2C_Cmd(I2C1, ENABLE);
 //    I2C_StretchClockCmd(I2C1, ENABLE);
     //I2C_Init(I2C1, &I2C_InitStruct);
+#endif
 }
 
 void I2C2_init(void)
 {
+#ifndef WIN32
     GPIO_InitTypeDef GPIO_InitStruct;
     I2C_InitTypeDef I2C_InitStruct;
 
@@ -145,6 +151,7 @@ void I2C2_init(void)
     I2C_Cmd(I2C2, ENABLE);
 //    I2C_StretchClockCmd(I2C2, ENABLE);
     //I2C_Init(I2C2, &I2C_InitStruct);
+#endif
 }
 
 //------------------------------------------------------------------
@@ -160,6 +167,7 @@ void I2C2_init(void)
 //------------------------------------------------------------------
 uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
 {
+#ifndef WIN32
     int TimeOut = 0;
     // wait until I2Cx is not busy anymore
     while (I2C_GetFlagStatus(I2Cx, I2C_FLAG_BUSY))
@@ -172,6 +180,9 @@ uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
     }
     TimeOut = 0;
     return (I2C_restart(I2Cx, address, direction));
+#else
+	return 1;
+#endif
 }
 
 /* This function issues a start condition and
@@ -186,6 +197,7 @@ uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
  */
 uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
 {
+#ifndef WIN32
     int TimeOut = 0;
     // Send I2Cx START condition
     I2C_GenerateSTART(I2Cx, ENABLE);
@@ -223,6 +235,7 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
         TimeOut = 0;
         break;
     }
+#endif
     return (1);
 }
 
@@ -233,6 +246,7 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
  */
 uint8_t I2C_write(I2C_TypeDef* I2Cx, uint8_t data)
 {
+#ifndef WIN32
     int TimeOut = 0;
     // wait for I2Cx EV8 --> last byte is still being transmitted (last byte in SR, buffer empty), next byte can already be written
     while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_TRANSMITTING))
@@ -250,6 +264,7 @@ uint8_t I2C_write(I2C_TypeDef* I2Cx, uint8_t data)
         TIMEOUT_CHECK(TimeOut);
     }
     TimeOut = 0;
+#endif
     return (1);
 }
 
@@ -258,6 +273,7 @@ uint8_t I2C_write(I2C_TypeDef* I2Cx, uint8_t data)
  */
 uint8_t I2C_read_ack(I2C_TypeDef* I2Cx)
 {
+#ifndef WIN32
     int TimeOut = 0;
     // enable acknowledge of received data
     I2C_AcknowledgeConfig(I2Cx, ENABLE);
@@ -270,6 +286,9 @@ uint8_t I2C_read_ack(I2C_TypeDef* I2Cx)
     // read data from I2C data register and return data byte
     uint8_t data = I2C_ReceiveData(I2Cx);
     return data;
+#else
+	return 0;
+#endif
 }
 
 /* This function reads one byte from the slave device
@@ -278,6 +297,7 @@ uint8_t I2C_read_ack(I2C_TypeDef* I2Cx)
  */
 uint8_t I2C_read_nack(I2C_TypeDef* I2Cx)
 {
+#ifndef WIN32
     int TimeOut = 0;
     // disable acknowledge of received data
     // nack also generates stop condition after last byte received
@@ -293,6 +313,9 @@ uint8_t I2C_read_nack(I2C_TypeDef* I2Cx)
     // read data from I2C data register and return data byte
     uint8_t data = I2C_ReceiveData(I2Cx);
     return data;
+#else
+	return 0;
+#endif
 }
 
 /* This function issues a stop condition and therefore
@@ -300,6 +323,7 @@ uint8_t I2C_read_nack(I2C_TypeDef* I2Cx)
  */
 uint8_t I2C_stop(I2C_TypeDef* I2Cx)
 {
+#ifndef WIN32
     int TimeOut = 0;
 
     I2C_GenerateSTOP(I2Cx, ENABLE);
@@ -309,6 +333,7 @@ uint8_t I2C_stop(I2C_TypeDef* I2Cx)
         TimeOut++;
         TIMEOUT_CHECK(TimeOut);
     }
+#endif
     return (1);
 }
 

@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FEC2", "FEC2.vcxproj", "{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lwIP", "Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\msvc8\lwIP.vcxproj", "{2CC276FA-B226-49C9-8F82-7FCD5A228E28}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lwIP pcapif", "Common\Libraries\STM32F4x7_ETH_LwIP\Utilities\Third_Party\lwip-1.4.1\contrib\ports\win32\msvc8\lwIP_pcapif.vcxproj", "{6F44E49E-9F21-4144-91EC-53B92AEF62CE}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://mickeymouse:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FEC2.vcxproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = Common\\Libraries\\STM32F4x7_ETH_LwIP\\Utilities\\Third_Party\\lwip-1.4.1\\contrib\\ports\\win32\\msvc8\\lwIP.vcxproj
+		SccProjectName2 = Common/Libraries/STM32F4x7_ETH_LwIP/Utilities/Third_Party/lwip-1.4.1/contrib/ports/win32/msvc8
+		SccLocalPath2 = Common\\Libraries\\STM32F4x7_ETH_LwIP\\Utilities\\Third_Party\\lwip-1.4.1\\contrib\\ports\\win32\\msvc8
+		SccProjectUniqueName3 = Common\\Libraries\\STM32F4x7_ETH_LwIP\\Utilities\\Third_Party\\lwip-1.4.1\\contrib\\ports\\win32\\msvc8\\lwIP_pcapif.vcxproj
+		SccProjectName3 = Common/Libraries/STM32F4x7_ETH_LwIP/Utilities/Third_Party/lwip-1.4.1/contrib/ports/win32/msvc8
+		SccLocalPath3 = Common\\Libraries\\STM32F4x7_ETH_LwIP\\Utilities\\Third_Party\\lwip-1.4.1\\contrib\\ports\\win32\\msvc8
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug unittests|Win32 = Debug unittests|Win32
+		Debug|Win32 = Debug|Win32
+		Release unittests|Win32 = Release unittests|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Debug unittests|Win32.ActiveCfg = Debug|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Debug unittests|Win32.Build.0 = Debug|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Debug|Win32.Build.0 = Debug|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Release unittests|Win32.ActiveCfg = Release|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Release unittests|Win32.Build.0 = Release|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Release|Win32.ActiveCfg = Release|Win32
+		{9B82266D-4A20-45B6-99C7-EAE6ECC0DE6C}.Release|Win32.Build.0 = Release|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Debug unittests|Win32.ActiveCfg = Debug unittests|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Debug unittests|Win32.Build.0 = Debug unittests|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Debug|Win32.Build.0 = Debug|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Release unittests|Win32.ActiveCfg = Release unittests|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Release unittests|Win32.Build.0 = Release unittests|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Release|Win32.ActiveCfg = Release|Win32
+		{2CC276FA-B226-49C9-8F82-7FCD5A228E28}.Release|Win32.Build.0 = Release|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Debug unittests|Win32.ActiveCfg = Debug|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Debug unittests|Win32.Build.0 = Debug|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Debug|Win32.Build.0 = Debug|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Release unittests|Win32.ActiveCfg = Release|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Release unittests|Win32.Build.0 = Release|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Release|Win32.ActiveCfg = Release|Win32
+		{6F44E49E-9F21-4144-91EC-53B92AEF62CE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

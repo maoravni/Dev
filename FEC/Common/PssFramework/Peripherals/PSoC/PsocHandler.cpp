@@ -33,13 +33,34 @@ PMHConfigAnalogIO g_configAnalogIO;
 PMHConfigChannelFunction g_configChannelFunction;
 PMHStartBootloader g_startBootloader;
 
+#ifdef WIN32
 #define M_PSOC_REQUEST_PROLOGUE(frame) frame = popFrameFromPool(); \
                                 if (frame == NULL) \
-                                { \
+																                                { \
                                     M_LOGGER_LOGF(M_LOGGER_LEVEL_FATAL, "---No empty frame!---"); \
                                     return E_PsocSpiError_HandlerFrameOverwritten; \
-                                }
-
+																                                }
+// no semaphore was popped, so we break and return an unexpected error.
+#define M_PSOC_REQUEST_BLOCKING_EPILOGUE(frame) frame->completeSemaphore = completeSemaphore; \
+                                                if (frame->completeSemaphore == NULL) \
+												                                                { \
+                                                    M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PSoC %d: No free semaphores available", m_psocIndex); \
+                                                    return E_PsocSpiError_NoAvailableSemaphore; \
+												                                                } \
+                                                portBASE_TYPE semResult = frame->completeSemaphore->take(M_COMPLETE_SEMAPHORE_TIMEOUT); \
+                                                frame->completeSemaphore = NULL; \
+                                                if (semResult != pdTRUE) \
+												                                                { \
+                                                    M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PSoC %d: No slave response, complete semaphore timeout", m_psocIndex); \
+                                                    return E_PsocSpiError_NoSlaveResponse; \
+												                                                }
+#else
+#define M_PSOC_REQUEST_PROLOGUE(frame) frame = popFrameFromPool(); \
+                                if (frame == NULL) \
+								                                { \
+                                    M_LOGGER_LOGF(M_LOGGER_LEVEL_FATAL, "---No empty frame!---"); \
+                                    return E_PsocSpiError_HandlerFrameOverwritten; \
+								                                }
 // no semaphore was popped, so we break and return an unexpected error.
 #define M_PSOC_REQUEST_BLOCKING_EPILOGUE(frame) frame->completeSemaphore = completeSemaphore; \
                                                 if (frame->completeSemaphore == NULL) \
@@ -54,6 +75,7 @@ PMHStartBootloader g_startBootloader;
                                                     M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PSoC %d: No slave response, complete semaphore timeout", m_psocIndex); \
                                                     return E_PsocSpiError_NoSlaveResponse; \
                                                 }
+#endif
 
 CompleteSemaphorePool::CompleteSemaphorePool()
 {
@@ -196,10 +218,14 @@ E_PsocSpiError PsocHandler::execute()
         csLow();
 
 //        m_activeFrame->serialNumber = m_activeFrame->transmitBuffer.header.serialNumber;
+#ifdef WIN32
+		psocError = E_PsocSpiError_Ok;
+#else
 #ifdef PIPELINED
         psocError = executeCommunication((uint8_t*) &m_requestFrame->transmitBuffer);
 #else
         psocError = executeCommunication((uint8_t*) &m_activeFrame->transmitBuffer);
+#endif
 #endif
 
 #ifdef PIPELINED

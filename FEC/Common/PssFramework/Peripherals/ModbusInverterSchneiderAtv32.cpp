@@ -6,6 +6,7 @@
  */
 
 #include "Peripherals/ModbusInverterSchneiderAtv32.h"
+#include <logger.h>
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_INVERTER_SAMPLE_INTERVAL 250
@@ -142,6 +143,7 @@ void ModbusInverterSchneiderAtv32::readInputs()
                 (int16_t)(m_frequencySetpoint->getValueF() * m_setpointMultiplier));
         if (error != E_ModbusError_Ok)
         {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Modbus Device %d error: setpoint update failed.", getSlaveId());
             ++m_numOfFailedReads;
             return;
         }

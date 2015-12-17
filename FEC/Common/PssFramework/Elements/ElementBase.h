@@ -143,7 +143,7 @@ public:
 
     void setMaxInterval(int16_t maxInterval)
     {
-        m_maxInterval = (int16_t)(maxInterval * 0.01);
+        m_maxInterval = (int8_t)(maxInterval * 0.01);
     }
 
     uint16_t getMinInterval() const
@@ -156,7 +156,7 @@ public:
         if (minInterval < 0)
             m_minInterval = -1;
         else
-            m_minInterval = (int16_t)(minInterval * 0.01);
+            m_minInterval = (int8_t)(minInterval * 0.01);
     }
 
     virtual void updateErrorBits(E_PSSErrors error, bool state) = 0;

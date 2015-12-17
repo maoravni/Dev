@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{9b201375-ad69-4361-a40f-e11e6ff58657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tcp">
+      <UniqueIdentifier>{06b5d1e8-73a5-472a-9961-b8c1fd3084a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="udp">
+      <UniqueIdentifier>{d338a2bf-9996-45fc-a1e0-f89ac0108132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="etharp">
+      <UniqueIdentifier>{f3dff2b0-c0dd-4179-a749-2dc17f68c337}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\core\test_mem.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\tcp\tcp_helper.c">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\tcp\test_tcp.c">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\tcp\test_tcp_oos.c">
+      <Filter>tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\udp\test_udp.c">
+      <Filter>udp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\etharp\test_etharp.c">
+      <Filter>etharp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\lwip\test\unit\lwip_unittests.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\core\test_mem.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\tcp\tcp_helper.h">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\tcp\test_tcp.h">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\tcp\test_tcp_oos.h">
+      <Filter>tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\udp\test_udp.h">
+      <Filter>udp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\etharp\test_etharp.h">
+      <Filter>etharp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\lwip\test\unit\lwip_check.h" />
+    <ClInclude Include="..\..\..\..\lwip\test\unit\lwipopts.h" />
+  </ItemGroup>
+</Project>

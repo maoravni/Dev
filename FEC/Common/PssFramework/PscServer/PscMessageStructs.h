@@ -9,6 +9,7 @@
 #define PSC_MESSAGESTRUCTS_H_
 
 #include <CLogger.h>
+#include <stdint.h>
 
 // set member packing to 1.
 #define M_PSS_ID_ALL 0xffff
@@ -192,7 +193,7 @@ enum E_ValueType
     E_ValueType_Float = 7,
 };
 
-union T_ValueTypeUnion
+typedef union 
 {
     uint8_t u8;
     uint16_t u16;
@@ -201,7 +202,7 @@ union T_ValueTypeUnion
     int16_t s16;
     int32_t s32;
     float f;
-};
+} T_ValueTypeUnion;
 
 #pragma pack(1)
 

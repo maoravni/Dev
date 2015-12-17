@@ -25,6 +25,9 @@
 #include <lwip/netif.h>
 #include <dg_in_ctrl.h>
 #include <lwip/stats.h>
+#ifdef WIN32
+#include <win32/PortAllocations.h>
+#endif
 
 CLogger CLogger::m_singletonInstance;
 
@@ -48,7 +51,7 @@ static const char CLoggerLevelString[10][10] =
 CLogger::CLogger() :
         m_tcpConnector(M_LOGGER_DEFAULT_TCP_PORT), m_udpConnector(M_LOGGER_DEFAULT_UDP_BASE_PORT)
 {
-    m_outputTcpEnable = false;
+//    m_outputTcpEnable = false;
     m_outputUdpEnable = false;
     m_outputPrintfEnable = false;
     m_outputUartEnable = false;
@@ -89,15 +92,15 @@ void CLogger::run()
     //u16_t queueItemIndex;
     std::string msgToSend;
     int msgLength;
-    netbuf* pNetBuf;
+//    netbuf* pNetBuf;
     portTickType previousHeapTickCount = 0;
     portTickType previousTaskTickCount = 0;
     portTickType currentTickCount = 0;
 
-    u32 freeHeap;
+    uint32_t freeHeap;
 
     // run "enable outputs" again, to create the sub-tasks when we first get here.
-    enableOutputTcp(m_outputTcpEnable);
+//    enableOutputTcp(m_outputTcpEnable);
     enableOutputUdp(m_outputUdpEnable);
     enableOutputStandardPrintf(m_outputPrintfEnable);
     enableOutputUart(m_outputUartEnable);
@@ -117,10 +120,10 @@ void CLogger::run()
 #if ( INCLUDE_uxTaskGetStackHighWaterMark == 1 )
 //        clogger_stack_wm = uxTaskGetStackHighWaterMark(0);
 #endif
-        if (m_outputTcpEnable && m_tcpReceiveQueue.receive(&pNetBuf, 0) == pdPASS)
-        {
-            netbuf_delete(pNetBuf);
-        }
+//        if (m_outputTcpEnable && m_tcpReceiveQueue.receive(&pNetBuf, 0) == pdPASS)
+//        {
+//            netbuf_delete(pNetBuf);
+//        }
 
         static char message[TCP_MSS];
         // wait for a specified delay until we get a message in the queue.
@@ -131,12 +134,12 @@ void CLogger::run()
                 msgToSend = pQueueItem->asString(m_outputLongFormat);
                 msgLength = msgToSend.length();
 
-                if (m_outputTcpEnable/* && m_tcpConnector.isConnected()*/)
-                {
-                    //m_tcpConnector.send(queueItem.message, queueItem.length);
-                    //puts(msgToSend.c_str());
-                    m_tcpConnector.send((void*) msgToSend.c_str(), msgLength);
-                }
+//                if (m_outputTcpEnable/* && m_tcpConnector.isConnected()*/)
+//                {
+//                    //m_tcpConnector.send(queueItem.message, queueItem.length);
+//                    //puts(msgToSend.c_str());
+//                    m_tcpConnector.send((void*) msgToSend.c_str(), msgLength);
+//                }
 //                if (m_outputPrintfEnable)
 //                {
 //                    printf("%s", queueItem.message);
@@ -175,18 +178,24 @@ void CLogger::run()
             if ((currentTickCount - previousHeapTickCount) >= M_LOGGER_PERIODIC_HEAP_UPDATE_DELAY)
             {
                 previousHeapTickCount = currentTickCount;
+#ifndef WIN32
                 freeHeap = xPortGetFreeHeapSize();
+#else
+				freeHeap = 0;
+#endif
                 if (freeHeap != m_lastFreeHeap)
                 {
-                    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Free Heap: %d", xPortGetFreeHeapSize());
+                    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Free Heap: %d", freeHeap);
                     m_lastFreeHeap = freeHeap;
                 }
+#ifndef WIN32
 #if (LWIP_STATS == 1)
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "LWIP PBUFS: used:%d max:%d avail:%d",
                         lwip_stats.memp[MEMP_PBUF_POOL].used, lwip_stats.memp[MEMP_PBUF_POOL].max,
                         lwip_stats.memp[MEMP_PBUF_POOL].avail);
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "LWIP MEM: used:%d max:%d avail:%d", lwip_stats.mem.used,
                         lwip_stats.mem.max, lwip_stats.mem.avail);
+#endif
 #endif
             }
         }
@@ -523,7 +532,7 @@ void CLogger::logTaskList()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "\n%s", taskListMessage);
 }
 
-void CLogger::updateOutputUdpIpAddress(ip_addr& ipAddress)
+void CLogger::updateOutputUdpIpAddress(in_addr& ipAddress)
 {
     m_udpConnector.setIpAddress(ipAddress);
 }
@@ -607,28 +616,28 @@ std::string T_LoggerQueueItem::asString(bool longFormat)
 
 int T_LoggerQueueItem::asArray(char* data, int maxLength)
 {
-    U16 msgLength;
-    U16 fileNameLength;
-    U16 taskNameLength;
+    uint16_t msgLength;
+	uint16_t fileNameLength;
+	uint16_t taskNameLength;
     int currentIndex;
     // add controller id to the log.
     data[0] = 0;
     data[1] = timestamp.RTC_Hours;
     data[2] = timestamp.RTC_Minutes;
     data[3] = timestamp.RTC_Seconds;
-    *(U32*) (data + 4) = ticks;
+    *(uint32_t*) (data + 4) = ticks;
 
-    *(U32*) (data + 8) = line;
-    *(U32*) (data + 12) = level;
-    *(U32*) (data + 16) = taskId;
+	*(uint32_t*)(data + 8) = line;
+	*(uint32_t*)(data + 12) = level;
+	*(uint32_t*)(data + 16) = taskId;
 
     fileNameLength = file.length();
     taskNameLength = taskName.length();
     msgLength = message.length();
 
-    *(U16*) (data + 20) = fileNameLength;
-    *(U16*) (data + 22) = taskNameLength;
-    *(U16*) (data + 24) = msgLength;
+	*(uint16_t*)(data + 20) = fileNameLength;
+	*(uint16_t*)(data + 22) = taskNameLength;
+	*(uint16_t*)(data + 24) = msgLength;
 
     currentIndex = 26;
     memcpy(data + currentIndex, file.c_str(), fileNameLength);

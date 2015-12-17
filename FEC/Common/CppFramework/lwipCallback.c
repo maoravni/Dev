@@ -6,11 +6,14 @@
  */
 
 #include "lwipCallback.h"
+#include <lwipopts.h>
+#include <lwip/api.h>
+#include <task.h>
 
 int g_numUsedNetconnsInRegistry = 0;
 struct T_NetconnRegistryItem g_netconnRegistry[MEMP_NUM_NETCONN];
 
-void lwipCallbackHandler(struct netconn* pNetConn, enum netconn_evt event, u16_t len)
+void lwipCallbackHandler(struct netconn* pNetConn, enum netconn_evt event, uint16_t len)
 {
     int i;
     int yieldRequired;

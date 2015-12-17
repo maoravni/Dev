@@ -49,8 +49,8 @@ public:
 
     void downloadConfigurationToPsoc(CBinarySemaphore* completeSemaphore);
 
-private:
-    virtual void setUpdateInterval(uint16_t updateInterval);
+//private:
+//    virtual void setUpdateInterval(uint16_t updateInterval);
 };
 
 #endif /* PsocCurrentInputsPeripheral_H_ */

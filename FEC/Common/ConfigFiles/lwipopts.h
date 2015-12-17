@@ -137,7 +137,9 @@ a lot of data that needs to be copied, this should be set high. */
 #define LWIP_DHCP               1
 
 //#define LWIP_IGMP 1
+#ifndef WIN32
 #define LWIP_RAND() RNG_GetRandomNumber()
+#endif
 
 
 /* ---------- UDP options ---------- */
@@ -147,7 +149,9 @@ a lot of data that needs to be copied, this should be set high. */
 
 /* ---------- Statistics options ---------- */
 #define LWIP_STATS 1
+//#ifndef WIN32
 #define LWIP_PROVIDE_ERRNO 1
+//#endif
 #define MEMP_STATS 1
 #define MEM_STATS 1
 
@@ -249,7 +253,7 @@ The STM32F2x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define DEFAULT_TCP_RECVMBOX_SIZE       2000
 #define DEFAULT_ACCEPTMBOX_SIZE         2000
 #define DEFAULT_THREAD_STACKSIZE        500
-#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
+//#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
 
 #define LWIP_NETIF_API                  1
 

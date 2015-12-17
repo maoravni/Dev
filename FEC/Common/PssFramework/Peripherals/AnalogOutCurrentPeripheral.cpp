@@ -7,7 +7,9 @@
 
 #include "AnalogOutCurrentPeripheral.h"
 #include <Elements/ElementRepository.h>
+#ifndef WIN32
 #include <DigTrimmer_ad5292bruz.h>
+#endif
 #include <assert.h>
 
 AnalogOutCurrentPeripheral::AnalogOutCurrentPeripheral()

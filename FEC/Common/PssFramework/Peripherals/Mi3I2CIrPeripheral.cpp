@@ -7,6 +7,7 @@
 
 #include "Mi3I2CIrPeripheral.h"
 #include <logger.h>
+#include <Win32/PortAllocations.h>
 
 xSemaphoreHandle i2cTransferCompleteSemaphore = NULL;
 
@@ -36,7 +37,7 @@ Mi3I2CIrPeripheral::Mi3I2CIrPeripheral()
     setUpdateInterval(1000);
     m_previousWakeupTime = 0;
     m_boardInReady = false;
-    create("Mi3IrTask", DEFAULT_THREAD_STACKSIZE + 100, 0);
+    create("Mi3IrTask", configMINIMAL_STACK_SIZE + 100, 0);
 
     if (i2cTransferCompleteSemaphore == NULL)
         vSemaphoreCreateBinary(i2cTransferCompleteSemaphore);

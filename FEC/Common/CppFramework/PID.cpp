@@ -52,7 +52,7 @@ float PID::Compute(float input)
     }
     unsigned long now = xTaskGetTickCount();
 
-    if (m_setpointSmoothingThreshold != 0 && std::abs(m_setpoint - m_input) > m_setpointSmoothingThreshold)
+    if (m_setpointSmoothingThreshold != 0 && abs(m_setpoint - m_input) > m_setpointSmoothingThreshold)
     {
         if (m_setpoint > m_input)
             calculatedSetpoint = m_input + m_setpointSmoothingThreshold;
@@ -64,7 +64,7 @@ float PID::Compute(float input)
 
     /*Compute all the working error variables*/
     m_error = calculatedSetpoint - m_input;
-    if (m_kiErrorThreshold == 0 || std::abs(m_error) <= m_kiErrorThreshold)
+    if (m_kiErrorThreshold == 0 || abs(m_error) <= m_kiErrorThreshold)
     {
         m_ITerm += (m_ki * m_error);
         if (m_ITerm > m_outMax)

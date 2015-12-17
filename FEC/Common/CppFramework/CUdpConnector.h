@@ -14,12 +14,6 @@
 #include "lwip/api.h"
 #include "CMutex.h"
 
-struct T_UdpQueueItem
-{
-    char data[TCP_MSS];
-    u16_t length;
-};
-
 /**
  * Class for TCP connections
  */
@@ -91,7 +85,7 @@ public:
     static void sendTaskControlFunc(void *pParams);
 
     void setPort(unsigned short port);
-    void setIpAddress(ip_addr& ipAddress);
+    void setIpAddress(in_addr& ipAddress);
 };
 
 #endif /* CUDPCONNECTOR_H_ */

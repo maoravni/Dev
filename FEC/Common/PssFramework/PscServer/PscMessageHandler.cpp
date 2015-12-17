@@ -16,7 +16,9 @@
 #include <Elements/ElementRepository.h>
 #include <Tasks/UpdateSchedulerTask.h>
 #include <Peripherals/PeripheralRepository.h>
+#ifndef WIN32
 #include <sntp.h>
+#endif
 #include <board_setup.h>
 #ifdef FEC2_BOARD
 #include <Peripherals/PSoC/PsocMessageStruct.h>
@@ -592,10 +594,14 @@ void PscMessageHandler::MessageSetBoardConfigurationHandler(unsigned long param)
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSSetBoardConfigMsg: cableId=%d ntpServerAddress=%x baudRate=%d",
             payload->cableId, payload->ntpServerAddress, payload->baudRate);
 
+#ifndef WIN32
     if (sntp_server_address == 0 && payload->ntpServerAddress != 0)
         sntp_init(payload->ntpServerAddress);
+#endif
 
+#ifndef WIN32
     ChangeUsartBaudrate(USART3, payload->baudRate);
+#endif
 
     // TODO: Add log message.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
@@ -1120,7 +1126,8 @@ void PscMessageHandler::MessageDefineModbusPeriphHandler(unsigned long param)
         periph->setPssId(payload->periphPssId);
         PeripheralRepository::getInstance().addPeripheral(periph);
 
-        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->periphPssId, E_AckStatus_Success);
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->periphPssId,
+                E_AckStatus_Success);
 
     }
     else
@@ -1164,7 +1171,8 @@ void PscMessageHandler::MessageDefineVirtualPeriphHandler(unsigned long param)
         periph->setPssId(payload->periphPssId);
         PeripheralRepository::getInstance().addPeripheral(periph);
 
-        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->periphPssId, E_AckStatus_Success);
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->periphPssId,
+                E_AckStatus_Success);
     }
     else
         sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->periphPssId,
@@ -2844,7 +2852,8 @@ void PscMessageHandler::MessageDefineCalculateOnTwoDevicesControlHandler(unsigne
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
             "MessageDefineCalculateOnTwoDevicesControlHandler: cableId=%d pssId={[PSSID:%d]} input1={[PSSID:%d]} input2={[PSSID:%d]} output={[PSSID:%d]} calcFunc=%d",
-            payload->cableId, payload->pssId, payload->input1, payload->input2, payload->output, payload->calculationFunction);
+            payload->cableId, payload->pssId, payload->input1, payload->input2, payload->output,
+            payload->calculationFunction);
 
     CalculateOnTwoDevicesControl *control;
 
@@ -3312,8 +3321,11 @@ void PscMessageHandler::MessageEndApplicationUploadHandler(unsigned long param)
     }
     else
     {
-        delete m_pAppLoader;
-        m_pAppLoader = NULL;
+        if (m_pAppLoader != NULL)
+        {
+            delete m_pAppLoader;
+            m_pAppLoader = NULL;
+        }
 
         m_psocManager.reset();
 
@@ -3348,7 +3360,11 @@ void PscMessageHandler::MessageNextAppPacketHandler(unsigned long param)
         M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Flash Write Failed %d", result);
         sendAck(message->header.id.full, message->header.sn, payload->cableId, 0, E_AckStatus_InvalidCRC);
         m_boardState.eventStartUpFinished();
-        delete m_pAppLoader;
+        if (m_pAppLoader != NULL)
+        {
+            delete m_pAppLoader;
+            m_pAppLoader = NULL;
+        }
     }
 
 }
@@ -3371,7 +3387,7 @@ void PscMessageHandler::handleMessage(PscMessageStruct& message)
     memcpy(m_messages + m_currentMessage, &message, sizeof(PscMessageStruct));
 
 // post the message to the queue:
-    while (postMessage(&m, 1000) != pdPASS)
+    while (postMessage(&m, 50) != pdPASS)
     {
         M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PscMessageHandler queue is full");
         //puts("PscMessageHandler queue is full!");
@@ -3432,7 +3448,9 @@ portBASE_TYPE PscMessageHandler::onCreate(const portCHAR * const pcName, unsigne
         return res;
 
 #ifdef FEC2_BOARD
-    m_psocManager.create("psocManager", DEFAULT_THREAD_STACKSIZE + 100, 1);
+    // note that the message handler should be of a higher priority, in case the
+    // requests arrive from it.
+    m_psocManager.create("psocManager", 600, uxPriority - 1);
     m_psocManager.setBoardState(&m_boardState);
 #endif
 
