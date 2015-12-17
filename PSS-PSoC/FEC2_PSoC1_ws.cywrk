@@ -12,8 +12,8 @@
 <v>.\PsocBootloader.cydsn\PsocBootloader.cyprj</v>
 </projects>
 <workspace_id v="576ac6a5-3f7c-4d05-9217-09c9916bfdf3" />
-<WriteAppVersionLastSavedWith v="3.1.0.1722" />
-<WriteAppMarketingVersionLastSavedWith v="3.1 SP1" />
+<WriteAppVersionLastSavedWith v="3.3.0.410" />
+<WriteAppMarketingVersionLastSavedWith v="3.3 CP1" />
 <CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjDependencyList" version="4">
 <wrkspc_dependencies>
 <wrkspc_dependency project="FEC2_PSoC_V01_prjct.cydsn\FEC2_PSoC_V01_prjct.cyprj" dependency=".\PsocBootloader.cydsn\PsocBootloader.cyprj" />
