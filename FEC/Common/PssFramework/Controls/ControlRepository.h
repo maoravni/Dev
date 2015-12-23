@@ -27,7 +27,6 @@
 #include "OrderedShutdownControl.h"
 #include "LeakDetectionControl.h"
 #include "ObserveAndNotifyControl.h"
-#include "SubtractTwoDevicesControl.h"
 #include "CalculateOnTwoDevicesControl.h"
 
 //typedef DynamicArray<ControlBase*> T_ControlArray;

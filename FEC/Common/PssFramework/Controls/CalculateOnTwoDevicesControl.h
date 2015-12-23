@@ -87,4 +87,59 @@ public:
 
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
 };
+
+class SubtractTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    SubtractTwoDevicesControl();
+    virtual ~SubtractTwoDevicesControl();
+
+    virtual void execute();
+};
+
+class AddTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    AddTwoDevicesControl();
+    virtual ~AddTwoDevicesControl();
+
+    virtual void execute();
+};
+
+class MultiplyTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    MultiplyTwoDevicesControl();
+    virtual ~MultiplyTwoDevicesControl();
+
+    virtual void execute();
+};
+
+class DivideTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    DivideTwoDevicesControl();
+    virtual ~DivideTwoDevicesControl();
+
+    virtual void execute();
+};
+
+class MaxTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    MaxTwoDevicesControl();
+    virtual ~MaxTwoDevicesControl();
+
+    virtual void execute();
+};
+
+class MinTwoDevicesControl: public CalculateOnTwoDevicesControl
+{
+public:
+    MinTwoDevicesControl();
+    virtual ~MinTwoDevicesControl();
+
+    virtual void execute();
+};
+
 #endif /* CALCULATEONTWODEVICESCONTROL_H_ */

@@ -636,12 +636,12 @@ struct PSSSetSWPWMDeviceConfigMsg {
 	unsigned short pssId;
 	unsigned short periphPSSId;
 	unsigned short deviceIndex;
-	short pwmCycleLength;
-	short pwmGroupID;
+	unsigned short pwmCycleLength;
+	unsigned short pwmGroupID;
 	char rampRiseStep;
 	char rampFallStep;
-	short rampRiseTime;
-	short rampFallTime;
+	unsigned short rampRiseTime;
+	unsigned short rampFallTime;
 	};
 
 struct PSSSetTemperatureControlParametersMsg {
