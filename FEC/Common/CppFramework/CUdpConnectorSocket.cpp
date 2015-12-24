@@ -90,7 +90,7 @@ void CUdpConnectorSocket::run()
                 remotehost.sin_len = sizeof(remotehost);
 #endif
                 remotehost.sin_family = AF_INET;
-                remotehost.sin_addr.s_addr = m_ipAddress.s_addr;
+                remotehost.sin_addr.s_addr = (m_ipAddress.s_addr);
                 remotehost.sin_port = htons(m_port);
 
                 lwip_sendto(m_udpSocket, queueItem.data, queueItem.length, 0, (struct sockaddr*)&remotehost, sizeof(remotehost));

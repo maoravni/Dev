@@ -131,8 +131,8 @@ void CLogger::run()
         {
             //if (m_taskMask[pQueueItem->taskId] > 0)
             {
-                msgToSend = pQueueItem->asString(m_outputLongFormat);
-                msgLength = msgToSend.length();
+//                msgToSend = pQueueItem->asString(m_outputLongFormat);
+//                msgLength = msgToSend.length();
 
 //                if (m_outputTcpEnable/* && m_tcpConnector.isConnected()*/)
 //                {
@@ -158,6 +158,7 @@ void CLogger::run()
                 if (m_outputUdpEnable)
                 {
                     msgLength = pQueueItem->asArray(message, TCP_MSS);
+                    //printf("%s\n", pQueueItem->asString(true));
                     m_udpConnector.send(message, msgLength);
                 }
                 if (m_outputUdpStringEnable)
@@ -500,7 +501,7 @@ void CLogger::enableOutputUdp(bool enable)
             if (!m_udpConnector.isValid())
             {
                 if ((m_udpConnector.create("Logger UDP", M_LOGGER_DEFAULT_SUBTASK_STACK_SIZE,
-                        M_LOGGER_DEFAULT_SUBTASK_PRIORITY)) != pdPASS)
+                        TCPIP_THREAD_PRIO)) != pdPASS)
                     m_outputUdpEnable = false;
                 //m_udpConnector.setPort(M_LOGGER_DEFAULT_UDP_BASE_PORT+(Get_SSID_dig()<<4)+nod_id_get());
 
