@@ -26,6 +26,7 @@ ControlBase::ControlBase()
     m_isProtectionWarningActive = false;
     m_isEnabled = false;
     m_stopOnEmrBehavior = true;
+    m_stopOnDisconnection = true;
 }
 
 ControlBase::~ControlBase()

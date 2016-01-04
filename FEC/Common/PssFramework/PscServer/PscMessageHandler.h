@@ -65,6 +65,7 @@ private:
 
     BoardStateMachine m_boardState;
     E_BoardMode m_boardMode;
+    bool m_deleteControlsOnDisconnection;
 
     PscMessageStruct m_messages[MESSAGE_QUEUE_SIZE];
     unsigned long m_currentMessage;
@@ -175,6 +176,11 @@ public:
     void recoverFromEmrError();
 
     void instantiateZoneManager();
+
+    /**
+     * Perform board shutdown
+     */
+    void performBoardShutdown();
 
 #ifdef FEC2_BOARD
     PsocManager* getPsocManager()

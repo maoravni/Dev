@@ -56,10 +56,11 @@ struct PSSAddShutdownOperation {
 	float setpoint;
 	};
 
-struct PSSConfigControlStopOnEmrMsg {
+struct PSSConfigControlStopConditions {
 	unsigned short cableId;
 	unsigned short pssId;
 	char stopOnEmr;
+	char stopOnDisconnection;
 	};
 
 struct PSSDefine3SensorWaterTankLevelMsg {
@@ -379,6 +380,7 @@ struct PSSEndApplicationUpload {
 
 struct PSSEndBoardConfigMsg {
 	unsigned short cableId;
+	char deleteOnDisconnection;
 	};
 
 struct PSSGetBoardStatus {
@@ -749,7 +751,7 @@ struct RevolverCleancycleMsg {
 
 struct RevolverErrorNotificationMsg {
 	unsigned short cableId;
-	unsigned int errors;
+	unsigned short errorListSize;
 	};
 
 struct RevolverGetStatusMsg {
@@ -846,7 +848,7 @@ union PSSMsgType{
 	struct PSSActivateWaterTankControlMsg pSSActivateWaterTankControlMsg;
 	struct PSSActivateWaterTankLevelControlMsg pSSActivateWaterTankLevelControlMsg;
 	struct PSSAddShutdownOperation pSSAddShutdownOperation;
-	struct PSSConfigControlStopOnEmrMsg pSSConfigControlStopOnEmrMsg;
+	struct PSSConfigControlStopConditions pSSConfigControlStopConditions;
 	struct PSSDefine3SensorWaterTankLevelMsg pSSDefine3SensorWaterTankLevelMsg;
 	struct PSSDefine3SensorWaterTankMsg pSSDefine3SensorWaterTankMsg;
 	struct PSSActivateHysteresisTemperatureControlMsg pSSActivateHysteresisTemperatureControlMsg;
@@ -951,6 +953,7 @@ union PSSMsgType{
 	struct RevolverInitMsg revolverInitMsg;
 	struct RevolverRecoveryMsg revolverRecoveryMsg;
 	struct RevolverSeqEndedMsg revolverSeqEndedMsg;
+	struct RevolverSetMotorsOffMsg revolverSetMotorsOffMsg;
 	struct RevolverSetParamsMsg revolverSetParamsMsg;
 	struct RevolverSetZeroPositionMsg revolverSetZeroPositionMsg;
 	struct RevolverStatusNotificationMsg revolverStatusNotificationMsg;

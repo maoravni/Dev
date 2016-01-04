@@ -14,6 +14,7 @@ OrderedShutdownControl::OrderedShutdownControl()
 {
     m_operationCompleteSemaphore.create();
     m_operationCompleteSemaphore.take(0);
+    m_exceptStopOnDisconnection = true;
 }
 
 OrderedShutdownControl::~OrderedShutdownControl()
@@ -131,13 +132,16 @@ bool OrderedShutdownControl::addOperation(int delay, uint16_t controlPssId, E_Sh
     return true;
 }
 
-void OrderedShutdownControl::performDisconnectionSequence()
+void OrderedShutdownControl::performDisconnectionSequence(bool exceptStopOnDisconnection)
 {
     m_currentOperation = m_shutdownOperationList.begin();
     UpdateSchedulerTask::getInstance()->addTimeout(this, m_currentOperation->delay);
 
     // Try to take the semaphore. The semaphore will be given after the last operation has been performed.
     m_operationCompleteSemaphore.take(portMAX_DELAY);
+
+    m_exceptStopOnDisconnection = exceptStopOnDisconnection;
+
 }
 
 void OrderedShutdownControl::executeCurrentOperation()
@@ -174,13 +178,13 @@ void OrderedShutdownControl::executeCurrentOperation()
         switch (m_currentOperation->operation)
         {
         case E_ShutdownOperation_ResetToOn:
-            ControlRepository::getInstance().resetAllControlsToOn();
+            ControlRepository::getInstance().resetAllControlsToOn(m_exceptStopOnDisconnection);
             break;
         case E_ShutdownOperation_Init:
-            ControlRepository::getInstance().initAllControls();
+            ControlRepository::getInstance().initAllControls(m_exceptStopOnDisconnection);
             break;
         case E_ShutdownOperation_Stop:
-            ControlRepository::getInstance().stopAllControls();
+            ControlRepository::getInstance().stopAllControls(m_exceptStopOnDisconnection);
             break;
         }
     }

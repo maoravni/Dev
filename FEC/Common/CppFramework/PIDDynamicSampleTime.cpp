@@ -10,7 +10,7 @@
 #include <math.h>
 #include <logger.h>
 
-float g_feedForwardInjection = 0;
+//float g_feedForwardInjection = 0;
 
 PIDDynamicSampleTime::PIDDynamicSampleTime()
 {
@@ -30,6 +30,7 @@ PIDDynamicSampleTime::PIDDynamicSampleTime()
     m_kBeta = 1;
     m_kLinear = 1;
     m_kTrapezoidalRange = 0;
+    m_feedForwardInjection = 0;
 
     SetOutputLimits(0, 100);
     SetControllerDirection(true);
@@ -95,7 +96,7 @@ float PIDDynamicSampleTime::Compute(float input)
         {
             m_ITerm += m_ki * ((m_error * sampleTimeModifier) / (1 + (10 * m_error * m_error) / m_kTrapezoidalRange));
 
-            modifiedFFiterm = m_ITerm + g_feedForwardInjection;
+            modifiedFFiterm = m_ITerm + m_feedForwardInjection;
 
             if (modifiedFFiterm > m_outMax)
                 modifiedFFiterm = m_outMax;
@@ -224,6 +225,11 @@ void PIDDynamicSampleTime::setSetPoint(float setpoint)
 {
     m_setpoint = setpoint;
     m_lastTick = xTaskGetTickCount() - 1;
+
+//    if ((int)m_setpoint == 301)
+//        m_feedForwardInjection = 70;
+//    else
+        m_feedForwardInjection = 0;
 }
 
 void PIDDynamicSampleTime::setSetPointRange(float setpointRange)

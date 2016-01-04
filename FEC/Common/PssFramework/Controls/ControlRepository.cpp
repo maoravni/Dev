@@ -102,30 +102,47 @@ EmergencyInputControl* ControlRepository::getEmergencyInputControl()
     return m_emergencyInputControl;
 }
 
-void ControlRepository::resetAllControlsToOn()
+/**
+ * if exceptStopOnDisconnection is false, the action will be performed on all controls,
+ * regardless the value of the "stopOnDisconnection" variable.
+ */
+void ControlRepository::resetAllControlsToOn(bool exceptStopOnDisconnection)
 {
     T_ControlListIterator i;
     for (i = m_controlList.begin(); i != m_controlList.end(); ++i)
     {
-        (*i)->reset2On(0, 0);
+        if (!(exceptStopOnDisconnection && !(*i)->isStopOnDisconnection()))
+        {
+            (*i)->reset2On(0, 0);
+        }
     }
 }
 
-void ControlRepository::initAllControls()
+/**
+ * if exceptStopOnDisconnection is false, the action will be performed on all controls,
+ * regardless the value of the "stopOnDisconnection" variable.
+ */
+void ControlRepository::initAllControls(bool exceptStopOnDisconnection)
 {
     T_ControlListIterator i;
     for (i = m_controlList.begin(); i != m_controlList.end(); ++i)
     {
-        (*i)->initControl(0, 0);
+        if (!(exceptStopOnDisconnection && !(*i)->isStopOnDisconnection()))
+            (*i)->initControl(0, 0);
     }
 }
 
-void ControlRepository::stopAllControls()
+/**
+ * if exceptStopOnDisconnection is false, the action will be performed on all controls,
+ * regardless the value of the "stopOnDisconnection" variable.
+ */
+void ControlRepository::stopAllControls(bool exceptStopOnDisconnection)
 {
     T_ControlListIterator i;
     for (i = m_controlList.begin(); i != m_controlList.end(); ++i)
     {
-        (*i)->move2Standby(0, 0);
+        if (!(exceptStopOnDisconnection && !(*i)->isStopOnDisconnection()))
+            (*i)->move2Standby(0, 0);
     }
 }
 
@@ -178,7 +195,7 @@ bool ControlRepository::addShutdownOperation(int delay, uint16_t control, E_Shut
     return m_orderedShutdownControl->addOperation(delay, control, operation, setpoint);
 }
 
-void ControlRepository::executeShutdownOperation()
+void ControlRepository::executeShutdownOperation(bool exceptStopOnDisconnection)
 {
     if (m_orderedShutdownControl == NULL)
     {
@@ -188,7 +205,7 @@ void ControlRepository::executeShutdownOperation()
         addShutdownOperation(500, 0xffff, E_ShutdownOperation_ResetToOn, 0);
     }
 
-    m_orderedShutdownControl->performDisconnectionSequence();
+    m_orderedShutdownControl->performDisconnectionSequence(exceptStopOnDisconnection);
 }
 
 void ControlRepository::setBoardInReady(bool state)

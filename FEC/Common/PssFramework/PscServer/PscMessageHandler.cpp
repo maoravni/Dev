@@ -93,6 +93,7 @@ PscMessageHandler::PscMessageHandler()
     m_pAppLoader = NULL;
 
     m_boardMode = E_BoardMode_Normal;
+    m_deleteControlsOnDisconnection = true;
 }
 
 PscMessageHandler::~PscMessageHandler()
@@ -130,7 +131,7 @@ void PscMessageHandler::instantiateZoneManager()
     m_masterControllerId = m_cableId;
 }
 
-void PscMessageHandler::MessageDisconnect(unsigned long param)
+void PscMessageHandler::performBoardShutdown()
 {
     m_boardState.eventStartShuttingDown();
 
@@ -152,8 +153,21 @@ void PscMessageHandler::MessageDisconnect(unsigned long param)
 
     m_boardState.eventShuttingDownComplete();
 
+    m_deleteControlsOnDisconnection = true;
     m_boardMode = E_BoardMode_Normal;
     m_psocManager.setBoardMode(m_boardMode);
+}
+
+void PscMessageHandler::MessageDisconnect(unsigned long param)
+{
+    // we need to perform the ordered shutdown operation regardless of the delete
+    // controls mode, so that controls that should not stay operational after disconnection
+    // will stop.
+    if (UpdateSchedulerTask::getInstance()->isBoardInReady())
+        ControlRepository::getInstance().executeShutdownOperation(true);
+
+    if (m_deleteControlsOnDisconnection == true)
+        performBoardShutdown();
 }
 
 void PscMessageHandler::MessageConnect(unsigned long param)
@@ -164,6 +178,13 @@ void PscMessageHandler::MessageConnect(unsigned long param)
 //    {
 //        delay(100);
 //    }
+    if (m_deleteControlsOnDisconnection == false)
+    {
+        performBoardShutdown();
+    }
+    m_boardMode = E_BoardMode_Normal;
+    m_deleteControlsOnDisconnection = true;
+
     m_boardState.eventStartUp();
     // todo: move this to a more suitable place.
     m_cableId = Psc_ControllerId;
@@ -264,28 +285,7 @@ void PscMessageHandler::MessageGetBoardTypeHandler(unsigned long param)
     }
     else
     {
-//#ifdef FEC2_BOARD
-//        T_PsocVersion psocVersion;
-//        E_PsocSpiError spiError;
-//        spiError = m_psocManager.getPsocHandlerByIndex(payload->cableId - 1)->getVersion(psocVersion);
-//
-//        message->header.id.split.src = M_PSC_ICD_ID;
-//        message->header.id.split.dst = M_OPC_ICD_ID;
-//        message->header.id.split.id = MSG_GetVersionReply;
-//        message->header.length = sizeof(PscMessageHeader) + sizeof(PSSGetVersionReplyMsg);
-//
-//        payload->firmwareVersion = psocVersion.firmwareVersion.full;
-//        payload->protocolVersion = psocVersion.protocolVersion.full;
-//        payload->cableId = message->payload.pSSGetVersionMsg.cableId;
-//
-//        // TODO: Psoc: check compatibility of protocol versions.
-//
-//        //TODO: Add log message
-//        PscMasterServer::getInstance().sendMessage(*message);
-//
-//#else
         sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_InvalidDevice);
-//#endif
     }
 
 }
@@ -682,7 +682,7 @@ void PscMessageHandler::MessageStartBoardConfigHandler(unsigned long param)
 void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];
-    PSSStartBoardConfigMsg *payload = &message->payload.pSSStartBoardConfigMsg;
+    PSSEndBoardConfigMsg *payload = &message->payload.pSSEndBoardConfigMsg;
 
     M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, M_PSS_ID_ALL);
 
@@ -692,8 +692,13 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     // if the start state is incorrect, the board wouldn't move to the requested state.
     M_CHECK_BOARD_STATE(E_BoardState_Ready, message->header.id.full, message->header.sn, M_PSS_ID_ALL);
 
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSEndBoardConfig: cableId=%d deleteOnDisconnection=%d", payload->cableId,
+            payload->deleteOnDisconnection);
+
     // TODO: Add log message.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
+
+    m_deleteControlsOnDisconnection = payload->deleteOnDisconnection;
 
     //m_psocManager.startRecovery();
     //PeripheralRepository::getInstance().startRecovery();
@@ -2343,15 +2348,15 @@ void PscMessageHandler::MessageSetPIDHandler(unsigned long param)
 
 }
 
-void PscMessageHandler::MessageConfigControlStopOnEmrHandler(unsigned long param)
+void PscMessageHandler::MessageConfigControlStopConditionsHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];
-    PSSConfigControlStopOnEmrMsg* payload = &(message->payload.pSSConfigControlStopOnEmrMsg);
+    PSSConfigControlStopConditions* payload = &(message->payload.pSSConfigControlStopConditions);
 
     M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSConfigControlStopOnEmrMsg: cableId=%d pssId={[PSSID:%d]} stopOnEmr=%d",
-            payload->cableId, payload->pssId, payload->stopOnEmr);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSConfigControlStopConditions: cableId=%d pssId={[PSSID:%d]} stopOnEmr=%d stopOnDisconnection=%d",
+            payload->cableId, payload->pssId, payload->stopOnEmr, payload->stopOnDisconnection);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
@@ -2363,6 +2368,7 @@ void PscMessageHandler::MessageConfigControlStopOnEmrHandler(unsigned long param
     }
 
     control->setStopOnEmrBehavior(payload->stopOnEmr);
+    control->setStopOnDisconnection(payload->stopOnDisconnection);
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 }
@@ -3409,9 +3415,9 @@ void PscMessageHandler::reset()
 {
     m_currentMessage = 0;
 
-//    ControlRepository::getInstance().resetAllControlsToOn();
+////    ControlRepository::getInstance().resetAllControlsToOn();
     if (UpdateSchedulerTask::getInstance()->isBoardInReady())
-        ControlRepository::getInstance().executeShutdownOperation();
+        ControlRepository::getInstance().executeShutdownOperation(false);
 
     // take the scheduler semaphores, so that no updates will occur:
     UpdateSchedulerTask::getInstance()->setBoardInReady(false);

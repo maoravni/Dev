@@ -43,6 +43,7 @@ class PIDDynamicSampleTime
     float m_kLinear;
     float m_advError, m_advBError;
     float m_kTrapezoidalRange;
+    float m_feedForwardInjection;
 
     int m_controllerDirection;
 

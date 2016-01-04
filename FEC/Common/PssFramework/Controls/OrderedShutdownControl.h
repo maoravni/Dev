@@ -38,6 +38,8 @@ private:
 
     CBinarySemaphore m_operationCompleteSemaphore;
 
+    bool m_exceptStopOnDisconnection;
+
 public:
     OrderedShutdownControl();
     virtual ~OrderedShutdownControl();
@@ -65,7 +67,7 @@ public:
     virtual void timeoutExpired(uint16_t timeoutType);
 
     bool addOperation(int delay, uint16_t control, E_ShutdownOperation operation, float setpoint);
-    void performDisconnectionSequence();
+    void performDisconnectionSequence(bool exceptStopOnDisconnection);
 
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
 

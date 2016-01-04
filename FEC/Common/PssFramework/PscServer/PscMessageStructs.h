@@ -37,6 +37,7 @@ enum E_BoardMode
 {
     E_BoardMode_Normal = 0,
     E_BoardMode_HwValidation = 1,
+    E_BoardMode_DeleteOnReconnection = 2,
     E_BoardMode_Size
 };
 

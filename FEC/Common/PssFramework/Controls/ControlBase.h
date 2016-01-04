@@ -97,6 +97,7 @@ private:
     T_ControlStatus m_previousControlExceptions;
 
     bool m_stopOnEmrBehavior;
+    bool m_stopOnDisconnection;
 //    uint32_t m_errorBits;
 //    uint32_t m_warningBits;
 
@@ -217,6 +218,16 @@ public:
     void setStopOnEmrBehavior(bool stopOnEmrBehavior)
     {
         m_stopOnEmrBehavior = stopOnEmrBehavior;
+    }
+
+    bool isStopOnDisconnection() const
+    {
+        return m_stopOnDisconnection;
+    }
+
+    void setStopOnDisconnection(bool stopOnDisconnection)
+    {
+        m_stopOnDisconnection = stopOnDisconnection;
     }
 
 private:

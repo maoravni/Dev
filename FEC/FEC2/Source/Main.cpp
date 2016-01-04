@@ -246,7 +246,6 @@ void vInitTask(void *pvParameters)
     // setup the logger
     static CLogger& loggerInstance = CLogger::getInstance();
     //loggerInstance.enableOutputTcp(true);
-    //    CLogger::getInstance().enableOutputUdp(true);
     //loggerInstance.enableLogFreeHeap(true);
     //    loggerInstance.enableLogTasks(true);
     //#ifdef DEBUG
@@ -270,6 +269,8 @@ void vInitTask(void *pvParameters)
     Psc_SetIpAddress();
 
     loggerInstance.setAllTaskMask(M_LOGGER_LEVEL_DEBUG);
+
+    //loggerInstance.enableOutputUdp(true);
 
 #ifndef WIN32
     lwip_igmp_start();

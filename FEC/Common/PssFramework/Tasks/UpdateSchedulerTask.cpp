@@ -403,7 +403,7 @@ UpdateSchedulerTask* UpdateSchedulerTask::getInstance()
     {
         p_instance = new UpdateSchedulerTask();
         // Create the task.
-        p_instance->create("UpdateScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, 3);
+        p_instance->create("UpdateScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, 4);
     }
 
     return p_instance;

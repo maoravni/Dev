@@ -66,9 +66,9 @@ public:
     ProtectionControl* getProtectionControl();
     EmergencyInputControl* getEmergencyInputControl();
 
-    void resetAllControlsToOn();
-    void initAllControls();
-    void stopAllControls();
+    void resetAllControlsToOn(bool exceptStopOnDisconnection);
+    void initAllControls(bool exceptStopOnDisconnection);
+    void stopAllControls(bool exceptStopOnDisconnection);
     void stopOnEmr();
     void recoverFromEmergency();
     bool isInEmergency();
@@ -76,7 +76,7 @@ public:
     void sendUpdateNotificationForAllControls();
 
     bool addShutdownOperation(int delay, uint16_t control, E_ShutdownOperation oepration, float setpoint);
-    void executeShutdownOperation();
+    void executeShutdownOperation(bool exceptStopOnDisconnection);
 
     void setBoardInReady(bool state);
     void startRecovery();
