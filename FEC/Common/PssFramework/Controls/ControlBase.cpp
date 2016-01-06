@@ -43,7 +43,7 @@ bool ControlBase::initControl(uint32_t msgId, uint32_t sn)
 {
     if (m_controlState == E_ControlState_Emergency)
     {
-        PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
+        PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
         return false;
     }
     if (m_controlState == E_ControlState_On)
@@ -53,7 +53,7 @@ bool ControlBase::initControl(uint32_t msgId, uint32_t sn)
         PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
         return onInitControl();
     }
-    PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
+    PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
     return false;
 }
 
@@ -61,7 +61,7 @@ bool ControlBase::move2Standby(uint32_t msgId, uint32_t sn)
 {
     if (m_controlState == E_ControlState_Emergency)
     {
-        PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
+        PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
         return false;
     }
     if (m_controlState >= E_ControlState_Standby && m_controlState <= E_ControlState_Ready)
@@ -71,7 +71,7 @@ bool ControlBase::move2Standby(uint32_t msgId, uint32_t sn)
         PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
         return onMove2Standby();
     }
-    PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
+    PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
     return false;
 }
 
@@ -79,7 +79,7 @@ bool ControlBase::reset2On(uint32_t msgId, uint32_t sn)
 {
     if (m_controlState == E_ControlState_Emergency)
     {
-        PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
+        PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
         return false;
     }
     if (m_controlState != E_ControlState_Emergency)
@@ -89,7 +89,7 @@ bool ControlBase::reset2On(uint32_t msgId, uint32_t sn)
         PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
         return onReset2On();
     }
-    PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
+    PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
     return true;
 }
 
