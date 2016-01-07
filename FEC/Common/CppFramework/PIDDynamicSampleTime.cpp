@@ -226,9 +226,9 @@ void PIDDynamicSampleTime::setSetPoint(float setpoint)
     m_setpoint = setpoint;
     m_lastTick = xTaskGetTickCount() - 1;
 
-//    if ((int)m_setpoint == 301)
-//        m_feedForwardInjection = 70;
-//    else
+    if ((int)m_setpoint == 301)
+        m_feedForwardInjection = 70;
+    else
         m_feedForwardInjection = 0;
 }
 

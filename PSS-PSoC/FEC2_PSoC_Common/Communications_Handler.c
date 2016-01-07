@@ -1758,6 +1758,9 @@ void Ex_StartPSoCErrorRecovery(void)
 	
 	/*clear ErrorFlashCode */
 	ErrorCode(0,0,1);		
+
+    Safety_Relay_TurnOFF();
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
