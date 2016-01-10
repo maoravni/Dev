@@ -161,16 +161,16 @@ void ModbusInverterControl::execute()
         }
         else
         {
-//            if (m_requestedSetpoint->isInWarningRange(inputValue))
-//            {
-//                raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-//                raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
-//            }
-//            else
-//            {
-//                raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
-//                raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
-//            }
+            if (m_requestedSetpoint->isInWarningRange(inputValue))
+            {
+                raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
+                raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
+            }
+            else
+            {
+                raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
+                raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+            }
         }
         break;
     }
