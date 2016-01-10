@@ -278,11 +278,11 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     if (m_controlState == E_ControlState_On)
         return false;
 
-    if (sp == 0)
-    {
-        m_pidCalc.setEnabled(false);
-        return true;
-    }
+//    if (sp == 0)
+//    {
+//        m_pidCalc.setEnabled(false);
+//        return true;
+//    }
 
     // change the state
     // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
@@ -315,7 +315,7 @@ void PidControl::sendTuningValues()
 
 bool PidControl::setSetpoint(ValidationElementFloat* element)
 {
-    if (element->getValue() != m_pidCalc.getSetPoint())
+    if (!m_pidCalc.isEnabled() && element->getValue() != m_pidCalc.getSetPoint())
     {
         return setSetpoint(element->getValue(), element->getMinWorking(), element->getMaxWorking(),
                 element->getMinWarning(), element->getMaxWarning(), 0);

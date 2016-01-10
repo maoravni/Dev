@@ -16,7 +16,7 @@ PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral()
         // TODO: Get data type and range of the analog outputs.
         m_elementArray[i] = ElementRepository::getInstance().addValidationElementU8();
         m_elementArray[i]->addObserver(this);
-        m_elementArray[i]->updateAllowedRange(0, 200, true, true);
+        m_elementArray[i]->updateAllowedRange(0, 250, true, true);
     }
 
     m_firstElementIndex = m_elementArray[0]->getElementIndex();
