@@ -167,7 +167,9 @@ void PscMessageHandler::MessageDisconnect(unsigned long param)
         ControlRepository::getInstance().executeShutdownOperation(true);
 
     if (m_deleteControlsOnDisconnection == true)
+    {
         performBoardShutdown();
+    }
 }
 
 void PscMessageHandler::MessageConnect(unsigned long param)
@@ -3416,8 +3418,8 @@ void PscMessageHandler::reset()
     m_currentMessage = 0;
 
 ////    ControlRepository::getInstance().resetAllControlsToOn();
-    if (UpdateSchedulerTask::getInstance()->isBoardInReady())
-        ControlRepository::getInstance().executeShutdownOperation(false);
+//    if (UpdateSchedulerTask::getInstance()->isBoardInReady())
+//        ControlRepository::getInstance().executeShutdownOperation(false);
 
     // take the scheduler semaphores, so that no updates will occur:
     UpdateSchedulerTask::getInstance()->setBoardInReady(false);

@@ -40,7 +40,7 @@ class PscMessageHandler: public CMessageTask
 public:
     enum
     {
-        MESSAGE_QUEUE_SIZE = 0x8,
+        MESSAGE_QUEUE_SIZE = 0x10,
     };
 
 private:

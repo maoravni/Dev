@@ -134,14 +134,12 @@ bool OrderedShutdownControl::addOperation(int delay, uint16_t controlPssId, E_Sh
 
 void OrderedShutdownControl::performDisconnectionSequence(bool exceptStopOnDisconnection)
 {
+    m_exceptStopOnDisconnection = exceptStopOnDisconnection;
     m_currentOperation = m_shutdownOperationList.begin();
     UpdateSchedulerTask::getInstance()->addTimeout(this, m_currentOperation->delay);
 
     // Try to take the semaphore. The semaphore will be given after the last operation has been performed.
     m_operationCompleteSemaphore.take(portMAX_DELAY);
-
-    m_exceptStopOnDisconnection = exceptStopOnDisconnection;
-
 }
 
 void OrderedShutdownControl::executeCurrentOperation()

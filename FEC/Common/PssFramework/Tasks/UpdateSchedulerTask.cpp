@@ -221,7 +221,9 @@ void UpdateSchedulerTaskBase::run()
 
         // give the run loop semaphore back, so we can know when its finished:
         m_runloopSyncSemaphore.give();
-//        yield();
+        // yield so that the message handler, which is in a lower priority, can try to halt the
+        // scheduler when cleaning up.
+        yield();
     }
 }
 
@@ -511,7 +513,16 @@ void UpdateSchedulerTaskBase::setBoardInReady(bool boardInReady)
     else
     {
         if (m_boardInReady && getHead() != NULL)
-            m_runloopSyncSemaphore.take(portMAX_DELAY);
+        {
+            printf("Current Tick Count: %d\n", getTickCount());
+            printfQueue("Before Semaphore Take");
+            if ((m_runloopSyncSemaphore.take(5000) != pdPASS))
+            {
+                printf("Current Tick Count: %d\n", getTickCount());
+                printfQueue("Semaphore Take Failed");
+                int i = 0;
+            }
+        }
     }
     m_boardInReady = boardInReady;
     //            resume();

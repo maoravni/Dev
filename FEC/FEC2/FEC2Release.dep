@@ -2,11 +2,10 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>591338977</fileChecksum>
+  <fileChecksum>1622733532</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\Release\FEC2.out</file>
       <file>$PROJ_DIR$\Source\Main.cpp</file>
     </outputs>
     <forcedrebuild>
