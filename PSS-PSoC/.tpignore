@@ -82,6 +82,7 @@
 \Q/FEC2_PSoC_V02_prjct.cydsn/CortexM3/\E.*
 \Q/FEC2_PSoC_V02_prjct.cydsn/Export/\E.*
 \Q/FEC2_PSoC_V02_prjct.cydsn/Generated_Source/\E.*
+\Q/FEC2_PSoC_V02_prjct.cydsn/Debug/\E.*
 \Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct_timing.html\E
 \Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.cycdx\E
 \Q/FEC2_PSoC_V01_prjct.cydsn/FEC2_PSoC_V01_prjct.cyfit\E
