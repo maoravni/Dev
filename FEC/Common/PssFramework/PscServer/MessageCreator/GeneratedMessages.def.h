@@ -678,6 +678,7 @@ struct PSSSetTemperatureDeviceConfigMsg {
 	float aCoff;
 	float bCoff;
 	char sensorType;
+	char missingSensorPriority;
 	};
 
 struct PSSSetWarningsMaskMsg {

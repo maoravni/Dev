@@ -27,6 +27,7 @@
 #include "main.h"
 #include "DSP.h"
 #include <string.h>
+#include <otsm.h>
 
 /***************************************
  *    Global Variables
@@ -115,6 +116,7 @@ void Init_Temperature_Module(void)
     DSM_DMADone_flag = 0;
     /*Initiate RequiredRTDsBitfield */
     RequiredRTDsBitfield = 0x01;
+    OTSM_ResetSensorPriority();
     ConnectedRTDsBitfield = 0x00;
     RTD_Configuration.ChannelType = E_PT100;
 
@@ -256,7 +258,8 @@ void Calc_Temperature(void)
         memcpy(Temp_NoOffset_DSM_Sample, &NoOffset_DSM_Sample_Buffer[i][0], sizeof(Temp_NoOffset_DSM_Sample));
 
         // sort the copy of the median filter buffer and determine it's median value.
-        NoOffset_DSM_Sample[i] = ((int32) Med_Filter(Temp_NoOffset_DSM_Sample, TEMPTR_MED_FILT_WIDTH))*PRECISION_MULTIPLIER;
+        NoOffset_DSM_Sample[i] = ((int32) Med_Filter(Temp_NoOffset_DSM_Sample, TEMPTR_MED_FILT_WIDTH))
+                * PRECISION_MULTIPLIER;
         // Data is ready in NoOffset_DSM_Sample.
         /* End of Median filter */
         //----------------------------------------------------------------------------------------------------------------------
@@ -277,7 +280,7 @@ void Calc_Temperature(void)
         /* Start of Connectivity verification */
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         /* Channel is not connected !!! */
-        if (FiltNoOffset_DSM_Sample[i][n] < MIN_SAMPLES_OFFSET*PRECISION_MULTIPLIER) // Temperature Sensor Connection Failure !!!
+        if (FiltNoOffset_DSM_Sample[i][n] < MIN_SAMPLES_OFFSET * PRECISION_MULTIPLIER) // Temperature Sensor Connection Failure !!!
         {
             if (LPF_SettleTimeCounter)
             {
@@ -335,26 +338,27 @@ void Calc_Temperature(void)
                     /**/StoredTemps4MMCU.temperature[(i - 1)] = ((float) RTD_GetTemperature((RTD_Resistance * 1000)))
                             / 100.00 + TEMPERATURE_OFFSET; /**/
                     /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-                    /**/uint8 TempError = OTSM_1_Check_Temperature(StoredTemps4MMCU.temperature[(i - 1)], (i - 1));
-                    /**/if (0x02 & TempError)
-                    /**/
+
+                    uint8 TempError = OTSM_Check_Temperature(StoredTemps4MMCU.temperature[(i - 1)], (i - 1));
+                    if (0x02 & TempError)
                     {
-                        /**/Safety_Relay_TurnON();
-                        /**/SystemErrorReg_Write(PSoC_RTD_OVER_TEMP_ERR_BIT_NUM, ENABLE, _16BIT2);
-                        /**/Outputs_SoftEn_OFF();
-                        /**/}
-                    /**/else if (0x01 & TempError)
-                    /**/
+                        Safety_Relay_TurnON();
+                        SystemErrorReg_Write(PSoC_RTD_OVER_TEMP_ERR_BIT_NUM, ENABLE, _16BIT2);
+                        Outputs_SoftEn_OFF();
+                    }
+                    else if (0x01 & TempError)
+
                     {
-                        /**//* Turn on PSOC_OVER_TEMP_ALARM */
-                        /**/SystemErrorReg_Write(PSoC_RTD_OVER_TEMP_ERR_BIT_NUM, ENABLE, _16BIT1);
-                        /**/Outputs_SoftEn_OFF();
-                        /**/}
+                        /* Turn on PSOC_OVER_TEMP_ALARM */
+                        SystemErrorReg_Write(PSoC_RTD_OVER_TEMP_ERR_BIT_NUM, ENABLE, _16BIT1);
+                        Outputs_SoftEn_OFF();
+                    }
                     /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
                     /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
                     /* MMCU Temperature Error Check */
-                    if ((StoredTemps4MMCU.temperature[(i - 1)] > (TempUpLimit[(i - 1)] + 0.3)) && (RequiredRTDsBitfield & Ind2Bit_5[i]))
+                    if ((StoredTemps4MMCU.temperature[(i - 1)] > (TempUpLimit[(i - 1)] + 0.3))
+                            && (RequiredRTDsBitfield & Ind2Bit_5[i]))
                     {
                         /* Update system Errors */
                         SystemErrorReg_Write(MMCU_RTD_OVER_TEMP_ERR_BIT_NUM, ENABLE, _16BIT1);

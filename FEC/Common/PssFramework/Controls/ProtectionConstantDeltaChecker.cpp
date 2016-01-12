@@ -37,7 +37,12 @@ void ProtectionConstantDeltaChecker::updateNotification(ElementBase* element)
     state = E_DeviceProtectionState_InRange;
 
     if (!element->isValid())
-        state = E_DeviceProtectionState_SoftLimitExceeded;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            state = E_DeviceProtectionState_SoftLimitExceeded;
+        else
+            state = E_DeviceProtectionState_InRange;
+    }
     else
     {
         state = calcProtectionState(element);
@@ -57,7 +62,12 @@ E_DeviceProtectionState ProtectionConstantDeltaChecker::calcProtectionState(Elem
     float delta = observed - reference;
 
     if (!m_referenceElement->isValid() || !m_observedElement->isValid())
-        state = E_DeviceProtectionState_SoftLimitExceeded;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            state = E_DeviceProtectionState_SoftLimitExceeded;
+        else
+            state = E_DeviceProtectionState_InRange;
+    }
     else if (m_allowedRange.inRange(delta))
         state = E_DeviceProtectionState_InRange;
     else

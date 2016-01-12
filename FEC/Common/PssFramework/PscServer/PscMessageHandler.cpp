@@ -1298,9 +1298,9 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
     M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSSetTemperatureDeviceConfigMsg: cableId=%d pssId={[PSSID:%d]} periphPssId={[PSSID:%d]} deviceIndex=%d calA=%f calB=%f sensType=%d",
+            "PSSSetTemperatureDeviceConfigMsg: cableId=%d pssId={[PSSID:%d]} periphPssId={[PSSID:%d]} deviceIndex=%d calA=%f calB=%f sensType=%d missPrio=%d",
             payload->cableId, payload->pssId, payload->periphPssid, payload->deviceIndex, payload->aCoff,
-            payload->bCoff, payload->sensorType);
+            payload->bCoff, payload->sensorType, payload->missingSensorPriority);
 
 //    PeripheralBase* periph = PeripheralRepository::getInstance().getPeripheralByIndex(
 //            (E_PeripheralType) payload->periphType, payload->periphIndex);

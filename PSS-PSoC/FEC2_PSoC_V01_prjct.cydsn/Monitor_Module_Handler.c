@@ -353,8 +353,8 @@ void Current_Sensors_Analysis(uint8 Src)
             CS_DAB_1_Calibrate(2048, CS_DAB_1_DETECT_THRESHOLD);
             CS_DAB_2_Calibrate(2048, CS_DAB_2_DETECT_THRESHOLD);
             CS_State = CS_INITIAL_STATE;
-            Heat_Output_Disable();
-            PBIT_Enable();
+//            Heat_Output_Disable();
+//            PBIT_Enable();
             break;
         }
         }
@@ -463,8 +463,8 @@ void Current_Sensors_Analysis(uint8 Src)
             CS_State_Complete[CS_DISCONNECT_STATE] = 0;
             DisconnectEventCounter = 0;
             CS_State = CS_INITIAL_STATE;
-            Heat_Output_Disable();
-            PBIT_Enable();
+//            Heat_Output_Disable();
+//            PBIT_Enable();
             break;
         }
         }
@@ -475,8 +475,8 @@ void Current_Sensors_Analysis(uint8 Src)
             CS_State_Complete[CS_DISCONNECT_STATE] = 0;
             DisconnectEventCounter = 0;
             CS_State = CS_INITIAL_STATE;
-            Heat_Output_Disable();
-            PBIT_Enable();
+//            Heat_Output_Disable();
+//            PBIT_Enable();
         }
         break;
     }
@@ -486,8 +486,8 @@ void Current_Sensors_Analysis(uint8 Src)
         SystemWarningReg_Write(SSR_ALWAYS_OFF_WARN_BIT_NUM, DISABLE, _16BIT1);
         CS_State = CS_INITIAL_STATE;
         CS_Prev_State = CS_INITIAL_STATE;
-        Heat_Output_Disable();
-        PBIT_Enable();
+//        Heat_Output_Disable();
+//        PBIT_Enable();
         break;
     }
     }

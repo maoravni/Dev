@@ -678,6 +678,7 @@ struct PSSSetTemperatureDeviceConfigMsg {
 	float aCoff;
 	float bCoff;
 	char sensorType;
+	char missingSensorPriority;
 	};
 
 struct PSSSetWarningsMaskMsg {
@@ -752,6 +753,7 @@ struct RevolverCleancycleMsg {
 struct RevolverErrorNotificationMsg {
 	unsigned short cableId;
 	unsigned short errorListSize;
+
 	};
 
 struct RevolverGetStatusMsg {

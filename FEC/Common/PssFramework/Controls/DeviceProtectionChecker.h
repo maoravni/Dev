@@ -20,7 +20,7 @@
 //    E_DeviceProtectionState_HardLimitExceeded = 3,
 //};
 
-class DeviceProtectionChecker : public ProtectionCheckerBase
+class DeviceProtectionChecker: public ProtectionCheckerBase
 {
 private:
 //    ElementBase* m_observedElement;
@@ -51,38 +51,84 @@ public:
     bool isInsideLimit();
     bool isOutsideSoftLimit();
     bool isOutsideHardLimit();
+    bool modifyProtectionResultAccordingToMissingPriority(bool result);
 
 //    ElementBase* getProtectionElement() {return m_observedElement;}
 
-    float getUpperHardLimit() {return m_hardProtectionRange.getMax();}
-    float getLowerHardLimit() {return m_hardProtectionRange.getMin();}
+    float getUpperHardLimit()
+    {
+        return m_hardProtectionRange.getMax();
+    }
+    float getLowerHardLimit()
+    {
+        return m_hardProtectionRange.getMin();
+    }
 
-    virtual E_ProtectionCheckerType getProtectionType(){return E_ProtectionCheckerType_AbsoluteValue;}
-    virtual E_PSSErrors getErrorType(){return E_PSSErrors_DeviceExceedsSoftLimits;}
-    virtual E_PSSWarnings getWarningType(){return E_PSSWarnings_ControlExceedsLimits;}
+    virtual E_ProtectionCheckerType getProtectionType()
+    {
+        return E_ProtectionCheckerType_AbsoluteValue;
+    }
+    virtual E_PSSErrors getErrorType()
+    {
+        return E_PSSErrors_DeviceExceedsSoftLimits;
+    }
+    virtual E_PSSWarnings getWarningType()
+    {
+        return E_PSSWarnings_ControlExceedsLimits;
+    }
     virtual E_DeviceProtectionState calcProtectionState(ElementBase* element);
 
-
 };
+
+inline bool DeviceProtectionChecker::modifyProtectionResultAccordingToMissingPriority(bool result)
+{
+    switch (m_observedElement->getMissingDevicePriority())
+    {
+    case E_MissingDevicePriority_High:
+        break;
+    case E_MissingDevicePriority_Med:
+    case E_MissingDevicePriority_Low:
+        // if the observed element is invalid, in med and low priority we
+        // don't want to issue a protection error.
+        if (!m_observedElement->isValid())
+            result = false;
+        break;
+    }
+}
 
 inline bool DeviceProtectionChecker::isInsideLimit()
 {
     if (!m_observedElement->isValid())
-        return false;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            return false;
+        else
+            return true;
+    }
     return (m_softProtectionRange.inRange(m_observedElement->getValueF()));
 }
 
 inline bool DeviceProtectionChecker::isOutsideSoftLimit()
 {
     if (!m_observedElement->isValid())
-        return false;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            return false;
+        else
+            return true;
+    }
     return (!m_softProtectionRange.inRange(m_observedElement->getValueF()));
 }
 
 inline bool DeviceProtectionChecker::isOutsideHardLimit()
 {
     if (!m_observedElement->isValid())
-        return false;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            return false;
+        else
+            return true;
+    }
     return (!m_hardProtectionRange.inRange(m_observedElement->getValueF()));
 }
 

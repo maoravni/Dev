@@ -41,7 +41,12 @@ void ProtectionProportionalChecker::updateNotification(ElementBase* element)
     state = E_DeviceProtectionState_InRange;
 
     if (!element->isValid())
-        state = E_DeviceProtectionState_SoftLimitExceeded;
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            state = E_DeviceProtectionState_SoftLimitExceeded;
+        else
+            state = E_DeviceProtectionState_InRange;
+    }
     else
     {
         state = calcProtectionState(element);

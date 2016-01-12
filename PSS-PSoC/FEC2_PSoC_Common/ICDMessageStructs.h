@@ -182,8 +182,9 @@ typedef struct
 /* GET VERSION REPLAY */
 typedef struct 
 {
-	uint8 	FirmwareVersion;
-	uint8 	ProtocolVersion;
+	uint16 	FirmwareVersion[4];
+	uint16 	ProtocolVersion[4];
+	uint8   PSoCBoardType;
 } T_GetVersionReply;
 
 /* GET CABLE ID REPLAY */
@@ -202,6 +203,7 @@ typedef struct
 	float 						TempUpLimit;
 	float						Gain_LiquidDetectTimer;
 	float						Offset;
+	uint8                       MissingSensorPriority;
 } T_ConfigTemperatureSensor;
 
 /* CONFIG CURRENT SENSOR */

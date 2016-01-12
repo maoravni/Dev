@@ -62,6 +62,7 @@ protected:
     uint32_t m_warningBits;
 
     T_ValidationElementStatus m_status;
+    E_MissingDevicePriority m_missingDevicePriority;
 
 public:
     ValidationElement();
@@ -180,6 +181,9 @@ public:
     {
         return m_status.full;
     }
+
+    virtual void setMissingDevicePriority(E_MissingDevicePriority priority);
+    virtual E_MissingDevicePriority getMissingDevicePriority();
 
     virtual void setValue(const uint32_t value);
     virtual void setValue(const int32_t value);
@@ -447,6 +451,18 @@ inline void ValidationElement<_type>::updateWarningBits(E_PSSErrors warning, boo
 
     if (m_warningBits != previousWarningBits && getPssId() != 0)
         sendWarning(Psc_ControllerId, getPssId(), m_warningBits);
+}
+
+template<class _type>
+inline void ValidationElement<_type>::setMissingDevicePriority(E_MissingDevicePriority priority)
+{
+    m_missingDevicePriority = priority;
+}
+
+template<class _type>
+inline E_MissingDevicePriority ValidationElement<_type>::getMissingDevicePriority()
+{
+    return m_missingDevicePriority;
 }
 
 template<class _type>

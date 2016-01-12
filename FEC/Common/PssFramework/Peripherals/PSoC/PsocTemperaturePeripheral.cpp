@@ -124,7 +124,7 @@ void PsocTemperaturePeripheral::downloadConfigurationToPsoc(CBinarySemaphore* co
 
             m_psocHandler->configTemperatureSensor(completeSemaphore, index,
                     (E_PsocTemperatureSensorType) m_sensorType[index], E_PsocTemperatureSensorFilterType_SinglePoleIIR,
-                    hardLimit, m_aCoeff[index], m_bCoeff[index]);
+                    hardLimit, m_aCoeff[index], m_bCoeff[index], m_temperatureElementsArray[index]->getMissingDevicePriority());
         }
     }
 }

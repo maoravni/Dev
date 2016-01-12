@@ -29,9 +29,10 @@
 #include "Monitor_Module_Handler.h"
 #include "main.h"
 #include "version.h"
+#include <otsm.h>
 
 /***************************************
-*    Global Variables
+*    Global Variablesmess
 ***************************************/
 int8 SPI_Delay_Timer;
 /* Variable declarations for DMA_Tx_S */
@@ -817,15 +818,17 @@ void Ex_EmptyCommand(void)
 ////////////////////////
 void Ex_GetPSoCversion(void)
 {
-	s_txBuffer.Data.DataBytes_uint16[0] = M_FEC_FIRMWARE_VERSION_MAJOR;
-	s_txBuffer.Data.DataBytes_uint16[1] = M_FEC_FIRMWARE_VERSION_MINOR;
-	s_txBuffer.Data.DataBytes_uint16[2] = M_FEC_FIRMWARE_VERSION_BUILD;
-	s_txBuffer.Data.DataBytes_uint16[3] = M_FEC_FIRMWARE_VERSION_REVISION;
-	
-	s_txBuffer.Data.DataBytes_uint16[4] = M_ICD_VERSION_MAJOR;
-	s_txBuffer.Data.DataBytes_uint16[5] = M_ICD_VERSION_MINOR;
-	s_txBuffer.Data.DataBytes_uint16[6] = M_ICD_VERSION_BUILD;
-	s_txBuffer.Data.DataBytes_uint16[7] = M_ICD_VERSION_REVISION;
+    s_txBuffer.Data.GetVersionReply.FirmwareVersion[0] = M_FEC_FIRMWARE_VERSION_MAJOR;
+    s_txBuffer.Data.GetVersionReply.FirmwareVersion[1] = M_FEC_FIRMWARE_VERSION_MINOR;
+    s_txBuffer.Data.GetVersionReply.FirmwareVersion[2] = M_FEC_FIRMWARE_VERSION_BUILD;
+    s_txBuffer.Data.GetVersionReply.FirmwareVersion[3] = M_FEC_FIRMWARE_VERSION_REVISION;
+
+    s_txBuffer.Data.GetVersionReply.ProtocolVersion[0] = M_ICD_VERSION_MAJOR;
+    s_txBuffer.Data.GetVersionReply.ProtocolVersion[1] = M_ICD_VERSION_MINOR;
+    s_txBuffer.Data.GetVersionReply.ProtocolVersion[2] = M_ICD_VERSION_BUILD;
+    s_txBuffer.Data.GetVersionReply.ProtocolVersion[3] = M_ICD_VERSION_REVISION;
+
+    s_txBuffer.Data.GetVersionReply.PSoCBoardType = M_FIRMWARE_BOARD_TYPE;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -890,6 +893,8 @@ void Ex_StartBoardConfig()
     /*Initiate RequiredRTDsBitfield */
 	RequiredRTDsBitfield = 0x01;
 	tempRequiredRTDConfiguration = 0x01;
+	OTSM_ResetSensorPriority();
+
 	ConnectedRTDsBitfield = 0x00;
 	CS_Required = 0;
     SystemErrorReg_Write(MISSING_CURRENT_SENS_ERR_BIT_NUM, DISABLE, _16BIT1);
@@ -951,6 +956,7 @@ void Ex_EndBoardConfig()
 			/* Configure the Temperature Module */
 			memset(TempUpLimit,400,sizeof(TempUpLimit));
 			RequiredRTDsBitfield = 0xFF;
+		    OTSM_ResetSensorPriority();
 			/* Configure the Monitor Module */
 			memset(MaxCSLimit,2048,sizeof(MaxCSLimit));
 			/* Configure the Digital Outputs */
@@ -1003,6 +1009,7 @@ void Ex_EndBoardConfig()
 			
 			/* Define RTD 1 as required */
 			RequiredRTDsBitfield = 0x03;
+		    OTSM_SetSensorPriority(1, E_SensorMissingPriority_High);
 			/* Start the DSM conversion */
 //			DSM_Sequencer_Enable();
 			/* Start SAR1 for analog current inputs */
@@ -1149,7 +1156,16 @@ void Ex_ConfigTemperatureSensor(void)
 		}
 		/* Enable the temperature sensor channel */
 //		RequiredRTDsBitfield |= Ind2Bit_5[ (i) + 1 ];
-        tempRequiredRTDConfiguration |= Ind2Bit_5[ (i) + 1 ];
+        OTSM_SetSensorPriority(i, s_rxBuffer.Data.ConfigTemperatureSensor.MissingSensorPriority);
+		switch (s_rxBuffer.Data.ConfigTemperatureSensor.MissingSensorPriority)
+		{
+		case E_SensorMissingPriority_High:
+	        tempRequiredRTDConfiguration |= Ind2Bit_5[ (i) + 1 ];
+	        break;
+		case E_SensorMissingPriority_Med:
+		case E_SensorMissingPriority_Low:
+            break;
+		}
 		/* Enable the Heat Output */
 		Heat_Output_Enable();
 	}

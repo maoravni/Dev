@@ -324,6 +324,7 @@ struct T_ConfigTemperatureSensor
     float hardLimit;
     float aCoeff;
     float bCoeff;
+    uint8_t missingSensorPriority;
 };
 
 struct T_ConfigCurrentLoop
@@ -389,6 +390,7 @@ struct T_PsocVersion
 //    T_Version protocolVersion;
     T_VersionUnion firmwareVersion;
     T_VersionUnion protocolVersion;
+    uint8_t boardType;
 };
 
 struct T_PsocRequestWithVoltage

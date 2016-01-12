@@ -749,7 +749,7 @@ bool PsocManager::enablePsoc(int index)
                 expectedIcdVersion.split.build = M_PSOC_ICD_VERSION_BUILD;
                 expectedIcdVersion.split.revision = M_PSOC_ICD_VERSION_REVISION;
 
-                if (psocVersion.protocolVersion.full != expectedIcdVersion.full)
+                if (psocVersion.protocolVersion.full != expectedIcdVersion.full || psocVersion.boardType != Psc_GetBoardType())
                     result = false;
                 else
                 {

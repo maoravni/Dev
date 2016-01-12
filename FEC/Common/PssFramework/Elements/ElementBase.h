@@ -17,6 +17,13 @@
 
 #define M_UNASSIGNED_PSS_ID 0
 
+enum E_MissingDevicePriority
+{
+    E_MissingDevicePriority_High,
+    E_MissingDevicePriority_Med,
+    E_MissingDevicePriority_Low
+};
+
 class ElementBase
 {
 protected:
@@ -136,6 +143,9 @@ public:
     virtual bool isValid() = 0;
     virtual char getStatus() = 0;
 
+    virtual void setMissingDevicePriority(E_MissingDevicePriority priority) = 0;
+    virtual E_MissingDevicePriority getMissingDevicePriority() = 0;
+
     uint16_t getMaxInterval() const
     {
         return m_maxInterval * 100;
@@ -163,6 +173,7 @@ public:
     virtual void updateWarningBits(E_PSSErrors warning, bool state) = 0;
     virtual uint32_t getErrors() = 0;
     virtual uint32_t getWarnings() = 0;
+
 protected:
     virtual void sendDeviceStatus(uint8_t value);
     virtual void sendDeviceStatus(uint16_t value);

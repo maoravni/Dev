@@ -419,11 +419,12 @@ E_PsocSpiError PsocHandler::getVersion(CBinarySemaphore* completeSemaphore, T_Ps
     M_PSOC_REQUEST_BLOCKING_EPILOGUE(frame);
 
     memcpy(&version, &frame->receiveBuffer.data.psocVersion, sizeof(T_PsocVersion));
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Get Psoc Version: %d: firmware %d.%d.%d.%d --- icd %d.%d.%d.%d", m_psocIndex,
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Get Psoc Version: %d: firmware %d.%d.%d.%d --- icd %d.%d.%d.%d board %d", m_psocIndex,
             version.firmwareVersion.split.major, version.firmwareVersion.split.minor,
             version.firmwareVersion.split.build, version.firmwareVersion.split.revision,
             version.protocolVersion.split.major, version.protocolVersion.split.minor,
-            version.protocolVersion.split.build, version.protocolVersion.split.revision);
+            version.protocolVersion.split.build, version.protocolVersion.split.revision,
+            version.boardType);
     return frame->responseStatus;
 }
 
@@ -519,7 +520,7 @@ bool PsocHandler::verifyPsocOutputs()
 
 E_PsocSpiError PsocHandler::configTemperatureSensor(CBinarySemaphore* completeSemaphore, int channelIndex,
         E_PsocTemperatureSensorType channelType, E_PsocTemperatureSensorFilterType filterType, float hardLimit,
-        float corrA, float corrB)
+        float corrA, float corrB, E_MissingDevicePriority priority)
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "configTemperatureSensor: psocIndex=%d channelIndex=%d hardLimit=%f",
             m_psocIndex, channelIndex, hardLimit);
@@ -536,6 +537,7 @@ E_PsocSpiError PsocHandler::configTemperatureSensor(CBinarySemaphore* completeSe
     frame->transmitBuffer.data.configTemperatureSensor.filterType = filterType;
     frame->transmitBuffer.data.configTemperatureSensor.aCoeff = corrA;
     frame->transmitBuffer.data.configTemperatureSensor.bCoeff = corrB;
+    frame->transmitBuffer.data.configTemperatureSensor.missingSensorPriority = priority;
     g_configTemperatureSensor.prepareTransmitBuffer(&frame->transmitBuffer, m_lastSerialNumber);
 
     M_PSOC_REQUEST_BLOCKING_EPILOGUE(frame);

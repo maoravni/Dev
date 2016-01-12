@@ -79,6 +79,9 @@ public:
     virtual bool isValid() {return true;}
     virtual char getStatus() {return 0;}
 
+    virtual void setMissingDevicePriority(E_MissingDevicePriority priority){}
+    virtual E_MissingDevicePriority getMissingDevicePriority(){return E_MissingDevicePriority_High;}
+
     virtual void updateErrorBits(E_PSSErrors error, bool state) {}
     virtual void updateWarningBits(E_PSSErrors warning, bool state) {}
     virtual uint32_t getErrors() {return 0;}

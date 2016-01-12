@@ -205,7 +205,7 @@ public:
     E_PsocSpiError endBoardConfig(CBinarySemaphore* completeSemaphore);
     E_PsocSpiError configTemperatureSensor(CBinarySemaphore* completeSemaphore, int channelIndex,
             E_PsocTemperatureSensorType channelType, E_PsocTemperatureSensorFilterType filterType, float hardLimit,
-            float corrA, float corrB);
+            float corrA, float corrB, E_MissingDevicePriority priority);
     E_PsocSpiError configCurrentLoop(CBinarySemaphore* completeSemaphore, int channelIndex, uint16_t minCurrentLimit,
             uint16_t maxCurrentLimit);
     E_PsocSpiError configDigitalIO(CBinarySemaphore* completeSemaphore, int channelIndex, E_DigitalIOType channelType,

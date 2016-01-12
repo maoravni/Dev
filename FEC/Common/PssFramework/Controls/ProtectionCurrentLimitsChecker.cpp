@@ -39,6 +39,13 @@ void ProtectionCurrentLimitsChecker::updateNotification(ElementBase* element)
     {
         state = calcProtectionState(element);
     }
+    else
+    {
+        if (m_observedElement->getMissingDevicePriority() == E_MissingDevicePriority_High)
+            state = E_DeviceProtectionState_SoftLimitExceeded;
+        else
+            state = E_DeviceProtectionState_InRange;
+    }
 
     setNewProtectionState(state);
 }

@@ -45,14 +45,11 @@ void DeviceProtectionChecker::updateNotification(ElementBase* element)
     E_DeviceProtectionState state;
 
     state = E_DeviceProtectionState_InRange;
+    // TODO: When the observed element is invalid, the protection state should also be changed to invalid.
+    // This, combined with the missing device priority (which the two elements should have the same settings)
+    // will enable a control to decide itself what to do when a protection/malfunction occurs.
     if (m_observedElement->isValid())
     {
-//        if (isInsideLimit())
-//            state = E_DeviceProtectionState_InRange;
-//        else if (isOutsideSoftLimit())
-//            state = E_DeviceProtectionState_SoftLimitExceeded;
-//        else
-//            state = E_DeviceProtectionState_HardLimitExceeded;
         state = calcProtectionState(element);
     }
 
