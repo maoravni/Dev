@@ -57,7 +57,7 @@ void LiftPbOnErrorCcsGen3::updateNotification(ElementBase* element)
     bool airPressureOk, blanketMoving;
     bool pbOk;
 
-#define M_UPPER_PRESSURE_LIMIT 4.8
+#define M_UPPER_PRESSURE_LIMIT 3.5
 #define M_LOWER_PRESSURE_LIMIT 0.2
 
     airPressureUp = m_airPressureUp->getValueF();
@@ -70,11 +70,14 @@ void LiftPbOnErrorCcsGen3::updateNotification(ElementBase* element)
             (airPressureOk && (airPressureDown < M_LOWER_PRESSURE_LIMIT) && (airPressureUp > M_UPPER_PRESSURE_LIMIT) ||
             (airPressureOk && (airPressureUp < M_LOWER_PRESSURE_LIMIT) && (airPressureDown > M_UPPER_PRESSURE_LIMIT)));
 
-    if (!pbOk)
+    if (!pbOk && pbOk != (bool)m_pbOk->getValueI32())
     {
         M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Print bars lifted");
     }
-    raiseError(M_PSS_ID_ALL, E_PSSErrors_PrintBarLifted, !pbOk);
+    if (m_pbOk->getPssId() != 0)
+        raiseError(m_pbOk->getPssId(), E_PSSErrors_PrintBarLifted, !pbOk);
+    else
+        raiseError(M_PSS_ID_ALL, E_PSSErrors_PrintBarLifted, !pbOk);
     m_pbOk->setValue(pbOk);
 }
 
@@ -127,6 +130,7 @@ bool LiftPbOnErrorCcsGen3::initInputElements(int cableId)
 
     psocManager->initDigitalOutputPeripheralByCableId(m_cableId, 0, 6);
     psocManager->initDigitalInputPeripheralByCableId(m_cableId, 0, 6);
+    psocManager->initAnalogInputPeripheralByCableId(m_cableId, 0, 100, 0, 6);
 
     PsocDigitalInputPeripheral* psocDigitalInputs = psocManager->getDigitalInPeripheralByCableId(m_cableId);
     PsocDigitalOutputPeripheral *psocDigitalOutputs = psocManager->getDigitalOutPeripheralByCableId(m_cableId);

@@ -17,6 +17,7 @@ class LiftPbOnErrorCcsGen3: public ControlBase
     ElementBase* m_blanketMoving;
     ElementBase* m_airPressureOk;
     ElementBase* m_pbOk;
+//    bool m_prevPbOk;
 
     int m_cableId;
 
