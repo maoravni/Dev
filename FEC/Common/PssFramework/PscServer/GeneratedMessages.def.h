@@ -150,6 +150,7 @@ struct PSSActivateInverterControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
 	float setPoint;
+	unsigned int activationDelay;
 	};
 
 struct PSSActivatePIDControlMsg {
@@ -160,6 +161,7 @@ struct PSSActivatePIDControlMsg {
 	float maxWorkingRange;
 	float minWorkingRange;
 	float minWarningRange;
+	float feedForward;
 	};
 
 struct PSSAddDependentDeviceToControl {

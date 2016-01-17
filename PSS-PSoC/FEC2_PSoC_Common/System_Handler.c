@@ -583,6 +583,7 @@ void System_Status_Update(void)
     }
     case E_PsocPrimaryFunction_LiftPbOnError:
     case E_PsocPrimaryFunction_LiftPbOnErrorGen2:
+    case E_PsocPrimaryFunction_LiftPbOnErrorGen3:
     {
         CCS1_Error_Handler();
         CCS1_Warning_Handler();
@@ -641,7 +642,7 @@ void SysStsBit_Handler(void)
     if (SystemState.SystemErrors & TEMP_MDL_ERR_MASK)
     {
         SystemState.SystemStatus |= TEMP_MDL_ERR_STS;
-        Heat_Output_Disable();
+        //Heat_Output_Disable();
     }
     else
     {
@@ -653,7 +654,7 @@ void SysStsBit_Handler(void)
     if (SystemState.SystemErrors & MONITOR_MDL_ERR_MASK)
     {
         SystemState.SystemStatus |= MONITOR_MDL_ERR_STS;
-        Heat_Output_Disable();
+        //Heat_Output_Disable();
     }
     else
     {

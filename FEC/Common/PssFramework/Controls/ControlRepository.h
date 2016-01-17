@@ -22,6 +22,7 @@
 #include "EmergencyInputControl.h"
 #include "LiftPbOnError.h"
 #include "LiftPbOnErrorCcsGen2.h"
+#include "LiftPbOnErrorCcsGen3.h"
 #include <list>
 #include <vector>
 #include "OrderedShutdownControl.h"

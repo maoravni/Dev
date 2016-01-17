@@ -10,6 +10,7 @@
 #include <PscSubsystem.h>
 #include <Peripherals/PeripheralRepository.h>
 #include "logger.h"
+#include <Tasks/UpdateSchedulerTask.h>
 
 ModbusInverterControl::ModbusInverterControl()
 {
@@ -37,7 +38,17 @@ ModbusInverterControl::~ModbusInverterControl()
     m_outputFrequency->removeObserver(this);
 }
 
-bool ModbusInverterControl::setSetpoint(float value)
+void ModbusInverterControl::updateSetpoints()
+{
+    // set the ranges to the input:
+    if (m_setpoint->getValueF() != m_requestedSetpoint->getValueF())
+    {
+        m_setpoint->setValue(m_requestedSetpoint->getValueF());
+    }
+    *m_enableOutput = (m_requestedSetpoint->getValueF() != 0 && !m_isProtectionActive) ? 1 : 0;
+}
+
+bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t activationDelay)
 {
     if (/*m_stopping || */m_controlState == E_ControlState_On)
         return false;
@@ -52,26 +63,40 @@ bool ModbusInverterControl::setSetpoint(float value)
     m_controlState = E_ControlState_Move2Ready;
     m_stopping = false;
 
-    // set the ranges to the input:
-    if (m_setpoint->getValueF() != value)
-    {
-        m_setpoint->setValue(value);
-    }
+    // remove current timeouts if they exist:
+    ModbusSchedulerTask::getInstance()->addTimeout(this, 0);
+
     m_requestedSetpoint->setValue(value);
     m_requestedSetpoint->updateWorkingRange(value - 1, value + 1, true, true);
     m_requestedSetpoint->updateWarningRange(value - 2, value + 2, true, true);
 
-    *m_enableOutput = (value != 0 && !m_isProtectionActive) ? 1 : 0;
+    if (activationDelay == 0)
+    {
+        // set the ranges to the input:
+        updateSetpoints();
+    }
+    else
+    {
+        ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay);
+    }
 
     sendNotification();
 
     return true;
 }
 
+bool ModbusInverterControl::setSetpointSnActivationDelay(float value, uint32_t sn, uint32_t activationDelay)
+{
+    m_lastSn = sn;
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "m_lastSn=%d", m_lastSn);
+    return setSetpointActivationDelay(value, activationDelay);
+}
+
 bool ModbusInverterControl::setSetpoint(float value, uint32_t sn)
 {
     m_lastSn = sn;
-    return setSetpoint(value);
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "m_lastSn=%d", m_lastSn);
+    return setSetpointActivationDelay(value, 0);
 }
 
 void ModbusInverterControl::setOutputEnableElement(ElementBase* element)
@@ -132,10 +157,11 @@ void ModbusInverterControl::execute()
         }
         break;
     case E_ControlState_Move2Ready:
-        if (((int) (m_outputFrequency->getValueF() * 10)) == ((int) (m_setpoint->getValueF() * 10)))
+        if (((int) (m_outputFrequency->getValueF() * 10)) == ((int) (m_requestedSetpoint->getValueF() * 10)))
         {
             m_controlState = E_ControlState_Ready;
             sendNotification();
+//            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "m_lastSn=%d", m_lastSn);
             if (m_lastSn != 0)
             {
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_INFO, "Inverter {[PSSID:%d]} changed state to Ready", getPssId());
@@ -202,7 +228,7 @@ void ModbusInverterControl::updateNotification(ElementBase* element)
     }
     else if (element == m_setpoint)
     {
-        setSetpoint(m_setpoint->getValueF());
+        setSetpointActivationDelay(m_setpoint->getValueF(), 0);
     }
     else if (element == m_driveStatus)
     {
@@ -335,6 +361,11 @@ bool ModbusInverterControl::onRecoverFromEmr()
     return true;
 }
 
+void ModbusInverterControl::timeoutExpired(uint16_t timeoutType)
+{
+    updateSetpoints();
+}
+
 void ModbusInverterControl::setBoardInReady(bool state)
 {
     ControlBase::setBoardInReady(state);
@@ -348,6 +379,7 @@ void ModbusInverterControl::setBoardInReady(bool state)
 //        }
 //    }
 }
+
 //void ModbusInverterControl::executeProtectionCheck(ElementBase* element)
 //{
 //    // Protection elements should stop the inverter is above max working, and continue when below min working.

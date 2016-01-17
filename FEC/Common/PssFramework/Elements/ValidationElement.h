@@ -222,6 +222,7 @@ inline ValidationElement<_type>::ValidationElement()
     m_errorBits = 0;
     m_warningBits = 0;
     m_value = 0;
+    m_missingDevicePriority = E_MissingDevicePriority_High;
 }
 
 template<class _type>

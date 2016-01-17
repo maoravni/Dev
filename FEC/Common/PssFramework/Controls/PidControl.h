@@ -103,8 +103,8 @@ public:
 
     virtual bool sendNotification();
 
-    virtual bool setSetpoint(float setpoint, uint32_t sn) {return setSetpoint(setpoint, -5, +5, -10, +10, sn);}
-    virtual bool setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, uint32_t sn);
+    virtual bool setSetpoint(float setpoint, uint32_t sn) {return setSetpoint(setpoint, -5, +5, -10, +10, 0, 0, sn);}
+    virtual bool setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, float feedForward, uint32_t delay, uint32_t sn);
     virtual bool setSetpoint(ValidationElementFloat* element);
 
     virtual bool onInitControl();

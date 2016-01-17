@@ -11,6 +11,13 @@
 
 #define MSG_Disconnect 0x4001
 #define MSG_Connect 0x4002
+#define MSG_BSSBlanketCleaningState 0x31
+#define MSG_BSSSendCCSEngageState 0x30
+#define MSG_PolisherMove 0x23
+#define MSG_PolisherRecovery 0x25
+#define MSG_PolisherSetParams 0x26
+#define MSG_PolisherStatusNotification 0x28
+#define MSG_PolisherStop 0x24
 #define MSG_ActivateActivationWithFeedbackControl 0x314
 #define MSG_ActivateLeakageDetectionControl 0x315
 #define MSG_ActivateObserveAndNotifyControlMsg 0x318
@@ -69,6 +76,7 @@
 #define MSG_GetStatus 0x400
 #define MSG_InitControl 0x300
 #define MSG_NextAppPacket 0x1001
+#define MSG_PSSReadyForRecovery 0x31
 #define MSG_ResetBoard 0x50
 #define MSG_ResetToOnControl 0x302
 #define MSG_SetLeakageDetectionParameters 0x316
@@ -105,15 +113,15 @@
 #define MSG_WarningNotification 0x14
 #define MSG_WarningNotificationWithSecondary 0x24
 #define MSG_WriteModbusRegister 0x112
-#define MSG_RevolverAck 0x1
+#define MSG_TMCAck 0x1
 #define MSG_RevolverBrushForward 0x10
 #define MSG_RevolverBrushReverse 0x9
 #define MSG_RevolverCleancycle 0x12
-#define MSG_RevolverErrorNotification 0x5
+#define MSG_TMCErrorNotification 0x5
 #define MSG_RevolverGetStatus 0x3
 #define MSG_RevolverGotoNextBlade 0x8
-#define MSG_RevolverKeepAlive 0x17
-#define MSG_RevolverKeepAliveReply 0x17
+#define MSG_TMCKeepAlive 0x17
+#define MSG_TMCKeepAliveReply 0x17
 #define MSG_RevolverHardReset 0x20
 #define MSG_RevolverMoveToOn 0x19
 #define MSG_RevolverMoveToReady 0x16
@@ -121,13 +129,18 @@
 #define MSG_RevolverSetHomePosition 0x14
 #define MSG_RevolverInit 0x6
 #define MSG_RevolverRecovery 0x13
-#define MSG_RevolverSeqEnded 0x2
+#define MSG_TMCSeqEnded 0x2
 #define MSG_RevolverSetMotorsOff 0x21
 #define MSG_RevolverSetParams 0x15
 #define MSG_RevolverSetZeroPosition 0x7
 #define MSG_RevolverStatusNotification 0x3
 #define MSG_RevolverStopbrush 0x11
-#define MSG_RevolverWarningNotification 0x4
+#define MSG_TMCWarningNotification 0x4
+#define MSG_TMCGetVersion 0x22
+#define MSG_TMCGetVersionReply 0x22
+#define MSG_TMCSetControls 0x32
+#define MSG_WaitDisengageTubApprovle 0x34
+#define MSG_WaitStopPumpsApprovle 0x33
 
 M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateActivationWithFeedbackControl + APP_MSG, MessageActivateActivationWithFeedbackControlHandler)

@@ -28,8 +28,9 @@ public:
     ModbusInverterControl();
     virtual ~ModbusInverterControl();
 
-    bool setSetpoint(float value, uint32_t sn);
-    bool setSetpoint(float value);
+    bool setSetpointSnActivationDelay(float value, uint32_t sn, uint32_t activationDelay);
+    bool setSetpointActivationDelay(float value, uint32_t activationDelay);
+    virtual bool setSetpoint(float setpoint, uint32_t sn);
 
     void setOutputEnableElement(ElementBase* element);
     void setOutputFrequencyElement(ElementBase* element);
@@ -43,7 +44,7 @@ public:
 //    virtual void executeProtectionCheck(ElementBase* element);
     virtual void updateNotification(ElementBase* element);
     virtual bool requestValueChange(ElementBase* element){return true;}
-    virtual void timeoutExpired(uint16_t timeoutType){}
+    virtual void timeoutExpired(uint16_t timeoutType);
 
     virtual bool sendNotification();
 
@@ -64,6 +65,9 @@ public:
     virtual bool onRecoverFromEmr();
 
     virtual void setBoardInReady(bool state);
+
+private:
+    void updateSetpoints();
 };
 
 #endif /* MODBUSINVERTERCONTROL_H_ */

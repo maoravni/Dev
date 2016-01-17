@@ -91,7 +91,7 @@ public:
      *
      * @param setpoint
      */
-    void setSetPoint(float setpoint);
+    void setSetPoint(float setpoint, float feedForward);
     float getSetPoint() {return m_setpoint;}
 
     void setSetPointRange(float setpointRange);

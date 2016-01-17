@@ -221,15 +221,13 @@ void PIDDynamicSampleTime::setAutoMode(bool mode)
     m_lastTick = xTaskGetTickCount() - 1;
 }
 
-void PIDDynamicSampleTime::setSetPoint(float setpoint)
+void PIDDynamicSampleTime::setSetPoint(float setpoint, float feedForward)
 {
     m_setpoint = setpoint;
     m_lastTick = xTaskGetTickCount() - 1;
 
-//    if (((int)m_setpoint%10) == 9)
-//        m_feedForwardInjection = 70;
-//    else
-        m_feedForwardInjection = 0;
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "FeedForward=%f", feedForward);
+    m_feedForwardInjection = feedForward;
 }
 
 void PIDDynamicSampleTime::setSetPointRange(float setpointRange)
@@ -251,6 +249,7 @@ void PIDDynamicSampleTime::Initialize()
         m_ITerm = m_outMin;
     m_lastInput = 0;
     m_lastError = 0;
+    m_feedForwardInjection = 0;
     m_lastTick = xTaskGetTickCount() - 1;
 }
 
@@ -260,6 +259,7 @@ void PIDDynamicSampleTime::reset()
     m_ITerm = 0;
     m_lastError = 0;
     m_output = 0;
+    m_feedForwardInjection = 0;
     setEnabled(false);
 }
 
@@ -296,6 +296,7 @@ void PIDDynamicSampleTime::setEnabled(bool enabled)
 {
     m_enabled = enabled;
     m_lastTick = xTaskGetTickCount() - 1;
+    m_feedForwardInjection = 0;
 //    if (!m_advancedPid)
 //        m_ITerm = 0;
 }

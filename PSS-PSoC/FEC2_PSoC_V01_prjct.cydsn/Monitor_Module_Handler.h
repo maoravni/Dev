@@ -59,7 +59,7 @@
 #define NO_OF_TOTAL_SAR2_IDs_SAMPLES	    NUM_OF_IDs_SENS * NUM_OF_SAR2_IDs_SAMPLES 	
 
 #define PEAK_MA_WIDTH						50
-#define CS_NO_OF_FALSE_CURRENTS				50
+#define CS_NO_OF_FALSE_CURRENTS				200
 #define CS_NO_OF_CURRENTS_MISSES			100
 ///////////////////////////////////////////////////////////////
 // Cable ID Calculation 

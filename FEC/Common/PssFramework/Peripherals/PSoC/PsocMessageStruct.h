@@ -276,9 +276,10 @@ enum E_PsocPrimaryFunction
 
     /// <remarks/>
     E_PsocPrimaryFunction_Applicator,
-
     /// <remarks/>
     E_PsocPrimaryFunction_LiftPbOnErrorGen2,
+
+    E_PsocPrimaryFunction_LiftPbOnErrorGen3,
 };
 
 enum E_DigitalIOType

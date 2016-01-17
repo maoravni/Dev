@@ -201,7 +201,7 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
 
             setActivationState(E_ActivationState_Active, sn);
             // make sure that if there's an existing timeout its removed.
-            UpdateSchedulerTask::getInstance()->addTimeout(this, 0);
+            UpdateSchedulerTask::getInstance()->addTimeout(this, 0, M_ACTIVATION_TIMEOUT_TYPE);
             if (timeout > 0 && timeout != ((uint32_t) - 1))
                 UpdateSchedulerTask::getInstance()->addTimeout(this, timeout, M_ACTIVATION_TIMEOUT_TYPE);
             execute();
@@ -234,7 +234,7 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
             // make sure that if there's an existing timeout its removed.
             UpdateSchedulerTask::getInstance()->addTimeout(this, 0, M_ACTIVATION_TIMEOUT_TYPE);
             if (timeout > 0 && timeout != ((uint32_t) - 1))
-                UpdateSchedulerTask::getInstance()->addTimeout(this, timeout);
+                UpdateSchedulerTask::getInstance()->addTimeout(this, timeout, M_ACTIVATION_TIMEOUT_TYPE);
             execute();
 //        if (m_outputEnableDevice != NULL)
 //            *m_outputEnableDevice = 0;

@@ -66,6 +66,7 @@ module Logic_Function (
 	localparam LIFT_PB_ON_ERROR			= 4'b0100;
 	localparam APPLICATOR		        = 4'b0101;
 	localparam LIFT_PB_ON_ERROR_GEN_2	= 4'b0110;
+	localparam LIFT_PB_ON_ERROR_GEN_3	= 4'b0111;
 	// local parameters for timer state machime
 	
 	localparam RELOAD          = 3'b000;
@@ -202,6 +203,16 @@ module Logic_Function (
 						interrupt <= `ZERO;					
 					end
 					APPLICATOR:
+					begin
+						DO_0 <= OC_0;	// Output - Unconditional Pass.
+						DO_1 <= OC_1;	// Output - Unconditional Pass.
+						DO_2 <= OC_2;	// Output - Unconditional Pass.
+						DO_3 <= OC_3;	// Output - Unconditional Pass.
+						DO_4 <= OC_4;	// Output - Unconditional Pass.
+						DO_5 <= OC_5;	// Output - Unconditional Pass.
+						interrupt <= `ZERO;					
+					end
+					LIFT_PB_ON_ERROR_GEN_3:
 					begin
 						DO_0 <= OC_0;	// Output - Unconditional Pass.
 						DO_1 <= OC_1;	// Output - Unconditional Pass.

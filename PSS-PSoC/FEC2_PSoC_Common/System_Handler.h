@@ -208,6 +208,8 @@ typedef enum
         /// <remarks/>
         E_PsocPrimaryFunction_LiftPbOnErrorGen2,
         
+        E_PsocPrimaryFunction_LiftPbOnErrorGen3,
+
     
     E_PsocPrimaryFunction_Size,
 } E_PsocPrimaryFunction;

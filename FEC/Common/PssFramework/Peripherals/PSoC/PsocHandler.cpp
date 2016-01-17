@@ -522,8 +522,8 @@ E_PsocSpiError PsocHandler::configTemperatureSensor(CBinarySemaphore* completeSe
         E_PsocTemperatureSensorType channelType, E_PsocTemperatureSensorFilterType filterType, float hardLimit,
         float corrA, float corrB, E_MissingDevicePriority priority)
 {
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "configTemperatureSensor: psocIndex=%d channelIndex=%d hardLimit=%f",
-            m_psocIndex, channelIndex, hardLimit);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "configTemperatureSensor: psocIndex=%d channelIndex=%d hardLimit=%f missPrio=%d",
+            m_psocIndex, channelIndex, hardLimit, priority);
 
     T_SpiFrameStruct* frame;
     M_PSOC_REQUEST_PROLOGUE(frame);

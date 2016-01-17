@@ -933,7 +933,8 @@ void Ex_EndBoardConfig()
 			break;
 		}
 		case E_PsocPrimaryFunction_LiftPbOnError:
-		case E_PsocPrimaryFunction_LiftPbOnErrorGen2:
+        case E_PsocPrimaryFunction_LiftPbOnErrorGen2:
+        case E_PsocPrimaryFunction_LiftPbOnErrorGen3:
 		{
 //			/* Start the DSM conversion */
 //			DSM_Sequencer_Enable();

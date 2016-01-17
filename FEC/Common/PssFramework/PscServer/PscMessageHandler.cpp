@@ -427,6 +427,13 @@ void PscMessageHandler::MessageSetPsocSlaveConfigHandler(unsigned long param)
                 status = E_AckStatus_InvalidDevice;
             break;
         }
+        case E_PsocPrimaryFunction_LiftPbOnErrorGen3:
+            LiftPbOnErrorCcsGen3* liftControl = new LiftPbOnErrorCcsGen3();
+            if (liftControl->initInputElements(payload->slaveCableId))
+                status = E_AckStatus_Success;
+            else
+                status = E_AckStatus_InvalidDevice;
+            break;
 #else
             status = E_AckStatus_InvalidDevice;
 #endif
@@ -697,7 +704,7 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSEndBoardConfig: cableId=%d deleteOnDisconnection=%d", payload->cableId,
             payload->deleteOnDisconnection);
 
-    // TODO: Add log message.
+//    // TODO: Add log message.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
 
     m_deleteControlsOnDisconnection = payload->deleteOnDisconnection;
@@ -724,9 +731,13 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     m_psocManager.downloadConfigurationToPsocs();
 #endif
 
+    // TODO: Add log message.
+    //sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
+
     ControlRepository::getInstance().sendUpdateNotificationForAllControls();
 
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
+
 }
 
 void PscMessageHandler::MessageDefineOnboardPT100PeriphHandler(unsigned long param)
@@ -1337,7 +1348,7 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
         return;
     }
 
-    ElementBase* element = periph->getElementByIndex(payload->deviceIndex);
+    ValidationElementBase* element = static_cast<ValidationElementBase*>(periph->getElementByIndex(payload->deviceIndex));
 
     if (element == NULL)
     {
@@ -1348,6 +1359,7 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
     }
 
     element->setPssId(payload->pssId);
+    element->setMissingDevicePriority((E_MissingDevicePriority)payload->missingSensorPriority);
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 }
@@ -2509,9 +2521,9 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
             payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f", payload->cableId,
+            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f FF=%f", payload->cableId,
             payload->pssId, payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
@@ -2527,7 +2539,7 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 
     PidControl *pidControl = static_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange, message->header.sn);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, 0, message->header.sn);
 }
 
 void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigned long param)
@@ -2572,8 +2584,8 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
     M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
             payload->pssId);
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSActivateInverterControlMsg: cableId=%d pssId={[PSSID:%d]} setpoint=%f",
-            payload->cableId, payload->pssId, payload->setPoint);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSActivateInverterControlMsg: cableId=%d pssId={[PSSID:%d]} setpoint=%f delay=%d",
+            payload->cableId, payload->pssId, payload->setPoint, payload->activationDelay);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
@@ -2603,7 +2615,7 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
 
         // TODO: and pure virtual method "setSetpoint" to all controls.
         ModbusInverterControl *inverterControl = static_cast<ModbusInverterControl*>(control);
-        inverterControl->setSetpoint(payload->setPoint, message->header.sn);
+        inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn, payload->activationDelay);
     }
     else
     {

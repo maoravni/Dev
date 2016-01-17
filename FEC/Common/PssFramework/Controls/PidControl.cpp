@@ -58,7 +58,7 @@ E_AckStatus PidControl::startAutoTune(float setpoint, float overshoot, float out
 //    m_lastSn = sn;
     m_isInAutotune = true;
 
-    setSetpoint(setpoint, -5, +5, -10, +10, sn);
+    setSetpoint(setpoint, -5, +5, -10, +10, 0, 0, sn);
 
     return E_AckStatus_Success;
 }
@@ -273,7 +273,7 @@ bool PidControl::sendNotification()
     return true;
 }
 
-bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, uint32_t sn)
+bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, float feedForward, uint32_t delay, uint32_t sn)
 {
     if (m_controlState == E_ControlState_On)
         return false;
@@ -297,9 +297,9 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
     raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
 
-    m_pidCalc.setSetPoint(sp);
     m_pidCalc.setAutoMode(true);
     m_pidCalc.setEnabled(true);
+    m_pidCalc.setSetPoint(sp, feedForward);
 
     sendNotification();
 
@@ -318,7 +318,7 @@ bool PidControl::setSetpoint(ValidationElementFloat* element)
     if (!m_pidCalc.isEnabled() && element->getValue() != m_pidCalc.getSetPoint())
     {
         return setSetpoint(element->getValue(), element->getMinWorking(), element->getMaxWorking(),
-                element->getMinWarning(), element->getMaxWarning(), 0);
+                element->getMinWarning(), element->getMaxWarning(), 0, 0, 0);
     }
     return true;
 }
