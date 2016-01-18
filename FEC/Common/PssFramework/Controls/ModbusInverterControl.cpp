@@ -118,6 +118,7 @@ void ModbusInverterControl::setOutputFrequencyElement(ElementBase* element)
 {
     m_outputFrequency = element;
     m_outputFrequency->addObserver(this);
+    m_outputFrequency->setMissingDevicePriority(E_MissingDevicePriority_High);
 }
 
 void ModbusInverterControl::setOutputCurrentElement(ElementBase* element)

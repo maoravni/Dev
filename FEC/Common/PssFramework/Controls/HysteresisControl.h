@@ -57,6 +57,7 @@ public:
     void setElementInput(ValidationElementFloat* input)
     {
         m_input = input;
+        m_input->setMissingDevicePriority(E_MissingDevicePriority_High);
         m_input->addObserver(this);
 //        setSecondaryPssId(m_input->getPssId());
     }

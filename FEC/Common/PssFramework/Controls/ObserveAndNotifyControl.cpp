@@ -30,6 +30,7 @@ void ObserveAndNotifyControl::setElementInput(ValidationElementFloat* input)
 {
     m_input = input;
     m_input->addObserver(this);
+    m_input->setMissingDevicePriority(E_MissingDevicePriority_High);
 }
 
 void ObserveAndNotifyControl::setElementSetpoint(ValidationElementFloat* setpoint)
