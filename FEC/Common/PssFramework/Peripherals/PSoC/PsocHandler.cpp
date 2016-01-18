@@ -768,6 +768,10 @@ void PsocHandler::addPendingPwmOutputValue(int index, uint16_t value)
 
 void PsocHandler::addPendingAnalogOutputValue(int index, uint16_t value)
 {
+    if (value > 0)
+        value += 50;
+    if (value > 250)
+        value = 250;
     m_analogOutputs[index] = value;
     addPendingUpdate(E_PsocDeviceType_AnalogOutput);
 }
