@@ -181,7 +181,7 @@ bool ObserveAndNotifyControl::onInitControl()
     return true;
 }
 
-bool ObserveAndNotifyControl::onMove2Standby()
+bool ObserveAndNotifyControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;

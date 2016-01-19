@@ -44,7 +44,7 @@ public:
 //    virtual void addDependentElement(ElementBase* element, float thresholdValue, bool greaterThan, bool deactivate, bool lock, int checkType) {};
 
     virtual bool onInitControl();
-    virtual bool onMove2Standby();
+    virtual bool onMove2Standby(uint32_t delay);
     virtual bool onReset2On();
     virtual bool onMove2Error();
     virtual bool onStopOnEmr();

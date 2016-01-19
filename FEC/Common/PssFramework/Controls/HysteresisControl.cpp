@@ -295,7 +295,7 @@ bool HysteresisControl::setSetpoint(ValidationElementFloat* activateElement, Val
 //    return true;
 }
 
-bool HysteresisControl::onMove2Standby()
+bool HysteresisControl::onMove2Standby(uint32_t delay)
 {
     if (m_output->getValueF() != 0)
         *m_output = 0;

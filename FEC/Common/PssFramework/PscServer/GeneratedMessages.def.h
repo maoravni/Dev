@@ -162,6 +162,7 @@ struct PSSActivatePIDControlMsg {
 	float minWorkingRange;
 	float minWarningRange;
 	float feedForward;
+	unsigned int activationDelay;
 	};
 
 struct PSSAddDependentDeviceToControl {
@@ -702,6 +703,7 @@ struct PSSStartBoardConfigMsg {
 struct PSSStopControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
+	unsigned int activationDelay;
 	};
 
 struct PSSControlStatusNotificationMsg {

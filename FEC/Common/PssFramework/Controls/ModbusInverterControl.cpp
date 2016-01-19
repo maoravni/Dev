@@ -289,7 +289,7 @@ bool ModbusInverterControl::onInitControl()
     return true;
 }
 
-bool ModbusInverterControl::onMove2Standby()
+bool ModbusInverterControl::onMove2Standby(uint32_t delay)
 {
     *m_enableOutput = 0;
     if (m_setpoint->getValueF() != 0)

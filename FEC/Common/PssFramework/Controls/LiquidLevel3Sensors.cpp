@@ -56,7 +56,7 @@ bool LiquidLevel3Sensors::onInitControl()
     return true;
 }
 
-bool LiquidLevel3Sensors::onMove2Standby()
+bool LiquidLevel3Sensors::onMove2Standby(uint32_t delay)
 {
     execute();
     endMove2Standby();

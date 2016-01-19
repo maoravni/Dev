@@ -61,7 +61,7 @@ bool AnalogLiquidLevelControl::onInitControl()
     return true;
 }
 
-bool AnalogLiquidLevelControl::onMove2Standby()
+bool AnalogLiquidLevelControl::onMove2Standby(uint32_t delay)
 {
     execute();
     endMove2Standby();

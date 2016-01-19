@@ -137,7 +137,7 @@ bool AnalogOutInverterControl::onInitControl()
     return true;
 }
 
-bool AnalogOutInverterControl::onMove2Standby()
+bool AnalogOutInverterControl::onMove2Standby(uint32_t delay)
 {
     setOutputValue(0);
     endMove2Standby();

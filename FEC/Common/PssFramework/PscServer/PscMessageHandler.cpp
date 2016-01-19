@@ -2284,6 +2284,10 @@ void PscMessageHandler::MessageStopControlHandler(unsigned long param)
     M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
             payload->pssId);
 
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSStopControlMsg: cableId=%d pssId={[PSSID:%d]} delay=%d",
+            payload->cableId, payload->pssId, payload->activationDelay);
+
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
     if (control == NULL)
@@ -2298,7 +2302,7 @@ void PscMessageHandler::MessageStopControlHandler(unsigned long param)
 
 // move the control to STANDBY.
 // The control should now send SEQ_ENDED when finished.
-    control->move2Standby(message->header.id.full, message->header.sn);
+    control->move2Standby(message->header.id.full, payload->activationDelay, message->header.sn);
 }
 
 void PscMessageHandler::MessageResetToOnControlHandler(unsigned long param)
@@ -2521,9 +2525,9 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
             payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f FF=%f", payload->cableId,
+            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f FF=%f delay=%d", payload->cableId,
             payload->pssId, payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange, payload->feedForward);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 

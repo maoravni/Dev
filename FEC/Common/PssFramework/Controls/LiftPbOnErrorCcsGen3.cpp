@@ -86,7 +86,7 @@ bool LiftPbOnErrorCcsGen3::onInitControl()
     return true;
 }
 
-bool LiftPbOnErrorCcsGen3::onMove2Standby()
+bool LiftPbOnErrorCcsGen3::onMove2Standby(uint32_t delay)
 {
     return true;
 }

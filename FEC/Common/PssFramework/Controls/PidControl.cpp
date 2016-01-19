@@ -356,7 +356,7 @@ void PidControl::sendPidValues()
     PscMasterServer::getInstance().sendMessage(reply);
 }
 
-bool PidControl::onMove2Standby()
+bool PidControl::onMove2Standby(uint32_t delay)
 {
     m_pidCalc.setEnabled(false);
     if (m_output->getValueF() != 0)

@@ -160,7 +160,7 @@ public:
     }
 
     bool initControl(uint32_t msgId, uint32_t sn);
-    bool move2Standby(uint32_t msgId, uint32_t sn);
+    bool move2Standby(uint32_t msgId, uint32_t delay, uint32_t sn);
     bool reset2On(uint32_t msgId, uint32_t sn);
     bool move2Error(uint32_t msgId, uint32_t sn);
     bool stopOnEmr();
@@ -169,7 +169,7 @@ public:
     virtual bool setSetpoint(float setpoint, uint32_t sn) = 0;
 
     virtual bool onInitControl() = 0;
-    virtual bool onMove2Standby() = 0;
+    virtual bool onMove2Standby(uint32_t delay) = 0;
     virtual bool onReset2On() = 0;
     virtual bool onMove2Error() = 0;
     virtual bool onStopOnEmr() = 0;

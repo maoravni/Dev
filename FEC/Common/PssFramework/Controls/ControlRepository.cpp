@@ -142,7 +142,7 @@ void ControlRepository::stopAllControls(bool exceptStopOnDisconnection)
     for (i = m_controlList.begin(); i != m_controlList.end(); ++i)
     {
         if (!(exceptStopOnDisconnection && !(*i)->isStopOnDisconnection()))
-            (*i)->move2Standby(0, 0);
+            (*i)->move2Standby(0, 0, 0);
     }
 }
 

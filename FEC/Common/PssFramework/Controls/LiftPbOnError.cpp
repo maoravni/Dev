@@ -88,7 +88,7 @@ bool LiftPbOnError::onInitControl()
     return true;
 }
 
-bool LiftPbOnError::onMove2Standby()
+bool LiftPbOnError::onMove2Standby(uint32_t delay)
 {
     return true;
 }

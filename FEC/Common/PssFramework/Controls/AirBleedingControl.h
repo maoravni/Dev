@@ -33,7 +33,7 @@ public:
 //    virtual void addProtectionElement(ValidationElementBase* element);
 
     virtual bool onInitControl();
-    virtual bool onMove2Standby();
+    virtual bool onMove2Standby(uint32_t delay);
     virtual bool onReset2On();
 };
 
@@ -43,7 +43,7 @@ inline bool AirBleedingControl::onInitControl()
     return true;
 }
 
-inline bool AirBleedingControl::onMove2Standby()
+inline bool AirBleedingControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;

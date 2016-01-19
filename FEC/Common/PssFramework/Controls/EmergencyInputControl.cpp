@@ -45,7 +45,7 @@ bool EmergencyInputControl::onInitControl()
     return true;
 }
 
-bool EmergencyInputControl::onMove2Standby()
+bool EmergencyInputControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;

@@ -29,7 +29,7 @@ bool CalculateOnTwoDevicesControl::onInitControl()
     return true;
 }
 
-bool CalculateOnTwoDevicesControl::onMove2Standby()
+bool CalculateOnTwoDevicesControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;

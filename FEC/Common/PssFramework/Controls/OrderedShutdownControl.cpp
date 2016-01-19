@@ -31,7 +31,7 @@ bool OrderedShutdownControl::onInitControl()
     return true;
 }
 
-bool OrderedShutdownControl::onMove2Standby()
+bool OrderedShutdownControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;
@@ -161,7 +161,7 @@ void OrderedShutdownControl::executeCurrentOperation()
             control->initControl(0, 0);
             break;
         case E_ShutdownOperation_Stop:
-            control->move2Standby(0, 0);
+            control->move2Standby(0, 0, 0);
             break;
         case E_ShutdownOperation_Activate:
             control->setSetpoint(m_currentOperation->setpoint, 0);

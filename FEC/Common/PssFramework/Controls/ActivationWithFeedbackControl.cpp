@@ -312,7 +312,7 @@ bool ActivationWithFeedbackControl::onStopOnEmr()
     return true;
 }
 
-bool ActivationWithFeedbackControl::onMove2Standby()
+bool ActivationWithFeedbackControl::onMove2Standby(uint32_t delay)
 {
 //    bool result = activateControl(false);
 //    setActivationState(E_ActivationState_Unknown, m_lastSn);

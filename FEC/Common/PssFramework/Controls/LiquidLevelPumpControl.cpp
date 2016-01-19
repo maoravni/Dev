@@ -139,7 +139,7 @@ bool LiquidLevelPumpControl::onInitControl()
     return true;
 }
 
-bool LiquidLevelPumpControl::onMove2Standby()
+bool LiquidLevelPumpControl::onMove2Standby(uint32_t delay)
 {
     m_requestedState = E_ControlState_Standby;
     m_stopRequested = true;

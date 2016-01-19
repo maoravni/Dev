@@ -182,7 +182,7 @@ bool LeakDetectionControl::onInitControl()
     return true;
 }
 
-bool LeakDetectionControl::onMove2Standby()
+bool LeakDetectionControl::onMove2Standby(uint32_t delay)
 {
     endMove2Standby();
     return true;

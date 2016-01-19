@@ -57,7 +57,7 @@ public:
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
 
     virtual bool onInitControl();
-    virtual bool onMove2Standby();
+    virtual bool onMove2Standby(uint32_t delay);
     virtual bool onReset2On();
     virtual bool onMove2Error();
     virtual bool onStopOnEmr();

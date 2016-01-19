@@ -57,7 +57,7 @@ bool ControlBase::initControl(uint32_t msgId, uint32_t sn)
     return false;
 }
 
-bool ControlBase::move2Standby(uint32_t msgId, uint32_t sn)
+bool ControlBase::move2Standby(uint32_t msgId, uint32_t delay, uint32_t sn)
 {
     if (m_controlState == E_ControlState_Emergency)
     {
@@ -69,7 +69,7 @@ bool ControlBase::move2Standby(uint32_t msgId, uint32_t sn)
         m_lastSn = sn;
         m_lastStateChangeMessageId = msgId;
         PscMasterServer::getInstance().sendAck(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_AckStatus_Success);
-        return onMove2Standby();
+        return onMove2Standby(delay);
     }
     PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
     return false;

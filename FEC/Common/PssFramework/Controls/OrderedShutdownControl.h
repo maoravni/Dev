@@ -52,7 +52,7 @@ public:
     virtual bool setSetpoint(float setpoint, uint32_t sn) {return true;}
 
     virtual bool onInitControl();
-    virtual bool onMove2Standby();
+    virtual bool onMove2Standby(uint32_t delay);
     virtual bool onReset2On();
     virtual bool onMove2Error();
     virtual bool onStopOnEmr();
