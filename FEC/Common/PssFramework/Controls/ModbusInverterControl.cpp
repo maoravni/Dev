@@ -12,6 +12,9 @@
 #include "logger.h"
 #include <Tasks/UpdateSchedulerTask.h>
 
+#define M_TIMEOUT_STOP 0
+#define M_TIMEOUT_ACTIVATE 1
+
 ModbusInverterControl::ModbusInverterControl()
 {
     m_enableOutput = NULL;
@@ -64,7 +67,8 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
     m_stopping = false;
 
     // remove current timeouts if they exist:
-    ModbusSchedulerTask::getInstance()->addTimeout(this, 0);
+    ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_ACTIVATE);
+    ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_STOP);
 
     m_requestedSetpoint->setValue(value);
     m_requestedSetpoint->updateWorkingRange(value - 1, value + 1, true, true);
@@ -77,7 +81,7 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
     }
     else
     {
-        ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay);
+        ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay, M_TIMEOUT_ACTIVATE);
     }
 
     sendNotification();
@@ -291,6 +295,17 @@ bool ModbusInverterControl::onInitControl()
 
 bool ModbusInverterControl::onMove2Standby(uint32_t delay)
 {
+    if (delay == 0)
+        return onMove2Standby();
+    else
+    {
+        ModbusSchedulerTask::getInstance()->addTimeout(this, delay, M_TIMEOUT_STOP);
+        return true;
+    }
+}
+
+bool ModbusInverterControl::onMove2Standby()
+{
     *m_enableOutput = 0;
     if (m_setpoint->getValueF() != 0)
     {
@@ -364,7 +379,15 @@ bool ModbusInverterControl::onRecoverFromEmr()
 
 void ModbusInverterControl::timeoutExpired(uint16_t timeoutType)
 {
-    updateSetpoints();
+    switch (timeoutType)
+    {
+    case M_TIMEOUT_ACTIVATE:
+        updateSetpoints();
+        break;
+    case M_TIMEOUT_STOP:
+        onMove2Standby();
+        break;
+    }
 }
 
 void ModbusInverterControl::setBoardInReady(bool state)

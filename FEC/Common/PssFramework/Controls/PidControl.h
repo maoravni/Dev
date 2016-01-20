@@ -23,6 +23,7 @@ class PidControl: public ControlBase
     ValidationElementFloat* m_input;
     ElementBase* m_output;
     ValidationElementFloat* m_setpoint;
+    float m_feedForward;
 //    T_DeviceCheckerList m_dependentCheckers;
     //    T_ElementArray m_protectionElements;
 
@@ -116,7 +117,7 @@ public:
     virtual bool onRecoverFromEmr();
 
     virtual bool requestValueChange(ElementBase* element){return true;}
-    virtual void timeoutExpired(uint16_t timeoutType){}
+    virtual void timeoutExpired(uint16_t timeoutType);
     virtual E_ActivationState getActivationState();
 
     virtual void setPssId(uint16_t deviceId);

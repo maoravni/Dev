@@ -57,6 +57,13 @@ float PIDDynamicSampleTime::Compute(float input)
     {
         m_lastTick = xTaskGetTickCount();
         m_lastInput = input;
+        m_output = m_feedForwardInjection;
+
+        if (m_output > m_outMax)
+            m_output = m_outMax;
+        else if (m_output < m_outMin)
+            m_output = m_outMin;
+
         return m_output;
     }
     portTickType currentTick = xTaskGetTickCount();

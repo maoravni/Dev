@@ -59,6 +59,7 @@ public:
 
     virtual bool onInitControl();
     virtual bool onMove2Standby(uint32_t delay);
+    bool onMove2Standby();
     virtual bool onReset2On();
     virtual bool onMove2Error();
     virtual bool onStopOnEmr();

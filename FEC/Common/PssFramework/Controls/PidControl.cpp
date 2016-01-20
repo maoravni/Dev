@@ -10,6 +10,7 @@
 #include <PscSubsystem.h>
 #include <logger.h>
 #include <PscServer/PscMasterServer.h>
+#include <Tasks/UpdateSchedulerTask.h>
 
 PidControl::PidControl()
 {
@@ -23,6 +24,7 @@ PidControl::PidControl()
     m_isProtectionActive = false;
     m_pPidAutotune = NULL;
     m_pidCalc.Initialize();
+    m_feedForward = 0;
 //    m_fromMove2Standby = false;
 }
 
@@ -273,7 +275,8 @@ bool PidControl::sendNotification()
     return true;
 }
 
-bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, float feedForward, uint32_t delay, uint32_t sn)
+bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, float feedForward,
+        uint32_t delay, uint32_t sn)
 {
     if (m_controlState == E_ControlState_On)
         return false;
@@ -288,18 +291,32 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
     m_controlState = E_ControlState_Move2Ready;
 
+    // remove current timeouts if they exist:
+    UpdateSchedulerTask::getInstance()->addTimeout(this, 0);
+
     // set the ranges to the input:
     m_setpoint->updateWorkingRange(sp + loRange, sp + hiRange, true, true);
     m_setpoint->updateWarningRange(sp + loWarn, sp + hiWarn, true, true);
     *m_setpoint = sp;
+    m_feedForward = feedForward;
 
     // lower the warnings/errors, in case they were raised previously.
     raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
     raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
 
-    m_pidCalc.setAutoMode(true);
-    m_pidCalc.setEnabled(true);
-    m_pidCalc.setSetPoint(sp, feedForward);
+    if (delay == 0)
+    {
+        m_pidCalc.setAutoMode(true);
+        m_pidCalc.setEnabled(true);
+        m_pidCalc.setSetPoint(sp, m_feedForward);
+    }
+    else
+    {
+        m_pidCalc.setAutoMode(false);
+        m_pidCalc.setEnabled(true);
+        m_pidCalc.setSetPoint(sp, m_feedForward);
+        UpdateSchedulerTask::getInstance()->addTimeout(this, delay);
+    }
 
     sendNotification();
 
@@ -474,6 +491,13 @@ bool PidControl::onRecoverFromEmr()
 bool PidControl::executeDependencyCheck(ElementBase* element)
 {
     return true;
+}
+
+void PidControl::timeoutExpired(uint16_t timeoutType)
+{
+    m_pidCalc.setAutoMode(true);
+    m_pidCalc.setEnabled(true);
+    m_pidCalc.setSetPoint(m_setpoint->getValueF(), m_feedForward);
 }
 
 E_ActivationState PidControl::getActivationState()
