@@ -220,10 +220,10 @@ void PIDDynamicSampleTime::SetOutputLimits(float Min, float Max)
 
 void PIDDynamicSampleTime::setAutoMode(bool mode)
 {
-    if (mode == !m_inAuto)
-    { /*we just went from manual to auto*/
-        Initialize();
-    }
+//    if (mode == !m_inAuto)
+//    { /*we just went from manual to auto*/
+//        Initialize();
+//    }
     m_inAuto = mode;
     m_lastTick = xTaskGetTickCount() - 1;
 }
@@ -301,6 +301,10 @@ void PIDDynamicSampleTime::updateTrapezoidalRange()
 
 void PIDDynamicSampleTime::setEnabled(bool enabled)
 {
+    if (enabled == !m_enabled)
+    { /*we just went from manual to auto*/
+        Initialize();
+    }
     m_enabled = enabled;
     m_lastTick = xTaskGetTickCount() - 1;
     m_feedForwardInjection = 0;

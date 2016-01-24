@@ -67,6 +67,9 @@ public:
 
     virtual void setBoardInReady(bool state);
 
+    virtual void startRecovery();
+
+
 private:
     void updateSetpoints();
 };

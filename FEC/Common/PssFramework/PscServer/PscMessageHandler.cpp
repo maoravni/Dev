@@ -2543,7 +2543,7 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 
     PidControl *pidControl = static_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, 0, message->header.sn);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay, message->header.sn);
 }
 
 void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigned long param)

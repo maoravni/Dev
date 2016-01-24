@@ -25,6 +25,7 @@ PidControl::PidControl()
     m_pPidAutotune = NULL;
     m_pidCalc.Initialize();
     m_feedForward = 0;
+    m_timeoutExpired = true;
 //    m_fromMove2Standby = false;
 }
 
@@ -191,6 +192,8 @@ void PidControl::execute()
     switch (m_controlState)
     {
     case E_ControlState_Move2Ready:
+        if (!m_timeoutExpired)
+            break;
         // TODO: add a timeout for reaching the set point
         if (m_input->isValid() && m_setpoint->isInWorkingRange(m_input->getValue()))
         {
@@ -306,12 +309,14 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
 
     if (delay == 0)
     {
+        m_timeoutExpired = true;
         m_pidCalc.setAutoMode(true);
         m_pidCalc.setEnabled(true);
         m_pidCalc.setSetPoint(sp, m_feedForward);
     }
     else
     {
+        m_timeoutExpired = false;
         m_pidCalc.setAutoMode(false);
         m_pidCalc.setEnabled(true);
         m_pidCalc.setSetPoint(sp, m_feedForward);
@@ -498,6 +503,7 @@ void PidControl::timeoutExpired(uint16_t timeoutType)
     m_pidCalc.setAutoMode(true);
     m_pidCalc.setEnabled(true);
     m_pidCalc.setSetPoint(m_setpoint->getValueF(), m_feedForward);
+    m_timeoutExpired = true;
 }
 
 E_ActivationState PidControl::getActivationState()

@@ -176,6 +176,8 @@ public:
 
     virtual void execute();
 
+    void writeOutputs(E_ActivationState activationState);
+
     virtual E_ControlType getControlType()
     {
         return E_ControlType_ActivationWithFeedback;
@@ -222,25 +224,6 @@ public:
 //    void clearDependencyCheckFailures(E_PSSErrors error);
 
     virtual void sendCurrentErrors();
-//    portTickType getActivationTimeout() const
-//    {
-//        return m_activationTimeout;
-//    }
-
-//    void setActivationTimeout(portTickType activationTimeout)
-//    {
-//        m_activationTimeout = activationTimeout;
-//    }
-
-//    portTickType getDeactivationTimeout() const
-//    {
-//        return m_deactivationTimeout;
-//    }
-
-//    void setDeactivationTimeout(portTickType deactivationTimeout)
-//    {
-//        m_deactivationTimeout = deactivationTimeout;
-//    }
 
     void setBehaviorOnInit(uint8_t behaviorOnInit)
     {

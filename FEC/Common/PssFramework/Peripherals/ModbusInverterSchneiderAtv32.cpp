@@ -49,7 +49,7 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
         { 9003, 1 }, // default Dec Ramp Adapt to yes, if no breaking resistor is present.
         { 11230, 10}, // default fast stop ramp divider is 10.
         { 11204, 133}, // assign LI5 to fast stop.
-        { M_INVERTER_AUTOMATIC_AUTOTUNE, 1},
+        { M_INVERTER_AUTOMATIC_AUTOTUNE, 0},
         { 0, 0 } };
 
 //static const T_Atv32RegisterSetup Atv32DryerRegisterSetup[] =

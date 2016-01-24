@@ -13,7 +13,9 @@
 #include <Tasks/UpdateSchedulerTask.h>
 
 #define M_TIMEOUT_STOP 0
-#define M_TIMEOUT_ACTIVATE 1
+#define M_TIMEOUT_DELAY 1
+#define M_TIMEOUT_ACTIVATE 2
+#define M_DEFAULT_ACTIVATION_TIMEOUT 60000
 
 ModbusInverterControl::ModbusInverterControl()
 {
@@ -41,6 +43,13 @@ ModbusInverterControl::~ModbusInverterControl()
     m_outputFrequency->removeObserver(this);
 }
 
+void ModbusInverterControl::startRecovery()
+{
+    raiseError(0, E_PSSErrors_ActivationFailed, false);
+    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+}
+
 void ModbusInverterControl::updateSetpoints()
 {
     // set the ranges to the input:
@@ -49,6 +58,8 @@ void ModbusInverterControl::updateSetpoints()
         m_setpoint->setValue(m_requestedSetpoint->getValueF());
     }
     *m_enableOutput = (m_requestedSetpoint->getValueF() != 0 && !m_isProtectionActive) ? 1 : 0;
+//    if (m_lastSn != 0)
+//        ModbusSchedulerTask::getInstance()->addTimeout(this, M_DEFAULT_ACTIVATION_TIMEOUT, M_TIMEOUT_ACTIVATE);
 }
 
 bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t activationDelay)
@@ -66,8 +77,10 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
     m_controlState = E_ControlState_Move2Ready;
     m_stopping = false;
 
+    raiseError(0, E_PSSErrors_ActivationFailed, false);
+
     // remove current timeouts if they exist:
-    ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_ACTIVATE);
+    ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_DELAY);
     ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_STOP);
 
     m_requestedSetpoint->setValue(value);
@@ -81,7 +94,7 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
     }
     else
     {
-        ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay, M_TIMEOUT_ACTIVATE);
+        ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay, M_TIMEOUT_DELAY);
     }
 
     sendNotification();
@@ -381,12 +394,19 @@ void ModbusInverterControl::timeoutExpired(uint16_t timeoutType)
 {
     switch (timeoutType)
     {
-    case M_TIMEOUT_ACTIVATE:
+    case M_TIMEOUT_DELAY:
         updateSetpoints();
         break;
     case M_TIMEOUT_STOP:
         onMove2Standby();
         break;
+//    case M_TIMEOUT_ACTIVATE:
+//        // if the last serial number is not 0, this means that the activation was from the OPC:
+//        // if the state is still M2R it means the inverter didn't start operation:
+//        if (m_lastSn != 0 && m_controlState != E_ControlState_Ready)
+//        {
+//            raiseError(0, E_PSSErrors_ActivationFailed, true);
+//        }
     }
 }
 

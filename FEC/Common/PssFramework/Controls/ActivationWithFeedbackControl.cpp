@@ -81,7 +81,6 @@ void ActivationWithFeedbackControl::execute()
     case E_ControlState_Move2Ready:
         checkAllFeedbacks(m_activationState, feedbacksConsider, feedbacksIgnore);
         checkAllDependencies(m_activationState, m_controlState, depsConsider, depsIgnore);
-//        if (m_outputEnableDevice->getValueI32() == 1)
         if (m_activationState == E_ActivationState_Active)
         {
             if (feedbacksConsider)
@@ -142,7 +141,6 @@ void ActivationWithFeedbackControl::execute()
     case E_ControlState_Ready:
         checkAllFeedbacks(m_activationState, feedbacksConsider, feedbacksIgnore);
         checkAllDependencies(m_activationState, m_controlState, depsConsider, depsIgnore);
-//        if (m_outputEnableDevice->getValueI32() == 1 && !(result && depResult))
         if (m_activationState == E_ActivationState_Active)
         {
 //            if (!depsIgnore)
@@ -205,10 +203,6 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
             if (timeout > 0 && timeout != ((uint32_t) - 1))
                 UpdateSchedulerTask::getInstance()->addTimeout(this, timeout, M_ACTIVATION_TIMEOUT_TYPE);
             execute();
-//            if (m_outputEnableDevice != NULL)
-//                *m_outputEnableDevice = 1;
-//            if (m_outputDisableDevice != NULL)
-//                *m_outputDisableDevice = 0;
         }
         else
         {
@@ -236,10 +230,6 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
             if (timeout > 0 && timeout != ((uint32_t) - 1))
                 UpdateSchedulerTask::getInstance()->addTimeout(this, timeout, M_ACTIVATION_TIMEOUT_TYPE);
             execute();
-//        if (m_outputEnableDevice != NULL)
-//            *m_outputEnableDevice = 0;
-//        if (m_outputDisableDevice != NULL)
-//            *m_outputDisableDevice = 1;
         }
         else
         {
@@ -371,18 +361,6 @@ void ActivationWithFeedbackControl::updateNotification(ElementBase* element)
 
 bool ActivationWithFeedbackControl::requestValueChange(ElementBase* element)
 {
-    /*
-     T_DeviceCheckerListIterator i;
-
-     // search for the element in the dependents list:
-     for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-     {
-     if (element == (*i).m_element)
-     break;
-     }
-     if (element == (*i).m_element && m_outputEnableDevice->getValueF() != 0)
-     return false;
-     */
     return true;
 }
 
@@ -811,16 +789,12 @@ void ActivationWithFeedbackControl::setOutputEnableDevice(ElementBase* element)
 {
     m_outputEnableDevice = element;
     m_outputEnableDevice->addObserver(this);
-//    if (getSecondaryPssId() == 0)
-//        setSecondaryPssId(element->getPssId());
 }
 
 void ActivationWithFeedbackControl::setOutputDisableDevice(ElementBase* element)
 {
     m_outputDisableDevice = element;
     m_outputDisableDevice->addObserver(this);
-//    if (getSecondaryPssId() == 0)
-//        setSecondaryPssId(element->getPssId());
 }
 
 void ActivationWithFeedbackControl::setActivationState(E_ActivationState activationState, uint32_t sn)
@@ -847,10 +821,7 @@ void ActivationWithFeedbackControl::setActivationState(E_ActivationState activat
     switch (activationState)
     {
     case E_ActivationState_Unknown:
-        if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = 0;
-        if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 0;
+        writeOutputs(E_ActivationState_Unknown);
         raiseError(0, E_PSSErrors_ActivationFailed, false);
         for (T_DeviceCheckerListIterator i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
         {
@@ -868,10 +839,7 @@ void ActivationWithFeedbackControl::setActivationState(E_ActivationState activat
         }
         if ((m_previousActivationState != activationState) && (depsConsider == false))
             break;
-        if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = m_activationOutputValue;
-        if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 0;
+        writeOutputs(E_ActivationState_Active);
         startIgnoringProtections();
         break;
     case E_ActivationState_Inactive:
@@ -884,10 +852,7 @@ void ActivationWithFeedbackControl::setActivationState(E_ActivationState activat
         }
         if ((m_previousActivationState != activationState) && (depsConsider == true))
             break;
-        if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = 0;
-        if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 1;
+        writeOutputs(E_ActivationState_Inactive);
         break;
     }
 }
@@ -927,9 +892,11 @@ bool ActivationWithFeedbackControl::executeLocalProtectionCheck(ElementBase* ele
             m_inProtectionActivationState = m_activationState;
 
         if (m_isProtectionActive)
-            setActivationState(E_ActivationState_Inactive, 0);
+            //setActivationState(E_ActivationState_Inactive, 0);
+            writeOutputs(E_ActivationState_Inactive);
         else
-            setActivationState(m_inProtectionActivationState, 0);
+            //setActivationState(m_inProtectionActivationState, 0);
+            writeOutputs(m_activationState);
     }
     m_lastProtectionState = m_isProtectionActive;
     return m_isProtectionActive;
@@ -1046,4 +1013,29 @@ void ActivationWithFeedbackControl::startRecovery()
     clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
     clearDependencyCheckFailures(E_PSSErrors_ActivationNotReady);
     //checkAllDependenciesForOppositeState();
+}
+
+void ActivationWithFeedbackControl::writeOutputs(E_ActivationState activationState)
+{
+    switch (activationState)
+    {
+    case E_ActivationBehaviorOnInit_Unknown:
+        if (m_outputEnableDevice != NULL)
+            *m_outputEnableDevice = 0;
+        if (m_outputDisableDevice != NULL)
+            *m_outputDisableDevice = 0;
+        break;
+    case E_ActivationState_Active:
+        if (m_outputEnableDevice != NULL)
+            *m_outputEnableDevice = m_activationOutputValue;
+        if (m_outputDisableDevice != NULL)
+            *m_outputDisableDevice = 0;
+        break;
+    case E_ActivationState_Inactive:
+        if (m_outputEnableDevice != NULL)
+            *m_outputEnableDevice = 0;
+        if (m_outputDisableDevice != NULL)
+            *m_outputDisableDevice = 1;
+        break;
+    }
 }

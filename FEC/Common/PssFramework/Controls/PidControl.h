@@ -32,6 +32,7 @@ class PidControl: public ControlBase
     PIDDynamicSampleTime m_pidCalc;
     PID_ATune* m_pPidAutotune;
     bool m_isInAutotune;
+    bool m_timeoutExpired;
 
 public:
     PidControl();
