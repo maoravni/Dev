@@ -704,9 +704,6 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSEndBoardConfig: cableId=%d deleteOnDisconnection=%d", payload->cableId,
             payload->deleteOnDisconnection);
 
-//    // TODO: Add log message.
-    sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
-
     m_deleteControlsOnDisconnection = payload->deleteOnDisconnection;
 
     //m_psocManager.startRecovery();
@@ -732,7 +729,7 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
 #endif
 
     // TODO: Add log message.
-    //sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
 
     ControlRepository::getInstance().sendUpdateNotificationForAllControls();
 

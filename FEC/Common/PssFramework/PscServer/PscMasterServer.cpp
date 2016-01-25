@@ -352,7 +352,11 @@ void PscMasterServer::sendSeqEnded(unsigned long messageId, unsigned long sn, ui
     reply.payload.pSSSeqEndedMsg.pssId = pssId;
     reply.payload.pSSSeqEndedMsg.status = status;
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Sequence Ended ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
+    int logLevel = M_LOGGER_LEVEL_DEBUG;
+    if (status != E_AckStatus_Success)
+        logLevel = M_LOGGER_LEVEL_WARNING;
+
+    M_LOGGER_LOGF(logLevel, "Sequence Ended ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
             messageId, boardId, pssId, status, sn);
     sendMessage(reply);
 }
@@ -360,6 +364,7 @@ void PscMasterServer::sendSeqEnded(unsigned long messageId, unsigned long sn, ui
 void PscMasterServer::sendAck(unsigned long messageId, unsigned long sn, uint16_t boardId, uint16_t pssId,
         E_AckStatus status)
 {
+
     if (sn == 0)
         return;
 
@@ -375,7 +380,11 @@ void PscMasterServer::sendAck(unsigned long messageId, unsigned long sn, uint16_
     reply.payload.pSSAckMsg.pssId = pssId;
     reply.payload.pSSAckMsg.status = status;
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Ack Message ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
+    int logLevel = M_LOGGER_LEVEL_DEBUG;
+    if (status != E_AckStatus_Success)
+        logLevel = M_LOGGER_LEVEL_WARNING;
+
+    M_LOGGER_LOGF(logLevel, "Ack Message ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
             messageId, boardId, pssId, status, sn);
 
     sendMessage(reply);

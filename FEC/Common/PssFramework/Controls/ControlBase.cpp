@@ -59,7 +59,7 @@ bool ControlBase::initControl(uint32_t msgId, uint32_t sn)
 
 bool ControlBase::move2Standby(uint32_t msgId, uint32_t delay, uint32_t sn)
 {
-    if (m_controlState == E_ControlState_Emergency)
+    if (m_controlState == E_ControlState_Emergency || m_controlState == E_ControlState_On)
     {
         PscMasterServer::getInstance().sendAck(msgId, sn, Psc_ControllerId, getPssId(), E_AckStatus_InvalidState);
         return false;
