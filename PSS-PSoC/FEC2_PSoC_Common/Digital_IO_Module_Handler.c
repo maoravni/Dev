@@ -249,10 +249,6 @@ void ExecuteOutputRamp()
     int i;
     for (i = 0; i < NUM_OF_PWM_OUTS; ++i)
     {
-        // first, check if the current value and the requested value is the same:
-        if (CurrentPwmValues[i] == RequestedPwmValues[i])
-            continue;
-
         // second, check if output ramp is active for the current output:
         if (OutputRampParameters[i].outputRampActive == 0)
         {
@@ -261,6 +257,10 @@ void ExecuteOutputRamp()
             DigitalOutputsForceWrite(i, RequestedPwmValues[i]);
             continue;
         }
+
+        // first, check if the current value and the requested value is the same:
+        if (CurrentPwmValues[i] == RequestedPwmValues[i])
+            continue;
 
         // increment the tick count for the current output:
         ++CurrentRampTicks[i];
@@ -292,20 +292,25 @@ uint8 DigitalOutputsWrite(uint8 channelIndex, uint8 outputValue)
     {
         return DigitalOutputsForceWrite(channelIndex, outputValue);
     }
+    else
+    {
+        // force the first step by setting the current tick count to the maximum between the tick counters:
+        CurrentRampTicks[channelIndex] =
+                (OutputRampParameters[channelIndex].fallTickCount > OutputRampParameters[channelIndex].riseTickCount) ?
+                        OutputRampParameters[channelIndex].fallTickCount :
+                        OutputRampParameters[channelIndex].riseTickCount;
 
-    // force the first step by setting the current tick count to the maximum between the tick counters:
-    CurrentRampTicks[channelIndex] = (OutputRampParameters[channelIndex].fallTickCount > OutputRampParameters[channelIndex].riseTickCount) ?
-            OutputRampParameters[channelIndex].fallTickCount : OutputRampParameters[channelIndex].riseTickCount;
+        ++CurrentRampTicks[channelIndex];
 
-    ++CurrentRampTicks[channelIndex];
+        // ramp is active for this channel, so execute the first step:
+        ExecuteRampStep(channelIndex);
 
-    // ramp is active for this channel, so execute the first step:
-    ExecuteRampStep(channelIndex);
+        // reset the tick counter:
+        CurrentRampTicks[channelIndex] = 0;
+        return E_Success;
+    }
 
-    // reset the tick counter:
-    CurrentRampTicks[channelIndex] = 0;
-
-    return E_Success;
+    return E_InvalidValue;
 }
 
 /* [] END OF FILE */
