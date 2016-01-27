@@ -287,7 +287,7 @@ void UpdateSchedulerTaskBase::addTimeout(ControlBase* control, portTickType time
 }
 
 void UpdateSchedulerTaskBase::addProtectionDebounceTimeout(ProtectionCheckerBase* protectionChecker,
-        portTickType timeout)
+portTickType timeout)
 {
     if (timeout == 0)
     {
@@ -314,33 +314,29 @@ void UpdateSchedulerTaskBase::addProtectionDebounceTimeout(ProtectionCheckerBase
     toNode->setSubType(0);
     insertNode(toNode);
 }
-//void UpdateSchedulerTaskBase::keepaliveReceived()
-//{
-//    if (m_lastKeepaliveTickCount != 0)
-//    {
-//        portTickType currentTickCount = getTickCount();
-//        portTickType keepaliveTimeout = (currentTickCount - m_lastKeepaliveTickCount) * M_KEEP_ALIVE_TIMEOUT_MULTIPLIER;
-//
-//        eraseNode(E_NodeType_TimeoutNode, M_KEEP_ALIVE_TIMEOUT_PSSID);
-////        QueueNode *node = findNode(E_NodeType_TimeoutNode, M_KEEP_ALIVE_TIMEOUT_PSSID);
-////        if (node != NULL)
-////        {
-////            KeepAliveTimeoutQueueNode* kaNode = static_cast<KeepAliveTimeoutQueueNode*>(node);
-////            kaNode->m_obsolete = true;
-////        }
-//        KeepAliveTimeoutQueueNode *newNode = new KeepAliveTimeoutQueueNode();
-//        newNode->m_timeout = keepaliveTimeout;
-//        insertNode(newNode);
-//    }
-//    m_lastKeepaliveTickCount = getTickCount();
-//}
+
+void UpdateSchedulerTaskBase::addForcedUpdateTimeout()
+{
+    //    cancelTimeout(control);
+    QueueNode *node = findNode(E_NodeType_ForcedUpdate, M_FORCED_UPDATE_TIMEOUT_PSSID, 0);
+
+    if (node != NULL)
+    {
+        ForcedUpdateTimeoutQueueNode* oldNode = static_cast<ForcedUpdateTimeoutQueueNode*>(node);
+        oldNode->m_obsolete = true;
+    }
+
+    ForcedUpdateTimeoutQueueNode *newNode = new ForcedUpdateTimeoutQueueNode();
+    newNode->m_timeout = M_FORCED_UPDATE_TIMEOUT_PERIOD;
+    insertNode(newNode);
+}
 
 void UpdateSchedulerTaskBase::cancelTimeout(ControlBase* control, uint16_t timeoutType)
 {
     QueueNode *node = getHead();
-    // look for the control in the queue. If it exists, remove it from the queue.
-    // Important note: I assume that a PSSID in the queue can't appear twice, once for controls
-    // and once for
+// look for the control in the queue. If it exists, remove it from the queue.
+// Important note: I assume that a PSSID in the queue can't appear twice, once for controls
+// and once for
     while (node->m_next != NULL)
     {
         if (node->m_next->getNodeType() == E_NodeType_TimeoutNode && node->m_next->getPssId() == control->getPssId()
@@ -416,8 +412,8 @@ void UpdateSchedulerTaskBase::notifyObservers()
 #ifdef M_PROFILE_SCHEDULER_JITTER
     portTickType beforeNotify = getTickCount();
 #endif
-    // all objects that notified their observers added notification events to the update list.
-    // we now pull all update events from the list and update the observers.
+// all objects that notified their observers added notification events to the update list.
+// we now pull all update events from the list and update the observers.
     while (m_updateEventList.size() > 0)
     {
         // pop the update event at the top of the list:
@@ -446,13 +442,13 @@ void UpdateSchedulerTaskBase::insertNode(QueueNode* node)
         return;
     }
 
-    // get the next update interval from the device:
+// get the next update interval from the device:
     node->setNextWakeupTime(getTickCount() + node->getUpdateInterval());
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "Device ID {[PSSID:%d]} next update interval at %d", node->getPssId(),
             node->getNextWakeupTime());
 
-    // if the list is empty, put the node at the head of the list.
+// if the list is empty, put the node at the head of the list.
     if (m_pollingQueueHead == NULL)
     {
         enterCritical();
@@ -463,8 +459,8 @@ void UpdateSchedulerTaskBase::insertNode(QueueNode* node)
         return;
     }
 
-    // iterate through the list until we find the place for the new node, where the
-    // update interval is bigger than the current:
+// iterate through the list until we find the place for the new node, where the
+// update interval is bigger than the current:
     QueueNode* current = m_pollingQueueHead;
 
     if (node->getNextWakeupTime() < m_pollingQueueHead->getNextWakeupTime())
@@ -509,7 +505,9 @@ void UpdateSchedulerTaskBase::setBoardInReady(bool boardInReady)
     PeripheralRepository::getInstance().setBoardInReady(boardInReady);
     ControlRepository::getInstance().setBoardInReady(boardInReady);
     if (boardInReady)
+    {
         m_runloopSyncSemaphore.give();
+    }
     else
     {
         if (m_boardInReady && getHead() != NULL)
@@ -525,7 +523,7 @@ void UpdateSchedulerTaskBase::setBoardInReady(bool boardInReady)
         }
     }
     m_boardInReady = boardInReady;
-    //            resume();
+//            resume();
 }
 
 void UpdateSchedulerTaskBase::suspendScheduler()
@@ -539,15 +537,14 @@ void UpdateSchedulerTaskBase::resumeScheduler()
     m_runloopSyncSemaphore.give();
 }
 
-void KeepAliveTimeoutQueueNode::execute()
+void ForcedUpdateTimeoutQueueNode::execute()
 {
-    // reset the timeout value, since it can't expire again.
-    // this would ensure that it wouldn't get re-inserted into the scheduler.
-    if (!m_obsolete)
-        // if the keep alive timeout expired it means we didn't get keep alive requests from the OPC.
-        // This means we should disconnect the connection.
-        PscMasterServer::getInstance().disconnectDetected();
-    m_timeout = 0;
+    if (m_obsolete)
+        m_timeout = 0;
+// reset the timeout value, since it can't expire again.
+// this would ensure that it wouldn't get re-inserted into the scheduler.
+    ControlRepository::getInstance().sendUpdateNotificationForAllControls();
+    ElementRepository::getInstance().sendUpdateNotificationForAllElements();
 }
 
 ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
@@ -562,6 +559,12 @@ ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
     return p_instance;
 }
 
+void UpdateSchedulerTask::setBoardInReady(bool boardInReady)
+{
+    UpdateSchedulerTaskBase::setBoardInReady(boardInReady);
+    if (boardInReady)
+        addForcedUpdateTimeout();
+}
 /*
  int lastElementPssID = 0;
  IObserver* lastObserver;

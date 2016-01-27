@@ -56,6 +56,7 @@ public:
     ElementBase* getElementByPssId(int pssId);
 
     void setAllMonitoringEnabled(bool monitoringEnabled);
+    void sendUpdateNotificationForAllElements();
 
     void destroyAllElements();
 private:

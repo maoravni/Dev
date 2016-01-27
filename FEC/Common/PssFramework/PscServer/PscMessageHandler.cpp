@@ -732,6 +732,7 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     sendAck(message->header.id.full, message->header.sn, payload->cableId, M_PSS_ID_ALL, E_AckStatus_Success);
 
     ControlRepository::getInstance().sendUpdateNotificationForAllControls();
+    ElementRepository::getInstance().sendUpdateNotificationForAllElements();
 
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
 

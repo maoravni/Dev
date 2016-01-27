@@ -15,11 +15,15 @@
 #include <list>
 #include <CBinarySemaphore.h>
 
-#define M_KEEP_ALIVE_TIMEOUT_PSSID 0xfffe
+#define M_FORCED_UPDATE_TIMEOUT_PSSID 0xfffe
+#define M_FORCED_UPDATE_TIMEOUT_PERIOD 60000
 
 enum E_NodeType
 {
-    E_NodeType_PeripheralNode, E_NodeType_TimeoutNode, E_NodeType_ProtectionChecker
+    E_NodeType_PeripheralNode,
+    E_NodeType_TimeoutNode,
+    E_NodeType_ProtectionChecker,
+    E_NodeType_ForcedUpdate
 };
 
 //#define M_PROFILE_SCHEDULER_JITTER
@@ -149,7 +153,7 @@ private:
 
 public:
     TimeoutQueueNode() :
-            m_control(NULL),m_obsolete(false),m_timeout(0)
+            m_control(NULL), m_obsolete(false), m_timeout(0)
     {
     }
 
@@ -198,7 +202,7 @@ private:
 
 public:
     ProtectionDebounceQueueNode() :
-        m_protectionCheckerBase(NULL),m_obsolete(false),m_timeout(0)
+            m_protectionCheckerBase(NULL), m_obsolete(false), m_timeout(0)
     {
     }
 
@@ -237,15 +241,22 @@ public:
     }
 };
 
-class KeepAliveTimeoutQueueNode: public TimeoutQueueNode
+class ForcedUpdateTimeoutQueueNode: public TimeoutQueueNode
 {
 public:
-    KeepAliveTimeoutQueueNode() : TimeoutQueueNode()
-    {}
+    ForcedUpdateTimeoutQueueNode() :
+            TimeoutQueueNode()
+    {
+    }
+
+    E_NodeType getNodeType()
+    {
+        return E_NodeType_ForcedUpdate;
+    }
 
     virtual uint16_t getPssId()
     {
-        return M_KEEP_ALIVE_TIMEOUT_PSSID;
+        return M_FORCED_UPDATE_TIMEOUT_PSSID;
     }
 
     virtual void execute();
@@ -267,9 +278,7 @@ class UpdateSchedulerTaskBase: public AManagedTask
 {
 private:
     QueueNode *m_pollingQueueHead;
-    QueueNode *m_currentWaitingNode;
-    portTickType m_currentTickCount;
-    portTickType m_lastKeepaliveTickCount;
+    QueueNode *m_currentWaitingNode;portTickType m_currentTickCount;portTickType m_lastKeepaliveTickCount;
     T_UpdateEventList m_updateEventList;
 
     CBinarySemaphore m_observeSemaphore;
@@ -318,12 +327,12 @@ public:
         return m_boardInReady;
     }
 
-    void setBoardInReady(bool boardInReady);
+    virtual void setBoardInReady(bool boardInReady);
 
     void suspendScheduler();
     void resumeScheduler();
 
-//    void keepaliveReceived();
+    void addForcedUpdateTimeout();
 
 private:
     QueueNode* popHead();
@@ -335,15 +344,16 @@ private:
     void printfQueue(char* message);
 };
 
-class UpdateSchedulerTask : public UpdateSchedulerTaskBase
+class UpdateSchedulerTask: public UpdateSchedulerTaskBase
 {
 private:
     static UpdateSchedulerTask* p_instance;
 public:
     static UpdateSchedulerTask* getInstance();
+    virtual void setBoardInReady(bool boardInReady);
 };
 
-class ModbusSchedulerTask : public UpdateSchedulerTaskBase
+class ModbusSchedulerTask: public UpdateSchedulerTaskBase
 {
 private:
     static ModbusSchedulerTask* p_instance;

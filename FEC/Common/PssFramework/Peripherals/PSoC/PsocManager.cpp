@@ -17,6 +17,7 @@
 #endif
 
 #define M_NUMBER_OF_RETRIES 10
+#define M_DEFAULT_ROUND_ROBIN_DELAY 4
 
 //PsocManager PsocManager::s_instance;
 
@@ -66,7 +67,7 @@ void T_PsocHandler::resetPsocOutputs()
 PsocManager::PsocManager()
 {
     m_currentPsoc = 0;
-    m_roundRobinDelay = 4;
+    m_roundRobinDelay = M_DEFAULT_ROUND_ROBIN_DELAY;
     m_numOfActivePsocs = 0;
     m_globalSpiComFailues = 0;
 
