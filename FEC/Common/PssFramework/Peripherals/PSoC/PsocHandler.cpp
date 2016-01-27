@@ -493,7 +493,8 @@ bool PsocHandler::verifyPsocOutputs()
 //            if (m_pwmOutputs[i] != m_shadowTemperaturePwmDiValues.pwmOutputsReported[i])
             bool requestedOutputsNotZero = (m_pwmOutputs[i] != 0);
             bool psocOutputsNotZero = (m_shadowTemperaturePwmDiValues.pwmOutputsReported[i]);
-            if (!psocOutputsNotZero && requestedOutputsNotZero)
+            //if (!psocOutputsNotZero && requestedOutputsNotZero)
+            if (psocOutputsNotZero != requestedOutputsNotZero)
             {
                 // retry the write.
                 addPendingUpdate(E_PsocDeviceType_DigitalPWM);
