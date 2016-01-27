@@ -278,7 +278,8 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 			else
 			{
 				`$INSTANCE_NAME`_Control_Reg_Write( `$INSTANCE_NAME`_Control_Reg_Read() & (~0x01) );
-			}	
+			}
+            dc = (`$INSTANCE_NAME`_PrISM_ReadPulse0())/`$INSTANCE_NAME`_MAX_PULSE_DENSITY;
 			break;
 		}
 	// 1. SPWM- Already configured as SPWM	
@@ -289,6 +290,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_SPWM_Write_DC(dc);	
+            dc = `$INSTANCE_NAME`_SPWM_Read_DC();
 			break;		
 		}
 	// 2. PWM- Already configured as UPWM
@@ -299,6 +301,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_SPWM_Write_DC(dc);		
+            dc = `$INSTANCE_NAME`_SPWM_Read_DC();
 			break;
 		}
 	// 3. Digital Output
@@ -361,6 +364,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM2_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PrISM_WritePulse1((uint16) (`$INSTANCE_NAME`_MAX_PULSE_DENSITY * dc));
+            dc = (`$INSTANCE_NAME`_PrISM_ReadPulse1) / `$INSTANCE_NAME`_MAX_PULSE_DENSITY;
 		}
 		else
 		{
@@ -408,6 +412,7 @@ uint8 `$INSTANCE_NAME`_PWMOut1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PWM_1_WriteCompare(dc-1);
+            dc = `$INSTANCE_NAME`_PWM_1_ReadCompare() + 1;
 		}
 		else
 		{
@@ -455,6 +460,7 @@ uint8 `$INSTANCE_NAME`_PWMOut2_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PWM_2_WriteCompare(dc-1);
+            dc = `$INSTANCE_NAME`_PWM_2_ReadCompare() + 1;
 		}
 		else
 		{
@@ -502,6 +508,7 @@ uint8 `$INSTANCE_NAME`_HB_PWMOut1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PWM_3_WriteCompare(dc-1);
+            dc = `$INSTANCE_NAME`_PWM_3_ReadCompare() + 1;
 		}
 		else
 		{
@@ -529,7 +536,7 @@ uint8 `$INSTANCE_NAME`_HB_PWMOut2_Write(uint8 dc)
 	{
 		if(dc)
 		{
-		/* Don't kill Output*/
+		/* Don't kill Output */
 			`$INSTANCE_NAME`_Control_Reg_Write( `$INSTANCE_NAME`_Control_Reg_Read() & (~0x20) );
 			dc = 1;
 		}
@@ -549,6 +556,7 @@ uint8 `$INSTANCE_NAME`_HB_PWMOut2_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PWM_4_WriteCompare(dc-1);
+            dc = `$INSTANCE_NAME`_PWM_4_ReadCompare() + 1;
 		}
 		else
 		{
