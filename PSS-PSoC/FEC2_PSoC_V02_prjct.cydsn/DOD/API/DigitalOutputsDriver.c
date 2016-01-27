@@ -364,7 +364,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM2_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_PrISM_WritePulse1((uint16) (`$INSTANCE_NAME`_MAX_PULSE_DENSITY * dc));
-            dc = (`$INSTANCE_NAME`_PrISM_ReadPulse1) / `$INSTANCE_NAME`_MAX_PULSE_DENSITY;
+            dc = (`$INSTANCE_NAME`_PrISM_ReadPulse1()) / `$INSTANCE_NAME`_MAX_PULSE_DENSITY;
 		}
 		else
 		{
