@@ -2300,7 +2300,7 @@ void PscMessageHandler::MessageStopControlHandler(unsigned long param)
 
 // move the control to STANDBY.
 // The control should now send SEQ_ENDED when finished.
-    control->move2Standby(message->header.id.full, payload->activationDelay, message->header.sn);
+    control->move2Standby(message->header.id.full, payload->activationDelay*1000, message->header.sn);
 }
 
 void PscMessageHandler::MessageResetToOnControlHandler(unsigned long param)
@@ -2541,7 +2541,7 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 
     PidControl *pidControl = static_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay, message->header.sn);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay*1000, message->header.sn);
 }
 
 void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigned long param)
@@ -2617,7 +2617,7 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
 
         // TODO: and pure virtual method "setSetpoint" to all controls.
         ModbusInverterControl *inverterControl = static_cast<ModbusInverterControl*>(control);
-        inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn, payload->activationDelay);
+        inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn, payload->activationDelay*1000);
     }
     else
     {
