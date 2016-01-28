@@ -274,12 +274,13 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 				}
 				`$INSTANCE_NAME`_PrISM_WritePulse0((uint16) (`$INSTANCE_NAME`_MAX_PULSE_DENSITY * dc));
 				`$INSTANCE_NAME`_Control_Reg_Write( `$INSTANCE_NAME`_Control_Reg_Read() | 0x01 );
+                dc = (`$INSTANCE_NAME`_PrISM_ReadPulse0())/`$INSTANCE_NAME`_MAX_PULSE_DENSITY;
 			}
 			else
 			{
 				`$INSTANCE_NAME`_Control_Reg_Write( `$INSTANCE_NAME`_Control_Reg_Read() & (~0x01) );
 			}
-            dc = (`$INSTANCE_NAME`_PrISM_ReadPulse0())/`$INSTANCE_NAME`_MAX_PULSE_DENSITY;
+            
 			break;
 		}
 	// 1. SPWM- Already configured as SPWM	
