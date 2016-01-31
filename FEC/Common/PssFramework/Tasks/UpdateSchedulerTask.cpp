@@ -543,8 +543,8 @@ void ForcedUpdateTimeoutQueueNode::execute()
         m_timeout = 0;
 // reset the timeout value, since it can't expire again.
 // this would ensure that it wouldn't get re-inserted into the scheduler.
-    ControlRepository::getInstance().sendUpdateNotificationForAllControls();
-    ElementRepository::getInstance().sendUpdateNotificationForAllElements();
+//    ControlRepository::getInstance().sendUpdateNotificationForAllControls();
+//    ElementRepository::getInstance().sendUpdateNotificationForAllElements();
 }
 
 ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
