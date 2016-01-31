@@ -143,15 +143,15 @@ void ElementRepository::setAllMonitoringEnabled(bool monitoringEnabled)
     }
 }
 
-void ElementRepository::sendUpdateNotificationForAllElements()
-{
-    T_ElementListIterator i;
-    for (i = m_elementList.begin() ;i != m_elementList.end(); ++i)
-    {
-        if ((*i)->getPssId() != M_UNASSIGNED_PSS_ID)
-            (*i)->sendDeviceStatus();
-    }
-}
+//void ElementRepository::sendUpdateNotificationForAllElements()
+//{
+//    T_ElementListIterator i;
+//    for (i = m_elementList.begin() ;i != m_elementList.end(); ++i)
+//    {
+//        if ((*i)->getPssId() != M_UNASSIGNED_PSS_ID)
+//            (*i)->sendDeviceStatus();
+//    }
+//}
 
 void ElementRepository::markElementAsDeleted(int index)
 {

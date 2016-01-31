@@ -559,12 +559,12 @@ ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
     return p_instance;
 }
 
-void UpdateSchedulerTask::setBoardInReady(bool boardInReady)
-{
-    UpdateSchedulerTaskBase::setBoardInReady(boardInReady);
-//    if (boardInReady)
-//        addForcedUpdateTimeout();
-}
+//void UpdateSchedulerTask::setBoardInReady(bool boardInReady)
+//{
+//    UpdateSchedulerTaskBase::setBoardInReady(boardInReady);
+////    if (boardInReady)
+////        addForcedUpdateTimeout();
+//}
 /*
  int lastElementPssID = 0;
  IObserver* lastObserver;

@@ -350,7 +350,7 @@ private:
     static UpdateSchedulerTask* p_instance;
 public:
     static UpdateSchedulerTask* getInstance();
-    virtual void setBoardInReady(bool boardInReady);
+    //virtual void setBoardInReady(bool boardInReady);
 };
 
 class ModbusSchedulerTask: public UpdateSchedulerTaskBase
