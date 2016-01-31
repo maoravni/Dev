@@ -253,7 +253,7 @@
 								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.highBalance.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.559142012" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1664665840" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
-									<listOptionValue builtIn="false" value="NUSE_IWDG"/>
+									<listOptionValue builtIn="false" value="USE_IWDG"/>
 									<listOptionValue builtIn="false" value="NDRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>

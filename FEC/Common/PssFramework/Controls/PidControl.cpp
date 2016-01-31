@@ -290,9 +290,6 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
 //        return true;
 //    }
 
-    // change the state
-    // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
-    m_controlState = E_ControlState_Move2Ready;
 
     // remove current timeouts if they exist:
     UpdateSchedulerTask::getInstance()->addTimeout(this, 0);
@@ -322,6 +319,10 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
         m_pidCalc.setSetPoint(sp, m_feedForward);
         UpdateSchedulerTask::getInstance()->addTimeout(this, delay);
     }
+
+    // change the state
+    // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
+    m_controlState = E_ControlState_Move2Ready;
 
     sendNotification();
 
