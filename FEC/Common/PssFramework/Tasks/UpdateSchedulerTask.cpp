@@ -562,8 +562,8 @@ ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
 void UpdateSchedulerTask::setBoardInReady(bool boardInReady)
 {
     UpdateSchedulerTaskBase::setBoardInReady(boardInReady);
-    if (boardInReady)
-        addForcedUpdateTimeout();
+//    if (boardInReady)
+//        addForcedUpdateTimeout();
 }
 /*
  int lastElementPssID = 0;
