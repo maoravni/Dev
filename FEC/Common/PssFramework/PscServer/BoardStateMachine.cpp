@@ -12,6 +12,15 @@
 #include <PscSubsystem.h>
 #include <logger.h>
 
+extern "C" uint32_t register_r0;
+extern "C" uint32_t register_r1;
+extern "C" uint32_t register_r2;
+extern "C" uint32_t register_r3;
+extern "C" uint32_t register_r12;
+extern "C" uint32_t register_lr; /* Link register. */
+extern "C" uint32_t register_pc; /* Program counter. */
+extern "C" uint32_t register_psr;/* Program status register. */
+
 BoardStateMachine::BoardStateMachine() :
         StateMachine(E_BoardStatePrivate_Size)
 {
@@ -75,6 +84,7 @@ void BoardStateMachine::sendStatusUpdate()
     sendErrorsMessage();
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "sendWarningsMessage");
     sendWarningsMessage();
+
 }
 
 void BoardStateMachine::sendStateMessage()
@@ -169,6 +179,8 @@ void BoardStateMachine::eventStartUp()
     TRANSITION_MAP_ENTRY(CANNOT_HAPPEN)//ST_Recovery
     END_TRANSITION_MAP(NULL)
 //    sendStatusUpdate();
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Registers from previous reset: r0=%x r1=%x r2=%x r3=%x r12=%x lr=%x pc=%x psr=%x",
+            register_r0, register_r1, register_r2, register_r3, register_r12, register_lr, register_pc, register_psr);
 }
 
 void BoardStateMachine::eventStartUpFinished()

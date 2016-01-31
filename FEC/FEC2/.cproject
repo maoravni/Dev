@@ -120,8 +120,10 @@
 								<option id="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0.1798030841" name="C++ without exceptions" superClass="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0.241783046" name="C++ without RTTI" superClass="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.1225739768" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1104458337" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
-								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1368132573" name="IAR C/C++ Compiler MFC Input Type" superClass="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1104458337" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1368132573" name="IAR C/C++ Compiler MFC Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.1729649119" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1803868248" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.739677514" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.326774270" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -251,7 +253,7 @@
 								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.highBalance.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.559142012" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1664665840" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
-									<listOptionValue builtIn="false" value="USE_IWDG"/>
+									<listOptionValue builtIn="false" value="NUSE_IWDG"/>
 									<listOptionValue builtIn="false" value="NDRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
@@ -308,7 +310,9 @@
 								<option id="iar.arm.toolchain.compiler.option.preserveComments.v6.2.0.1810730546" name="Preserve comments" superClass="iar.arm.toolchain.compiler.option.preserveComments.v6.2.0" value="true" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.generateLineDirectives.v6.2.0.1755112760" name="Generate #line directives" superClass="iar.arm.toolchain.compiler.option.generateLineDirectives.v6.2.0" value="true" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.2117106906" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.739932964" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.739932964" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.1062267861" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.954855000" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1143735391" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="false" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.47243218" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -466,7 +470,9 @@
 								<option id="iar.arm.toolchain.compiler.option.ropi.v5.5.0.1217278464" name="Position-independent code and read-only data (ropi)" superClass="iar.arm.toolchain.compiler.option.ropi.v5.5.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.rwpi.v5.5.0.615098982" name="Position-independent read/write data (rwpi)" superClass="iar.arm.toolchain.compiler.option.rwpi.v5.5.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.1456235045" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.754927055" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.754927055" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.524169395" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.810932882" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.193924593" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.967160059" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -648,8 +654,10 @@
 								<option id="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0.130412354" name="C++ without exceptions" superClass="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0.771286496" name="C++ without RTTI" superClass="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.873893538" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1359814126" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
-								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1573617048" name="IAR C/C++ Compiler MFC Input Type" superClass="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1359814126" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1573617048" name="IAR C/C++ Compiler MFC Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.206213473" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1548078870" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1185520879" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.834867429" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -746,7 +754,9 @@
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0.765112088" name="Disable static clustering" superClass="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0.1674960599" name="Disable instruction scheduling" superClass="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.language.v6.1.0.1294378439" name="Language" superClass="iar.arm.toolchain.compiler.option.language.v6.1.0" value="iar.arm.toolchain.compiler.option.language.cpp.v6.1.0" valueType="enumerated"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.180933951" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.180933951" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.1562706445" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.661866511" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1399367400" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0.1185520879">
 								<inputType id="iar.arm.toolchain.assembler.inputType.asmFile.v5.4.0.27052469" name="IAR Assembler input type for ARM (asm, s)" superClass="iar.arm.toolchain.assembler.inputType.asmFile.v5.4.0"/>
@@ -785,7 +795,9 @@
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optAliasAnalysis.v5.4.0.123868440" name="Disable type-based alias analysis" superClass="iar.arm.toolchain.compiler.option.optAliasAnalysis.v5.4.0" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0.865664859" name="Disable static clustering" superClass="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0.714722973" name="Disable instruction scheduling" superClass="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0" valueType="boolean"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.449101736" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.449101736" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.519053977" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1064794763" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.2061700912" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0.1185520879">
 								<inputType id="iar.arm.toolchain.assembler.inputType.asmFile.v5.4.0.1193941629" name="IAR Assembler input type for ARM (asm, s)" superClass="iar.arm.toolchain.assembler.inputType.asmFile.v5.4.0"/>
@@ -906,8 +918,10 @@
 								<option id="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0.763018537" name="C++ without exceptions" superClass="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0.1884353608" name="C++ without RTTI" superClass="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.464533581" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.200216998" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
-								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.753096616" name="IAR C/C++ Compiler MFC Input Type" superClass="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.200216998" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.753096616" name="IAR C/C++ Compiler MFC Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.1553015589" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1914661652" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1737006211" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.2092727452" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -1103,8 +1117,10 @@
 								<option id="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0.226675750" name="C++ without exceptions" superClass="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0.2036758505" name="C++ without RTTI" superClass="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.1795967652" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1638884611" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
-								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1354606619" name="IAR C/C++ Compiler MFC Input Type" superClass="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1638884611" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1354606619" name="IAR C/C++ Compiler MFC Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.952500914" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.556665413" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1994606063" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.1290699507" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>

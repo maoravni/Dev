@@ -163,9 +163,9 @@ void PscMasterServer::run()
         {
             m_isConnected = true;
             StatusLed::getInstance().setSpeed(E_AliveLedSpeed_Connected);
+            CLogger::getInstance().updateOutputUdpIpAddress(m_pTcpConnector->getRemoteIpAddress());
             m_messageStruct.header.id.split.id = MSG_Connect;
             m_messageHandler->handleMessage(m_messageStruct);
-            CLogger::getInstance().updateOutputUdpIpAddress(m_pTcpConnector->getRemoteIpAddress());
         }
 
 // receive the data from the net into the receive buffer

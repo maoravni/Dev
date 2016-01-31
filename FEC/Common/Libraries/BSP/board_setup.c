@@ -62,8 +62,7 @@
 #include <iwdg.h>
 #include <rtc.h>
 
-__no_init uint32_t StayInBootLoader @
-0x20000000;
+__no_init uint32_t StayInBootLoader @ 0x20000000;
 //uint32_t checksum;
 
 /* --- GLOBAL_EXTERNALS ----------------------------------------------------- */
