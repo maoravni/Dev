@@ -489,7 +489,7 @@ void PscMessageHandler::MessageGetVersionHandler(unsigned long param)
         message->header.id.split.id = MSG_GetVersionReply;
         message->header.length = sizeof(PscMessageHeader) + sizeof(PSSGetVersionReplyMsg);
 
-        payload->firmwareVersion = ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MAJOR << 48)
+        payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR+100) << 48)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
