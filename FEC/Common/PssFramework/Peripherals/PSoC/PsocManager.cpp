@@ -58,10 +58,10 @@ void T_PsocHandler::resetPsocOutputs()
     psocHandler.resetOutputs();
 
     // wait until all outputs have been written:
-    while (psocHandler.isPendingUpdate())
-    {
-        vTaskDelay(10);
-    }
+//    while (psocHandler.isPendingUpdate())
+//    {
+//        vTaskDelay(10);
+//    }
 }
 
 PsocManager::PsocManager()
@@ -876,12 +876,13 @@ void PsocManager::reset()
         resetPsocOutputs(&m_psocHandlers[i]);
     }
 
-    // wait for pending outputs to be reset
-    for (int i = 0; i < m_totalNumberOfPsocs; ++i)
-    {
-        while (m_psocHandlers[i].isPendingUpdate())
-            delay(10);
-    }
+    // this is not needed anymore, as the psoc's outputs are constantly written.
+//    // wait for pending outputs to be reset
+//    for (int i = 0; i < m_totalNumberOfPsocs; ++i)
+//    {
+//        while (m_psocHandlers[i].isPendingUpdate())
+//            delay(10);
+//    }
 
     for (int i = 0; i < m_totalNumberOfPsocs; ++i)
     {
