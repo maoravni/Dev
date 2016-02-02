@@ -413,7 +413,6 @@ void Calc_Temperature(void)
     }
     else
     {
-        //if (ConnectedRTDsBitfield ^ RequiredRTDsBitfield)	 // check if any of the sensors was enabled
         if ((RequiredRTDsBitfield & ConnectedRTDsBitfield) != RequiredRTDsBitfield)
         {
             /* Update  system warnings  */

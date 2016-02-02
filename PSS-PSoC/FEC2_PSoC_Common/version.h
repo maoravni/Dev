@@ -15,7 +15,7 @@
 #define M_ICD_VERSION_MAJOR 				2
 #define M_ICD_VERSION_MINOR 				1
 #define M_ICD_VERSION_BUILD 				0
-#define M_ICD_VERSION_REVISION 				9
+#define M_ICD_VERSION_REVISION 				10
 
 #define M_FEC2 1
 #define M_FEC3 2

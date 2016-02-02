@@ -1648,8 +1648,9 @@ void Ex_ReadDigitalInputs(void)
 void Ex_ReadTemperaturePwmDISensors(void)
 {
 	#ifdef FEC2_PSoC_V01
-		Vsupply = s_rxBuffer.Data.DataBytes_float[0];
+		Vsupply = s_rxBuffer.Data.WriteMultipleDevice.vsupply;
 	#endif
+	Ex_WriteMultipleDevice();
     /* Disable write to StoredTemps4MMCU */
     TemperatureWriteEnable = 0;
     /* load the s_txBuffer with temperature data */
@@ -1713,8 +1714,9 @@ void Ex_ReadTemperaturePacket(void)
 void Ex_ReadAnalogsFeedbacksErrors(void)
 {
 	#ifdef FEC2_PSoC_V01
-		Vsupply = s_rxBuffer.Data.DataBytes_float[0];
+    Vsupply = s_rxBuffer.Data.WriteMultipleDevice.vsupply;
 	#endif
+    Ex_WriteMultipleDevice();
 	memcpy(	s_txBuffer.Data.ReadAnalogsFeedbacksErrors.analogIn,
 			StoredAnalogIn4MMCU.AnalogInputs,
 			sizeof(StoredAnalogIn4MMCU.AnalogInputs)

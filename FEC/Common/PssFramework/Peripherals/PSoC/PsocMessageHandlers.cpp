@@ -72,3 +72,22 @@ void PMHGetCableID::prepareTransmitBuffer(T_MessagePacket* transmitBuffer, uint8
     transmitBuffer->data.psocRequestWithVoltage.voltage = boardVoltage;
 }
 
+void PMHReadTemperaturePwmDISensors::prepareTransmitBufferOutputs(T_MessagePacket* transmitBuffer, uint8_t serialNumber,
+        uint8_t* pwmValues, uint8_t* analogValues, float voltage)
+{
+    PsocMessageHandlerBase::prepareTransmitBuffer(transmitBuffer, serialNumber);
+    transmitBuffer->data.writeMultipleDevices.writeBitfield = 0xfc | 0x3;
+    memcpy(transmitBuffer->data.writeMultipleDevices.digitalOutputs, pwmValues, sizeof(transmitBuffer->data.writeMultipleDevices.digitalOutputs));
+    memcpy(transmitBuffer->data.writeMultipleDevices.analogOutputs, analogValues, sizeof(transmitBuffer->data.writeMultipleDevices.analogOutputs));
+    transmitBuffer->data.writeMultipleDevices.voltage = voltage;
+}
+
+void PMHReadAnalogsFeedbacksErrors::prepareTransmitBufferOutputs(T_MessagePacket* transmitBuffer, uint8_t serialNumber,
+        uint8_t* pwmValues, uint8_t* analogValues, float voltage)
+{
+    PsocMessageHandlerBase::prepareTransmitBuffer(transmitBuffer, serialNumber);
+    transmitBuffer->data.writeMultipleDevices.writeBitfield = 0xfc | 0x3;
+    memcpy(transmitBuffer->data.writeMultipleDevices.digitalOutputs, pwmValues, sizeof(transmitBuffer->data.writeMultipleDevices.digitalOutputs));
+    memcpy(transmitBuffer->data.writeMultipleDevices.analogOutputs, analogValues, sizeof(transmitBuffer->data.writeMultipleDevices.analogOutputs));
+    transmitBuffer->data.writeMultipleDevices.voltage = voltage;
+}

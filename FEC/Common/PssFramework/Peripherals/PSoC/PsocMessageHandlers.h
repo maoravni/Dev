@@ -160,16 +160,36 @@ class PMHResetPSoC : public PsocMessageHandlerBase
 public:
 };
 
+class PMHWriteMultipleDevices : public PsocMessageHandlerBase
+{
+private:
+    virtual void prepareTransmitBuffer(T_MessagePacket* transmitBuffer, uint8_t serialNumber){}
+
+public:
+    virtual void prepareTransmitBufferPwm(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* pwmValues);
+    virtual void prepareTransmitBufferAnalogOuts(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* analogValues);
+    virtual E_PsocCommands getPsocCommand() {return E_PsocCommands_WriteMultipleDevice; }
+//    virtual E_PsocSpiError handleReceiveBuffer(PsocHandler* psocHandler, T_MessagePacket* processedBuffer, uint8_t serialNumber);
+};
+
 class PMHReadTemperaturePwmDISensors : public PsocMessageHandlerBase
 {
+private:
+    virtual void prepareTransmitBuffer(T_MessagePacket* transmitBuffer, uint8_t serialNumber){}
+
 public:
+    virtual void prepareTransmitBufferOutputs(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* pwmValues, uint8_t* analogValues, float voltage);
     virtual E_PsocSpiError handleReceiveBuffer(PsocHandler* psocHandler, T_MessagePacket* processedBuffer, uint8_t serialNumber);
     virtual E_PsocCommands getPsocCommand(){ return E_PsocCommands_ReadTemperaturePwmDISensors; }
 };
 
 class PMHReadAnalogsFeedbacksErrors : public PsocMessageHandlerBase
 {
+private:
+    virtual void prepareTransmitBuffer(T_MessagePacket* transmitBuffer, uint8_t serialNumber){}
+
 public:
+    virtual void prepareTransmitBufferOutputs(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* pwmValues, uint8_t* analogValues, float voltage);
     virtual E_PsocSpiError handleReceiveBuffer(PsocHandler* psocHandler, T_MessagePacket* processedBuffer, uint8_t serialNumber);
     virtual E_PsocCommands getPsocCommand(){ return E_PsocCommands_ReadAnalogsFeedbacksErrors; }
 };
@@ -184,18 +204,6 @@ class PMHConfigTemperatureSensor : public PsocMessageHandlerBase
 {
 public:
     virtual E_PsocCommands getPsocCommand() {return E_PsocCommands_ConfigTemperatureSensor; }
-};
-
-class PMHWriteMultipleDevices : public PsocMessageHandlerBase
-{
-private:
-    virtual void prepareTransmitBuffer(T_MessagePacket* transmitBuffer, uint8_t serialNumber){}
-
-public:
-    virtual void prepareTransmitBufferPwm(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* pwmValues);
-    virtual void prepareTransmitBufferAnalogOuts(T_MessagePacket* transmitBuffer, uint8_t serialNumber, uint8_t* analogValues);
-    virtual E_PsocCommands getPsocCommand() {return E_PsocCommands_WriteMultipleDevice; }
-//    virtual E_PsocSpiError handleReceiveBuffer(PsocHandler* psocHandler, T_MessagePacket* processedBuffer, uint8_t serialNumber);
 };
 
 class PMHConfigCurrentLoop : public PsocMessageHandlerBase

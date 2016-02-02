@@ -287,12 +287,12 @@ void PsocManager::execute(int psocIndex)
     // update the next request now. In case a blocking request is performed, it will override this request.
     if (m_psocHandlers[psocIndex].isRequestPending())
     {
-        if (m_psocHandlers[psocIndex].isPendingUpdate())
-        {
-            m_psocHandlers[psocIndex].updatePendingOutputs();
-        }
-        else
-        {
+//        if (m_psocHandlers[psocIndex].isPendingUpdate())
+//        {
+//            m_psocHandlers[psocIndex].updatePendingOutputs();
+//        }
+//        else
+//        {
             switch (m_psocHandlers[psocIndex].m_nextRequest)
             {
             case E_PsocRequest_ReadTemperaturePwmDi:
@@ -309,7 +309,7 @@ void PsocManager::execute(int psocIndex)
                 m_psocHandlers[psocIndex].m_nextRequest = E_PsocRequest_ReadTemperaturePwmDi;
                 break;
             }
-        }
+//        }
     }
 
     // call the current psoc's execute

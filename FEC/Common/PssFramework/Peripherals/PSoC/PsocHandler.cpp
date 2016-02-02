@@ -437,9 +437,8 @@ E_PsocSpiError PsocHandler::getTemperaturePwmDiSensors()
     frame->completeSemaphore = NULL;
     frame->messageHandler = &g_readTemperaturePwmDISensorsHandler;
     // todo: pass board voltage
-    frame->transmitBuffer.data.psocRequestWithVoltage.voltage = Psc_GetBoardVoltage24V();
-    g_readTemperaturePwmDISensorsHandler.prepareTransmitBuffer(&frame->transmitBuffer, m_lastSerialNumber);
-//    frame->
+//    frame->transmitBuffer.data.writeMultipleDevices.voltage = Psc_GetBoardVoltage24V();
+    g_readTemperaturePwmDISensorsHandler.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber, m_pwmOutputs, m_analogOutputs, Psc_GetBoardVoltage24V());
     return E_PsocSpiError_Ok;
 }
 
@@ -452,9 +451,8 @@ E_PsocSpiError PsocHandler::getAnalogsFeedbacksErrors()
     frame->completeSemaphore = NULL;
     frame->messageHandler = &g_readAnalogsFeedbacksErrors;
     // todo: pass board voltage
-    frame->transmitBuffer.data.psocRequestWithVoltage.voltage = Psc_GetBoardVoltage24V();
-    g_readAnalogsFeedbacksErrors.prepareTransmitBuffer(&frame->transmitBuffer, m_lastSerialNumber);
-//    frame->
+//    frame->transmitBuffer.data.psocRequestWithVoltage.voltage = Psc_GetBoardVoltage24V();
+    g_readAnalogsFeedbacksErrors.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber, m_pwmOutputs, m_analogOutputs, Psc_GetBoardVoltage24V());
     return E_PsocSpiError_Ok;
 }
 

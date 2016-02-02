@@ -454,6 +454,7 @@ struct T_WriteMultipleDeviceValues
     uint8_t writeBitfield;
     uint8_t analogOutputs[2];
     uint8_t digitalOutputs[6];
+    float voltage;
 };
 
 struct T_WriteMultipleDevice

@@ -280,6 +280,7 @@ typedef struct
 	uint8 WriteBitfield;
 	uint8 AnalogOutputs[2];
 	uint8 DigitalOutput[6];
+	float vsupply;
 } T_WriteMultipleDevice;
 
 /* READ TEMPERATURE SENSORS */

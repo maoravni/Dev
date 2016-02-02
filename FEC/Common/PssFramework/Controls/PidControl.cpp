@@ -290,6 +290,8 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
 //        return true;
 //    }
 
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Updating PidControl Setpoint sp=%f (%f)-(%f)-(%f)-(%f) FF=%f delay=%d sn=%d",
+            sp, loWarn, loRange, hiRange, hiWarn, feedForward, delay, sn);
 
     // remove current timeouts if they exist:
     UpdateSchedulerTask::getInstance()->addTimeout(this, 0);
@@ -341,7 +343,7 @@ bool PidControl::setSetpoint(ValidationElementFloat* element)
     if (!m_pidCalc.isEnabled() && element->getValue() != m_pidCalc.getSetPoint())
     {
         return setSetpoint(element->getValue(), element->getMinWorking(), element->getMaxWorking(),
-                element->getMinWarning(), element->getMaxWarning(), 0, 0, 0);
+                element->getMinWarning(), element->getMaxWarning(), m_feedForward, 0, 0);
     }
     return true;
 }
@@ -501,10 +503,10 @@ bool PidControl::executeDependencyCheck(ElementBase* element)
 
 void PidControl::timeoutExpired(uint16_t timeoutType)
 {
+    m_timeoutExpired = true;
     m_pidCalc.setAutoMode(true);
     m_pidCalc.setEnabled(true);
     m_pidCalc.setSetPoint(m_setpoint->getValueF(), m_feedForward);
-    m_timeoutExpired = true;
 }
 
 E_ActivationState PidControl::getActivationState()
