@@ -55,41 +55,41 @@ void SubsystemInstantiator::ith()
 
     PidControl* pidControl;
 
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(0)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(0)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
-
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(1)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(1)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
-
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(2)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(2)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
-
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(3)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(3)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
-
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(mb8tc->getElementByIndex(5)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(4)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
-
-    pidControl = new PidControl();
-    pidControl->setElementInput(static_cast<ValidationElementFloat*>(mb8tc->getElementByIndex(6)));
-    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(5)));
-    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
-    m_pidControlArray.push_back(pidControl);
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(0)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(0)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
+//
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(1)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(1)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
+//
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(2)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(2)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
+//
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(puma->getElementByIndex(3)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(3)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
+//
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(mb8tc->getElementByIndex(5)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(4)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
+//
+//    pidControl = new PidControl();
+//    pidControl->setElementInput(static_cast<ValidationElementFloat*>(mb8tc->getElementByIndex(6)));
+//    pidControl->setElementOutput(static_cast<ValidationElementFloat*>(swpwm->getElementByIndex(5)));
+//    pidControl->setElementSetpoint(ElementRepository::getInstance().addValidationElementFloat());
+//    m_pidControlArray.push_back(pidControl);
 
 //    AirBleedingControl *valve = new AirBleedingControl();
 //    valve->setOutputElements(static_cast<ElementU8*>(PeripheralRepository::getInstance().getDigitalOutputsPeripheral()->getElementByIndex(7)),

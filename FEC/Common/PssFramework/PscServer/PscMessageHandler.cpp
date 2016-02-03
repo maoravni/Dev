@@ -1868,7 +1868,7 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
             return;
         }
 
-        control->setElementOutput(element);
+        control->setElementOutput(element, false);
     }
     else
     {
@@ -1890,7 +1890,7 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 //        PidControl* cascadedPid = static_cast<PidControl*>(cascade);
 //
         // set the output element of this control loop to the setpoint element of the cascaded control loop:
-        control->setElementOutput(cascade->getMainControlElement());
+        control->setElementOutput(cascade->getMainControlElement(), true);
     }
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
@@ -2431,6 +2431,8 @@ void PscMessageHandler::MessageActivateMonitoringHandler(unsigned long param)
     if (control != NULL)
     {
         control->setMonitoringEnabled((payload->active != 0));
+        control->setMinInterval(payload->minUpdateInterval);
+        control->setMaxInterval(payload->maxUpdateInterval);
     }
     else
     {

@@ -33,6 +33,7 @@ class PidControl: public ControlBase
     PID_ATune* m_pPidAutotune;
     bool m_isInAutotune;
     bool m_timeoutExpired;
+    bool m_outputIsControl;
 
 public:
     PidControl();
@@ -70,10 +71,11 @@ public:
 //        setSecondaryPssId(m_input->getPssId());
     }
 
-    void setElementOutput(ElementBase* output)
+    void setElementOutput(ElementBase* output, bool outputIsControl)
     {
         m_output = output;
         m_output->addObserver(this);
+        m_outputIsControl = outputIsControl;
     }
 
     void setElementSetpoint(ValidationElementFloat* setpoint)
@@ -122,6 +124,9 @@ public:
     virtual E_ActivationState getActivationState();
 
     virtual void setPssId(uint16_t deviceId);
+
+private:
+    void resetOutput();
 };
 
 #endif /* PIDCONTROL_H_ */

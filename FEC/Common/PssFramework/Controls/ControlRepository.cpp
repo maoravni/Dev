@@ -201,7 +201,7 @@ void ControlRepository::executeShutdownOperation(bool exceptStopOnDisconnection)
     {
         // perform the default operations when disconnecting, if no operation was defined.
         addShutdownOperation(0, 0xffff, E_ShutdownOperation_ResetToOn, 0);
-        addShutdownOperation(500, 0xffff, E_ShutdownOperation_Init, 0);
+        addShutdownOperation(250, 0xffff, E_ShutdownOperation_Init, 0);
         addShutdownOperation(500, 0xffff, E_ShutdownOperation_ResetToOn, 0);
     }
 

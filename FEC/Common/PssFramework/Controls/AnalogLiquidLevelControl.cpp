@@ -122,6 +122,12 @@ bool AnalogLiquidLevelControl::onRecoverFromEmr()
     return true;
 }
 
+void AnalogLiquidLevelControl::setMinInterval(int16_t minInterval)
+{
+    ControlBase::setMinInterval(minInterval);
+    m_calculatedOutputLevel->setMinInterval(minInterval);
+}
+
 //void AnalogLiquidLevelControl::addProtectionElement(ValidationElementBase* element)
 //{
 //}

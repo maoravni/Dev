@@ -26,6 +26,7 @@ PidControl::PidControl()
     m_pidCalc.Initialize();
     m_feedForward = 0;
     m_timeoutExpired = true;
+    m_outputIsControl = false;
 //    m_fromMove2Standby = false;
 }
 
@@ -140,8 +141,9 @@ bool PidControl::executeLocalProtectionCheck(ElementBase* element)
         // TODO: Change error to "Protection Activated"
 //        raiseError(E_PSSErrors_DeviceExceedsSoftLimits, true);
         // we should also stop the heating:
-        *m_output = 0;
-        m_output->sendDeviceStatus();
+//        *m_output = 0;
+//        m_output->sendDeviceStatus();
+        resetOutput();
     }
 
     return result;
@@ -389,8 +391,11 @@ bool PidControl::onMove2Standby(uint32_t delay)
 {
     m_pidCalc.setEnabled(false);
     if (m_output->getValueF() != 0)
-        *m_output = 0;
-    m_output->sendDeviceStatus();
+    {
+        resetOutput();
+//        *m_output = 0;
+//    m_output->sendDeviceStatus();
+    }
     m_pidCalc.setEnabled(false);
     m_pidCalc.Initialize();
 
@@ -407,8 +412,11 @@ bool PidControl::onMove2Error()
 {
     m_pidCalc.setEnabled(false);
     if (m_output->getValueF() != 0)
-        *m_output = 0;
-    m_output->sendDeviceStatus();
+    {
+        resetOutput();
+//        *m_output = 0;
+//    m_output->sendDeviceStatus();=
+    }
     m_pidCalc.reset();
     cancelAutoTune();
     endMove2Error();
@@ -420,8 +428,11 @@ bool PidControl::onReset2On()
 {
     m_pidCalc.setEnabled(false);
     if (m_output->getValueF() != 0)
-        *m_output = 0;
-    m_output->sendDeviceStatus();
+    {
+        resetOutput();
+//        *m_output = 0;
+//    m_output->sendDeviceStatus();
+    }
     m_pidCalc.reset();
     cancelAutoTune();
 
@@ -460,9 +471,11 @@ void PidControl::addProtectionElement(ValidationElementBase* element)
 bool PidControl::onStopOnEmr()
 {
     m_pidCalc.setEnabled(false);
-    if (m_output->getValueF() != 0)
-        *m_output = 0;
-    m_output->sendDeviceStatus();
+    {
+        resetOutput();
+//        *m_output = 0;
+//    m_output->sendDeviceStatus();
+    }
     m_pidCalc.setEnabled(false);
     m_pidCalc.Initialize();
 
@@ -530,4 +543,15 @@ void PidControl::setPssId(uint16_t deviceId)
 void PidControl::setSetpointRange(float setpointRange)
 {
     m_pidCalc.setSetPointRange(setpointRange);
+}
+
+void PidControl::resetOutput()
+{
+    *m_output = 0;
+//    if (m_outputIsControl)
+//    {
+//        ControlRepository::getInstance().getControlByPssId(m_output->getPssId())->sendNotification();
+//    }
+//    else
+        m_output->sendDeviceStatus();
 }

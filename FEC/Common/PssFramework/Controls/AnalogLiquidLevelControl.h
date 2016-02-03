@@ -41,6 +41,8 @@ public:
 
 
     virtual void updateNotification(ElementBase* element);
+    virtual void setMinInterval(int16_t minInterval);
+
 
     /**
      * This method asks the observer if a value change is permitted.

@@ -156,7 +156,7 @@ void ModbusInverterSchneiderAtv32::readInputs()
 
         if (m_numOfFailedEnables > M_NUMBER_OF_RETRIES)
         {
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Modbus Device %d error: inverter enable not set at inverter.", getSlaveId());
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "{[PSSID:%d]}: inverter enable not set at inverter.", getPssId());
             m_outputFrequency->updateErrorBits(E_PSSErrors_InverterForwardNotEnabled, true);
         }
     }

@@ -183,6 +183,8 @@ public:
     }
 
     void setMonitoringEnabled(bool monitoringEnabled);
+    virtual void setMinInterval(int16_t minInterval) {}
+    virtual void setMaxInterval(int16_t maxInterval) {}
 
     virtual bool sendNotification() = 0;
 #ifdef OLD_PROTECTION

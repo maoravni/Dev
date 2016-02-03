@@ -253,7 +253,11 @@ void ModbusInverterControl::updateNotification(ElementBase* element)
 	}
 	else if (element == m_setpoint)
 	{
-		setSetpointActivationDelay(m_setpoint->getValueF(), 0);
+	    if (m_requestedSetpoint->getValueF() != m_setpoint->getValueF())
+	    {
+//	        if (m_setpoint->getValueF() == 0)
+	        setSetpointActivationDelay(m_setpoint->getValueF(), 0);
+	    }
 	}
 	else if (element == m_driveStatus)
 	{
