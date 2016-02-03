@@ -293,6 +293,8 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Updating PidControl Setpoint sp=%f (%f)-(%f)-(%f)-(%f) FF=%f delay=%d sn=%d",
             sp, loWarn, loRange, hiRange, hiWarn, feedForward, delay, sn);
 
+    taskENTER_CRITICAL();
+
     // remove current timeouts if they exist:
     UpdateSchedulerTask::getInstance()->addTimeout(this, 0);
 
@@ -325,6 +327,8 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     // change the state
     // TODO: Implement a state machine, so that seq ended sending will be encapsulated.
     m_controlState = E_ControlState_Move2Ready;
+
+    taskEXIT_CRITICAL();
 
     sendNotification();
 
