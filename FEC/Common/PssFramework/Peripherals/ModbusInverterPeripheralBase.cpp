@@ -25,9 +25,12 @@ ModbusInverterPeripheralBase::ModbusInverterPeripheralBase(uint8_t slaveId) :
     m_setpointUpdated = true;
     m_frequencySetpoint->addObserver(this);
 
+    m_outputEnable = NULL;
+
     setUpdateInterval(M_INVERTER_SAMPLE_INTERVAL);
 
     m_numOfFailedReads = 0;
+    m_numOfFailedEnables = 0;
 
 //    setInverterType();
 //    setupInverter();

@@ -15,9 +15,12 @@
 #define M_INVERTER_RESET_ADDRESS 7128
 #define M_INVERTER_OUTPUT_FREQUENCY_ADDRESS 3202
 #define M_INVERTER_OUTPUT_CURRENT_ADDRESS 3204
+#define M_INVERTER_LOGIC_INPUTS_ADDRESS 5202
 #define M_INVERTER_AUTOTUNE 9608
 #define M_INVERTER_AUTOTUNE_STATE 9609
 #define M_INVERTER_AUTOMATIC_AUTOTUNE 9615
+
+//#define M_OUTPUT_ENABLE_RETRIES 10
 
 struct T_Atv32RegisterSetup
 {
@@ -47,9 +50,9 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
         { 11102, 0 }, // signal is on level
         { 7122, 1 }, // automatic restart
         { 9003, 1 }, // default Dec Ramp Adapt to yes, if no breaking resistor is present.
-        { 11230, 10}, // default fast stop ramp divider is 10.
-        { 11204, 133}, // assign LI5 to fast stop.
-        { M_INVERTER_AUTOMATIC_AUTOTUNE, 0},
+        { 11230, 10 }, // default fast stop ramp divider is 10.
+        { 11204, 133 }, // assign LI5 to fast stop.
+        { M_INVERTER_AUTOMATIC_AUTOTUNE, 0 },
         { 0, 0 } };
 
 //static const T_Atv32RegisterSetup Atv32DryerRegisterSetup[] =
@@ -93,6 +96,7 @@ void ModbusInverterSchneiderAtv32::readInputs()
 {
     int16_t outFreq;
     int16_t outCurrent;
+    uint16_t logicInputs;
     int16_t inverterData[3];
     uint32_t buffLength;
 
@@ -114,13 +118,6 @@ void ModbusInverterSchneiderAtv32::readInputs()
         return;
     }
 
-//    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_CURRENT_ADDRESS, 1, (uint8_t*) &outCurrent, buffLength);
-//    if (error != E_ModbusError_Ok)
-//    {
-//        ++m_numOfFailedReads;
-//        return;
-//    }
-//
     // if we're here it means the inverter went back to communication.
     if (m_numOfFailedReads > 0)
     {
@@ -136,6 +133,33 @@ void ModbusInverterSchneiderAtv32::readInputs()
     outCurrent = SWAP_16(inverterData[2]);
     *m_outputFrequency = (float) (outFreq * m_frequencyMultiplier);
     *m_outputCurrent = (float) (outCurrent * m_currentMultiplier);
+
+    if (m_outputEnable != NULL)
+    {
+        error = readHoldingRegs(getSlaveId(), M_INVERTER_LOGIC_INPUTS_ADDRESS, 1, (uint8_t*) &logicInputs, buffLength);
+        if (error != E_ModbusError_Ok)
+        {
+            ++m_numOfFailedReads;
+            return;
+        }
+
+        logicInputs = SWAP_16(logicInputs);
+
+        if ((logicInputs & 1) != (m_outputEnable->getValueU32() != 0))
+            ++m_numOfFailedEnables;
+        else
+        {
+            if (m_numOfFailedEnables > M_NUMBER_OF_RETRIES)
+                m_outputFrequency->updateErrorBits(E_PSSErrors_InverterForwardNotEnabled, false);
+            m_numOfFailedEnables = 0;
+        }
+
+        if (m_numOfFailedEnables > M_NUMBER_OF_RETRIES)
+        {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Modbus Device %d error: inverter enable not set at inverter.", getSlaveId());
+            m_outputFrequency->updateErrorBits(E_PSSErrors_InverterForwardNotEnabled, true);
+        }
+    }
 
     if (m_setpointUpdated)
     {

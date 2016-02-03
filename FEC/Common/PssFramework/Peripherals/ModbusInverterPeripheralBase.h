@@ -27,6 +27,7 @@ protected:
     ElementBase* m_outputFrequency;
     ElementBase* m_outputCurrent;
     ElementBase* m_frequencySetpoint;
+    ElementBase* m_outputEnable;
 
     E_ModbusInverterType m_inverterType;
     float m_currentMultiplier;
@@ -34,6 +35,7 @@ protected:
     int m_setpointMultiplier;
 
     int m_numOfFailedReads;
+    int m_numOfFailedEnables;
 
     bool m_setpointUpdated;
 
@@ -59,6 +61,11 @@ public:
     {
         m_frequencySetpoint = element;
         m_frequencySetpoint->addObserver(this);
+    }
+
+    void setOutputEnableElement(ElementBase* element)
+    {
+        m_outputEnable = element;
     }
 
     ElementBase* getFrequencySetpointElement() const

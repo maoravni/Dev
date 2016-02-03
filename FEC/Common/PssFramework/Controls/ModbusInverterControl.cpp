@@ -136,6 +136,13 @@ void ModbusInverterControl::setOutputFrequencyElement(ElementBase* element)
 	m_outputFrequency = element;
 	m_outputFrequency->addObserver(this);
 	m_outputFrequency->setMissingDevicePriority(E_MissingDevicePriority_High);
+
+	PeripheralBase* periph = PeripheralRepository::getInstance().getPeripheralContainingElementPssId(element->getPssId());
+
+    if (periph != NULL && periph->getPeripheralType() == E_PeripheralType_Inverter && m_enableOutput != NULL)
+    {
+        dynamic_cast<ModbusInverterPeripheralBase*>(periph)->setOutputEnableElement(m_enableOutput);
+    }
 }
 
 void ModbusInverterControl::setOutputCurrentElement(ElementBase* element)
