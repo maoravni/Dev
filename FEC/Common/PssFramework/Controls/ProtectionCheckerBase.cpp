@@ -67,7 +67,7 @@ void ProtectionCheckerBase::setNewProtectionState(E_DeviceProtectionState state)
                 else
                 {
                     m_debounceTimeoutStarted = true;
-                    UpdateSchedulerTask::getInstance()->addProtectionDebounceTimeout(this, m_debounceTimeout);
+                    UpdateSchedulerTask::getInstance()->addProtectionDebounceTimeout(this, m_debounceTimeout*1000);
                 }
             }
         }
