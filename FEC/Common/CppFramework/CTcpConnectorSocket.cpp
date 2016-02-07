@@ -40,7 +40,7 @@ extern "C" struct netif xnetif; /* network interface structure */
 
 #define M_DHCP_TASK_PRIO   ( tskIDLE_PRIORITY + 2 )
 #define M_FULL_SEND_QUEUE_TIMEOUT 10000
-#define M_SEND_QUEUE_DEPTH 2
+#define M_SEND_QUEUE_DEPTH 20
 #define M_RECEIVE_QUEUE_DEPTH 20
 
 #if (LWIP_VER == 14)
