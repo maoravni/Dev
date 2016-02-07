@@ -489,10 +489,17 @@ void PscMessageHandler::MessageGetVersionHandler(unsigned long param)
         message->header.id.split.id = MSG_GetVersionReply;
         message->header.length = sizeof(PscMessageHeader) + sizeof(PSSGetVersionReplyMsg);
 
+#ifdef DEBUG
         payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR+100) << 48)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
+#else
+        payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR) << 48)
+                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
+                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
+                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
+#endif
         payload->protocolVersion = ((unsigned __int64) M_OPC_ICD_VERSION_MAJOR << 48)
                 | ((unsigned __int64) M_OPC_ICD_VERSION_MINOR << 32)
                 | ((unsigned __int64) M_OPC_ICD_VERSION_BUILD << 16) | ((unsigned __int64) M_OPC_ICD_VERSION_REVISION);
@@ -630,6 +637,20 @@ void PscMessageHandler::MessageResetBoardHandler(unsigned long param)
     resetBoard(payload->startupApp);
 }
 
+void PscMessageHandler::suspendScheduler()
+{
+    // take the scheduler semaphores, so that no updates will occur:
+    UpdateSchedulerTask::getInstance()->suspendScheduler();
+    ModbusSchedulerTask::getInstance()->suspendScheduler();
+}
+
+void PscMessageHandler::resumeScheduler()
+{
+    // restart the update process:
+    UpdateSchedulerTask::getInstance()->resumeScheduler();
+    ModbusSchedulerTask::getInstance()->resumeScheduler();
+}
+
 void PscMessageHandler::MessageBoardRecoveryHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];
@@ -646,17 +667,13 @@ void PscMessageHandler::MessageBoardRecoveryHandler(unsigned long param)
 
     m_boardState.eventStartRecovery();
 
-    // take the scheduler semaphores, so that no updates will occur:
-    UpdateSchedulerTask::getInstance()->suspendScheduler();
-    ModbusSchedulerTask::getInstance()->suspendScheduler();
+    suspendScheduler();
 
     m_psocManager.startRecovery();
     PeripheralRepository::getInstance().startRecovery();
     ControlRepository::getInstance().startRecovery();
 
-    // restart the update process:
-    UpdateSchedulerTask::getInstance()->resumeScheduler();
-    ModbusSchedulerTask::getInstance()->resumeScheduler();
+    resumeScheduler();
 
     m_boardState.eventEndRecovery();
 
@@ -2541,9 +2558,14 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
+    suspendScheduler();
+
     PidControl *pidControl = static_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
             payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay*1000, message->header.sn);
+
+    resumeScheduler();
+
 }
 
 void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigned long param)
@@ -2572,6 +2594,7 @@ void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigne
 
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+
 
     ObserveAndNotifyControl * pObserveAndNotifyControl = static_cast<ObserveAndNotifyControl*>(control);
     pObserveAndNotifyControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
@@ -2608,7 +2631,9 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
         sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
         AnalogOutInverterControl *inverterControl = static_cast<AnalogOutInverterControl*>(control);
+        suspendScheduler();
         inverterControl->setSetpoint(payload->setPoint, message->header.sn);
+        resumeScheduler();
     }
     else if (control->getControlType() == E_ControlType_ModbusInverter)
     {
@@ -2619,7 +2644,9 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
 
         // TODO: and pure virtual method "setSetpoint" to all controls.
         ModbusInverterControl *inverterControl = static_cast<ModbusInverterControl*>(control);
+        suspendScheduler();
         inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn, payload->activationDelay*1000);
+        resumeScheduler();
     }
     else
     {
@@ -2775,9 +2802,14 @@ void PscMessageHandler::MessageActivateHysteresisTemperatureControlHandler(unsig
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
     HysteresisControl *hystControl = static_cast<HysteresisControl*>(control);
+
+    suspendScheduler();
     hystControl->setSetpoint(payload->setPoint, payload->deactivateSetPoint, payload->minWorkingRange,
             payload->maxWorkingRange, payload->minWarningRange, payload->maxWarningRange, message->header.sn);
+    resumeScheduler();
+
 }
+
 
 void PscMessageHandler::MessageActivateWaterTankLevelControlHandler(unsigned long param)
 {
@@ -3158,7 +3190,9 @@ void PscMessageHandler::MessageActivateActivationWithFeedbackControlHandler(unsi
 
     ActivationWithFeedbackControl *activationControl = static_cast<ActivationWithFeedbackControl*>(control);
 
+    suspendScheduler();
     result = activationControl->activateControl(payload->outputValue, payload->timeout, message->header.sn);
+    resumeScheduler();
 
 }
 

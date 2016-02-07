@@ -189,6 +189,9 @@ public:
     }
 #endif
 
+private:
+    void suspendScheduler();
+    void resumeScheduler();
 };
 
 #endif /* PSCMESSAGEHANDLER_H_ */
