@@ -245,6 +245,8 @@ void CTcpConnectorSocket::send(const void* message, u16_t length)
         // copy the data to the queue for sending
         memcpy(&queueItem.data, message, length);
         queueItem.length = length;
+        while (m_sendQueue.messagesWaiting() >= M_SEND_QUEUE_DEPTH/2)
+            delay(20);
         while (m_newTcpSocket != 0 && m_sendQueue.sendToBack(&queueItem, 200) != pdPASS)
         {
             M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "TCP Send Queue is full (%d messages).", m_sendQueue.messagesWaiting());
