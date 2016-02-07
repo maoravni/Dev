@@ -74,6 +74,9 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
 	// change the state
 	// TODO: Implement a state machine, so that seq ended sending will be encapsulated.
 	//if (!m_stopping)
+
+    taskENTER_CRITICAL();
+
 	m_controlState = E_ControlState_Move2Ready;
 	m_stopping = false;
 
@@ -96,6 +99,8 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
 	{
 		ModbusSchedulerTask::getInstance()->addTimeout(this, activationDelay, M_TIMEOUT_DELAY);
 	}
+
+	taskEXIT_CRITICAL();
 
 	sendNotification();
 
