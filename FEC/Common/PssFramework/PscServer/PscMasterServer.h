@@ -40,7 +40,7 @@ private:
     unsigned int m_lastRequestSerialNumber; //!< The last serial number of the request from the OPC.
     unsigned int m_lastReplySerialNumber; //!< The last serial number of the reply to the OPC.
 
-    PscMessageHandler *m_messageHandler;
+    //PscMessageHandler *m_messageHandler;
 
     T_TcpReceiveBuffer m_tcpReceiveBuffer;
     int m_currentTcpReceiveBuffer;

@@ -68,7 +68,7 @@ bool PscMasterServer::receiveAndExtractDataFromTcp()
 //        m_isConnected = true;
         // send a connected message to the message handler.
 //        m_messageStruct.header.id.split.id = MSG_Connect;
-//        m_messageHandler->handleMessage(m_messageStruct);
+//        PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
 
         extractNextMessageFromBuffer();
 
@@ -100,7 +100,7 @@ bool PscMasterServer::extractNextMessageFromBuffer()
     if (validateMessage())
     {
         // handle the message
-        m_messageHandler->handleMessage(m_messageStruct);
+        PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
     }
     else
     {
@@ -165,7 +165,7 @@ void PscMasterServer::run()
             StatusLed::getInstance().setSpeed(E_AliveLedSpeed_Connected);
             CLogger::getInstance().updateOutputUdpIpAddress(m_pTcpConnector->getRemoteIpAddress());
             m_messageStruct.header.id.split.id = MSG_Connect;
-            m_messageHandler->handleMessage(m_messageStruct);
+            PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
         }
 
 // receive the data from the net into the receive buffer
@@ -180,7 +180,7 @@ void PscMasterServer::run()
 
                 // send a disconnect message to the message handler.
                 m_messageStruct.header.id.split.id = MSG_Disconnect;
-                m_messageHandler->handleMessage(m_messageStruct);
+                PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
 
                 reset();
                 m_isConnected = false;
@@ -214,10 +214,10 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
     CLogger::getInstance().enableOutputUdp(true);
 
     // create the message handler task:
-    m_messageHandler = (PscMessageHandler::getInstance());
-//    if ((res = m_messageHandler->create("PscMsgHdl", M_MESSAGE_HANDLER_DEFAULT_STACK_DEPTH, uxPriority)) != pdPASS)
+    //PscMessageHandler::getInstance() = (PscMessageHandler::getInstance());
+//    if ((res = PscMessageHandler::getInstance()->create("PscMsgHdl", M_MESSAGE_HANDLER_DEFAULT_STACK_DEPTH, uxPriority)) != pdPASS)
 //        return res;
-    m_messageHandler->setBoardAddress(m_boardAddress);
+    PscMessageHandler::getInstance()->setBoardAddress(m_boardAddress);
 
     return res;
 }
@@ -326,7 +326,7 @@ void PscMasterServer::sendLogMessage(std::string &str)
 void PscMasterServer::disconnectDetected()
 {
     m_messageStruct.header.id.split.id = MSG_Disconnect;
-    m_messageHandler->handleMessage(m_messageStruct);
+    PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
 }
 
 void PscMasterServer::killConnection()
