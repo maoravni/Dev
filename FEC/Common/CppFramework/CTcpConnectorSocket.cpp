@@ -40,8 +40,10 @@ extern "C" struct netif xnetif; /* network interface structure */
 
 #define M_DHCP_TASK_PRIO   ( tskIDLE_PRIORITY + 2 )
 #define M_FULL_SEND_QUEUE_TIMEOUT 10000
-#define M_SEND_QUEUE_DEPTH 20
-#define M_RECEIVE_QUEUE_DEPTH 20
+//#define M_SEND_QUEUE_DEPTH 20
+//#define M_RECEIVE_QUEUE_DEPTH 20
+#define M_QUEUE_DEPTH 20
+#define M_QUEUE_ALMOST_FULL_DEPTH 15
 
 #if (LWIP_VER == 14)
 #define GET_TCP_CONN_LAST_ERROR(conn) ERR_IS_FATAL(conn->last_err)
@@ -62,6 +64,8 @@ CTcpConnectorSocket::CTcpConnectorSocket(u16_t port)
     m_port = port;
     m_lastSuccessfullSendTick = 0;
     m_deadConnection = false;
+    m_lowPriority = 0;
+    m_highPriority = 0;
 }
 
 CTcpConnectorSocket::~CTcpConnectorSocket()
@@ -105,8 +109,8 @@ void CTcpConnectorSocket::run()
         /* create a TCP socket */
         if ((m_tcpSocket = lwip_socket(AF_INET, SOCK_STREAM, 0)) < 0)
         {
-			retVal = lwip_getsockopt(m_tcpSocket, SOL_SOCKET, SO_ERROR, (char*)&sockError, (socklen_t*)&size);
-			printf("can not create socket");
+            retVal = lwip_getsockopt(m_tcpSocket, SOL_SOCKET, SO_ERROR, (char*) &sockError, (socklen_t*) &size);
+            printf("can not create socket");
             return;
         }
 
@@ -173,6 +177,17 @@ void CTcpConnectorSocket::run()
                         if (retVal > 0)
                         {
                             queueItem.length = retVal;
+
+                            if (m_receiveQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
+                            {
+                                if (priorityGet() != m_lowPriority)
+                                {
+                                    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                            "Setting TCP Connector thread priority to %d (rQ waiting %d)",
+                                            m_lowPriority, m_receiveQueue.messagesWaiting());
+                                    prioritySet(m_lowPriority);
+                                }
+                            }
                             while (m_receiveQueue.send(&queueItem, 10) != pdPASS)
                             {
                             }
@@ -217,6 +232,16 @@ void CTcpConnectorSocket::run()
                         if (retVal > 0)
                         {
                             queueItem.length = retVal;
+                            if (m_receiveQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
+                            {
+                                if (priorityGet() != m_lowPriority)
+                                {
+                                    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                            "Setting TCP Connector thread priority to %d (rQ waiting %d)",
+                                            m_lowPriority, m_receiveQueue.messagesWaiting());
+                                    prioritySet(m_lowPriority);
+                                }
+                            }
                             while (m_receiveQueue.send(&queueItem, 10) != pdPASS)
                             {
                             }
@@ -245,13 +270,14 @@ void CTcpConnectorSocket::send(const void* message, u16_t length)
         // copy the data to the queue for sending
         memcpy(&queueItem.data, message, length);
         queueItem.length = length;
-        if (m_sendQueue.messagesWaiting() >= M_SEND_QUEUE_DEPTH-1)
+        if (m_sendQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
         {
-            unsigned portBASE_TYPE originalPriority = priorityGet();
-            prioritySet(5);
-            while (m_sendQueue.messagesWaiting() != 0)
-                delay(20);
-            prioritySet(originalPriority);
+            if (priorityGet() != m_highPriority)
+            {
+                M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Setting TCP Connector thread priority to %d (waiting %d)",
+                        m_highPriority, m_sendQueue.messagesWaiting());
+                prioritySet(m_highPriority);
+            }
         }
         while (m_newTcpSocket != 0 && m_sendQueue.sendToBack(&queueItem, 200) != pdPASS)
         {
@@ -298,12 +324,12 @@ portBASE_TYPE CTcpConnectorSocket::onCreate(const portCHAR * const pcName, unsig
 // the queues. If not, create new queues.
     if (!m_receiveQueue.isValid())
     {
-        m_receiveQueue.create(M_RECEIVE_QUEUE_DEPTH, sizeof(T_TcpQueueItem));
+        m_receiveQueue.create(M_QUEUE_DEPTH, sizeof(T_TcpQueueItem));
     }
 
     if (!m_sendQueue.isValid())
     {
-        m_sendQueue.create(M_SEND_QUEUE_DEPTH, sizeof(T_TcpQueueItem));
+        m_sendQueue.create(M_QUEUE_DEPTH, sizeof(T_TcpQueueItem));
     }
 
     return pdTRUE;
@@ -317,6 +343,14 @@ portBASE_TYPE CTcpConnectorSocket::onCreate(const portCHAR * const pcName, unsig
 void CTcpConnectorSocket::sendTaskControlFunc(void *pParams)
 {
     static_cast<AManagedTask *>(pParams)->run();
+}
+
+long CTcpConnectorSocket::create(const char* const pcName, unsigned short usStackDepth, unsigned long receivePriority,
+        unsigned long sendPriority)
+{
+    CBaseConnector::create(pcName, usStackDepth, receivePriority);
+    m_lowPriority = receivePriority;
+    m_highPriority = sendPriority;
 }
 
 in_addr& CTcpConnectorSocket::getRemoteIpAddress()

@@ -25,6 +25,9 @@
 class CTcpConnectorSocket: public CBaseConnector
 {
 private:
+    int m_lowPriority;
+    int m_highPriority;
+
     u16_t m_port;
 
     int m_tcpSocket;
@@ -91,13 +94,17 @@ public:
      *
      * @sa CTask::Create
      */
-//    portBASE_TYPE create(const portCHAR * const pcName, unsigned portSHORT usStackDepth);
+    portBASE_TYPE create(const portCHAR * const pcName, unsigned portSHORT usStackDepth, unsigned portBASE_TYPE receivePriority, unsigned portBASE_TYPE sendPriority);
 
     static void sendTaskControlFunc(void *pParams);
 
     in_addr& getRemoteIpAddress();
 
     void killConnection() {m_deadConnection = true;}
+
+private:
+    //portBASE_TYPE create(const portCHAR * const pcName, unsigned portSHORT usStackDepth, unsigned portBASE_TYPE uxPriority);
+
 };
 
 #endif /* CTCPCONNECTOR_SOCKET_H_ */
