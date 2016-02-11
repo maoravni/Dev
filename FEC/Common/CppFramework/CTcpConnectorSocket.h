@@ -19,6 +19,8 @@
 #include <stdint.h>
 //#include <PscServer/PscMessageStructs.h>
 
+#define M_DEFAULT_CONNECTOR_LOW_PRIORITY 1
+#define M_DEFAULT_CONNECTOR_HIGH_PRIORITY 4
 /**
  * Class for TCP connections
  */
