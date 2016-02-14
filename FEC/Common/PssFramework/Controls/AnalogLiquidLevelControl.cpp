@@ -27,31 +27,34 @@ AnalogLiquidLevelControl::~AnalogLiquidLevelControl()
 void AnalogLiquidLevelControl::execute()
 {
     float currentLevel = m_levelSensorElement->getValueF();
+    int calculatedOutputLevel;
 
     if (currentLevel < m_lowLevelValue)
     {
-        *m_calculatedOutputLevel = 0;
+        calculatedOutputLevel = 0;
 //        raiseError(E_PSSErrors_DeviceExceedsSoftLimits, true);
 //        raiseWarning(E_PSSWarnings_DeviceExceedsLimits, false);
     }
     else if (currentLevel < m_midLevelValue)
     {
-        *m_calculatedOutputLevel = 1;
+        calculatedOutputLevel = 1;
 //        raiseError(E_PSSErrors_DeviceExceedsSoftLimits, false);
 //        raiseWarning(E_PSSWarnings_DeviceExceedsLimits, true);
     }
     else if (currentLevel < m_highLevelValue)
     {
-        *m_calculatedOutputLevel = 2;
+        calculatedOutputLevel = 2;
 //        raiseError(E_PSSErrors_DeviceExceedsSoftLimits, false);
 //        raiseWarning(E_PSSWarnings_DeviceExceedsLimits, false);
     }
     else
     {
-        *m_calculatedOutputLevel = 3;
+        calculatedOutputLevel = 3;
 //        raiseError(E_PSSErrors_DeviceExceedsSoftLimits, true);
 //        raiseWarning(E_PSSWarnings_DeviceExceedsLimits, false);
     }
+    if (calculatedOutputLevel != m_calculatedOutputLevel->getValueI32())
+        m_calculatedOutputLevel->setValue(calculatedOutputLevel);
 }
 
 bool AnalogLiquidLevelControl::onInitControl()
