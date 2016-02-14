@@ -13,6 +13,7 @@
 #include "SubsystemInstantiator.h"
 #include "BoardStateMachine.h"
 #include <AppLoader.h>
+#include <TaskPriorities.h>
 
 #ifdef FEC2_BOARD
 #include <Peripherals/PSoC/PsocManager.h>
@@ -117,7 +118,7 @@ public:
         {
             p_instance = new PscMessageHandler();
             // Create the task.
-            p_instance->create("PscMsgHdl", M_MESSAGE_HANDLER_DEFAULT_STACK_DEPTH, 4);
+            p_instance->create("PscMsgHdl", M_MESSAGE_HANDLER_DEFAULT_STACK_DEPTH, M_TASK_PRIORITY_PSC_MESSAGE_HANDLER);
         }
 
         return p_instance;

@@ -208,7 +208,7 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
     reset();
 
     // create the TCP connector
-    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, M_DEFAULT_CONNECTOR_LOW_PRIORITY, M_DEFAULT_CONNECTOR_HIGH_PRIORITY)) != pdPASS)
+    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, M_TASK_PRIORITY_TCP_CONNECTOR_LOW_PRIORITY, M_TASK_PRIORITY_TCP_CONNECTOR_HIGH_PRIORITY)) != pdPASS)
         return res;
 
     CLogger::getInstance().enableOutputUdp(true);
@@ -227,7 +227,7 @@ PscMasterServer& PscMasterServer::getInstance()
     if (!s_instance.isValid())
     {
 // Create the task.
-        s_instance.create("PscServer", M_PSC_MASTER_SERVER_STACK_SIZE, 2);
+        s_instance.create("PscServer", M_PSC_MASTER_SERVER_STACK_SIZE, M_TASK_PRIORITY_PSC_MASTER_SERVER);
     }
 
     return s_instance;

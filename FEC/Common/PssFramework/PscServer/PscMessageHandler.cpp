@@ -3508,7 +3508,7 @@ portBASE_TYPE PscMessageHandler::onCreate(const portCHAR * const pcName, unsigne
 #ifdef FEC2_BOARD
     // note that the message handler should be of a higher priority, in case the
     // requests arrive from it.
-    m_psocManager.create("psocManager", 600, uxPriority - 1);
+    m_psocManager.create("psocManager", 600, M_TASK_PRIORITY_PSOC_MANAGER);
     m_psocManager.setBoardState(&m_boardState);
 #endif
 

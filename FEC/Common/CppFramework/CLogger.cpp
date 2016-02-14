@@ -16,6 +16,7 @@
 #include "rtc.h"
 #include "logger.h"
 #include "CBinarySemaphore.h"
+#include <TaskPriorities.h>
 //#ifdef NEW_FEC
 //#include <PscServer/MessageStructs.h>
 //#else
@@ -79,7 +80,7 @@ CLogger& CLogger::getInstance()
     if (!m_singletonInstance.isValid())
     {
         // Create the task.
-        m_singletonInstance.create("CLogger", M_LOGGER_DEFAULT_SUBTASK_STACK_SIZE, 1);
+        m_singletonInstance.create("CLogger", M_LOGGER_DEFAULT_SUBTASK_STACK_SIZE, M_TASK_PRIORITY_CLOGGER);
     }
 
     return m_singletonInstance;
@@ -501,7 +502,7 @@ void CLogger::enableOutputUdp(bool enable)
             if (!m_udpConnector.isValid())
             {
                 if ((m_udpConnector.create("Logger UDP", M_LOGGER_DEFAULT_SUBTASK_STACK_SIZE,
-                        TCPIP_THREAD_PRIO)) != pdPASS)
+                        M_TASK_PRIORITY_LOGGER_UDP)) != pdPASS)
                     m_outputUdpEnable = false;
                 //m_udpConnector.setPort(M_LOGGER_DEFAULT_UDP_BASE_PORT+(Get_SSID_dig()<<4)+nod_id_get());
 
