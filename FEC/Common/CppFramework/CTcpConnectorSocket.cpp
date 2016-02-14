@@ -45,6 +45,8 @@ extern "C" struct netif xnetif; /* network interface structure */
 #define M_QUEUE_DEPTH 20
 #define M_QUEUE_ALMOST_FULL_DEPTH 15
 
+//#define M_PRIORITY_CHANGE_SUPPORT
+
 #if (LWIP_VER == 14)
 #define GET_TCP_CONN_LAST_ERROR(conn) ERR_IS_FATAL(conn->last_err)
 #else
@@ -178,6 +180,7 @@ void CTcpConnectorSocket::run()
                         {
                             queueItem.length = retVal;
 
+#ifdef M_PRIORITY_CHANGE_SUPPORT
                             if (m_receiveQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
                             {
                                 if (priorityGet() != m_lowPriority)
@@ -188,6 +191,7 @@ void CTcpConnectorSocket::run()
                                     prioritySet(m_lowPriority);
                                 }
                             }
+#endif
                             while (m_receiveQueue.send(&queueItem, 10) != pdPASS)
                             {
                             }
@@ -232,6 +236,7 @@ void CTcpConnectorSocket::run()
                         if (retVal > 0)
                         {
                             queueItem.length = retVal;
+#ifdef M_PRIORITY_CHANGE_SUPPORT
                             if (m_receiveQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
                             {
                                 if (priorityGet() != m_lowPriority)
@@ -242,6 +247,7 @@ void CTcpConnectorSocket::run()
                                     prioritySet(m_lowPriority);
                                 }
                             }
+#endif
                             while (m_receiveQueue.send(&queueItem, 10) != pdPASS)
                             {
                             }
@@ -270,6 +276,7 @@ void CTcpConnectorSocket::send(const void* message, u16_t length)
         // copy the data to the queue for sending
         memcpy(&queueItem.data, message, length);
         queueItem.length = length;
+#ifdef M_PRIORITY_CHANGE_SUPPORT
         if (m_sendQueue.messagesWaiting() >= M_QUEUE_ALMOST_FULL_DEPTH)
         {
             if (priorityGet() != m_highPriority)
@@ -279,6 +286,7 @@ void CTcpConnectorSocket::send(const void* message, u16_t length)
                 prioritySet(m_highPriority);
             }
         }
+#endif
         while (m_newTcpSocket != 0 && m_sendQueue.sendToBack(&queueItem, 200) != pdPASS)
         {
             M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "TCP Send Queue is full (%d messages).", m_sendQueue.messagesWaiting());
