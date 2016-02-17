@@ -195,7 +195,18 @@ void PidControl::execute()
     {
     case E_ControlState_Move2Ready:
         if (!m_timeoutExpired)
-            break;
+        {
+            float inputValue = m_input->getValue();
+            if (m_pidCalc.getControllerDirection() == DIRECT && inputValue >= m_setpoint->getMaxWorking() && inputValue <= m_setpoint->getMaxWarning())
+            {
+                m_timeoutExpired = true;
+                m_pidCalc.setAutoMode(true);
+                m_pidCalc.setEnabled(true);
+                m_pidCalc.setSetPoint(m_setpoint->getValueF(), m_feedForward);
+            }
+            else
+                break;
+        }
         // TODO: add a timeout for reaching the set point
         if (m_input->isValid() && m_setpoint->isInWorkingRange(m_input->getValue()))
         {

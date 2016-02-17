@@ -3445,7 +3445,7 @@ void PscMessageHandler::handleMessage(PscMessageStruct& message)
     memcpy(m_messages + m_currentMessage, &message, sizeof(PscMessageStruct));
 
 // post the message to the queue:
-    while (postMessage(&m, 50) != pdPASS)
+    while (postMessage(&m, 200) != pdPASS)
     {
         M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PscMessageHandler queue is full");
         //puts("PscMessageHandler queue is full!");

@@ -85,7 +85,8 @@ public:
      * Set the controller direction - more power means hotter or colder.
      * @param Direction
      */
-    void SetControllerDirection(bool isDirectOperation);
+    void setControllerDirection(bool isDirectOperation);
+    int getControllerDirection();
 
     /**
      *

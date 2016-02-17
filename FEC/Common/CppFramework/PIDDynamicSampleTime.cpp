@@ -33,7 +33,7 @@ PIDDynamicSampleTime::PIDDynamicSampleTime()
     m_feedForwardInjection = 0;
 
     SetOutputLimits(0, 100);
-    SetControllerDirection(true);
+    setControllerDirection(true);
     SetTunings(1, 0, 0, 0);
 }
 
@@ -270,9 +270,14 @@ void PIDDynamicSampleTime::reset()
     setEnabled(false);
 }
 
-void PIDDynamicSampleTime::SetControllerDirection(bool isDirectOperation)
+void PIDDynamicSampleTime::setControllerDirection(bool isDirectOperation)
 {
     m_controllerDirection = (isDirectOperation) ? DIRECT : REVERSE;
+}
+
+int PIDDynamicSampleTime::getControllerDirection()
+{
+    return m_controllerDirection;
 }
 
 void PIDDynamicSampleTime::updateTrapezoidalRange()

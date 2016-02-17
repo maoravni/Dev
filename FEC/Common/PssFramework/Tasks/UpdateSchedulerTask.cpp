@@ -401,7 +401,7 @@ UpdateSchedulerTask* UpdateSchedulerTask::getInstance()
     {
         p_instance = new UpdateSchedulerTask();
         // Create the task.
-        p_instance->create("UpdateScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, 4);
+        p_instance->create("UpdateScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, M_TASK_PRIORITY_MAIN_UPDATE_SCHEDULER);
     }
 
     return p_instance;
@@ -553,7 +553,7 @@ ModbusSchedulerTask* ModbusSchedulerTask::getInstance()
     {
         p_instance = new ModbusSchedulerTask();
         // Create the task.
-        p_instance->create("ModbusScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, 3);
+        p_instance->create("ModbusScheduler", M_UPDATE_SCHEDULER_STACK_SIZE, M_TASK_PRIORITY_MODBUS_UPDATE_SCHEDULER);
     }
 
     return p_instance;
