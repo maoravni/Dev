@@ -1,5 +1,5 @@
 /*
-* ModbusInverterControl.cpp
+ * ModbusInverterControl.cpp
 *
 *  Created on: 10 בספט 2013
 *      Author: maora
@@ -64,7 +64,7 @@ void ModbusInverterControl::updateSetpoints()
 
 bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t activationDelay)
 {
-	if (/*m_stopping || */m_controlState == E_ControlState_On)
+	if (/*m_stopping || */m_controlState == E_ControlState_On || m_controlState == E_ControlState_Error)
 		return false;
 
 	// if the old requested setpoint equals the new requested setpoint don't do anything.
