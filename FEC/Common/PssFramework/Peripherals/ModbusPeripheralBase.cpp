@@ -126,7 +126,6 @@ E_ModbusError ModbusPeripheralBase::writeSingleReg(uint8_t slaveId, uint16_t add
     T_ModbusRtuRequestFrame requestFrame;
     uint16_t responseCrc, expectedResponseCrc;
 
-
     E_ModbusError result = E_ModbusError_NoSlaveResponse;
 
     requestFrame.split.slave_id = slaveId;

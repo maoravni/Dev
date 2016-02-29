@@ -49,6 +49,7 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
         { 3107, 1 }, // noise reduction
         { 11102, 0 }, // signal is on level
         { 7122, 1 }, // automatic restart
+        { 7123, 6 }, // unlimited restart time
         { 9003, 1 }, // default Dec Ramp Adapt to yes, if no breaking resistor is present.
         { 11230, 10 }, // default fast stop ramp divider is 10.
         { 11204, 133 }, // assign LI5 to fast stop.
@@ -239,47 +240,89 @@ void ModbusInverterSchneiderAtv32::setupInverter()
 
     if (m_minSpeed != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 3105, m_minSpeed);
+        result = writeSingleReg(getSlaveId(), 3105, m_minSpeed);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_maxSpeed != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 3103, m_maxSpeed);
+        result = writeSingleReg(getSlaveId(), 3103, m_maxSpeed);
         vTaskDelay(10);
         // write the high speed
-        writeSingleReg(getSlaveId(), 3104, m_maxSpeed);
+        result = writeSingleReg(getSlaveId(), 3104, m_maxSpeed);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_accelRate != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 9001, m_accelRate);
+        result = writeSingleReg(getSlaveId(), 9001, m_accelRate);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_decelRate != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 9002, m_decelRate);
+        result = writeSingleReg(getSlaveId(), 9002, m_decelRate);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_nominalCurrent != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 9603, m_nominalCurrent);
+        result = writeSingleReg(getSlaveId(), 9603, m_nominalCurrent);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_nominalFrequency != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 9602, m_nominalFrequency);
+        result = writeSingleReg(getSlaveId(), 9602, m_nominalFrequency);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     if (m_nominalRpm != (int16_t) 0x8000)
     {
-        writeSingleReg(getSlaveId(), 9604, m_nominalRpm);
+        result = writeSingleReg(getSlaveId(), 9604, m_nominalRpm);
         vTaskDelay(10);
+    }
+
+    if (result != E_ModbusError_Ok)
+    {
+        m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+        return;
     }
 
     for (i = 0; i < sizeof(Atv32RegisterSetup) && Atv32RegisterSetup[i].regAddress != 0; ++i)
@@ -296,6 +339,11 @@ void ModbusInverterSchneiderAtv32::setupInverter()
             if (value != Atv32RegisterSetup[i].value)
                 printf("setup register %d failed: Requested: %d, Read: %d\n", Atv32RegisterSetup[i].regAddress,
                         Atv32RegisterSetup[i].regAddress, value);
+        }
+        if (result != E_ModbusError_Ok)
+        {
+            m_numOfFailedReads = M_NUMBER_OF_RETRIES + 1;
+            return;
         }
     }
 

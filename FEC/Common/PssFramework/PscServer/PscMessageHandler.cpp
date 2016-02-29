@@ -851,9 +851,9 @@ void PscMessageHandler::MessageDefineOnboardPeriphHandler(unsigned long param)
     M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->periphPSSId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSDefineOnboardPeriphMsg: cableId=%d slaveCableId=%d periphPssId={[PSSID:%d]} numOfDevices=%d periphType=%d",
+            "PSSDefineOnboardPeriphMsg: cableId=%d slaveCableId=%d periphPssId={[PSSID:%d]} numOfDevices=%d periphType=%d sampleInt=%d lpf=%d",
             payload->cableId, payload->slaveCableId, payload->periphPSSId, payload->numberOfDevices,
-            payload->periphType);
+            payload->periphType, payload->sampleInterval, payload->lowPassFilter);
 
     E_AckStatus status = E_AckStatus_Success;
     bool result;
