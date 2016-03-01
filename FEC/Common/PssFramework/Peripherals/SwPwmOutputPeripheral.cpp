@@ -91,6 +91,10 @@ void SwPwmOutputPeripheral::run()
                     {
                         dig_out_ctrl((OPTO_OUT_ID_ET) i, DEACTIVE);
                     }
+                    else
+                    {
+                        dig_out_ctrl((OPTO_OUT_ID_ET) i, ACTIVE);
+                    }
                     if (m_channelStateArray[i].currentCounter >= m_channelStateArray[i].totalCycleLength)
                     {
                         m_channelStateArray[i].currentCounter = 0;

@@ -350,7 +350,7 @@ void vInitTask(void *pvParameters)
     PscMasterServer::getInstance();
 
 //    TestTask *testTask = new TestTask();
-//    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 1000, 3);
+//    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
 
     //    uiTraceStart();.
 

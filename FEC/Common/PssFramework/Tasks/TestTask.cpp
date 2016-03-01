@@ -72,16 +72,16 @@ void TestTask::run()
     delay(1000);
 
 #ifdef FEC2_BOARD
-//    Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
-//
-//    PeripheralRepository::getInstance().addPeripheral(mi3Periph);
-//
-//    Mi3Sensor* mi3Sensor = mi3Periph->getSensorByAddress(0x14);
-////    ElementBase* element = mi3Sensor->t;
-//    mi3Sensor->writeAmbientBackgroundCompensation(true);
-//    mi3Sensor->setI2CChannel(1);
-//    mi3Periph->setBoardInReady(true);
-//    mi3Periph->setUpdateInterval(25);
+    Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
+
+    PeripheralRepository::getInstance().addPeripheral(mi3Periph);
+
+    Mi3Sensor* mi3Sensor = mi3Periph->getSensorByAddress(0x14);
+//    ElementBase* element = mi3Sensor->t;
+    mi3Sensor->writeAmbientBackgroundCompensation(true);
+    mi3Sensor->setI2CChannel(1);
+    mi3Periph->setBoardInReady(true);
+    mi3Periph->setUpdateInterval(25);
 #endif
 
 //    PsocAppLoader *appLoader = new PsocAppLoader(PscMessageHandler::getInstance()->getPsocManager());
@@ -92,14 +92,14 @@ void TestTask::run()
 //
 //    appLoader->writeRowDataFromFlashToPSoC();
 
-    in_addr addr;
-    addr.s_addr = 0x631e1eac;
-    CLogger::getInstance().updateOutputUdpIpAddress(addr);
+//    in_addr addr;
+//    addr.s_addr = 0x631e1eac;
+//    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
     for (;;)
     {
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "test log");
-        delay(100);
+//        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "test log");
+        delay(10000);
     }
 
 }

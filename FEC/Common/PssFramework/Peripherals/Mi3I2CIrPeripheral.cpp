@@ -37,7 +37,7 @@ Mi3I2CIrPeripheral::Mi3I2CIrPeripheral()
     setUpdateInterval(1000);
     m_previousWakeupTime = 0;
     m_boardInReady = false;
-    create("Mi3IrTask", configMINIMAL_STACK_SIZE + 100, 0);
+    create("Mi3IrTask", configMINIMAL_STACK_SIZE + 200, 0);
 
     if (i2cTransferCompleteSemaphore == NULL)
         vSemaphoreCreateBinary(i2cTransferCompleteSemaphore);
