@@ -54,7 +54,10 @@ void AnalogLiquidLevelControl::execute()
 //        raiseWarning(E_PSSWarnings_DeviceExceedsLimits, false);
     }
     if (calculatedOutputLevel != m_calculatedOutputLevel->getValueI32())
+    {
         m_calculatedOutputLevel->setValue(calculatedOutputLevel);
+        sendNotification();
+    }
 }
 
 bool AnalogLiquidLevelControl::onInitControl()
@@ -87,8 +90,8 @@ void AnalogLiquidLevelControl::updateNotification(ElementBase* element)
     if (m_controlState == E_ControlState_Move2Ready)
     {
         m_controlState = E_ControlState_Ready;
+        sendNotification();
     }
-    sendNotification();
 }
 
 bool AnalogLiquidLevelControl::sendNotification()
