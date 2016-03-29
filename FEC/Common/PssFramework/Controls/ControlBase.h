@@ -53,6 +53,7 @@ enum E_ControlType
     E_ControlType_SubtractTwoDevices,
     E_ControlType_CalculateOnTwoDevices,
     E_ControlType_LiftPbOnErrorCcsGen3,
+    E_ControlType_ConcentrationControl,
 };
 
 enum E_ExceptionState

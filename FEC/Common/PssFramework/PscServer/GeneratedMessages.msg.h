@@ -9,6 +9,7 @@
 //                                                        *
 //*********************************************************
 
+#define MSG_activateconcentrationcontrol 0x9999
 #define MSG_Disconnect 0x4001
 #define MSG_Connect 0x4002
 #define MSG_ActivateActivationWithFeedbackControl 0x314

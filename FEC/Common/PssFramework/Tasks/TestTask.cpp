@@ -44,6 +44,7 @@
 #include <Controls/OrderedShutdownControl.h>
 #include <AppLoader.h>
 #include <PscServer/PscMessageHandler.h>
+#include <controls/ConcentrationControl.h>
 
 TestTask::TestTask()
 {
@@ -82,6 +83,8 @@ void TestTask::run()
     mi3Sensor->setI2CChannel(1);
     mi3Periph->setBoardInReady(true);
     mi3Periph->setUpdateInterval(25);
+
+    ControlBase* conc = new ConcentrationControl();
 #endif
 
 //    PsocAppLoader *appLoader = new PsocAppLoader(PscMessageHandler::getInstance()->getPsocManager());

@@ -194,6 +194,7 @@ void PidControl::execute()
     switch (m_controlState)
     {
     case E_ControlState_Move2Ready:
+        // when working in open loop, heating, and the input value passed beyond the warning range, return to closed loop control.
         if (!m_timeoutExpired)
         {
             float inputValue = m_input->getValue();
