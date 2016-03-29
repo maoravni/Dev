@@ -49,6 +49,24 @@ struct PSSActivateActivationWithFeedbackControlMsg {
 	int timeout;
 	};
 
+struct PSSActivateConcentrationControlMsg {
+	unsigned short cableId;
+	unsigned short pssId;
+	float concentrationHighSetPoint;
+	float concentrationLowSetPoint;
+	float concentrationMaxWarning;
+	float concentrationMaxWorking;
+	float concentrationMinWarning;
+	float concentrationMinWorking;
+	float tankLevelHighSetpoint;
+	float tankLevelLowSetpoint;
+	float tankMaxWarning;
+	float tankMaxWorking;
+	float tankMinWarning;
+	float tankMinWorking;
+	unsigned int activationDelay;
+	};
+
 struct PSSActivateLeakageDetectionControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
@@ -141,6 +159,15 @@ struct PSSDefineCalculateOnTwoDevicesControlMsg {
 	unsigned short input2;
 	unsigned short output;
 	unsigned short calculationFunction;
+	};
+
+struct PSSDefineConcentrationControlMsg {
+	unsigned short cableId;
+	unsigned short pssId;
+	unsigned short concentrationInput;
+	unsigned short liquidLevelInput;
+	unsigned short conditionerValve;
+	unsigned short waterValve;
 	};
 
 struct PSSDefineConstantDeltaProtectionMsg {
@@ -874,6 +901,7 @@ struct RevolverStatusNotificationMsg {
 	char brushState;
 	unsigned short brushStatus;
 	unsigned short activeBlade;
+	char tmcRevolverState;
 	};
 
 struct RevolverStopbrushMsg {
@@ -918,6 +946,7 @@ union PSSMsgType{
 	struct PolisherStatusNotificationMsg polisherStatusNotificationMsg;
 	struct PolisherStopMsg polisherStopMsg;
 	struct PSSActivateActivationWithFeedbackControlMsg pSSActivateActivationWithFeedbackControlMsg;
+	struct PSSActivateConcentrationControlMsg pSSActivateConcentrationControlMsg;
 	struct PSSActivateLeakageDetectionControlMsg pSSActivateLeakageDetectionControlMsg;
 	struct PSSActivateObserveAndNotifyControlMsg pSSActivateObserveAndNotifyControlMsg;
 	struct PSSActivateWaterTankControlMsg pSSActivateWaterTankControlMsg;
@@ -929,6 +958,7 @@ union PSSMsgType{
 	struct PSSActivateHysteresisTemperatureControlMsg pSSActivateHysteresisTemperatureControlMsg;
 	struct PSSDefineAnalogSensorWaterTankMsg pSSDefineAnalogSensorWaterTankMsg;
 	struct PSSDefineCalculateOnTwoDevicesControlMsg pSSDefineCalculateOnTwoDevicesControlMsg;
+	struct PSSDefineConcentrationControlMsg pSSDefineConcentrationControlMsg;
 	struct PSSDefineConstantDeltaProtectionMsg pSSDefineConstantDeltaProtectionMsg;
 	struct PSSDefineCurrentLimitsProtectionMsg pSSDefineCurrentLimitsProtectionMsg;
 	struct PSSDefineModbusPeriphMsg pSSDefineModbusPeriphMsg;

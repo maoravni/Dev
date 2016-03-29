@@ -490,15 +490,15 @@ void PscMessageHandler::MessageGetVersionHandler(unsigned long param)
         message->header.length = sizeof(PscMessageHeader) + sizeof(PSSGetVersionReplyMsg);
 
 #ifdef DEBUG
-        payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR+100) << 48)
+        payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR + 100) << 48)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
                 | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
 #else
         payload->firmwareVersion = ((unsigned __int64) (M_FEC_FIRMWARE_VERSION_MAJOR) << 48)
-                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
-                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
-                | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
+        | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_MINOR << 32)
+        | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_BUILD << 16)
+        | ((unsigned __int64) M_FEC_FIRMWARE_VERSION_REVISION);
 #endif
         payload->protocolVersion = ((unsigned __int64) M_OPC_ICD_VERSION_MAJOR << 48)
                 | ((unsigned __int64) M_OPC_ICD_VERSION_MINOR << 32)
@@ -1363,7 +1363,8 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
         return;
     }
 
-    ValidationElementBase* element = static_cast<ValidationElementBase*>(periph->getElementByIndex(payload->deviceIndex));
+    ValidationElementBase* element =
+            static_cast<ValidationElementBase*>(periph->getElementByIndex(payload->deviceIndex));
 
     if (element == NULL)
     {
@@ -1374,7 +1375,7 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
     }
 
     element->setPssId(payload->pssId);
-    element->setMissingDevicePriority((E_MissingDevicePriority)payload->missingSensorPriority);
+    element->setMissingDevicePriority((E_MissingDevicePriority) payload->missingSensorPriority);
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 }
@@ -1914,6 +1915,73 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 
 }
 
+void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long param)
+{
+    PscMessageStruct* message = &m_messages[param];
+    PSSDefineConcentrationControlMsg* payload = &(message->payload.pSSDefineConcentrationControlMsg);
+
+    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSDefineConcentrationControl: cableId=%d pssId={[PSSID:%d]} conc={[PSSID:%d]} tankLevel={[PSSID:%d]} condValve={[PSSID:%d]} waterValve={[PSSID:%d]}",
+            payload->cableId, payload->pssId, payload->concentrationInput, payload->liquidLevelInput,
+            payload->conditionerValve, payload->waterValve);
+
+// TODO: Add a check, so when an allocation fails we move the board to error state.
+    ConcentrationControl* control = new ConcentrationControl();
+    control->setPssId(payload->pssId);
+
+// TODO: Have PID Control accept more element types.
+    ElementBase* element = (ElementRepository::getInstance().getElementByPssId(payload->concentrationInput));
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->concentrationInput,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setElementConcentrationInput(element);
+
+    element = (ElementRepository::getInstance().getElementByPssId(payload->liquidLevelInput));
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->liquidLevelInput,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setElementTankLevelInput(element);
+
+    element = (ElementRepository::getInstance().getElementByPssId(payload->waterValve));
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->waterValve,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setElementWaterValve(element);
+
+    element = (ElementRepository::getInstance().getElementByPssId(payload->conditionerValve));
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->conditionerValve,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setElementConditionerValve(element);
+
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+
+}
+
 void PscMessageHandler::MessageDefineObserveAndNotifyControlHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];
@@ -2299,9 +2367,8 @@ void PscMessageHandler::MessageStopControlHandler(unsigned long param)
     M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
             payload->pssId);
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSStopControlMsg: cableId=%d pssId={[PSSID:%d]} delay=%d",
-            payload->cableId, payload->pssId, payload->activationDelay);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSStopControlMsg: cableId=%d pssId={[PSSID:%d]} delay=%d", payload->cableId,
+            payload->pssId, payload->activationDelay);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
@@ -2317,7 +2384,7 @@ void PscMessageHandler::MessageStopControlHandler(unsigned long param)
 
 // move the control to STANDBY.
 // The control should now send SEQ_ENDED when finished.
-    control->move2Standby(message->header.id.full, payload->activationDelay*1000, message->header.sn);
+    control->move2Standby(message->header.id.full, payload->activationDelay * 1000, message->header.sn);
 }
 
 void PscMessageHandler::MessageResetToOnControlHandler(unsigned long param)
@@ -2388,7 +2455,8 @@ void PscMessageHandler::MessageConfigControlStopConditionsHandler(unsigned long 
 
     M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSConfigControlStopConditions: cableId=%d pssId={[PSSID:%d]} stopOnEmr=%d stopOnDisconnection=%d",
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSConfigControlStopConditions: cableId=%d pssId={[PSSID:%d]} stopOnEmr=%d stopOnDisconnection=%d",
             payload->cableId, payload->pssId, payload->stopOnEmr, payload->stopOnDisconnection);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
@@ -2542,8 +2610,8 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
             payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f FF=%f delay=%d", payload->cableId,
-            payload->pssId, payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
+            "PSSActivatePIDControlMsg: cableId=%d pssId={[PSSID:%d]} sp=%f work=%f-%f warn=%f-%f FF=%f delay=%d",
+            payload->cableId, payload->pssId, payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
             payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
@@ -2562,7 +2630,51 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 
     PidControl *pidControl = static_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
-            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay*1000, message->header.sn);
+            payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay * 1000,
+            message->header.sn);
+
+    resumeScheduler();
+
+}
+
+void PscMessageHandler::MessageActivateConcentrationControlMsgHandler(unsigned long param)
+{
+    PscMessageStruct* message = &m_messages[param];
+    PSSActivateConcentrationControlMsg *payload = &(message->payload.pSSActivateConcentrationControlMsg);
+
+    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
+            payload->pssId);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSActivateConcentrationControlMsg: cableId=%d pssId={[PSSID:%d]} concentration=%f-%f-%f-%f-%f-%f water=%f-%f-%f-%f-%f-%f delay=%d",
+            payload->cableId, payload->pssId, payload->concentrationMinWarning, payload->concentrationMinWorking,
+            payload->concentrationLowSetPoint, payload->concentrationHighSetPoint, payload->concentrationMaxWorking,
+            payload->concentrationMaxWarning, payload->tankMinWarning, payload->tankMinWorking,
+            payload->tankLevelLowSetpoint, payload->tankLevelHighSetpoint, payload->tankMaxWorking,
+            payload->tankMaxWarning, payload->activationDelay);
+
+    ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
+
+    if (control == NULL || control->getControlType() != E_ControlType_ConcentrationControl)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+// Send ACK that the command was accepted.
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+
+    suspendScheduler();
+
+    ConcentrationControl *concControl = static_cast<ConcentrationControl*>(control);
+    concControl->setSetpoint(payload->tankLevelLowSetpoint, payload->tankLevelHighSetpoint, payload->tankMinWorking,
+            payload->tankMaxWorking, payload->tankMinWarning, payload->tankMaxWarning,
+            payload->concentrationLowSetPoint, payload->concentrationHighSetPoint, payload->concentrationMinWorking,
+            payload->concentrationMaxWorking, payload->concentrationMinWarning, payload->concentrationMaxWarning,
+            payload->activationDelay * 1000, message->header.sn);
 
     resumeScheduler();
 
@@ -2595,7 +2707,6 @@ void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigne
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-
     ObserveAndNotifyControl * pObserveAndNotifyControl = static_cast<ObserveAndNotifyControl*>(control);
     pObserveAndNotifyControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
             payload->minWarningRange, payload->maxWarningRange, message->header.sn);
@@ -2611,8 +2722,9 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
     M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
             payload->pssId);
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSActivateInverterControlMsg: cableId=%d pssId={[PSSID:%d]} setpoint=%f delay=%d",
-            payload->cableId, payload->pssId, payload->setPoint, payload->activationDelay);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSActivateInverterControlMsg: cableId=%d pssId={[PSSID:%d]} setpoint=%f delay=%d", payload->cableId,
+            payload->pssId, payload->setPoint, payload->activationDelay);
 
     ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
 
@@ -2645,7 +2757,8 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
         // TODO: and pure virtual method "setSetpoint" to all controls.
         ModbusInverterControl *inverterControl = static_cast<ModbusInverterControl*>(control);
         suspendScheduler();
-        inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn, payload->activationDelay*1000);
+        inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn,
+                payload->activationDelay * 1000);
         resumeScheduler();
     }
     else
@@ -2809,7 +2922,6 @@ void PscMessageHandler::MessageActivateHysteresisTemperatureControlHandler(unsig
     resumeScheduler();
 
 }
-
 
 void PscMessageHandler::MessageActivateWaterTankLevelControlHandler(unsigned long param)
 {

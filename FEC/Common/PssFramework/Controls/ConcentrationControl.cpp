@@ -38,7 +38,7 @@ void ConcentrationControl::updateNotification(ElementBase* element)
     {
         raiseError(element->getPssId(), E_PSSErrors_SensorMalfunction, !element->isValid());
         if (!element->isValid())
-            move2Error(MSG_activateconcentrationcontrol, m_lastSn);
+            move2Error(MSG_ActivateConcentrationControlMsg, m_lastSn);
     }
 
     if (m_controlState == E_ControlState_Error && m_concentration->isValid() && m_tankLevel->isValid())
@@ -127,7 +127,7 @@ void ConcentrationControl::execute()
             M_LOGGER_LOGF(M_LOGGER_LEVEL_INFO, "ConcentrationControl {[PSSID:%d]} changed state to Ready", getPssId());
             sendNotification();
             if (m_lastSn != 0)
-                PscMasterServer::getInstance().sendSeqEnded(MSG_activateconcentrationcontrol, m_lastSn,
+                PscMasterServer::getInstance().sendSeqEnded(MSG_ActivateConcentrationControlMsg, m_lastSn,
                         Psc_ControllerId, getPssId(), E_SeqEndedStatus_Success);
         }
         break;

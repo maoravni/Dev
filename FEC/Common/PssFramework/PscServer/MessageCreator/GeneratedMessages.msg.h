@@ -19,6 +19,7 @@
 #define MSG_PolisherStatusNotification 0x28
 #define MSG_PolisherStop 0x24
 #define MSG_ActivateActivationWithFeedbackControl 0x314
+#define MSG_ActivateConcentrationControlMsg 0x319
 #define MSG_ActivateLeakageDetectionControl 0x315
 #define MSG_ActivateObserveAndNotifyControlMsg 0x318
 #define MSG_ActivateWaterTankControl 0x312
@@ -30,6 +31,7 @@
 #define MSG_ActivateHysteresisTemperatureControl 0x311
 #define MSG_DefineAnalogSensorWaterTank 0x215
 #define MSG_DefineCalculateOnTwoDevicesControl 0x227
+#define MSG_DefineConcentrationControl 0x228
 #define MSG_DefineConstantDeltaProtection 0x219
 #define MSG_DefineCurrentLimitsProtection 0x225
 #define MSG_DefineModbusPeriph 0x113
@@ -144,6 +146,7 @@
 
 M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateActivationWithFeedbackControl + APP_MSG, MessageActivateActivationWithFeedbackControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateConcentrationControlMsg + APP_MSG, MessageActivateConcentrationControlMsgHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateLeakageDetectionControl + APP_MSG, MessageActivateLeakageDetectionControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateObserveAndNotifyControlMsg + APP_MSG, MessageActivateObserveAndNotifyControlMsgHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateWaterTankControl + APP_MSG, MessageActivateWaterTankControlHandler)
@@ -155,6 +158,7 @@ M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateHysteresisTemperatureControl + APP_MSG, MessageActivateHysteresisTemperatureControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineAnalogSensorWaterTank + APP_MSG, MessageDefineAnalogSensorWaterTankHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineCalculateOnTwoDevicesControl + APP_MSG, MessageDefineCalculateOnTwoDevicesControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineConcentrationControl + APP_MSG, MessageDefineConcentrationControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineConstantDeltaProtection + APP_MSG, MessageDefineConstantDeltaProtectionHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineCurrentLimitsProtection + APP_MSG, MessageDefineCurrentLimitsProtectionHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineModbusPeriph + APP_MSG, MessageDefineModbusPeriphHandler)

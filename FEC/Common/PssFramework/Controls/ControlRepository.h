@@ -29,6 +29,7 @@
 #include "LeakDetectionControl.h"
 #include "ObserveAndNotifyControl.h"
 #include "CalculateOnTwoDevicesControl.h"
+#include "ConcentrationControl.h"
 
 //typedef DynamicArray<ControlBase*> T_ControlArray;
 typedef std::vector<ControlBase*> T_ControlList;
