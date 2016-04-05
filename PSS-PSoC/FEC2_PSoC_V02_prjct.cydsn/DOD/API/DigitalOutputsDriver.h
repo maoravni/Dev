@@ -16,6 +16,16 @@
 	
 #define `$INSTANCE_NAME`_MAX_PULSE_DENSITY 	(float) (0xFFFF / 100)
 
+typedef enum
+    {
+        E_PwmType_PrSIM,
+        E_PwmType_SPWM,
+        E_PwmType_FastPWM,
+        E_PwmType_DO,
+        E_PwmType_SlowSwPWM
+    } E_PwmType;
+    
+
 typedef struct
 {
 	uint8 SlowPWM1:2;

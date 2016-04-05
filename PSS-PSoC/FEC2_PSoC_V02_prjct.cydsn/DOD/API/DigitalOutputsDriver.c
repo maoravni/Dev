@@ -65,7 +65,7 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			switch(Config)
 			{
 			// channel Mux select PrSIM
-				case 0x00:
+				case E_PwmType_PrSIM:
 				{
 					/* Disable the Channel also */
 					`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()&(~0x41)); 
@@ -73,7 +73,7 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 					break;
 				}
 			// channel Mux select SPWM	
-				case 0x01:
+				case E_PwmType_SPWM:
 				{
 					/* Duty cycle can be Zero */
 					`$INSTANCE_NAME`_SPWM_SetMode(1);
@@ -84,7 +84,7 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 					break;
 				}
 			// channel Mux select PWM	
-				case 0x02:
+				case E_PwmType_FastPWM:
 				{
 					`$INSTANCE_NAME`_SPWM_SetMode(0);
 					/* Enable the Channel also */
@@ -93,7 +93,7 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 					break;
 				}
 			// channel Mux select Digital Output (PWM)	
-				case 0x03:
+				case E_PwmType_DO:
 				{				
 					/* Disable the Channel also */
 					`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()&(~0x01));
@@ -124,12 +124,12 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()&(~0x02));
 			/* Configure Channel */	
 		// 0. PrISM			
-			if(Config == 0x00)
+			if(Config == E_PwmType_PrSIM)
 			{
 				`$INSTANCE_NAME`_Configuration.SlowPWM2 = 0x0;
 			}
 		// 1. Digital Output.	
-			else if(Config == 0x03)
+			else if(Config == E_PwmType_DO)
 			{
 				`$INSTANCE_NAME`_PrISM_WritePulse1(0xFFFF);
 				`$INSTANCE_NAME`_Configuration.SlowPWM2 = 0x1;
@@ -148,12 +148,12 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			/* Disable Channel */
 			`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()|0x04);
 		// 0. PWM			
-			if(Config == 0x02)
+			if(Config == E_PwmType_FastPWM)
 			{
 				`$INSTANCE_NAME`_Configuration.PWM1 = 0x0;
 			}
 		// 1. Digital Output.	
-			else if(Config == 0x03)
+			else if(Config == E_PwmType_DO)
 			{
 				`$INSTANCE_NAME`_PWM_1_WriteCompare(99);
 				`$INSTANCE_NAME`_Configuration.PWM1 = 0x1;
@@ -172,12 +172,12 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			/* Disable Channel */
 			`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()|0x08);
 		// 0. PWM			
-			if(Config == 0x02)
+			if(Config == E_PwmType_FastPWM)
 			{
 				`$INSTANCE_NAME`_Configuration.PWM2 = 0x0;
 			}
 		// 1. Digital Output.	
-			else if(Config == 0x03)
+			else if(Config == E_PwmType_DO)
 			{
 				`$INSTANCE_NAME`_PWM_2_WriteCompare(99);
 				`$INSTANCE_NAME`_Configuration.PWM2 = 0x1;
@@ -196,12 +196,12 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			/* Disable Channel */
 			`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()|0x10);
 		// 0. PWM			
-			if(Config == 0x02)
+			if(Config == E_PwmType_FastPWM)
 			{
 				`$INSTANCE_NAME`_Configuration.HB_PWM1 = 0x0;
 			}
 		// 1. Digital Output.	
-			else if(Config == 0x03)
+			else if(Config == E_PwmType_DO)
 			{
 				`$INSTANCE_NAME`_PWM_3_WriteCompare(99);
 				`$INSTANCE_NAME`_Configuration.HB_PWM1 = 0x1;
@@ -220,12 +220,12 @@ uint8 `$INSTANCE_NAME`_OutConfig(uint8 Channel, uint8 Config)
 			/* Disable Channel */
 			`$INSTANCE_NAME`_Control_Reg_Write(`$INSTANCE_NAME`_Control_Reg_Read()|0x20);
 		// 0. PWM			
-			if(Config == 0x02)
+			if(Config == E_PwmType_FastPWM)
 			{
 				`$INSTANCE_NAME`_Configuration.HB_PWM2 = 0x0;
 			}
 		// 1. Digital Output.	
-			else if(Config == 0x03)
+			else if(Config == E_PwmType_DO)
 			{
 				`$INSTANCE_NAME`_PWM_4_WriteCompare(99);
 				`$INSTANCE_NAME`_Configuration.HB_PWM2 = 0x1;
@@ -291,7 +291,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_SPWM_Write_DC(dc);	
-            dc = `$INSTANCE_NAME`_SPWM_Read_DC();
+            dc = `$INSTANCE_NAME`_SPWM_Read_DC();	
 			break;		
 		}
 	// 2. PWM- Already configured as UPWM
@@ -302,7 +302,7 @@ uint8 `$INSTANCE_NAME`_SlowPWM1_Write(uint8 dc)
 				dc = 100;	
 			}
 			`$INSTANCE_NAME`_SPWM_Write_DC(dc);		
-            dc = `$INSTANCE_NAME`_SPWM_Read_DC();
+            dc = `$INSTANCE_NAME`_SPWM_Read_DC();	
 			break;
 		}
 	// 3. Digital Output
