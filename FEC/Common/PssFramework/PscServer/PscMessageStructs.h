@@ -184,7 +184,6 @@ enum E_TemperatureErrorMessages
 
 enum E_ValueType
 {
-    E_ValueType_Bool = 8,
     E_ValueType_S8 = 1,
     E_ValueType_S16 = 2,
     E_ValueType_S32 = 3,
@@ -192,6 +191,7 @@ enum E_ValueType
     E_ValueType_U16 = 5,
     E_ValueType_U32 = 6,
     E_ValueType_Float = 7,
+    E_ValueType_Bool = 8,
 };
 
 typedef union 

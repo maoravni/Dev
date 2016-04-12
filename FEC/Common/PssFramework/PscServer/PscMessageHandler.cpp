@@ -26,6 +26,7 @@
 #include <Controls/ProtectionConstantDeltaChecker.h>
 #include <Controls/ProtectionProportionalChecker.h>
 #include <controls/ProtectionCurrentLimitsChecker.h>
+#include <Persistency/PersistencyManager.h>
 
 #undef M_BEGIN_MESSAGE_MAP
 #undef M_END_MESSAGE_MAP
@@ -753,6 +754,8 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
 
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
 
+
+    PersistencyManager::getInstance()->serializeElements();
 }
 
 void PscMessageHandler::MessageDefineOnboardPT100PeriphHandler(unsigned long param)
@@ -1869,10 +1872,10 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 
     control->setElementInput(element);
 
-// TODO: Create the set point element inside the PID control.
-    element = ElementRepository::getInstance().addValidationElementFloat();
-
-    control->setElementSetpoint(element);
+//// TODO: Create the set point element inside the PID control.
+//    element = ElementRepository::getInstance().addValidationElementFloat();
+//
+//    control->setElementSetpoint(element);
 
 // cascase==0 means that this is a normal pid temperature control loop.
     if (payload->cascade == 0)
@@ -1925,9 +1928,9 @@ void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long p
     M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSDefineConcentrationControl: cableId=%d pssId={[PSSID:%d]} conc={[PSSID:%d]} tankLevel={[PSSID:%d]} condValve={[PSSID:%d]} waterValve={[PSSID:%d]}",
+            "PSSDefineConcentrationControl: cableId=%d pssId={[PSSID:%d]} conc={[PSSID:%d]} tankLevel={[PSSID:%d]} condValve={[PSSID:%d]}/%d waterValve={[PSSID:%d]}/%d",
             payload->cableId, payload->pssId, payload->concentrationInput, payload->liquidLevelInput,
-            payload->conditionerValve, payload->waterValve);
+            payload->conditionerValve, payload->conditionerValveActivationValue, payload->waterValve, payload->waterValveActivationValue);
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ConcentrationControl* control = new ConcentrationControl();
@@ -1965,7 +1968,7 @@ void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long p
         return;
     }
 
-    control->setElementWaterValve(element);
+    control->setElementWaterValve(element, payload->waterValveActivationValue);
 
     element = (ElementRepository::getInstance().getElementByPssId(payload->conditionerValve));
 
@@ -1976,7 +1979,7 @@ void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long p
         return;
     }
 
-    control->setElementConditionerValve(element);
+    control->setElementConditionerValve(element, payload->conditionerValveActivationValue);
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
@@ -2012,9 +2015,9 @@ void PscMessageHandler::MessageDefineObserveAndNotifyControlHandler(unsigned lon
     control->setElementInput(element);
 
 // TODO: Create the set point element inside the PID control.
-    element = ElementRepository::getInstance().addValidationElementFloat();
-
-    control->setElementSetpoint(element);
+//    element = ElementRepository::getInstance().addValidationElementFloat();
+//
+//    control->setElementSetpoint(element);
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 

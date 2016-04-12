@@ -135,6 +135,8 @@ struct PSSDefineConcentrationControlMsg {
 	unsigned short liquidLevelInput;
 	unsigned short conditionerValve;
 	unsigned short waterValve;
+	char conditionerValveActivationValue;
+	char waterValveActivationValue;
 	};
 
 struct PSSDefineConstantDeltaProtectionMsg {

@@ -349,8 +349,8 @@ void vInitTask(void *pvParameters)
     PscMessageHandler::getInstance();
     PscMasterServer::getInstance();
 
-//    TestTask *testTask = new TestTask();
-//    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
+    TestTask *testTask = new TestTask();
+    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
 
     //    uiTraceStart();.
 
@@ -366,8 +366,31 @@ int optionCount;
 char **optionArray;
 #endif
 
+template<class T> void templateTest(T t)
+{
+    static_assert(sizeof(T) == 0, "ttt");
+}
+
+template<> void templateTest(int iii)
+{
+    printf("iii\n");
+}
+
+template<> void templateTest(unsigned int uuu)
+{
+    printf("uuu\n");
+}
+
 int main(int ac, char* av[])
 {
+
+    int iii;
+    unsigned int uuu;
+    templateTest(iii);
+    templateTest(uuu);
+    char ccc;
+    //templateTest(ccc);
+
 #ifdef WIN32
     optionCount = ac;
     optionArray = av;

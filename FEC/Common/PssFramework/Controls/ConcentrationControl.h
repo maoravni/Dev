@@ -15,7 +15,9 @@ class ConcentrationControl: public ControlBase
     ElementBase* m_concentration;
     ElementBase* m_tankLevel;
     ElementBase* m_conditionerValve;
+    uint8_t m_conditionerValveActivationValue;
     ElementBase* m_waterValve;
+    uint8_t m_waterValveActivationValue;
 
     ValidationElementFloat* m_concentrationLowSetpoint;
     ValidationElementFloat* m_liquidLevelLowSetpoint;
@@ -24,6 +26,7 @@ class ConcentrationControl: public ControlBase
 
     bool m_fillState;
     bool m_timeoutExpired;
+
 
 public:
     ConcentrationControl();
@@ -59,16 +62,22 @@ public:
         //        setSecondaryPssId(m_input->getPssId());
     }
 
-    void setElementConditionerValve(ElementBase* output)
+    void setElementConditionerValve(ElementBase* output, uint8_t activationValue)
     {
         m_conditionerValve = output;
         m_conditionerValve->addObserver(this);
+        if (activationValue == 0)
+            activationValue = 1;
+        m_conditionerValveActivationValue = activationValue;
     }
 
-    void setElementWaterValve(ElementBase* output)
+    void setElementWaterValve(ElementBase* output, uint8_t activationValue)
     {
         m_waterValve = output;
         m_waterValve->addObserver(this);
+        if (activationValue == 0)
+            activationValue = 1;
+        m_waterValveActivationValue = activationValue;
     }
 
     virtual bool sendNotification();

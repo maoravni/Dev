@@ -16,7 +16,6 @@ PidControl::PidControl()
 {
     m_input = NULL;
     m_output = NULL;
-    m_setpoint = NULL;
     m_isInAutotune = false;
     setPowerLimit(100);
     setTuningValues(1, 0, 0, 0);
@@ -28,6 +27,9 @@ PidControl::PidControl()
     m_timeoutExpired = true;
     m_outputIsControl = false;
 //    m_fromMove2Standby = false;
+
+    m_setpoint = ElementRepository::getInstance().addValidationElementFloat();
+    m_setpoint->addObserver(this);
 }
 
 PidControl::~PidControl()

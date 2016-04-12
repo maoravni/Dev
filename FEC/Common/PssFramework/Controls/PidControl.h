@@ -78,11 +78,11 @@ public:
         m_outputIsControl = outputIsControl;
     }
 
-    void setElementSetpoint(ValidationElementFloat* setpoint)
-    {
-        m_setpoint = setpoint;
-        m_setpoint->addObserver(this);
-    }
+//    void setElementSetpoint(ValidationElementFloat* setpoint)
+//    {
+//        m_setpoint = setpoint;
+//        m_setpoint->addObserver(this);
+//    }
 
     ValidationElementFloat* getElementInput() const
     {

@@ -12,6 +12,7 @@
 #include <Elements/ElementBase.h>
 #include <Elements/ValidationElement.h>
 #include <math.h>
+#include <Persistency/ElementSerializers.h>
 
 extern "C" uint16_t Psc_ControllerId;
 
@@ -89,6 +90,8 @@ public:
 
     virtual bool checkIfCanSendUpdate();
 
+    virtual int serialize(F_FILE* f);// {return _serialize(f);}
+    virtual int deserialize(F_FILE* f);// {return _serialize(f);}
 
 private:
     virtual void _setValue(_type value)
@@ -98,6 +101,7 @@ private:
             sendDeviceStatus();
         updateObservers();
     }
+    //int _serialize(F_FILE* f);
 };
 
 template<class _type>
@@ -216,6 +220,20 @@ inline bool Element<_type>::checkIfCanSendUpdate()
         return true;
 
     return ElementBase::checkIfCanSendUpdate();
+}
+
+template<class _type>
+inline int Element<_type>::serialize(F_FILE* f)
+{
+    Serializer<Element<_type> > s;
+    return s.serialize(f, *this);
+}
+
+template<class _type>
+inline int Element<_type>::deserialize(F_FILE* f)
+{
+    Serializer<Element<_type> > s;
+    return s.deserialize(f, *this);
 }
 
 #endif /* ELEMENT_H_ */

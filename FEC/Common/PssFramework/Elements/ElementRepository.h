@@ -60,6 +60,8 @@ public:
 
     void destroyAllElements();
 private:
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* ELEMENTREPOSITORY_H_ */

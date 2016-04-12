@@ -26,6 +26,8 @@ public:
     bool belowMinRange(_type value);
     _type clampToRange(_type value);
 
+    template <class T> friend class Serializer;
+
 };
 
 template<class _type>

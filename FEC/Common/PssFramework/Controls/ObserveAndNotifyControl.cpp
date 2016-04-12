@@ -17,7 +17,8 @@ ObserveAndNotifyControl::ObserveAndNotifyControl() :
 {
     setPssId(M_PSS_ID_ALL);
     m_input = NULL;
-    m_setpoint = NULL;
+    m_setpoint = ElementRepository::getInstance().addValidationElementFloat();
+    m_setpoint->addObserver(this);
 }
 
 ObserveAndNotifyControl::~ObserveAndNotifyControl()
@@ -33,12 +34,12 @@ void ObserveAndNotifyControl::setElementInput(ValidationElementFloat* input)
     m_input->setMissingDevicePriority(E_MissingDevicePriority_High);
 }
 
-void ObserveAndNotifyControl::setElementSetpoint(ValidationElementFloat* setpoint)
-{
-    m_setpoint = setpoint;
-    m_setpoint->addObserver(this);
-}
-
+//void ObserveAndNotifyControl::setElementSetpoint(ValidationElementFloat* setpoint)
+//{
+//    m_setpoint = setpoint;
+//    m_setpoint->addObserver(this);
+//}
+//
 bool ObserveAndNotifyControl::setSetpoint(ValidationElementFloat* element)
 {
     if (element->getValue() != m_setpoint->getValue())

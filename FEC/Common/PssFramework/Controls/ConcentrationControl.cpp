@@ -15,6 +15,8 @@ ConcentrationControl::ConcentrationControl()
     m_tankLevel = NULL;
     m_conditionerValve = NULL;
     m_waterValve = NULL;
+    m_conditionerValveActivationValue = 1;
+    m_waterValveActivationValue = 1;
 
     m_concentrationHighSetpoint = 0;
     m_liquidLevelHighSetpoint = 0;
@@ -59,8 +61,8 @@ void ConcentrationControl::executeLevelControl()
         if (m_tankLevel->getValueF() > m_liquidLevelHighSetpoint)
         {
             m_fillState = false;
-            m_conditionerValve->setValue(false);
-            m_waterValve->setValue(false);
+            m_conditionerValve->setValue(0);
+            m_waterValve->setValue(0);
         }
     }
     else
@@ -70,11 +72,11 @@ void ConcentrationControl::executeLevelControl()
             m_fillState = true;
             if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
             {
-                m_conditionerValve->setValue(true);
+                m_conditionerValve->setValue(m_conditionerValveActivationValue);
             }
             else
             {
-                m_waterValve->setValue(true);
+                m_waterValve->setValue(m_waterValveActivationValue);
             }
         }
     }
@@ -207,8 +209,8 @@ bool ConcentrationControl::setSetpoint(float llLow, float llHigh, float llLoRang
 void ConcentrationControl::resetControl()
 {
     m_fillState = false;
-    m_conditionerValve->setValue(false);
-    m_waterValve->setValue(false);
+    m_conditionerValve->setValue(0);
+    m_waterValve->setValue(0);
 
     raiseError(m_concentration->getPssId(), E_PSSErrors_ControlExceedsLimits, false);
     raiseError(m_tankLevel->getPssId(), E_PSSErrors_ControlExceedsLimits, false);

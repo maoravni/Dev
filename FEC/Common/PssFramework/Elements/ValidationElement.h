@@ -14,6 +14,7 @@
 #include <PscServer/PscMessageStructs.h>
 #include <PscSubsystem.h>
 #include <math.h>
+#include <Persistency/ElementSerializers.h>
 //#include <PscServer/PscMasterServer.h>
 
 //enum E_ElementState
@@ -206,12 +207,17 @@ public:
     virtual uint32_t getErrors();
     virtual uint32_t getWarnings();
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
 private:
     void _setValue(_type value);
     void updateErrorBits();
 
 protected:
     virtual bool checkIfCanSendUpdate();
+
+    template <class T> friend class Serializer;
 
 };
 
@@ -473,6 +479,20 @@ inline bool ValidationElement<_type>::checkIfCanSendUpdate()
         return true;
 
     return ElementBase::checkIfCanSendUpdate();
+}
+
+template<class _type>
+inline int ValidationElement<_type>::serialize(F_FILE* f)
+{
+    Serializer<ValidationElement<_type> > s;
+    return s.serialize(f, *this);
+}
+
+template<class _type>
+inline int ValidationElement<_type>::deserialize(F_FILE* f)
+{
+    Serializer<ValidationElement<_type> > s;
+    return s.deserialize(f, *this);
 }
 
 #endif /* VALIDATIONELEMENT_H_ */

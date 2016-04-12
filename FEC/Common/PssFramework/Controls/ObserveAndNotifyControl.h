@@ -36,7 +36,7 @@ public:
     bool setSetpoint(float sp, float loRange, float hiRange, float loWarn, float hiWarn, uint32_t sn);
     bool setSetpoint(ValidationElementFloat* element);
     void setElementInput(ValidationElementFloat* input);
-    void setElementSetpoint(ValidationElementFloat* setpoint);
+//    void setElementSetpoint(ValidationElementFloat* setpoint);
 
     virtual ElementBase* getMainControlElement()
     {

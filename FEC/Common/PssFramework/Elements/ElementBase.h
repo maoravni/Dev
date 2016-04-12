@@ -14,6 +14,7 @@
 #include <PscServer/PscMessageStructs.h>
 #include <list>
 #include <vector>
+#include <api/fat_sl.h>
 
 #define M_UNASSIGNED_PSS_ID 0
 
@@ -22,6 +23,26 @@ enum E_MissingDevicePriority
     E_MissingDevicePriority_High,
     E_MissingDevicePriority_Med,
     E_MissingDevicePriority_Low
+};
+
+enum E_SerializationElementType
+{
+    E_SerializationElementType_S8 = 0x1,
+    E_SerializationElementType_S16 = 0x2,
+    E_SerializationElementType_S32 = 0x3,
+    E_SerializationElementType_U8 = 0x4,
+    E_SerializationElementType_U16 = 0x5,
+    E_SerializationElementType_U32 = 0x6,
+    E_SerializationElementType_Float = 0x7,
+    E_SerializationElementType_Bool= 0x8,
+    E_SerializationElementType_Validation_S8 = 0x11,
+    E_SerializationElementType_Validation_S16 = 0x12,
+    E_SerializationElementType_Validation_S32 = 0x13,
+    E_SerializationElementType_Validation_U8 = 0x14,
+    E_SerializationElementType_Validation_U16 = 0x15,
+    E_SerializationElementType_Validation_U32 = 0x16,
+    E_SerializationElementType_Validation_Float = 0x17,
+    E_SerializationElementType_Validation_Bool= 0x18,
 };
 
 class ElementBase
@@ -174,6 +195,8 @@ public:
     virtual uint32_t getErrors() = 0;
     virtual uint32_t getWarnings() = 0;
 
+    virtual int serialize(F_FILE* f) = 0;
+    virtual int deserialize(F_FILE* f) = 0;
 protected:
     virtual void sendDeviceStatus(uint8_t value);
     virtual void sendDeviceStatus(uint16_t value);
@@ -187,6 +210,8 @@ protected:
 
     void sendError(uint16_t boardId, uint16_t pssId, uint32_t errors);
     void sendWarning(uint16_t boardId, uint16_t pssId, uint32_t warnings);
+
+    template <class T> friend class Serializer;
 
 };
 
