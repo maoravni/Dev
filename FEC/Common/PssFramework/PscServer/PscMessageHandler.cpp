@@ -755,7 +755,7 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
 
 
-    PersistencyManager::getInstance()->serializeElements();
+//    PersistencyManager::getInstance()->serializeElements();
 }
 
 void PscMessageHandler::MessageDefineOnboardPT100PeriphHandler(unsigned long param)

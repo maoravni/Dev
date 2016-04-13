@@ -618,6 +618,7 @@ bool PsocManager::initAnalogInputPeripheralByIndex(int index, int pssId, int sam
     inPeriph->setPssId(pssId);
     inPeriph->setPsocHandler(&m_psocHandlers[index]);
     inPeriph->setUpdateInterval(sampleInterval);
+    inPeriph->setLowPassFilter(lpfWindow);
 
     // CHECK: Do we need to delete the just created peripheral?
     if (inPeriph->getElementCount() < numberOfDevices)

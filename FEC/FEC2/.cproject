@@ -50,7 +50,7 @@
 							<option id="iar.arm.toolchain.option.AgatonSax::rtcCheckNonInstrumentedPointers.v6.8.0.209889011" name="Check pointers from non-&#10;instrumented memory" superClass="iar.arm.toolchain.option.AgatonSax::rtcCheckNonInstrumentedPointers.v6.8.0"/>
 							<option id="iar.arm.toolchain.option.AgatonSax::rtcNrTrackedPointers.v6.8.0.1585410415" name="Number of entries:" superClass="iar.arm.toolchain.option.AgatonSax::rtcNrTrackedPointers.v6.8.0"/>
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="iar.arm.toolchain.targetPlatform.v5.4.0.1573974316" isAbstract="false" name="IAR Target platform for ARM (ELF)" osList="win32,linux" superClass="iar.arm.toolchain.targetPlatform.v5.4.0"/>
-							<builder buildPath="${ProjDirPath/Debug}" enabledIncrementalBuild="true" id="iar.arm.toolchain.builder.2.2017397170" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="false" stopOnErr="true" superClass="iar.arm.toolchain.builder.2"/>
+							<builder buildPath="${ProjDirPath/Debug}" enabledIncrementalBuild="true" id="iar.arm.toolchain.builder.2.2017397170" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" stopOnErr="true" superClass="iar.arm.toolchain.builder.2"/>
 							<tool id="iar.arm.toolchain.compiler.v5.4.1.137264046" name="IAR C/C++ Compiler for ARM" superClass="iar.arm.toolchain.compiler.v5.4.1">
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0.581127245" name="Generate debug information" superClass="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0" valueType="boolean"/>
 								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.1227974896" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" valueType="enumerated"/>
@@ -1300,6 +1300,7 @@
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="DebugRTI"/>
 		<configuration configurationName="DebugWithWatchdog"/>
+		<configuration configurationName="DebugGcc"/>
 		<configuration configurationName="Win32Debug"/>
 		<configuration configurationName="DebugDryerCableId"/>
 		<configuration configurationName="Debug With Watchdog"/>

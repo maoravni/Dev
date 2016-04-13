@@ -49,7 +49,7 @@ PsocAnalogInputsPeripheral::~PsocAnalogInputsPeripheral()
 {
 }
 
-void PsocAnalogInputsPeripheral::setFilterSettleCounts(uint16_t LowPassFilterWindow)
+void PsocAnalogInputsPeripheral::setLowPassFilter(uint16_t LowPassFilterWindow)
 {
     if(LowPassFilterWindow == 0)
     {

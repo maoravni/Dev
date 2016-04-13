@@ -59,7 +59,7 @@ public:
     virtual void raiseWarning(E_PSSWarnings warning, bool state) {}
 
     virtual void setUpdateInterval(uint16_t updateInterval);
-    virtual void setFilterSettleCounts(uint16_t LowPassFilterWindow);
+    virtual void setLowPassFilter(uint16_t LowPassFilterWindow);
 
 private:
 };
