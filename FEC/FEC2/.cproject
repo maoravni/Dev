@@ -273,6 +273,9 @@
 								<option id="iar.arm.toolchain.compiler.option.language.v6.1.0.1971907083" name="Language" superClass="iar.arm.toolchain.compiler.option.language.v6.1.0" value="iar.arm.toolchain.compiler.option.language.auto.v6.2.2" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.75833351" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/CMSIS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/FreeRTOS-Plus-FAT-SL}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/uffs/src/platform/STM32F2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/uffs/src/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/JSON/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/STM32_CPAL_Driver/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/ConfigFiles}&quot;"/>
