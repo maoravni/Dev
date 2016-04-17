@@ -78,7 +78,8 @@ void LiftPbOnErrorCcsGen3::updateNotification(ElementBase* element)
         raiseError(m_pbOk->getPssId(), E_PSSErrors_PrintBarLifted, !pbOk);
     else
         raiseError(M_PSS_ID_ALL, E_PSSErrors_PrintBarLifted, !pbOk);
-    m_pbOk->setValue(pbOk);
+    if (m_pbOk->getValueU32() != (uint32_t)pbOk)
+        m_pbOk->setValue(pbOk);
 }
 
 bool LiftPbOnErrorCcsGen3::onInitControl()
