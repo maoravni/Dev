@@ -61,22 +61,22 @@ void ConcentrationControl::executeLevelControl()
         if (m_tankLevel->getValueF() > m_liquidLevelHighSetpoint)
         {
             m_fillState = false;
-            m_conditionerValve->setValue(0);
-            m_waterValve->setValue(0);
+            m_conditionerValve->setValue((uint32_t) 0);
+            m_waterValve->setValue((uint32_t) 0);
         }
-    }
-    else
-    {
-        if (m_tankLevel->getValueF() < m_liquidLevelLowSetpoint->getValueF())
+        else
         {
-            m_fillState = true;
-            if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
+            if (m_tankLevel->getValueF() < m_liquidLevelLowSetpoint->getValueF())
             {
-                m_conditionerValve->setValue(m_conditionerValveActivationValue);
-            }
-            else
-            {
-                m_waterValve->setValue(m_waterValveActivationValue);
+                m_fillState = true;
+                if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
+                {
+                    m_conditionerValve->setValue(m_conditionerValveActivationValue);
+                }
+                else
+                {
+                    m_waterValve->setValue(m_waterValveActivationValue);
+                }
             }
         }
     }
@@ -174,13 +174,13 @@ bool ConcentrationControl::setSetpoint(float llLow, float llHigh, float llLoRang
 
     m_concentrationLowSetpoint->setValue(cndLow);
     m_concentrationHighSetpoint = cndHigh;
-    m_concentrationLowSetpoint->updateWorkingRange(cndLow+cndLoRange, cndHigh+cndHighRange, true, true);
-    m_concentrationLowSetpoint->updateWarningRange(cndLow+cndLoWarn, cndHigh+cndHighWarn, true, true);
+    m_concentrationLowSetpoint->updateWorkingRange(cndLow + cndLoRange, cndHigh + cndHighRange, true, true);
+    m_concentrationLowSetpoint->updateWarningRange(cndLow + cndLoWarn, cndHigh + cndHighWarn, true, true);
 
     m_liquidLevelLowSetpoint->setValue(llLow);
     m_liquidLevelHighSetpoint = llHigh;
-    m_liquidLevelLowSetpoint->updateWorkingRange(llLow+llLoRange, llHigh+llHighRange, true, true);
-    m_liquidLevelLowSetpoint->updateWarningRange(llLow+llLoWarn, llHigh+llHighWarn, true, true);
+    m_liquidLevelLowSetpoint->updateWorkingRange(llLow + llLoRange, llHigh + llHighRange, true, true);
+    m_liquidLevelLowSetpoint->updateWarningRange(llLow + llLoWarn, llHigh + llHighWarn, true, true);
 
     // remove current timeouts if they exist:
     UpdateSchedulerTask::getInstance()->addTimeout(this, 0);

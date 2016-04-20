@@ -8,6 +8,7 @@
 #ifndef VALIDATIONELEMENT_H_
 #define VALIDATIONELEMENT_H_
 
+#include <stdlib.h>
 #include "Element.h"
 #include "RangeChecker.h"
 #include "ValidationElementBase.h"
@@ -186,6 +187,9 @@ public:
     virtual void setMissingDevicePriority(E_MissingDevicePriority priority);
     virtual E_MissingDevicePriority getMissingDevicePriority();
 
+#ifdef __GNUC__
+    virtual void setValue(const int value);
+#endif
     virtual void setValue(const uint32_t value);
     virtual void setValue(const int32_t value);
     virtual void setValue(const float value);
@@ -370,6 +374,14 @@ typedef ValidationElement<uint32_t> ValidationElementU32;
 typedef ValidationElement<int8_t> ValidationElementI8;
 typedef ValidationElement<int16_t> ValidationElementI16;
 typedef ValidationElement<int32_t> ValidationElementI32;
+
+#ifdef __GNUC__
+template<class _type>
+inline void ValidationElement<_type>::setValue(const int value)
+{
+    _setValue((_type) value);
+}
+#endif
 
 template<class _type>
 inline void ValidationElement<_type>::setValue(const uint32_t value)

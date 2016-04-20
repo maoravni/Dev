@@ -12,7 +12,7 @@ ProtectionCheckerBase::ProtectionCheckerBase()
 {
     m_observedElement = NULL;
     m_protectionStatus = ElementRepository::getInstance().addElementU8();
-    *m_protectionStatus = 0;
+    m_protectionStatus->setValue((uint32_t)0);
     m_debounceTimeout = 0;
     m_debounceTimeoutStarted = false;
 }

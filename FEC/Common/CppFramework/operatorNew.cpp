@@ -6,7 +6,11 @@
  */
 
 #include "FreeRTOS.h"
+#ifndef __GNUC__
 #include <xmemory>
+#else
+#include <new>
+#endif
 //
 // Define the 'new' operator for C++ to use the freeRTOS memory management
 // functions. THIS IS NOT OPTIONAL!

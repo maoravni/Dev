@@ -74,7 +74,7 @@ void ModbusPumaPeripheral::readInputs()
     {
         buffer[i] = SWAP_16(buffer[i]);
         buffer[i + M_PUMA_NUM_OF_SENSORS] = SWAP_16(buffer[i+M_PUMA_NUM_OF_SENSORS]);
-        *m_temperatureElementsArray[i] = (float) (buffer[i] * 0.1);
+        m_temperatureElementsArray[i]->setValue((float) (buffer[i] * 0.1));
         m_temperatureElementsArray[i]->setValueValid((buffer[i + M_PUMA_NUM_OF_SENSORS] == 0));
         M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "PUMA sensors: %0.2f not connected: %d",
                 m_temperatureElementsArray[i]->getValue(), m_temperatureElementsArray[i]->isValid());

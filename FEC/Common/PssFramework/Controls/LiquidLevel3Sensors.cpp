@@ -32,16 +32,16 @@ void LiquidLevel3Sensors::execute()
     switch (level)
     {
     case 7:
-        *m_calculatedOutputLevel = 0;
+        m_calculatedOutputLevel->setValue(0);
         break;
     case 3:
-        *m_calculatedOutputLevel = 1;
+        m_calculatedOutputLevel->setValue(1);
         break;
     case 1:
-        *m_calculatedOutputLevel = 2;
+        m_calculatedOutputLevel->setValue(2);
         break;
     case 0:
-        *m_calculatedOutputLevel = 3;
+        m_calculatedOutputLevel->setValue(3);
         break;
     default:
         //TODO: issue an error about an invalid sensor state.

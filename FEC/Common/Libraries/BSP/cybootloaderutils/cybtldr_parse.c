@@ -10,7 +10,11 @@
 
 /* Pointer to the *.cyacd file containing the data that is to be read */
 
+#ifdef __GNUC__
+static FILE* dataFile;
+#else
 static int dataFile;
+#endif
 
 unsigned char CyBtldr_FromHex(char value)
 {

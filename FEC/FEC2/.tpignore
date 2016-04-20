@@ -9,3 +9,4 @@
 \Q/DebugRTI/\E.*
 \Q/ATPDebug/\E.*
 \Q/DebugDryerCableId/\E.*
+\Q/DebugGcc/\E.*

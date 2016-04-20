@@ -11,7 +11,7 @@
 #define M_DEFAULT_TELNET_PORT 23
 #define M_TELNET_STACK_SIZE configMINIMAL_STACK_SIZE
 
-//TelnetServer TelnetServer::s_instance;
+TelnetServer TelnetServer::s_instance;
 
 TelnetServer::TelnetServer() :
         m_tcpConnector(M_DEFAULT_TELNET_PORT)
@@ -55,7 +55,7 @@ TelnetServer& TelnetServer::getInstance()
 portBASE_TYPE TelnetServer::onCreate(const portCHAR * const pcName, unsigned portSHORT usStackDepth,
         unsigned portBASE_TYPE uxPriority)
 {
-    if ((m_tcpConnector.create("Telnet TCP", M_TELNET_STACK_SIZE, uxPriority-1 )) != pdPASS)
+    if ((m_tcpConnector.create("Telnet TCP", M_TELNET_STACK_SIZE, uxPriority-1, uxPriority-1 )) != pdPASS)
         return pdFAIL;
 
     m_tcpReceiveQueue.attach(m_tcpConnector.getReceiveQueueHandle());

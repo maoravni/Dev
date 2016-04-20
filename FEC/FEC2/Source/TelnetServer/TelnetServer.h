@@ -10,7 +10,7 @@
 
 #include <AManagedTask.h>
 #include <lwip/api.h>
-#include <CTcpConnectorRR.h>
+#include <CTcpConnectorSocket.h>
 #include <portmacro.h>
 #include "CommandInterpreter.h"
 
@@ -18,7 +18,7 @@ class TelnetServer: public AManagedTask
 {
     static TelnetServer s_instance; //!< Instance of the telnet server singleton.
 
-    CTcpConnectorRR m_tcpConnector;
+    CTcpConnectorSocket m_tcpConnector;
 
     CQueue m_tcpReceiveQueue;
 

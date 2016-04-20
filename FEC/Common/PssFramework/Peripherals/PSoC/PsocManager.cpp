@@ -10,11 +10,11 @@
 #include <Peripherals/PeripheralRepository.h>
 #include <version.h>
 #include <logger.h>
-#ifndef WIN32
-#include <arm_itm.h>
-#else
+//#ifndef WIN32
+//#include <arm_itm.h>
+//#else
 #define ITM_EVENT8(a,b)
-#endif
+//#endif
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_DEFAULT_ROUND_ROBIN_DELAY 4
@@ -618,7 +618,6 @@ bool PsocManager::initAnalogInputPeripheralByIndex(int index, int pssId, int sam
     inPeriph->setPssId(pssId);
     inPeriph->setPsocHandler(&m_psocHandlers[index]);
     inPeriph->setUpdateInterval(sampleInterval);
-    inPeriph->setLowPassFilter(lpfWindow);
 
     // CHECK: Do we need to delete the just created peripheral?
     if (inPeriph->getElementCount() < numberOfDevices)

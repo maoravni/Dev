@@ -53,7 +53,7 @@ void Modbus6RTDPeripheral::readInputs()
     for (i = 0; i < M_6RTD_NUM_OF_SENSORS; ++i)
     {
         buffer[i] = SWAP_16(buffer[i]);
-        *m_temperatureElementsArray[i] = (float) (buffer[i] * 0.1);
+        m_temperatureElementsArray[i]->setValue((float) (buffer[i] * 0.1));
         m_temperatureElementsArray[i]->setValueValid(((sensorConnectedMask & 1) == 0));
         sensorConnectedMask >>= 2;
 //        M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "6RTD sensors: %0.2f not connected: %d",

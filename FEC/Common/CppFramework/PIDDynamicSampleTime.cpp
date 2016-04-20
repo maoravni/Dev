@@ -5,6 +5,7 @@
  *      Author: maora
  */
 
+#include <stdlib.h>
 #include "PIDDynamicSampleTime.h"
 #include <task.h>
 #include <math.h>
@@ -70,7 +71,7 @@ float PIDDynamicSampleTime::Compute(float input)
     // need to scale the tuning parameters according to the sample time.
     sampleTimeModifier = (currentTick - m_lastTick + 1) * 0.001;
 
-    if (m_setpointSmoothingThreshold != 0 && std::abs(m_setpoint - m_input) > m_setpointSmoothingThreshold)
+    if (m_setpointSmoothingThreshold != 0 && abs(m_setpoint - m_input) > m_setpointSmoothingThreshold)
     {
         if (m_setpoint > m_input)
             calculatedSetpoint = m_input + m_setpointSmoothingThreshold;
@@ -90,9 +91,9 @@ float PIDDynamicSampleTime::Compute(float input)
 
     if (m_advancedPid)
     {
-        m_advError = m_error * (m_kLinear + (1 - m_kLinear) * std::abs(m_error) / m_setpointRange);
+        m_advError = m_error * (m_kLinear + (1 - m_kLinear) * abs(m_error) / m_setpointRange);
         m_advBError = m_kBeta * m_setpoint - m_input;
-        m_advBError = m_advBError * (m_kLinear + (1 - m_kLinear) * std::abs(m_advBError) / m_setpointRange);
+        m_advBError = m_advBError * (m_kLinear + (1 - m_kLinear) * abs(m_advBError) / m_setpointRange);
 
         if ((m_error * m_error) > m_kTrapezoidalRange)
         {

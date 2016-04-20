@@ -92,6 +92,9 @@ public:
     }
 
     // getters and setters
+#ifdef __GNUC__
+    virtual void setValue(const int value) = 0;
+#endif
 //    virtual void setValue(const uint8_t value) = 0;
 //    virtual void setValue(const uint16_t value) = 0;
     virtual void setValue(const uint32_t value) = 0;

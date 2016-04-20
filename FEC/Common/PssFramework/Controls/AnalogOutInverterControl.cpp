@@ -28,7 +28,7 @@ bool AnalogOutInverterControl::setSetpoint(float value, uint32_t sn)
     m_controlState = E_ControlState_Ready;
     sendNotification();
 
-    *m_requestedSetpointElement = value;
+    m_requestedSetpointElement->setValue(value);
     setOutputValue(value);
 
     m_lastSn = sn;
@@ -51,14 +51,14 @@ void AnalogOutInverterControl::setOutputValue(float value)
     if (m_deviceSetpoint->getValueF() != value)
     {
 //        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "{[PSSID:%d]} Setting output device to setpoint %f", getPssId(), value);
-        *m_deviceSetpoint = value;
+        m_deviceSetpoint->setValue(value);
     }
     if (m_enableOutput != NULL)
     {
         if (value == 0)
-            *m_enableOutput = 0;
+            m_enableOutput->setValue((uint32_t)0);
         else
-            *m_enableOutput = 1;
+            m_enableOutput->setValue((uint32_t)1);
     }
 }
 

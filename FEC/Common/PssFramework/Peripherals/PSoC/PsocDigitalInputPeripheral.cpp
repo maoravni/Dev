@@ -15,7 +15,7 @@ PsocDigitalInputPeripheral::PsocDigitalInputPeripheral()
     for (int i = 0; i < M_NUM_OF_PSOC_DI_INPUTS; ++i)
     {
         m_inputElementsArray[i] = ElementRepository::getInstance().addElementU8();
-        m_inputElementsArray[i]->setValue(2);
+        m_inputElementsArray[i]->setValue((int)2);
 
     }
     // TODO: Implement digital inputs using interrupts.

@@ -222,7 +222,7 @@
  @enduml
 
  */
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__GNUC__)
 extern "C" __root unsigned int __checksum;
 extern "C" unsigned int __checksum_begin;
 extern "C" unsigned int __checksum_end;
@@ -349,8 +349,8 @@ void vInitTask(void *pvParameters)
     PscMessageHandler::getInstance();
     PscMasterServer::getInstance();
 
-//    TestTask *testTask = new TestTask();
-//    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
+    TestTask *testTask = new TestTask();
+    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
 
     //    uiTraceStart();.
 
@@ -407,8 +407,10 @@ int main(int ac, char* av[])
     vPortDefineHeapRegions(xHeapRegions);
 #endif
 
+#ifndef __GNUC__
 #ifndef WIN32
     printf("%x\n", __checksum);
+#endif
 #endif
     printf("%d.%d.%d.%d\n", M_FEC_FIRMWARE_VERSION_MAJOR, M_FEC_FIRMWARE_VERSION_MINOR, M_FEC_FIRMWARE_VERSION_BUILD,
             M_FEC_FIRMWARE_VERSION_REVISION);

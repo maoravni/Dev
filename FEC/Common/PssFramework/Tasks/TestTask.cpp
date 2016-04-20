@@ -316,7 +316,7 @@ void TestTask::run()
 //    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
 // filesystem test
-#if 0
+#if 1
     int result = filesystemDriver_init();
     int e = 1;
 

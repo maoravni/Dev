@@ -33,7 +33,7 @@ typedef struct _psocSpiReceiveFrame
 
 void PSOC_setupSpiWithDma();
 void PSOC_fullDuplexTransfer(uint8_t *transmitBuffer, uint8_t length);
-void PSOC_sendBuffer(uint8_t *buf, uint8_t len);
+//void PSOC_sendBuffer(uint8_t *buf, uint8_t len);
 void PSOC_startReceive();
 
 /* Function declarations */

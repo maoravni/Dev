@@ -189,7 +189,7 @@ void PidControl::execute()
 //
     // if protection is not active, set the output result to the output element:
     if (!m_isProtectionActive)
-        *m_output = pidResult;
+        m_output->setValue(pidResult);
 //    else
 //        *m_output = 0;
 
@@ -315,7 +315,7 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     // set the ranges to the input:
     m_setpoint->updateWorkingRange(sp + loRange, sp + hiRange, true, true);
     m_setpoint->updateWarningRange(sp + loWarn, sp + hiWarn, true, true);
-    *m_setpoint = sp;
+    m_setpoint->setValue(sp);
     m_feedForward = feedForward;
 
     // lower the warnings/errors, in case they were raised previously.
@@ -557,7 +557,7 @@ void PidControl::setSetpointRange(float setpointRange)
 
 void PidControl::resetOutput()
 {
-    *m_output = 0;
+    m_output->setValue(0);
 //    if (m_outputIsControl)
 //    {
 //        ControlRepository::getInstance().getControlByPssId(m_output->getPssId())->sendNotification();

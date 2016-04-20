@@ -18,8 +18,8 @@ AirBleedingControl::~AirBleedingControl()
 
 void AirBleedingControl::setOutputValue(int value)
 {
-    *m_outputs[0] = (uint8_t)((value & 0x1) != 0);
-    *m_outputs[1] = (uint8_t)((value & 0x2) != 0);
+    m_outputs[0]->setValue((uint32_t)((value & 0x1) != 0));
+    m_outputs[1]->setValue((uint32_t)((value & 0x2) != 0));
 }
 
 void AirBleedingControl::setOutputElements(ElementU8* first, ElementU8* second)

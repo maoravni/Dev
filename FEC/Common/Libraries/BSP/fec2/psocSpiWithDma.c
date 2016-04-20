@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <ll_typedef.h>
 #include <assert.h>
-#include <arm_itm.h>
+//#include <arm_itm.h>
 #include <PscSubsystem.h>
 #include <cybootloaderutils/cybtldr_utils.h>
 #include <cybootloaderutils/cybtldr_api.h>
@@ -322,14 +322,14 @@ void PSOC_fullDuplexTransferNoCrc(uint8_t *transmitBuffer, uint8_t length)
     DMA_Cmd(PSOC_SPI_PORT_TX_DMA_STREAM, ENABLE);
 }
 
-void PSOC_sendBuffer(uint8_t *buf, uint8_t len)
-{
-    PSOC_SPI_PORT_TX_DMA_STREAM->NDTR = (uint32_t) len;
-    PSOC_SPI_PORT_TX_DMA_STREAM->M0AR = (uint32_t) buf;
-    SPI_BiDirectionalLineConfig(PSOC_SPI_PORT, SPI_Direction_Tx);
-    CS1_LOW();
-    DMA_Cmd(PSOC_SPI_PORT_TX_DMA_STREAM, ENABLE);
-}
+//void PSOC_sendBuffer(uint8_t *buf, uint8_t len)
+//{
+//    PSOC_SPI_PORT_TX_DMA_STREAM->NDTR = (uint32_t) len;
+//    PSOC_SPI_PORT_TX_DMA_STREAM->M0AR = (uint32_t) buf;
+//    SPI_BiDirectionalLineConfig(PSOC_SPI_PORT, SPI_Direction_Tx);
+//    CS1_LOW();
+//    DMA_Cmd(PSOC_SPI_PORT_TX_DMA_STREAM, ENABLE);
+//}
 
 void PSOC_startReceive()
 {

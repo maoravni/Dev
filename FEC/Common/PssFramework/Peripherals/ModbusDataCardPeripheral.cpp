@@ -53,7 +53,7 @@ void ModbusDataCardPeripheral::readInputs()
     for (i = 0; i < M_DataCard_NUM_OF_SENSORS; ++i)
     {
         buffer[i] = SWAP_16(buffer[i]);
-        *m_temperatureElementsArray[i] = ((float)(buffer[i] * 0.1))*m_aCoeff[i] + m_bCoeff[i];
+        m_temperatureElementsArray[i]->setValue(((float)(buffer[i] * 0.1))*m_aCoeff[i] + m_bCoeff[i]);
 //        m_temperatureElementsArray[i]->setValueValid(((sensorConnectedMask&1) == 0));
 //        sensorConnectedMask >>= 2;
 //        M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "DataCard sensors: %0.2f not connected: %d", m_temperatureElementsArray[i]->getValue(), m_temperatureElementsArray[i]->isValid());

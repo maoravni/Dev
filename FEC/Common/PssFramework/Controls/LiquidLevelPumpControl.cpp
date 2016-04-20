@@ -78,7 +78,7 @@ void LiquidLevelPumpControl::execute()
     if (activateProtection && !m_fillPumpProtectionActive && m_fillPump->getValueI32() != 0)
     {
         m_fillPumpProtectionActive = true;
-        m_fillPump->setValue(0);
+        m_fillPump->setValue((uint32_t)0);
     }
 
     // if we need to turn off the protection
@@ -113,7 +113,7 @@ void LiquidLevelPumpControl::execute()
 //            else
 //                endReset2On();
             if (m_fillPump != NULL && m_fillPump->getValueI32() != 0)
-                m_fillPump->setValue(0);
+                m_fillPump->setValue((uint32_t)0);
         }
     }
 }

@@ -1021,21 +1021,21 @@ void ActivationWithFeedbackControl::writeOutputs(E_ActivationState activationSta
     {
     case E_ActivationBehaviorOnInit_Unknown:
         if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = 0;
+            m_outputEnableDevice->setValue((uint32_t)0);
         if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 0;
+            m_outputDisableDevice->setValue((uint32_t)0);
         break;
     case E_ActivationState_Active:
         if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = m_activationOutputValue;
+            m_outputEnableDevice->setValue(m_activationOutputValue);
         if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 0;
+            m_outputDisableDevice->setValue((uint32_t)0);
         break;
     case E_ActivationState_Inactive:
         if (m_outputEnableDevice != NULL)
-            *m_outputEnableDevice = 0;
+            m_outputEnableDevice->setValue((uint32_t)0);
         if (m_outputDisableDevice != NULL)
-            *m_outputDisableDevice = 1;
+            m_outputDisableDevice->setValue((uint32_t)1);
         break;
     }
 }

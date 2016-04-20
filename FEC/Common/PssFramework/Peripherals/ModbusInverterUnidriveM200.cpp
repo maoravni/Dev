@@ -87,8 +87,8 @@ void ModbusInverterUnidriveM200::readInputs()
             // TODO: Set the control at an error.
             m_outputCurrent->setValueValid(false);
             m_outputFrequency->setValueValid(false);
-            *m_outputFrequency = 0;
-            *m_outputCurrent = 0;
+            m_outputFrequency->setValue(0);
+            m_outputCurrent->setValue(0);
             InputPeripheralBase::setUpdateInterval(10000);
         }
         return;
@@ -127,8 +127,8 @@ void ModbusInverterUnidriveM200::readInputs()
     SWAP_AND_ASSIGN_16(driveReadReply.outputCurrent);
     SWAP_AND_ASSIGN_16(driveReadReply.outputFrequency);
     SWAP_AND_ASSIGN_16(driveReadReply.setpoint);
-    *m_outputFrequency = (float) (driveReadReply.outputFrequency * m_frequencyMultiplier);
-    *m_outputCurrent = (float) (driveReadReply.outputCurrent * m_currentMultiplier);
+    m_outputFrequency->setValue((float) (driveReadReply.outputFrequency * m_frequencyMultiplier));
+    m_outputCurrent->setValue((float) (driveReadReply.outputCurrent * m_currentMultiplier));
     // TODO: Compare the setpoint to the requested setpoint.
 
     // Drive control mode;

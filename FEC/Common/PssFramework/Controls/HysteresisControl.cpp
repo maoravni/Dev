@@ -56,7 +56,7 @@ void HysteresisControl::updateNotification(ElementBase* element)
             // TODO: Change error to "Protection Activated"
 //            raiseError(E_PSSErrors_DeviceExceedsSoftLimits, true);
             // we should also stop the heating:
-            *m_output = 0;
+            m_output->setValue(0);
             m_output->sendDeviceStatus();
         }
 //        else
@@ -79,20 +79,20 @@ void HysteresisControl::executeControl(float inputValue)
         if (inputValue > m_activateSetpointElement->getValue())
         {
             if (!m_isProtectionActive)
-                *m_output = m_outputValue;
+                m_output->setValue(m_outputValue);
         }
         if (inputValue <= m_deactivateSetpointElement->getValue())
-            *m_output = 0;
+            m_output->setValue(0);
     }
     else
     {
         if (inputValue < m_activateSetpointElement->getValue())
         {
             if (!m_isProtectionActive)
-                *m_output = m_outputValue;
+                m_output->setValue(m_outputValue);
         }
         if (inputValue >= m_deactivateSetpointElement->getValue())
-            *m_output = 0;
+            m_output->setValue(0);
     }
 }
 
@@ -139,7 +139,7 @@ void HysteresisControl::execute()
 
     // if protection is not active, set the output result to the output element:
     if (m_isProtectionActive)
-        *m_output = 0;
+        m_output->setValue(0);
 
     bool outputValue = false;
     switch (m_controlState)
@@ -176,7 +176,7 @@ void HysteresisControl::execute()
         // TODO: Check working range and warning range, and issue an error
         if (!m_input->isValid())
         {
-            *m_output = 0;
+            m_output->setValue(0);
         }
         else
         {
@@ -298,7 +298,7 @@ bool HysteresisControl::setSetpoint(ValidationElementFloat* activateElement, Val
 bool HysteresisControl::onMove2Standby(uint32_t delay)
 {
     if (m_output->getValueF() != 0)
-        *m_output = 0;
+        m_output->setValue(0);
     m_output->sendDeviceStatus();
     endMove2Standby();
     return true;
@@ -307,7 +307,7 @@ bool HysteresisControl::onMove2Standby(uint32_t delay)
 bool HysteresisControl::onReset2On()
 {
     if (m_output->getValueF() != 0)
-        *m_output = 0;
+        m_output->setValue(0);
     m_output->sendDeviceStatus();
     endReset2On();
     return true;
@@ -322,7 +322,7 @@ bool HysteresisControl::onInitControl()
 bool HysteresisControl::onMove2Error()
 {
     if (m_output->getValueF() != 0)
-        *m_output = 0;
+        m_output->setValue(0);
     m_output->sendDeviceStatus();
     endMove2Error();
     return true;
@@ -342,7 +342,7 @@ void HysteresisControl::addProtectionElement(ValidationElementBase* element)
 bool HysteresisControl::onStopOnEmr()
 {
     if (m_output->getValueF() != 0)
-        *m_output = 0;
+        m_output->setValue(0);
     m_output->sendDeviceStatus();
     endStopOnEmr();
     return true;

@@ -100,7 +100,7 @@ void InternalTemperatureSensors::convertDigital2Temperature(float input, int ind
 {
     float tempValue = convertDigital2Temperature(input, m_aCoeff[index], m_bCoeff[index]);
     m_temperatureElementsArray[index]->setValueValid((tempValue < m_sensorDisconnectedValue));
-    *m_temperatureElementsArray[index] = tempValue;
+    m_temperatureElementsArray[index]->setValue(tempValue);
 }
 
 ElementBase* InternalTemperatureSensors::getElementByIndex(int index)

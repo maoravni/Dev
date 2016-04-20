@@ -5,6 +5,7 @@
  *      Author: maora
  */
 
+#include <stdlib.h>
 #include "PID.h"
 #include <task.h>
 #include <math.h>

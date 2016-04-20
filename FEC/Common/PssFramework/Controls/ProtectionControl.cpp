@@ -13,7 +13,7 @@ ProtectionControl::ProtectionControl()
     PeripheralRepository::getInstance().initDryContactOutput(0);
     m_dryContactElement = PeripheralRepository::getInstance().getDryContactOutput()->getElementByIndex(0);
 
-    *m_dryContactElement = 1;
+    m_dryContactElement->setValue(1);
 }
 
 ProtectionControl::~ProtectionControl()
@@ -46,7 +46,7 @@ void ProtectionControl::updateNotification(ElementBase* element)
     *m_dryContactElement = 0;
 #else
     if (element->getValueU32() == E_DeviceProtectionState_HardLimitExceeded)
-        *m_dryContactElement = 0;
+        m_dryContactElement->setValue(0);
 #endif
 }
 
@@ -119,5 +119,5 @@ bool ProtectionControl::onRecoverFromEmr()
 
 void ProtectionControl::startRecovery()
 {
-    *m_dryContactElement = 1;
+    m_dryContactElement->setValue(1);
 }

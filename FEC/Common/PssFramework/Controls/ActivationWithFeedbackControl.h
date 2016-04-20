@@ -146,7 +146,7 @@ class ActivationWithFeedbackControl: public ControlBase
 {
     ElementBase* m_outputEnableDevice;
     ElementBase* m_outputDisableDevice;
-    int m_activationOutputValue;
+    uint32_t m_activationOutputValue;
     E_ActivationState m_activationState;
     E_ActivationState m_previousActivationState;
     E_ActivationState m_inProtectionActivationState;

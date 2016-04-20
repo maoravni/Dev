@@ -112,8 +112,11 @@ int Serializer<ElementRepository>::deserialize(F_FILE* f, ElementRepository& e)
 
     for (int i = 0; i < numOfElements; ++i)
     {
-        deserializeElement(f, e);
+        if (deserializeElement(f, e) == 0)
+            return 0;
     }
+
+    return 1;
 }
 
 int Serializer<ElementRepository>::deserializeElement(F_FILE* f, ElementRepository& e)
@@ -251,5 +254,6 @@ int Serializer<ElementRepository>::deserializeElement(F_FILE* f, ElementReposito
     default:
         printf("bad parsing on the deserialization file\n");
     }
+    return 1;
 }
 

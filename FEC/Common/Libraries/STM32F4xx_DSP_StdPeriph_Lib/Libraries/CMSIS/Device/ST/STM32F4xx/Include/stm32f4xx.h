@@ -9136,6 +9136,8 @@ typedef struct
 
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 
+//#define USE_Delay 1
+
 /**
   * @}
   */

@@ -194,15 +194,15 @@ public:
 class ProtectionDebounceQueueNode: public QueueNode
 {
 public:
-    portTickType m_timeout;
     bool m_obsolete;
+    portTickType m_timeout;
 
 private:
     ProtectionCheckerBase* m_protectionCheckerBase;
 
 public:
     ProtectionDebounceQueueNode() :
-            m_protectionCheckerBase(NULL), m_obsolete(false), m_timeout(0)
+            m_obsolete(false), m_timeout(0), m_protectionCheckerBase(NULL)
     {
     }
 

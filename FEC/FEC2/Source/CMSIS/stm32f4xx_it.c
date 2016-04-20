@@ -66,6 +66,16 @@ void NMI_Handler(void)
 {
 }
 
+#ifdef __GNUC__
+uint32_t register_r0 __attribute ((section (".noinit")));
+uint32_t register_r1 __attribute ((section (".noinit")));
+uint32_t register_r2 __attribute ((section (".noinit")));
+uint32_t register_r3 __attribute ((section (".noinit")));
+uint32_t register_r12 __attribute ((section (".noinit")));
+uint32_t register_lr __attribute ((section (".noinit")));
+uint32_t register_pc __attribute ((section (".noinit")));
+uint32_t register_psr __attribute ((section (".noinit")));
+#else
 #pragma optimize=none
 __no_init uint32_t register_r0;
 __no_init uint32_t register_r1;
@@ -75,6 +85,8 @@ __no_init uint32_t register_r12;
 __no_init uint32_t register_lr; /* Link register. */
 __no_init uint32_t register_pc; /* Program counter. */
 __no_init uint32_t register_psr;/* Program status register. */
+#endif
+
 void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
 {
     /* These are volatile to try and prevent the compiler/linker optimising them

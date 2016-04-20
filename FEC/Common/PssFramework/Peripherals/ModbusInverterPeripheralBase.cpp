@@ -19,9 +19,9 @@ ModbusInverterPeripheralBase::ModbusInverterPeripheralBase(uint8_t slaveId) :
     m_outputFrequency = ElementRepository::getInstance().addValidationElementFloat();
     m_outputCurrent = ElementRepository::getInstance().addValidationElementFloat();
     m_frequencySetpoint = ElementRepository::getInstance().addValidationElementFloat();
-    *m_outputFrequency = 0;
-    *m_outputCurrent = 0;
-    *m_frequencySetpoint = 0;
+    m_outputFrequency->setValue((uint32_t)0);
+    m_outputCurrent->setValue((uint32_t)0);
+    m_frequencySetpoint->setValue((uint32_t)0);
     m_setpointUpdated = true;
     m_frequencySetpoint->addObserver(this);
 
@@ -60,8 +60,8 @@ void ModbusInverterPeripheralBase::readInputs()
             // TODO: Set the control at an error.
             m_outputCurrent->setValueValid(false);
             m_outputFrequency->setValueValid(false);
-            *m_outputFrequency = 0;
-            *m_outputCurrent = 0;
+            m_outputFrequency->setValue((uint32_t)0);
+            m_outputCurrent->setValue((uint32_t)0);
             setUpdateInterval(10000);
         }
         return;
@@ -84,8 +84,8 @@ void ModbusInverterPeripheralBase::readInputs()
 
     outFreq = SWAP_16(outFreq);
     outCurrent = SWAP_16(outCurrent);
-    *m_outputFrequency = (float) (outFreq * m_frequencyMultiplier);
-    *m_outputCurrent = (float) (outCurrent * m_currentMultiplier);
+    m_outputFrequency->setValue((float) (outFreq * m_frequencyMultiplier));
+    m_outputCurrent->setValue((float) (outCurrent * m_currentMultiplier));
 
     if (m_setpointUpdated)
     {

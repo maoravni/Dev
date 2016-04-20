@@ -22,9 +22,9 @@ ModbusSmcHrsChiller::ModbusSmcHrsChiller(uint8_t slaveId) :
     m_fluidTemperature = ElementRepository::getInstance().addValidationElementFloat();
     m_fluidPressure = ElementRepository::getInstance().addValidationElementFloat();
     m_setpoint = ElementRepository::getInstance().addValidationElementFloat();
-    m_fluidTemperature->setValue(0);
-    m_fluidPressure->setValue(0);
-    m_setpoint->setValue(0);
+    m_fluidTemperature->setValue((uint32_t)0);
+    m_fluidPressure->setValue((uint32_t)0);
+    m_setpoint->setValue((uint32_t)0);
     m_setpoint->addObserver(this);
 
     setUpdateInterval(M_SMC_CHILLERS_DEFAULT_UPDATE_INTERVAL);
@@ -56,8 +56,8 @@ void ModbusSmcHrsChiller::readInputs()
             // TODO: Set the control at an error.
             m_fluidTemperature->setValueValid(false);
             m_fluidPressure->setValueValid(false);
-            *m_fluidTemperature = 0;
-            *m_fluidPressure = 0;
+            m_fluidTemperature->setValue((uint32_t)0);
+            m_fluidPressure->setValue((uint32_t)0);
             setUpdateInterval(10000);
         }
         return;

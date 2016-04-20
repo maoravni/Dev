@@ -11,11 +11,11 @@
 #include <logger.h>
 #include <Peripherals/PeripheralRepository.h>
 #include <PscServer/PscMasterServer.h>
-#ifndef WIN32
-#include <arm_itm.h>
-#else
+//#ifndef WIN32
+//#include <arm_itm.h>
+//#else
 #define ITM_EVENT8
-#endif
+//#endif
 #include <Controls/ControlRepository.h>
 
 #define M_KEEP_ALIVE_TIMEOUT_MULTIPLIER 5

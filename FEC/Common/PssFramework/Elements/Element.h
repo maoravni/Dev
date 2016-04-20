@@ -36,6 +36,10 @@ public:
 //    virtual _type& operator=(const _type& rhs);
     virtual _type& operator()();
 
+#ifdef __GNUC__
+    virtual void setValue(const int value);
+#endif
+    virtual void setValue(const uint8_t value);
     virtual void setValue(const uint32_t value);
     virtual void setValue(const int32_t value);
     virtual void setValue(const float value);
@@ -136,6 +140,20 @@ typedef Element<uint32_t> ElementU32;
 typedef Element<int8_t> ElementI8;
 typedef Element<int16_t> ElementI16;
 typedef Element<int32_t> ElementI32;
+
+#ifdef __GNUC__
+template<class _type>
+inline void Element<_type>::setValue(const int value)
+{
+    _setValue((_type)value);
+}
+#endif
+
+template<class _type>
+inline void Element<_type>::setValue(const uint8_t value)
+{
+    _setValue((_type)value);
+}
 
 template<class _type>
 inline void Element<_type>::setValue(const uint32_t value)

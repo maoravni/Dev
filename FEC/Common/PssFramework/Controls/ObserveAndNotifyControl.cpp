@@ -82,7 +82,7 @@ bool ObserveAndNotifyControl::setSetpoint(float sp, float loRange, float hiRange
     // set the ranges to the input:
     m_setpoint->updateWorkingRange(sp + loRange, sp + hiRange, true, true);
     m_setpoint->updateWarningRange(sp + loWarn, sp + hiWarn, true, true);
-    *m_setpoint = sp;
+    m_setpoint->setValue(sp);
 
     // lower the warnings/errors, in case they were raised previously.
     raiseError(0, E_PSSErrors_ControlExceedsLimits, false);

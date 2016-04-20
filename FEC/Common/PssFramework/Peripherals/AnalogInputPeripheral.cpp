@@ -83,7 +83,7 @@ void AnalogInputPeripheral::convert2Digital(float input, int index)
     float maValue = input;
     m_inputElementsArray[index]->setValueValid((maValue >= m_sensorDisconnectedValue));
     maValue = (maValue*m_scalingA[index] + m_scalingB[index])/**m_correctionA[index] + m_correctionB[index]*/;
-    *m_inputElementsArray[index] = maValue;
+    m_inputElementsArray[index]->setValue(maValue);
 }
 
 ElementBase* AnalogInputPeripheral::getElementByIndex(int index)

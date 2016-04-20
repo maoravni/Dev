@@ -62,7 +62,11 @@
 #include <iwdg.h>
 #include <rtc.h>
 
+#ifdef __GNUC__
+uint32_t StayInBootLoader __attribute__((at(0x20000000)));
+#else
 __no_init uint32_t StayInBootLoader @ 0x20000000;
+#endif
 //uint32_t checksum;
 
 /* --- GLOBAL_EXTERNALS ----------------------------------------------------- */

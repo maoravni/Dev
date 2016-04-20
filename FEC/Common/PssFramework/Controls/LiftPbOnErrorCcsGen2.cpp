@@ -29,6 +29,7 @@ LiftPbOnErrorCcsGen2::LiftPbOnErrorCcsGen2() :
     m_tubDisengage[0] = NULL;
     m_tubDisengage[1] = NULL;
     m_pbOk = NULL;
+    m_airPressureOk = NULL;
 }
 
 LiftPbOnErrorCcsGen2::~LiftPbOnErrorCcsGen2()

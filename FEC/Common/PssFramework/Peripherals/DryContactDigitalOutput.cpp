@@ -63,7 +63,7 @@ void DryContactDigitalOutput::enableElementByIndex(int index, bool enable)
  */
 void DryContactDigitalOutput::setDryContactState(bool enable)
 {
-    m_element->setValue((int)enable);
+    m_element->setValue(enable);
 }
 
 void DryContactDigitalOutput::startRecovery()

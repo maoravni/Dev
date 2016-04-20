@@ -155,6 +155,12 @@ a lot of data that needs to be copied, this should be set high. */
 #define MEMP_STATS 1
 #define MEM_STATS 1
 
+/**
+ * LWIP_NETIF_LINK_CALLBACK==1: Support a callback function from an interface
+ * whenever the link changes (i.e., link down)
+ */
+#define LWIP_NETIF_LINK_CALLBACK        1
+
 
 /*
    --------------------------------------
@@ -257,6 +263,9 @@ The STM32F2x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 
 #define LWIP_NETIF_API                  1
 
+#ifdef __GNUC__
+#define LWIP_TIMEVAL_PRIVATE 0
+#endif
 
 #endif /* __LWIPOPTS_H__ */
 

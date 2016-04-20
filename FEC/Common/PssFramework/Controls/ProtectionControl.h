@@ -46,7 +46,7 @@ public:
         m_dryContactElement = dryContactElement;
 
         // turn on the contactor when assigning it:
-        *m_dryContactElement = 1;
+        m_dryContactElement->setValue((uint32_t)1);
     }
 
 //    virtual void addProtectionElement(ValidationElementBase* element);

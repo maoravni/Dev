@@ -57,7 +57,7 @@ void ModbusInverterControl::updateSetpoints()
 	{
 		m_setpoint->setValue(m_requestedSetpoint->getValueF());
 	}
-	*m_enableOutput = (m_requestedSetpoint->getValueF() != 0 && !m_isProtectionActive) ? 1 : 0;
+	m_enableOutput->setValue((m_requestedSetpoint->getValueF() != 0 && !m_isProtectionActive) ? 1 : 0);
 	//    if (m_lastSn != 0)
 	//        ModbusSchedulerTask::getInstance()->addTimeout(this, M_DEFAULT_ACTIVATION_TIMEOUT, M_TIMEOUT_ACTIVATE);
 }
@@ -172,13 +172,13 @@ void ModbusInverterControl::execute()
 		// if the blower is stopped, we need to lower the output so the motor would not get fried.
 		if (m_outputFrequency->getValueF() != 0)
 		{
-			*m_setpoint = 0;
-			*m_requestedSetpoint = 0;
+			m_setpoint->setValue(0);
+			m_requestedSetpoint->setValue((int)0);
 		}
 		else
 		{
 			if (m_enableOutput->getValueU32())
-				*m_enableOutput = 0;
+				m_enableOutput->setValue(0);
 		}
 		if (m_stopping && m_outputFrequency->getValueI32() == 0)
 		{
@@ -276,12 +276,12 @@ void ModbusInverterControl::updateNotification(ElementBase* element)
 		{
 			//            raiseError(E_PSSErrors_DeviceExceedsSoftLimits, true);
 			// we should also stop the inverter
-			*m_enableOutput = 0;
+			m_enableOutput->setValue(0);
 			m_enableOutput->sendDeviceStatus();
 		}
 		else
 		{
-			*m_enableOutput = (m_requestedSetpoint != 0) ? 1 : 0;
+			m_enableOutput->setValue((m_requestedSetpoint != 0) ? 1 : 0);
 			m_enableOutput->sendDeviceStatus();
 			//            raiseError(E_PSSErrors_DeviceExceedsSoftLimits, false);
 		}
@@ -335,11 +335,11 @@ bool ModbusInverterControl::onMove2Standby(uint32_t delay)
 
 bool ModbusInverterControl::onMove2Standby()
 {
-	*m_enableOutput = 0;
+	m_enableOutput->setValue(0);
 	if (m_setpoint->getValueF() != 0)
 	{
-		*m_setpoint = 0;
-		*m_requestedSetpoint = 0;
+		m_setpoint->setValue(0);
+		m_requestedSetpoint->setValue((int)0);
 	}
 	m_controlState = E_ControlState_Standby;
 	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
@@ -352,11 +352,11 @@ bool ModbusInverterControl::onMove2Standby()
 
 bool ModbusInverterControl::onReset2On()
 {
-	*m_enableOutput = 0;
+	m_enableOutput->setValue(0);
 	if (m_setpoint->getValueF() != 0)
 	{
-		*m_setpoint = 0;
-		*m_requestedSetpoint = 0;
+		m_setpoint->setValue(0);
+		m_requestedSetpoint->setValue(0);
 	}
 	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
 	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
@@ -368,11 +368,11 @@ bool ModbusInverterControl::onReset2On()
 
 bool ModbusInverterControl::onMove2Error()
 {
-	*m_enableOutput = 0;
+	m_enableOutput->setValue(0);
 	if (m_setpoint->getValueF() != 0)
 	{
-		*m_setpoint = 0;
-		*m_requestedSetpoint = 0;
+		m_setpoint->setValue(0);
+		m_requestedSetpoint->setValue(0);
 	}
 	m_stopping = true;
 	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
@@ -384,11 +384,11 @@ bool ModbusInverterControl::onMove2Error()
 
 bool ModbusInverterControl::onStopOnEmr()
 {
-	*m_enableOutput = 0;
+	m_enableOutput->setValue(0);
 	if (m_setpoint->getValueF() != 0)
 	{
-		*m_setpoint = 0;
-		*m_requestedSetpoint = 0;
+		m_setpoint->setValue(0);
+		m_requestedSetpoint->setValue(0);
 	}
 	m_controlState = E_ControlState_Standby;
 	m_stopping = true;

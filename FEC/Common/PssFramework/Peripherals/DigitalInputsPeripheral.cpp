@@ -25,7 +25,7 @@ DigitalInputsPeripheral::~DigitalInputsPeripheral()
 {
 }
 
-#define M_ASSIGN_VALUE_TO_ELEMENT(i, e) dig_in_get(i, &temp); if (temp != m_inputValues[e]) *m_elementsArray[e] = temp; m_inputValues[e] = temp
+#define M_ASSIGN_VALUE_TO_ELEMENT(i, e) dig_in_get(i, &temp); if (temp != m_inputValues[e]) m_elementsArray[e]->setValue(temp); m_inputValues[e] = temp
 void DigitalInputsPeripheral::readInputs()
 {
     uint8_t temp;
