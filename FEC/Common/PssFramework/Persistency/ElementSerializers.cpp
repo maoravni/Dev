@@ -21,16 +21,13 @@ struct ElementBaseInfo
 
 int Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_SerializationElementType eType)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_write(&eType, 1, 1, f) != 1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     ElementBaseInfo ebi;
     ebi.elementIndex = e.m_elementIndex;
@@ -42,24 +39,20 @@ int Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_Serializatio
     if (f_write(&ebi, sizeof(ebi), 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ElementBase>::deserialize(F_FILE* f, ElementBase& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     ElementBaseInfo ebi;
 
@@ -164,16 +157,13 @@ int Serializer<Element<uint16_t> >::deserialize(F_FILE* f, Element<uint16_t>& e)
 
 int Serializer<ValidationElement<float> >::serialize(F_FILE* f, ValidationElement<float>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_Float, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -194,24 +184,20 @@ int Serializer<ValidationElement<float> >::serialize(F_FILE* f, ValidationElemen
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ValidationElement<float> >::deserialize(F_FILE* f, ValidationElement<float>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -237,16 +223,13 @@ int Serializer<ValidationElement<float> >::deserialize(F_FILE* f, ValidationElem
 
 int Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElement<uint8_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U8, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -267,8 +250,7 @@ int Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElem
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 
@@ -276,16 +258,13 @@ int Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElem
 
 int Serializer<ValidationElement<uint8_t> >::deserialize(F_FILE* f, ValidationElement<uint8_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -311,16 +290,13 @@ int Serializer<ValidationElement<uint8_t> >::deserialize(F_FILE* f, ValidationEl
 
 int Serializer<ValidationElement<uint16_t> >::serialize(F_FILE* f, ValidationElement<uint16_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U16, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -341,24 +317,20 @@ int Serializer<ValidationElement<uint16_t> >::serialize(F_FILE* f, ValidationEle
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ValidationElement<uint16_t> >::deserialize(F_FILE* f, ValidationElement<uint16_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -384,16 +356,13 @@ int Serializer<ValidationElement<uint16_t> >::deserialize(F_FILE* f, ValidationE
 
 int Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationElement<uint32_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U32, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -414,8 +383,7 @@ int Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationEle
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 
@@ -423,16 +391,13 @@ int Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationEle
 
 int Serializer<ValidationElement<uint32_t> >::deserialize(F_FILE* f, ValidationElement<uint32_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -458,16 +423,13 @@ int Serializer<ValidationElement<uint32_t> >::deserialize(F_FILE* f, ValidationE
 
 int Serializer<ValidationElement<int8_t> >::serialize(F_FILE* f, ValidationElement<int8_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S8, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -488,24 +450,20 @@ int Serializer<ValidationElement<int8_t> >::serialize(F_FILE* f, ValidationEleme
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ValidationElement<int8_t> >::deserialize(F_FILE* f, ValidationElement<int8_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -531,16 +489,13 @@ int Serializer<ValidationElement<int8_t> >::deserialize(F_FILE* f, ValidationEle
 
 int Serializer<ValidationElement<int16_t> >::serialize(F_FILE* f, ValidationElement<int16_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S16, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -561,24 +516,20 @@ int Serializer<ValidationElement<int16_t> >::serialize(F_FILE* f, ValidationElem
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ValidationElement<int16_t> >::deserialize(F_FILE* f, ValidationElement<int16_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
@@ -604,16 +555,13 @@ int Serializer<ValidationElement<int16_t> >::deserialize(F_FILE* f, ValidationEl
 
 int Serializer<ValidationElement<int32_t> >::serialize(F_FILE* f, ValidationElement<int32_t>& e)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S32, f) == -1)
         return 0;
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
@@ -634,24 +582,20 @@ int Serializer<ValidationElement<int32_t> >::serialize(F_FILE* f, ValidationElem
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ValidationElement<int32_t> >::deserialize(F_FILE* f, ValidationElement<int32_t>& e)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)
         return 0;
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;

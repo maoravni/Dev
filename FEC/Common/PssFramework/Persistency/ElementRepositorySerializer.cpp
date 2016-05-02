@@ -15,11 +15,9 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
 {
     int result;
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // go over all elements and count the number of elements that have a PSSID:
     uint16_t numOfElements = 0;
@@ -40,8 +38,7 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
     if (result != numOfElements)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     T_EntityMapRecordVector elementMapVec;
 
@@ -73,13 +70,11 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
 int Serializer<ElementRepository>::deserialize(F_FILE* f, ElementRepository& e)
 {
     // read the record size:
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    //uint16_t recordSize;
+    deserializeRecordSize(f);
 
     // read the version:
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     uint16_t numOfElements;
 
@@ -116,8 +111,7 @@ int Serializer<ElementRepository>::deserializeElement(F_FILE* f, ElementReposito
     uint16_t elementRecordSize;
     elementStartPosition = f_tell(f);
 
-    if (deserializeRecordSize(f, elementRecordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     uint8_t dataType;
     if (f_read(&dataType, 1, 1, f) == 0)

@@ -24,11 +24,9 @@ int Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository&
 {
     int result;
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     // go over all elements and count the number of elements that have a PSSID:
     uint16_t numOfPeripherals = 0;
@@ -49,8 +47,7 @@ int Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository&
     if (result != numOfPeripherals)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     T_EntityMapRecordVector entityMapVec;
 
@@ -96,13 +93,10 @@ int Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository&
 int Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralRepository& pr)
 {
     // read the record size:
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     // read the version:
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     uint16_t numOfPeripherals;
 
@@ -135,15 +129,11 @@ int Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralRepositor
 int Serializer<PeripheralRepository>::deserializePeripheral(F_FILE* f, PeripheralRepository& pr)
 {
     int elementStartPosition;
-    uint16_t elementRecordSize;
     elementStartPosition = f_tell(f);
 
-    if (deserializeRecordSize(f, elementRecordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
-    uint8_t classType;
-    if (deserializeClassType(f, classType) == 0)
-        return 0;
+    uint8_t classType = deserializeClassType(f);
 
     if (f_seek(f, elementStartPosition, F_SEEK_SET) != F_NO_ERROR)
         return 0;

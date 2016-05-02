@@ -27,7 +27,7 @@ PersistencyManager::~PersistencyManager()
     // TODO Auto-generated destructor stub
 }
 
-int PersistencyManager::serializeElements()
+void PersistencyManager::serializeElements()
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements serialization");
     F_FILE* f = f_open("elements", "w+");
@@ -35,10 +35,10 @@ int PersistencyManager::serializeElements()
     int result = s.serialize(f, ElementRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Elements serialization ended");
-    return result;
+//    return result;
 }
 
-int PersistencyManager::deserializeElements()
+void PersistencyManager::deserializeElements()
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements deserialization");
     F_FILE* f = f_open("elements", "r");
@@ -46,10 +46,10 @@ int PersistencyManager::deserializeElements()
     int result = s.deserialize(f, ElementRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Elements deserialization ended");
-    return result;
+//    return result;
 }
 
-int PersistencyManager::serializePeripherals()
+void PersistencyManager::serializePeripherals()
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
     F_FILE* f = f_open("elements", "w+");
@@ -57,10 +57,10 @@ int PersistencyManager::serializePeripherals()
     int result = s.serialize(f, PeripheralRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
-    return result;
+//    return result;
 }
 
-int PersistencyManager::deserializePeripherals()
+void PersistencyManager::deserializePeripherals()
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals deserialization");
     F_FILE* f = f_open("elements", "w+");
@@ -68,5 +68,5 @@ int PersistencyManager::deserializePeripherals()
     int result = s.deserialize(f, PeripheralRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
-    return result;
+//    return result;
 }

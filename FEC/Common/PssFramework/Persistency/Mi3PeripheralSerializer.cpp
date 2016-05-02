@@ -13,14 +13,9 @@ int Serializer<Mi3I2CIrPeripheral>::serialize(F_FILE* f, Mi3I2CIrPeripheral& p)
 {
     int result;
 
-    if (storeStartPosition(f) == 0)
-        return 0;
-
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    storeStartPosition(f);
+    serializeClassType(f);
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -42,8 +37,7 @@ int Serializer<Mi3I2CIrPeripheral>::serialize(F_FILE* f, Mi3I2CIrPeripheral& p)
         sensorSerializer.serialize(f, *p.m_sensorList[i]);
     }
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
@@ -52,22 +46,16 @@ int Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
 {
     int result;
 
-    if (storeStartPosition(f) == 0)
-        return 0;
-
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    storeStartPosition(f);
+    serializeClassType(f);
+    serializeVersion(f);
 
     uint16_t temp = s.m_targTempElement->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
     M_FWRITE_VARIABLE(s.m_address, f);
 
     // TODO: Serialize Mi3 sensor configuration.
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }

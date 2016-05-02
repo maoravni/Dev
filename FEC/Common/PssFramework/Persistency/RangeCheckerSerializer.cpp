@@ -9,8 +9,7 @@
 
 int Serializer<RangeChecker<float> >::serialize(F_FILE* f, RangeChecker<float>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(float), 1, f) == 0)
         return 0;
@@ -24,16 +23,14 @@ int Serializer<RangeChecker<float> >::serialize(F_FILE* f, RangeChecker<float>& 
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<int8_t> >::serialize(F_FILE* f, RangeChecker<int8_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(int8_t), 1, f) == 0)
         return 0;
@@ -47,16 +44,14 @@ int Serializer<RangeChecker<int8_t> >::serialize(F_FILE* f, RangeChecker<int8_t>
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<int16_t> >::serialize(F_FILE* f, RangeChecker<int16_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(int16_t), 1, f) == 0)
         return 0;
@@ -70,16 +65,14 @@ int Serializer<RangeChecker<int16_t> >::serialize(F_FILE* f, RangeChecker<int16_
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<int32_t> >::serialize(F_FILE* f, RangeChecker<int32_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(int32_t), 1, f) == 0)
         return 0;
@@ -93,16 +86,14 @@ int Serializer<RangeChecker<int32_t> >::serialize(F_FILE* f, RangeChecker<int32_
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<uint8_t> >::serialize(F_FILE* f, RangeChecker<uint8_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(uint8_t), 1, f) == 0)
         return 0;
@@ -116,16 +107,14 @@ int Serializer<RangeChecker<uint8_t> >::serialize(F_FILE* f, RangeChecker<uint8_
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<uint16_t> >::serialize(F_FILE* f, RangeChecker<uint16_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(uint16_t), 1, f) == 0)
         return 0;
@@ -139,16 +128,14 @@ int Serializer<RangeChecker<uint16_t> >::serialize(F_FILE* f, RangeChecker<uint1
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<uint32_t> >::serialize(F_FILE* f, RangeChecker<uint32_t>& r)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
     if (f_write(&r.m_minValue, sizeof(uint32_t), 1, f) == 0)
         return 0;
@@ -162,17 +149,14 @@ int Serializer<RangeChecker<uint32_t> >::serialize(F_FILE* f, RangeChecker<uint3
     if (f_write(&r.m_checkMax, 1, 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<RangeChecker<float> >::deserialize(F_FILE* f, RangeChecker<float>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(float), 1, f) == 0)
         return 0;
@@ -191,9 +175,7 @@ int Serializer<RangeChecker<float> >::deserialize(F_FILE* f, RangeChecker<float>
 
 int Serializer<RangeChecker<uint8_t> >::deserialize(F_FILE* f, RangeChecker<uint8_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(uint8_t), 1, f) == 0)
         return 0;
@@ -212,9 +194,7 @@ int Serializer<RangeChecker<uint8_t> >::deserialize(F_FILE* f, RangeChecker<uint
 
 int Serializer<RangeChecker<uint16_t> >::deserialize(F_FILE* f, RangeChecker<uint16_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(uint16_t), 1, f) == 0)
         return 0;
@@ -233,9 +213,7 @@ int Serializer<RangeChecker<uint16_t> >::deserialize(F_FILE* f, RangeChecker<uin
 
 int Serializer<RangeChecker<uint32_t> >::deserialize(F_FILE* f, RangeChecker<uint32_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(uint32_t), 1, f) == 0)
         return 0;
@@ -254,9 +232,7 @@ int Serializer<RangeChecker<uint32_t> >::deserialize(F_FILE* f, RangeChecker<uin
 
 int Serializer<RangeChecker<int8_t> >::deserialize(F_FILE* f, RangeChecker<int8_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(int8_t), 1, f) == 0)
         return 0;
@@ -275,9 +251,7 @@ int Serializer<RangeChecker<int8_t> >::deserialize(F_FILE* f, RangeChecker<int8_
 
 int Serializer<RangeChecker<int16_t> >::deserialize(F_FILE* f, RangeChecker<int16_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(int16_t), 1, f) == 0)
         return 0;
@@ -296,9 +270,7 @@ int Serializer<RangeChecker<int16_t> >::deserialize(F_FILE* f, RangeChecker<int1
 
 int Serializer<RangeChecker<int32_t> >::deserialize(F_FILE* f, RangeChecker<int32_t>& r)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
     if (f_read(&r.m_minValue, sizeof(int32_t), 1, f) == 0)
         return 0;

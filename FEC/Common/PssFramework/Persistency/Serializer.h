@@ -38,15 +38,16 @@ public:
     //virtual int serialize(F_FILE* f, T &t) = 0;
     //virtual int deserialize(F_FILE* f, T &t);
 
-    int storeStartPosition(F_FILE* f);
-    int updateRecordSize(F_FILE* f);
-    int deserializeRecordSize(F_FILE* f, uint16_t &size);
+    void storeStartPosition(F_FILE* f);
+    void updateRecordSize(F_FILE* f);
+    uint16_t deserializeRecordSize(F_FILE* f);
 
-    int serializeVersion(F_FILE* f);
-    int deserializeVersion(F_FILE* f);
+    void serializeVersion(F_FILE* f);
+    void deserializeVersion(F_FILE* f);
 
-    int serializeClassType(F_FILE* f);
-    int deserializeClassType(F_FILE* f, uint8_t &classType);
+    void serializeClassType(F_FILE* f);
+    uint8_t deserializeClassType(F_FILE* f);
+
 };
 
 template<class T>
@@ -60,23 +61,23 @@ public:
 //    }
 //    virtual ~Serializer();
 
-    int serialize(F_FILE* f, T &t);
-    int deserialize(F_FILE* f, T &t);
+    void serialize(F_FILE* f, T &t);
+    void deserialize(F_FILE* f, T &t);
 
 };
 
 template<class T>
-inline int Serializer<T>::serialize(F_FILE* f, T& t)
+inline void Serializer<T>::serialize(F_FILE* f, T& t)
 {
     static_assert(sizeof(T) == 0, "Please implement template specialization for the specific type");
-    return 0;
+    throw "Not Implemented";
 }
 
 template<class T>
-inline int Serializer<T>::deserialize(F_FILE* f, T& t)
+inline void Serializer<T>::deserialize(F_FILE* f, T& t)
 {
     static_assert(sizeof(T) == 0, "Please implement template specialization for the specific type");
-    return 0;
+    throw "Not Implemented";
 }
 
 #endif /* SERIALIZER_H_ */

@@ -18,16 +18,11 @@
 
 int Serializer<ModbusInverterPeripheralBase>::serialize(F_FILE* f, ModbusInverterPeripheralBase& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusPeripheralBase*>(&p)));
@@ -49,24 +44,18 @@ int Serializer<ModbusInverterPeripheralBase>::serialize(F_FILE* f, ModbusInverte
     M_FWRITE_VARIABLE(p.m_frequencyMultiplier, f);
     M_FWRITE_VARIABLE(p.m_setpointMultiplier, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ModbusPeripheralBase>::serialize(F_FILE* f, ModbusPeripheralBase& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     M_FWRITE_VARIABLE(p.m_slaveId, f);
 
@@ -76,8 +65,7 @@ int Serializer<ModbusPeripheralBase>::serialize(F_FILE* f, ModbusPeripheralBase&
     for (int i = 0; i < temp; ++i)
         M_FWRITE_VARIABLE(p.m_generalModbusSetupVector[i], f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
@@ -85,16 +73,12 @@ int Serializer<ModbusPeripheralBase>::serialize(F_FILE* f, ModbusPeripheralBase&
 
 int Serializer<ModbusInverterSchneiderAtv32>::serialize(F_FILE* f, ModbusInverterSchneiderAtv32& p)
 {
-    int result;
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusInverterPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusInverterPeripheralBase*>(&p)));
@@ -107,68 +91,50 @@ int Serializer<ModbusInverterSchneiderAtv32>::serialize(F_FILE* f, ModbusInverte
     M_FWRITE_VARIABLE(p.m_nominalCurrent, f);
     M_FWRITE_VARIABLE(p.m_nominalRpm, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ModbusInverterCommanderSK>::serialize(F_FILE* f, ModbusInverterCommanderSK& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusInverterPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusInverterPeripheralBase*>(&p)));
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ModbusInverterUnidriveM200>::serialize(F_FILE* f, ModbusInverterUnidriveM200& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusInverterPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusInverterPeripheralBase*>(&p)));
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<Modbus6RTDPeripheral>::serialize(F_FILE* f, Modbus6RTDPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusPeripheralBase*>(&p)));
@@ -182,24 +148,18 @@ int Serializer<Modbus6RTDPeripheral>::serialize(F_FILE* f, Modbus6RTDPeripheral&
     temp = p.m_temperatureElementsArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ModbusPumaPeripheral>::serialize(F_FILE* f, ModbusPumaPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusPeripheralBase*>(&p)));
@@ -213,24 +173,18 @@ int Serializer<ModbusPumaPeripheral>::serialize(F_FILE* f, ModbusPumaPeripheral&
     temp = p.m_temperatureElementsArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<Modbus8TCPeripheral>::serialize(F_FILE* f, Modbus8TCPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusPeripheralBase*>(&p)));
@@ -247,24 +201,18 @@ int Serializer<Modbus8TCPeripheral>::serialize(F_FILE* f, Modbus8TCPeripheral& p
     M_FWRITE_VARIABLE(p.m_aCoeff, f);
     M_FWRITE_VARIABLE(p.m_bCoeff, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<ModbusDataCardPeripheral>::serialize(F_FILE* f, ModbusDataCardPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<ModbusPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusPeripheralBase*>(&p)));
@@ -281,8 +229,7 @@ int Serializer<ModbusDataCardPeripheral>::serialize(F_FILE* f, ModbusDataCardPer
     M_FWRITE_VARIABLE(p.m_aCoeff, f);
     M_FWRITE_VARIABLE(p.m_bCoeff, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }

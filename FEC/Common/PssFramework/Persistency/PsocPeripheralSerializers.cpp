@@ -9,14 +9,11 @@
 
 int Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInputsPeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -39,22 +36,18 @@ int Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInput
     M_FWRITE_VARIABLE(p.m_filterSettleCounts, f);
     M_FWRITE_VARIABLE(p.m_lpfCoeff, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutputPeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -71,22 +64,18 @@ int Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutpu
     temp = p.m_elementArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInputPeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -103,22 +92,18 @@ int Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInpu
     temp = p.m_inputElementsArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOutputPeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -135,22 +120,18 @@ int Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOut
     temp = p.m_outputElementArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperaturePeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -173,22 +154,18 @@ int Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperatureP
     M_FWRITE_VARIABLE(p.m_sensorType, f);
     M_FWRITE_VARIABLE(p.m_lpfCoeff, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPeripheral& p)
 {
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -208,8 +185,7 @@ int Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPerip
     M_FWRITE_VARIABLE(p.m_pwmChannelType, f);
     M_FWRITE_VARIABLE(p.m_pwmChannelRampParameters, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }

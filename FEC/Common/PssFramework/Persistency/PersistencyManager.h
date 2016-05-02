@@ -29,11 +29,11 @@ public:
         return p_instance;
     }
 
-    int serializeElements();
-    int deserializeElements();
+    void serializeElements();
+    void deserializeElements();
 
-    int serializePeripherals();
-    int deserializePeripherals();
+    void serializePeripherals();
+    void deserializePeripherals();
 };
 
 #endif /* PERSISTENCYMANAGER_H_ */

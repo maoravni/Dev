@@ -18,12 +18,9 @@
 
 int Serializer<PeripheralBase>::serialize(F_FILE* f, PeripheralBase& p)
 {
-    int result;
-    if (storeStartPosition(f) == 0)
-        return 0;
+    storeStartPosition(f);
 
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     if (f_write(&p.m_peripheralRepIndex, sizeof(p.m_peripheralRepIndex), 1, f) == 0)
         return 0;
@@ -34,20 +31,16 @@ int Serializer<PeripheralBase>::serialize(F_FILE* f, PeripheralBase& p)
     if (f_write(&p.m_updateInterval, sizeof(p.m_updateInterval), 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<PeripheralBase>::deserialize(F_FILE* f, PeripheralBase& p)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
@@ -62,16 +55,11 @@ int Serializer<PeripheralBase>::deserialize(F_FILE* f, PeripheralBase& p)
 
 int Serializer<AnalogInputPeripheral>::serialize(F_FILE* f, AnalogInputPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -91,24 +79,18 @@ int Serializer<AnalogInputPeripheral>::serialize(F_FILE* f, AnalogInputPeriphera
     if (f_write(p.m_scalingB, sizeof(p.m_scalingB), 1, f) == 0)
         return 0;
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<AnalogInputPeripheral>::deserialize(F_FILE* f, AnalogInputPeripheral& p)
 {
-    uint16_t recordSize;
-    if (deserializeRecordSize(f, recordSize) == 0)
-        return 0;
+    deserializeRecordSize(f);
 
-    uint8_t classType;
-    if (deserializeClassType(f, classType) == 0)
-        return 0;
+    deserializeClassType(f);
 
-    if (deserializeVersion(f) == 0)
-        return 0;
+    deserializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
@@ -134,16 +116,11 @@ int Serializer<AnalogInputPeripheral>::deserialize(F_FILE* f, AnalogInputPeriphe
 
 int Serializer<AnalogOutCurrentPeripheral>::serialize(F_FILE* f, AnalogOutCurrentPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -157,24 +134,18 @@ int Serializer<AnalogOutCurrentPeripheral>::serialize(F_FILE* f, AnalogOutCurren
     temp = p.m_elementArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<DigitalInputsPeripheral>::serialize(F_FILE* f, DigitalInputsPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -188,24 +159,18 @@ int Serializer<DigitalInputsPeripheral>::serialize(F_FILE* f, DigitalInputsPerip
     temp = p.m_elementsArray[0]->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<DigitalOutputsPeripheral>::serialize(F_FILE* f, DigitalOutputsPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -221,24 +186,18 @@ int Serializer<DigitalOutputsPeripheral>::serialize(F_FILE* f, DigitalOutputsPer
 
     M_FWRITE_VARIABLE(p.m_enabledArray, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<SwPwmOutputPeripheral>::serialize(F_FILE* f, SwPwmOutputPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -257,24 +216,18 @@ int Serializer<SwPwmOutputPeripheral>::serialize(F_FILE* f, SwPwmOutputPeriphera
     // TODO: make sure to reset the currentCounter and the dutyCycleLength.
     M_FWRITE_VARIABLE(p.m_channelStateArray, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<DryContactDigitalOutput>::serialize(F_FILE* f, DryContactDigitalOutput& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -288,24 +241,18 @@ int Serializer<DryContactDigitalOutput>::serialize(F_FILE* f, DryContactDigitalO
     temp = p.m_element->getElementIndex();
     M_FWRITE_VARIABLE(temp, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<InternalTemperatureSensors>::serialize(F_FILE* f, InternalTemperatureSensors& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -322,24 +269,18 @@ int Serializer<InternalTemperatureSensors>::serialize(F_FILE* f, InternalTempera
     M_FWRITE_VARIABLE(p.m_aCoeff, f);
     M_FWRITE_VARIABLE(p.m_bCoeff, f);
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
 
 int Serializer<VirtualPeripheral>::serialize(F_FILE* f, VirtualPeripheral& p)
 {
-    int result;
+    storeStartPosition(f);
 
-    if (storeStartPosition(f) == 0)
-        return 0;
+    serializeClassType(f);
 
-    if (serializeClassType(f) == 0)
-        return 0;
-
-    if (serializeVersion(f) == 0)
-        return 0;
+    serializeVersion(f);
 
     Serializer<PeripheralBase> baseS;
     baseS.serialize(f, p);
@@ -359,8 +300,7 @@ int Serializer<VirtualPeripheral>::serialize(F_FILE* f, VirtualPeripheral& p)
         M_FWRITE_VARIABLE(temp, f);
     }
 
-    if (updateRecordSize(f) == 0)
-        return 0;
+    updateRecordSize(f);
 
     return 1;
 }
