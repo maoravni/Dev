@@ -1548,10 +1548,10 @@ void PscMessageHandler::MessageDefineDeviceProtectionHandler(unsigned long param
     M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSDefineDeviceProtectionControlMsg: cableId=%d pssId={[PSSID:%d]} dataType=%d upperSoft=%d upperHard=%d lowerSoft=%d lowerHard=%d checkLow=%d checkHard=%d connectedControl=PSSID:%d debounceTimer = %d",
-            payload->cableId, payload->pssId, payload->dataType, payload->upperSoftLimit, payload->upperHardLimit,
+            "PSSDefineDeviceProtectionControlMsg: cableId=%d pssId={[PSSID:%d]} connectedControl={[PSSID:%d]} dataType=%d upperSoft=%d upperHard=%d lowerSoft=%d lowerHard=%d checkLow=%d checkHard=%d debounceTimer = %d",
+            payload->cableId, payload->pssId, payload->connectedControl, payload->dataType, payload->upperSoftLimit, payload->upperHardLimit,
             payload->lowerSoftLimit, payload->lowerHardLimit, payload->checkLowLimit, payload->checkHighLimit,
-            payload->connectedControl, payload->debounceTimer);
+            payload->debounceTimer);
 
     ProtectionControl *protectionControl = ControlRepository::getInstance().getProtectionControl();
 
