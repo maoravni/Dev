@@ -37,6 +37,8 @@ public:
 
     virtual void enableElementByIndex(int index, bool enable);
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
 };
 
 #endif /* MODBUSSMCHRSCHILLER_H_ */

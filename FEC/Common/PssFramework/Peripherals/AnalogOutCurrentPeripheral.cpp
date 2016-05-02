@@ -11,6 +11,7 @@
 #include <DigTrimmer_ad5292bruz.h>
 #endif
 #include <assert.h>
+#include <Persistency/PeripheralSerializers.h>
 
 AnalogOutCurrentPeripheral::AnalogOutCurrentPeripheral()
 {
@@ -65,4 +66,10 @@ ElementBase* AnalogOutCurrentPeripheral::getElementByPssId(int pssId)
 
 void AnalogOutCurrentPeripheral::enableElementByIndex(int index, bool enable)
 {
+}
+
+int AnalogOutCurrentPeripheral::serialize(F_FILE* f)
+{
+    Serializer<AnalogOutCurrentPeripheral> s;
+    return s.serialize(f, *this);
 }

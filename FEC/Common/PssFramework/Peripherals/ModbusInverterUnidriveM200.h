@@ -39,6 +39,8 @@ public:
     virtual void setupInverter();
     virtual void resetInverter();
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
 };
 
 #endif /* MODBUSINVERTER_H_ */

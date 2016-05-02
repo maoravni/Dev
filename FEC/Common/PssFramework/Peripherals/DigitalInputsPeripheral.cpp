@@ -7,6 +7,8 @@
 
 #include "DigitalInputsPeripheral.h"
 #include <dg_in_ctrl.h>
+#include <Persistency/PeripheralSerializers.h>
+
 
 DigitalInputsPeripheral::DigitalInputsPeripheral()
 {
@@ -87,4 +89,10 @@ ElementBase* DigitalInputsPeripheral::getElementByPssId(int pssId)
 
 void DigitalInputsPeripheral::enableElementByIndex(int index, bool enable)
 {
+}
+
+int DigitalInputsPeripheral::serialize(F_FILE* f)
+{
+    Serializer<DigitalInputsPeripheral> s;
+    return s.serialize(f, *this);
 }

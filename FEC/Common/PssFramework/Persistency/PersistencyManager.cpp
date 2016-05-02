@@ -7,9 +7,11 @@
 
 #include <Persistency/PersistencyManager.h>
 #include <Elements/ElementRepository.h>
+#include <Peripherals/PeripheralRepository.h>
 #include <Controls/ControlRepository.h>
 //#include "Serializer.h"
-#include "RepositorySerializers.h"
+#include "ElementRepositorySerializer.h"
+#include "PeripheralRepositorySerializer.h"
 #include <logger.h>
 
 PersistencyManager* PersistencyManager::p_instance = NULL;
@@ -30,14 +32,10 @@ int PersistencyManager::serializeElements()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements serialization");
     F_FILE* f = f_open("elements", "w+");
     Serializer<ElementRepository> s;
-    if (s.serialize(f, ElementRepository::getInstance()) == 0)
-    {
-        f_close(f);
-        return 0;
-    }
+    int result = s.serialize(f, ElementRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Elements serialization ended");
-    return 1;
+    return result;
 }
 
 int PersistencyManager::deserializeElements()
@@ -45,7 +43,30 @@ int PersistencyManager::deserializeElements()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements deserialization");
     F_FILE* f = f_open("elements", "r");
     Serializer<ElementRepository> s;
-    s.deserialize(f, ElementRepository::getInstance());
+    int result = s.deserialize(f, ElementRepository::getInstance());
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Elements deserialization ended");
+    return result;
+}
+
+int PersistencyManager::serializePeripherals()
+{
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
+    F_FILE* f = f_open("elements", "w+");
+    Serializer<PeripheralRepository> s;
+    int result = s.serialize(f, PeripheralRepository::getInstance());
+    f_close(f);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+    return result;
+}
+
+int PersistencyManager::deserializePeripherals()
+{
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals deserialization");
+    F_FILE* f = f_open("elements", "w+");
+    Serializer<PeripheralRepository> s;
+    int result = s.deserialize(f, PeripheralRepository::getInstance());
+    f_close(f);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+    return result;
 }

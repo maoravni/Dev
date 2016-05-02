@@ -7,6 +7,7 @@
 
 #include <Peripherals/VirtualPeripheral.h>
 #include <Elements/ElementRepository.h>
+#include "Persistency/PeripheralSerializers.h"
 
 VirtualPeripheral::VirtualPeripheral(E_PeripheralType peripheralType)
 {
@@ -67,4 +68,10 @@ ElementBase* VirtualPeripheral::getElementByPssId(int pssId)
 
 void VirtualPeripheral::enableElementByIndex(int index, bool enable)
 {
+}
+
+int VirtualPeripheral::serialize(F_FILE* f)
+{
+    Serializer<VirtualPeripheral> s;
+    return s.serialize(f, *this);
 }

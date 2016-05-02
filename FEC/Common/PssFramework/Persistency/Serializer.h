@@ -9,8 +9,22 @@
 #define SERIALIZER_H_
 
 #include <api/fat_sl.h>
+#include <stdint.h>
+//#include <stdlib.h>
+#include <vector>
 
 #define M_RECORD_LENGTH_SIZE 2
+
+struct EntityMapRecord
+{
+    uint16_t pssId;
+    uint16_t filePos;
+};
+
+typedef std::vector<EntityMapRecord> T_EntityMapRecordVector;
+
+#define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) return 0
+#define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) return 0
 
 class SerializerBase
 {
@@ -20,14 +34,19 @@ public:
     SerializerBase():m_fileStartPos(-1){}
 
     virtual uint8_t getSerializationVersion() = 0;
+    virtual uint8_t getClassType() = 0;
     //virtual int serialize(F_FILE* f, T &t) = 0;
     //virtual int deserialize(F_FILE* f, T &t);
 
     int storeStartPosition(F_FILE* f);
     int updateRecordSize(F_FILE* f);
     int deserializeRecordSize(F_FILE* f, uint16_t &size);
+
     int serializeVersion(F_FILE* f);
     int deserializeVersion(F_FILE* f);
+
+    int serializeClassType(F_FILE* f);
+    int deserializeClassType(F_FILE* f, uint8_t &classType);
 };
 
 template<class T>

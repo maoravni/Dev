@@ -6,7 +6,7 @@
  */
 
 #include <Persistency/ElementSerializers.h>
-#include <api/fat_sl.h>
+//#include <api/fat_sl.h>
 #include <Elements/Element.h>
 #include "RangeCheckerSerializer.h"
 
@@ -42,7 +42,10 @@ int Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_Serializatio
     if (f_write(&ebi, sizeof(ebi), 1, f) == 0)
         return 0;
 
-    updateRecordSize(f);
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ElementBase>::deserialize(F_FILE* f, ElementBase& e)
@@ -190,6 +193,11 @@ int Serializer<ValidationElement<float> >::serialize(F_FILE* f, ValidationElemen
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ValidationElement<float> >::deserialize(F_FILE* f, ValidationElement<float>& e)
@@ -258,6 +266,12 @@ int Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElem
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
+
 }
 
 int Serializer<ValidationElement<uint8_t> >::deserialize(F_FILE* f, ValidationElement<uint8_t>& e)
@@ -326,6 +340,11 @@ int Serializer<ValidationElement<uint16_t> >::serialize(F_FILE* f, ValidationEle
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ValidationElement<uint16_t> >::deserialize(F_FILE* f, ValidationElement<uint16_t>& e)
@@ -394,6 +413,12 @@ int Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationEle
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
+
 }
 
 int Serializer<ValidationElement<uint32_t> >::deserialize(F_FILE* f, ValidationElement<uint32_t>& e)
@@ -462,6 +487,11 @@ int Serializer<ValidationElement<int8_t> >::serialize(F_FILE* f, ValidationEleme
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ValidationElement<int8_t> >::deserialize(F_FILE* f, ValidationElement<int8_t>& e)
@@ -530,6 +560,11 @@ int Serializer<ValidationElement<int16_t> >::serialize(F_FILE* f, ValidationElem
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ValidationElement<int16_t> >::deserialize(F_FILE* f, ValidationElement<int16_t>& e)
@@ -598,6 +633,11 @@ int Serializer<ValidationElement<int32_t> >::serialize(F_FILE* f, ValidationElem
 
     if (rs.serialize(f, e.m_warningRange) == 0)
         return 0;
+
+    if (updateRecordSize(f) == 0)
+        return 0;
+
+    return 1;
 }
 
 int Serializer<ValidationElement<int32_t> >::deserialize(F_FILE* f, ValidationElement<int32_t>& e)

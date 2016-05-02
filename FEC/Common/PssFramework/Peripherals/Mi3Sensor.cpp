@@ -581,6 +581,16 @@ uint8_t Mi3Sensor::write(uint8_t reg, uint8_t* data)
     return ErrorReg;
 }
 
+int Mi3Sensor::getI2CChannel()
+{
+    if (m_i2cChannel == I2C1)
+        return 1;
+    if (m_i2cChannel == I2C2)
+        return 2;
+    return 0;
+
+}
+
 bool Mi3Sensor::setI2CChannel(int channelIndex)
 {
     switch (channelIndex)

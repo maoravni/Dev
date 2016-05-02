@@ -6,18 +6,10 @@
  */
 
 //#include <Elements/ElementRepository.h>
-#include <Persistency/RepositorySerializers.h>
+#include <Persistency/ElementRepositorySerializer.h>
 #include <Elements/ElementBase.h>
 #include <vector>
 #include <logger.h>
-
-struct ElementMapRecord
-{
-    uint16_t pssId;
-    uint16_t filePos;
-};
-
-typedef std::vector<ElementMapRecord> T_ElementMapRecordVector;
 
 int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
 {
@@ -42,7 +34,7 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
 
     // write a placeholder for the map record:
     int mapPos = f_tell(f);
-    ElementMapRecord elementMapRecord =
+    EntityMapRecord elementMapRecord =
     { 0 };
     result = f_write(&elementMapRecord, sizeof(elementMapRecord), numOfElements, f);
     if (result != numOfElements)
@@ -51,7 +43,7 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
     if (updateRecordSize(f) == 0)
         return 0;
 
-    T_ElementMapRecordVector elementMapVec;
+    T_EntityMapRecordVector elementMapVec;
 
     // serialize each of the elements:
     for (int i = 0; i < e.m_elementList.size(); ++i)
@@ -73,14 +65,13 @@ int Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
         return 0;
     for (int i = 0; i < numOfElements; ++i)
     {
-        if (f_write(&elementMapVec[i], sizeof(ElementMapRecord), 1, f) == 0)
+        if (f_write(&elementMapVec[i], sizeof(EntityMapRecord), 1, f) == 0)
             return 0;
     }
 }
 
 int Serializer<ElementRepository>::deserialize(F_FILE* f, ElementRepository& e)
 {
-
     // read the record size:
     uint16_t recordSize;
     if (deserializeRecordSize(f, recordSize) == 0)
@@ -97,8 +88,8 @@ int Serializer<ElementRepository>::deserialize(F_FILE* f, ElementRepository& e)
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Reading %d elements", numOfElements);
 
-    ElementMapRecord mapRecord;
-    T_ElementMapRecordVector mapVec;
+    EntityMapRecord mapRecord;
+    T_EntityMapRecordVector mapVec;
 
     for (int i = 0; i < numOfElements; ++i)
     {

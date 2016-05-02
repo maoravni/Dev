@@ -12,23 +12,28 @@
 #include <math.h>
 #include <assert.h>
 #include <logger.h>
+#include "Persistency/PeripheralSerializers.h"
+
+#define M_SENSOR_DISCONNECTED_VALUE 400
+#define M_DEFAULT_UPDATE_INTERVAL 50
 
 AnalogInputPeripheral::AnalogInputPeripheral()
 {
-//    m_temperatureElementsArray = new ValidationElementFloat*[M_NUM_OF_ANALOG_INTERNAL_SENSORS];
-
     for (int i = 0; i < M_NUM_OF_ANALOG_INTERNAL_SENSORS; ++i) {
-//        ElementRepository::getInstance().addElement(&m_temperatureElementsArray[i]);
         m_inputElementsArray[i] = ElementRepository::getInstance().addValidationElementFloat();
-//        m_correctionA[i] = 1;
-//        m_correctionB[i] = 0;
         m_scalingA[i] = 20.0/4096.0;
         m_scalingB[i] = 0;
     }
 
-    setSensorDisconnectedValue(400);
+    setSensorDisconnectedValue(M_SENSOR_DISCONNECTED_VALUE);
 
-    setUpdateInterval(50);
+    setUpdateInterval(M_DEFAULT_UPDATE_INTERVAL);
+}
+
+AnalogInputPeripheral::AnalogInputPeripheral(F_FILE* f)
+{
+    Serializer<AnalogInputPeripheral> s;
+    s.deserialize(f, *this);
 }
 
 AnalogInputPeripheral::~AnalogInputPeripheral()
@@ -127,3 +132,10 @@ void AnalogInputPeripheral::setScalingCoeff(int index, float aCoeff, float bCoef
     m_scalingA[index] *= aCoeff;
     m_scalingB[index] += bCoeff;
 }
+
+int AnalogInputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<AnalogInputPeripheral> s;
+    return s.serialize(f, *this);
+}
+

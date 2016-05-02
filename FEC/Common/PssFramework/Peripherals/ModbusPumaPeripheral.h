@@ -33,6 +33,12 @@ public:
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
     virtual bool initPuma();
+
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
+
 };
 
 #endif /* MODBUSPUMAPERIPHERAL_H_ */

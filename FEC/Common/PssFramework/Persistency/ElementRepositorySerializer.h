@@ -16,6 +16,7 @@ template<> class Serializer<ElementRepository> : public SerializerBase
 
 public:
     uint8_t getSerializationVersion() {return 1;}
+    uint8_t getClassType() {return 0;}
     int serialize(F_FILE* f, ElementRepository &e);
     int deserialize(F_FILE* f, ElementRepository &e);
 

@@ -31,6 +31,9 @@ public:
 
     int serializeElements();
     int deserializeElements();
+
+    int serializePeripherals();
+    int deserializePeripherals();
 };
 
 #endif /* PERSISTENCYMANAGER_H_ */

@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <list>
 #include <vector>
+#include <api/fat_sl.h>
 
 class ElementBase;
 
@@ -62,8 +63,8 @@ public:
     virtual int getElementCount() = 0;
 
     virtual uint16_t getPssId() const;
-    virtual void setPssId(uint16_t pssId);
     uint16_t getPeripheralRepIndex() const;
+    virtual void setPssId(uint16_t pssId);
 
     void setPeripheralRepIndex(uint16_t deviceRepIndex);
     uint16_t getUpdateInterval() const;
@@ -83,7 +84,12 @@ public:
      */
     virtual void enableElementByIndex(int index, bool enable) = 0;
 
+    virtual int serialize(F_FILE* f) = 0;
+    virtual int deserialize(F_FILE* f);
+
     virtual void startRecovery() {}
+
+    template <class T> friend class Serializer;
 };
 
 typedef std::vector<PeripheralBase*> T_PeripheralList;

@@ -10,6 +10,7 @@
 #include <Peripherals/ModbusInverterUnidriveM200.h>
 #include <Peripherals/ModbusPeripheralBase.h>
 #include <logger.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_INVERTER_SAMPLE_INTERVAL 250
@@ -226,4 +227,10 @@ void ModbusInverterUnidriveM200::setupInverterMotorCurrent(float value)
 
 void ModbusInverterUnidriveM200::setupInverterMotorNominalRPM(float value)
 {
+}
+
+int ModbusInverterUnidriveM200::serialize(F_FILE* f)
+{
+    Serializer<ModbusInverterUnidriveM200> s;
+    return s.serialize(f, *this);
 }

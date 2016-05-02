@@ -12,6 +12,7 @@
 #include <math.h>
 #include <assert.h>
 #include <logger.h>
+#include <Persistency/PeripheralSerializers.h>
 
 InternalTemperatureSensors::InternalTemperatureSensors()
 {
@@ -138,4 +139,10 @@ ElementBase* InternalTemperatureSensors::getElementByPssId(int pssId)
 
 void InternalTemperatureSensors::setScalingCoeff(int index, float aCoeff, float bCoeff)
 {
+}
+
+int InternalTemperatureSensors::serialize(F_FILE* f)
+{
+    Serializer<InternalTemperatureSensors> s;
+    return s.serialize(f, *this);
 }

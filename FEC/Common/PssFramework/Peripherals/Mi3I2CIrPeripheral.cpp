@@ -8,12 +8,14 @@
 #include "Mi3I2CIrPeripheral.h"
 #include <logger.h>
 #include <Win32/PortAllocations.h>
+#include <Persistency/Mi3PeripheralSerializer.h>
 
 xSemaphoreHandle i2cTransferCompleteSemaphore = NULL;
 
 #define M_I2C_POWERDOWN_TIME 2000
 #define M_I2C_POWERUP_TIME 5000
 #define M_RETRIES_AFTER_ALL_INVALID 10
+#include <Persistency/PeripheralSerializers.h>
 
 //void CPAL_I2C_DMATXTC_UserCallback(CPAL_InitTypeDef* cpalInitStruct)
 //{
@@ -237,4 +239,10 @@ void Mi3I2CIrPeripheral::setResetCountPssId(uint16_t pssId)
 void Mi3I2CIrPeripheral::startRecovery()
 {
     m_performReset = true;
+}
+
+int Mi3I2CIrPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Mi3I2CIrPeripheral> s;
+    return s.serialize(f, *this);
 }

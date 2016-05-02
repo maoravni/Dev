@@ -11,7 +11,7 @@
 #include "InputPeripheralBase.h"
 #include "OutputPeripheralBase.h"
 
-class InputOutputPeripheralBase: public InputPeripheralBase, public OutputPeripheralBase
+class InputOutputPeripheralBase: public virtual InputPeripheralBase, public virtual OutputPeripheralBase
 {
 public:
     InputOutputPeripheralBase();

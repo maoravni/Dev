@@ -11,6 +11,7 @@
 #include <opto_out.h>
 #include "GeneratedGratedPwm.h"
 #include <stdlib.h>
+#include "Persistency/PeripheralSerializers.h"
 
 #define M_PWM_TASK_TICK_LENGTH 10
 
@@ -255,3 +256,8 @@ void SwPwmOutputPeripheral::reassignCounterOffset()
     }
 }
 
+int SwPwmOutputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<SwPwmOutputPeripheral> s;
+    return s.serialize(f, *this);
+}

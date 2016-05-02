@@ -8,6 +8,7 @@
 #include "PeripheralBase.h"
 #include <Tasks/UpdateSchedulerTask.h>
 #include "PeripheralRepository.h"
+#include <Persistency/PeripheralSerializers.h>
 
 PeripheralBase::PeripheralBase()
 {
@@ -69,3 +70,4 @@ void PeripheralBase::setBoardInReady(bool state)
 {
     m_boardInReady = state;
 }
+

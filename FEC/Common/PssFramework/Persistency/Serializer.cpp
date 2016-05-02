@@ -76,3 +76,24 @@ int SerializerBase::updateRecordSize(F_FILE* f)
     return 1;
 }
 
+int SerializerBase::serializeClassType(F_FILE* f)
+{
+    uint8_t classType = getClassType();
+    // write the serialization version:
+    int result = f_write(&classType, sizeof(classType), 1, f);
+    if (result != sizeof(classType))
+        return 0;
+
+    return sizeof(classType);
+}
+
+int SerializerBase::deserializeClassType(F_FILE* f, uint8_t &classType)
+{
+    if (f_read(&classType, sizeof(classType), 1, f) == 0)
+        return 0;
+
+    if (classType != getClassType())
+        return 0;
+
+    return 1;
+}

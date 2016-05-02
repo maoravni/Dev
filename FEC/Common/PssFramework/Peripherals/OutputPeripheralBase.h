@@ -11,7 +11,7 @@
 #include "PeripheralBase.h"
 #include <Elements/IObserver.h>
 
-class OutputPeripheralBase: public PeripheralBase, public IObserver
+class OutputPeripheralBase: public virtual PeripheralBase, public IObserver
 {
 
 public:

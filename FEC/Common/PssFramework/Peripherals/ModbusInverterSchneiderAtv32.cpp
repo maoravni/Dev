@@ -7,6 +7,7 @@
 
 #include "Peripherals/ModbusInverterSchneiderAtv32.h"
 #include <logger.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_INVERTER_SAMPLE_INTERVAL 250
@@ -397,4 +398,10 @@ void ModbusInverterSchneiderAtv32::setupInverterMotorCurrent(float value)
 void ModbusInverterSchneiderAtv32::setupInverterMotorNominalRPM(float value)
 {
     m_nominalRpm = value;
+}
+
+int ModbusInverterSchneiderAtv32::serialize(F_FILE* f)
+{
+    Serializer<ModbusInverterSchneiderAtv32> s;
+    return s.serialize(f, *this);
 }

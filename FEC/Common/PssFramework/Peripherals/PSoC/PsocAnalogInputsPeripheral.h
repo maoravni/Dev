@@ -12,6 +12,7 @@
 #include <Elements/ValidationElement.h>
 #include "PsocPeripheralErrorHandler.h"
 
+
 #define M_NUM_OF_ANALOG_SENSORS 6
 
 #define MAX_UPDATE_INTERVAL 1000
@@ -61,7 +62,11 @@ public:
     virtual void setUpdateInterval(uint16_t updateInterval);
     virtual void setLowPassFilter(uint16_t LowPassFilterWindow);
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
 private:
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* PSOCANALOGINPUTSPERIPHERAL_H_ */

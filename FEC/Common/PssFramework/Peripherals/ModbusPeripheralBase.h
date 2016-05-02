@@ -151,6 +151,8 @@ private:
             uint8_t *buffer, uint32_t &bufferLength);
     uint16_t crc16_calc(uint8_t* ptr, int32_t len);
 
+    template <class T> friend class Serializer;
+
 };
 
 class ModbusInputPeripheralBase : public ModbusPeripheralBase, public InputPeripheralBase

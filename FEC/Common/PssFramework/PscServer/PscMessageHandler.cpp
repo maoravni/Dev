@@ -754,7 +754,6 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
 
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
 
-
 //    PersistencyManager::getInstance()->serializeElements();
 }
 
@@ -891,15 +890,16 @@ void PscMessageHandler::MessageDefineOnboardPeriphHandler(unsigned long param)
                     payload->numberOfDevices);
             break;
         case E_PeripheralType_SmcHrsChiller:
-        {
-            ModbusSmcHrsChiller* periph = new ModbusSmcHrsChiller(0);
-            if (periph == NULL)
-            {
-                status = E_AckStatus_InvalidDevice;
-            }
-
-            break;
-        }
+            status = E_AckStatus_InvalidDevice;
+//            {
+//                ModbusSmcHrsChiller* periph = new ModbusSmcHrsChiller(0);
+//                if (periph == NULL)
+//                {
+//                    status = E_AckStatus_InvalidDevice;
+//                }
+//
+//                break;
+//            }
         default:
             status = E_AckStatus_InvalidDevice;
             break;
@@ -1138,9 +1138,9 @@ void PscMessageHandler::MessageDefineModbusPeriphHandler(unsigned long param)
         PeripheralBase* periph;
         switch (pType)
         {
-        case E_PeripheralType_SmcHrsChiller:
-            periph = (InputPeripheralBase*) (new ModbusSmcHrsChiller(payload->modbusId));
-            break;
+//        case E_PeripheralType_SmcHrsChiller:
+//            periph = (InputPeripheralBase*) (new ModbusSmcHrsChiller(payload->modbusId));
+//            break;
         case E_PeripheralType_Puma:
             periph = (InputPeripheralBase*) (new ModbusPumaPeripheral(payload->modbusId));
             break;
@@ -1294,11 +1294,11 @@ void PscMessageHandler::MessageSetAnalogDeviceConfigHandler(unsigned long param)
     if (periph->getPeripheralType() == E_PeripheralType_AI)
     {
         if (payload->scalingA != 0)
-            static_cast<AnalogInputPeripheralBase*>(periph)->setScalingCoeff(payload->deviceIndex, payload->scalingA,
+            dynamic_cast<AnalogInputPeripheralBase*>(periph)->setScalingCoeff(payload->deviceIndex, payload->scalingA,
                     payload->scalingB);
 
         if (payload->aCoff != 0)
-            static_cast<AnalogInputPeripheralBase*>(periph)->setCalibrationCoeff(payload->deviceIndex, payload->aCoff,
+            dynamic_cast<AnalogInputPeripheralBase*>(periph)->setCalibrationCoeff(payload->deviceIndex, payload->aCoff,
                     payload->bCoff);
     }
 
@@ -1350,9 +1350,9 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
              || periph->getPeripheralType() == E_PeripheralType_Puma*/)
     {
         if (payload->aCoff != 0)
-            static_cast<AnalogInputPeripheralBase*>(periph)->setCalibrationCoeff(payload->deviceIndex, payload->aCoff,
+            dynamic_cast<AnalogInputPeripheralBase*>(periph)->setCalibrationCoeff(payload->deviceIndex, payload->aCoff,
                     payload->bCoff);
-        static_cast<AnalogInputPeripheralBase*>(periph)->setSensorType(payload->deviceIndex, payload->sensorType);
+        dynamic_cast<AnalogInputPeripheralBase*>(periph)->setSensorType(payload->deviceIndex, payload->sensorType);
     }
     else if (periph->getPeripheralType() == E_PeripheralType_6RTD
             || periph->getPeripheralType() == E_PeripheralType_Puma)
@@ -1366,8 +1366,8 @@ void PscMessageHandler::MessageSetTemperatureDeviceConfigHandler(unsigned long p
         return;
     }
 
-    ValidationElementBase* element =
-            static_cast<ValidationElementBase*>(periph->getElementByIndex(payload->deviceIndex));
+    ValidationElementBase* element = dynamic_cast<ValidationElementBase*>(periph->getElementByIndex(
+            payload->deviceIndex));
 
     if (element == NULL)
     {
@@ -1416,7 +1416,7 @@ void PscMessageHandler::MessageSetMi3IrDeviceConfigHandler(unsigned long param)
         return;
     }
 
-    Mi3I2CIrPeripheral* mi3Periph = static_cast<Mi3I2CIrPeripheral*>(periph);
+    Mi3I2CIrPeripheral* mi3Periph = dynamic_cast<Mi3I2CIrPeripheral*>(periph);
 
     if (payload->deviceIndex == 0)
     {
@@ -1504,7 +1504,7 @@ void PscMessageHandler::MessageSetSwPWMDeviceConfigHandler(unsigned long param)
         }
 
         // config the DO to be a SW PWM channel.
-        SwPwmOutputPeripheral* swpwm = static_cast<SwPwmOutputPeripheral*>(periph);
+        SwPwmOutputPeripheral* swpwm = dynamic_cast<SwPwmOutputPeripheral*>(periph);
         swpwm->configPwmChannel(payload->deviceIndex, payload->pwmCycleLength, payload->pwmGroupID);
         swpwm->enableElementByIndex(payload->deviceIndex, true);
 
@@ -1525,7 +1525,7 @@ void PscMessageHandler::MessageSetSwPWMDeviceConfigHandler(unsigned long param)
         }
 
         // config the the pwm channel type:
-        PsocPwmOutputPeripheral* pwm = static_cast<PsocPwmOutputPeripheral*>(periph);
+        PsocPwmOutputPeripheral* pwm = dynamic_cast<PsocPwmOutputPeripheral*>(periph);
         pwm->configPwmChannel(payload->deviceIndex, payload->pwmCycleLength, payload->rampRiseStep,
                 payload->rampFallStep, payload->rampRiseTime, payload->rampFallTime);
         element->setPssId(payload->pssId);
@@ -1556,7 +1556,7 @@ void PscMessageHandler::MessageDefineDeviceProtectionHandler(unsigned long param
     ProtectionControl *protectionControl = ControlRepository::getInstance().getProtectionControl();
 
     ValidationElementBase* element =
-            static_cast<ValidationElementBase*>(ElementRepository::getInstance().getElementByPssId(payload->pssId));
+            dynamic_cast<ValidationElementBase*>(ElementRepository::getInstance().getElementByPssId(payload->pssId));
 
     if (element == NULL)
     {
@@ -1861,7 +1861,7 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 
 // TODO: Have PID Control accept more element types.
     ValidationElementFloat* element =
-            static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->input));
+            dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->input));
 
     if (element == NULL)
     {
@@ -1880,7 +1880,7 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 // cascase==0 means that this is a normal pid temperature control loop.
     if (payload->cascade == 0)
     {
-        element = static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(
+        element = dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(
                 payload->output));
         if (element == NULL)
         {
@@ -1930,7 +1930,8 @@ void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long p
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
             "PSSDefineConcentrationControl: cableId=%d pssId={[PSSID:%d]} conc={[PSSID:%d]} tankLevel={[PSSID:%d]} condValve={[PSSID:%d]}/%d waterValve={[PSSID:%d]}/%d",
             payload->cableId, payload->pssId, payload->concentrationInput, payload->liquidLevelInput,
-            payload->conditionerValve, payload->conditionerValveActivationValue, payload->waterValve, payload->waterValveActivationValue);
+            payload->conditionerValve, payload->conditionerValveActivationValue, payload->waterValve,
+            payload->waterValveActivationValue);
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ConcentrationControl* control = new ConcentrationControl();
@@ -2003,7 +2004,7 @@ void PscMessageHandler::MessageDefineObserveAndNotifyControlHandler(unsigned lon
     control->setPssId(payload->pssId);
 
     ValidationElementFloat* element =
-            static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->input));
+            dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->input));
 
     if (element == NULL)
     {
@@ -2100,7 +2101,7 @@ void PscMessageHandler::MessageAddDependentDeviceToControlHandler(unsigned long 
         return;
     }
 
-    ActivationWithFeedbackControl* control = static_cast<ActivationWithFeedbackControl*>(tempControl);
+    ActivationWithFeedbackControl* control = dynamic_cast<ActivationWithFeedbackControl*>(tempControl);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->dependentDevicePssId);
 
@@ -2172,7 +2173,7 @@ void PscMessageHandler::MessageAddFeedbackDeviceToControlHandler(unsigned long p
         return;
     }
 
-    ActivationWithFeedbackControl* control = static_cast<ActivationWithFeedbackControl*>(tempControl);
+    ActivationWithFeedbackControl* control = dynamic_cast<ActivationWithFeedbackControl*>(tempControl);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->devicePssId);
 
@@ -2233,7 +2234,7 @@ void PscMessageHandler::MessageDefineAnalogOutInverterControlHandler(unsigned lo
     control->setPssId(payload->pssId);
 
     ValidationElementFloat* element =
-            static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->speedId));
+            dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->speedId));
 
     if (element == NULL)
     {
@@ -2246,7 +2247,7 @@ void PscMessageHandler::MessageDefineAnalogOutInverterControlHandler(unsigned lo
 
     if (payload->enableId != 0)
     {
-        ElementU8* enableElement = static_cast<ElementU8*>(ElementRepository::getInstance().getElementByPssId(
+        ElementU8* enableElement = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByPssId(
                 payload->enableId));
 
         if (enableElement == NULL)
@@ -2442,7 +2443,7 @@ void PscMessageHandler::MessageSetPIDHandler(unsigned long param)
         return;
     }
 
-    PidControl *pidControl = static_cast<PidControl*>(control);
+    PidControl *pidControl = dynamic_cast<PidControl*>(control);
 
 //    pidControl->setTuningValues(payload->p, payload->i, payload->d, 0);
     pidControl->setTuningValues(payload->p, payload->i, payload->d, payload->itermRange);
@@ -2495,7 +2496,7 @@ void PscMessageHandler::MessageGetPIDHandler(unsigned long param)
         return;
     }
 
-    PidControl *pidControl = static_cast<PidControl*>(control);
+    PidControl *pidControl = dynamic_cast<PidControl*>(control);
 
     pidControl->sendPidValues();
 
@@ -2631,7 +2632,7 @@ void PscMessageHandler::MessageActivatePIDControlHandler(unsigned long param)
 
     suspendScheduler();
 
-    PidControl *pidControl = static_cast<PidControl*>(control);
+    PidControl *pidControl = dynamic_cast<PidControl*>(control);
     pidControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
             payload->minWarningRange, payload->maxWarningRange, payload->feedForward, payload->activationDelay * 1000,
             message->header.sn);
@@ -2672,7 +2673,7 @@ void PscMessageHandler::MessageActivateConcentrationControlMsgHandler(unsigned l
 
     suspendScheduler();
 
-    ConcentrationControl *concControl = static_cast<ConcentrationControl*>(control);
+    ConcentrationControl *concControl = dynamic_cast<ConcentrationControl*>(control);
     concControl->setSetpoint(payload->tankLevelLowSetpoint, payload->tankLevelHighSetpoint, payload->tankMinWorking,
             payload->tankMaxWorking, payload->tankMinWarning, payload->tankMaxWarning,
             payload->concentrationLowSetPoint, payload->concentrationHighSetPoint, payload->concentrationMinWorking,
@@ -2710,7 +2711,7 @@ void PscMessageHandler::MessageActivateObserveAndNotifyControlMsgHandler(unsigne
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    ObserveAndNotifyControl * pObserveAndNotifyControl = static_cast<ObserveAndNotifyControl*>(control);
+    ObserveAndNotifyControl * pObserveAndNotifyControl = dynamic_cast<ObserveAndNotifyControl*>(control);
     pObserveAndNotifyControl->setSetpoint(payload->setPoint, payload->minWorkingRange, payload->maxWorkingRange,
             payload->minWarningRange, payload->maxWarningRange, message->header.sn);
 }
@@ -2745,7 +2746,7 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
         // Send ACK that the command was accepted.
         sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-        AnalogOutInverterControl *inverterControl = static_cast<AnalogOutInverterControl*>(control);
+        AnalogOutInverterControl *inverterControl = dynamic_cast<AnalogOutInverterControl*>(control);
         suspendScheduler();
         inverterControl->setSetpoint(payload->setPoint, message->header.sn);
         resumeScheduler();
@@ -2758,7 +2759,7 @@ void PscMessageHandler::MessageActivateInverterControlHandler(unsigned long para
         sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
         // TODO: and pure virtual method "setSetpoint" to all controls.
-        ModbusInverterControl *inverterControl = static_cast<ModbusInverterControl*>(control);
+        ModbusInverterControl *inverterControl = dynamic_cast<ModbusInverterControl*>(control);
         suspendScheduler();
         inverterControl->setSetpointSnActivationDelay(payload->setPoint, message->header.sn,
                 payload->activationDelay * 1000);
@@ -2798,7 +2799,7 @@ void PscMessageHandler::MessageSetPIDControlParametersHandler(unsigned long para
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    PidControl *pidControl = static_cast<PidControl*>(control);
+    PidControl *pidControl = dynamic_cast<PidControl*>(control);
     pidControl->setPowerLimit(payload->maxOutput);
     pidControl->setOutputSmoothing(payload->outputFilter);
     pidControl->setSetpointRange(payload->pidSetpointRange);
@@ -2832,7 +2833,7 @@ void PscMessageHandler::MessageAutoTuneHandler(unsigned long param)
 // Send ACK that the command was accepted.
 //    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssID, E_AckStatus_Success);
 
-    PidControl *pidControl = static_cast<PidControl*>(control);
+    PidControl *pidControl = dynamic_cast<PidControl*>(control);
     status = pidControl->startAutoTune(payload->setPoint, payload->overShoot, payload->powerAtStart, payload->powerStep,
             payload->calculation, false, message->header.sn);
 
@@ -2861,7 +2862,8 @@ void PscMessageHandler::MessageDefineHysteresisTemperatureControlHandler(unsigne
 
 // TODO: Have PID Control accept more element types.
     ValidationElementFloat* element =
-            static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->inputPssId));
+            dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(
+                    payload->inputPssId));
 
     if (element == NULL)
     {
@@ -2872,7 +2874,7 @@ void PscMessageHandler::MessageDefineHysteresisTemperatureControlHandler(unsigne
 
     control->setElementInput(element);
 
-    element = static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(
+    element = dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(
             payload->outputPssId));
     if (element == NULL)
     {
@@ -2917,7 +2919,7 @@ void PscMessageHandler::MessageActivateHysteresisTemperatureControlHandler(unsig
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    HysteresisControl *hystControl = static_cast<HysteresisControl*>(control);
+    HysteresisControl *hystControl = dynamic_cast<HysteresisControl*>(control);
 
     suspendScheduler();
     hystControl->setSetpoint(payload->setPoint, payload->deactivateSetPoint, payload->minWorkingRange,
@@ -2952,7 +2954,7 @@ void PscMessageHandler::MessageActivateWaterTankLevelControlHandler(unsigned lon
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    LiquidLevelPumpControl *liquidControl = static_cast<LiquidLevelPumpControl*>(control);
+    LiquidLevelPumpControl *liquidControl = dynamic_cast<LiquidLevelPumpControl*>(control);
 
     liquidControl->setSetpoint(payload->lowLevelSetPoint, payload->midLevelSetPoint, payload->highLevelSetPoint,
             message->header.sn);
@@ -3303,7 +3305,7 @@ void PscMessageHandler::MessageActivateActivationWithFeedbackControlHandler(unsi
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    ActivationWithFeedbackControl *activationControl = static_cast<ActivationWithFeedbackControl*>(control);
+    ActivationWithFeedbackControl *activationControl = dynamic_cast<ActivationWithFeedbackControl*>(control);
 
     suspendScheduler();
     result = activationControl->activateControl(payload->outputValue, payload->timeout, message->header.sn);
@@ -3338,7 +3340,7 @@ void PscMessageHandler::MessageActivateLeakageDetectionControlHandler(unsigned l
 // Send ACK that the command was accepted.
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 
-    LeakDetectionControl *leakDetectionControl = static_cast<LeakDetectionControl*>(control);
+    LeakDetectionControl *leakDetectionControl = dynamic_cast<LeakDetectionControl*>(control);
 
     leakDetectionControl->activateControl(payload->calibrationStage, payload->stabilizationTimeout,
             payload->calculationWindow, payload->allowedDeviation, message->header.sn);

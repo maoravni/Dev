@@ -9,6 +9,7 @@
 #include <Elements/ElementRepository.h>
 #include <opto_out.h>
 #include <leds.h>
+#include <Persistency/PeripheralSerializers.h>
 
 DryContactDigitalOutput::DryContactDigitalOutput()
 {
@@ -69,4 +70,10 @@ void DryContactDigitalOutput::setDryContactState(bool enable)
 void DryContactDigitalOutput::startRecovery()
 {
     setDryContactState(true);
+}
+
+int DryContactDigitalOutput::serialize(F_FILE* f)
+{
+    Serializer<DryContactDigitalOutput> s;
+    return s.serialize(f, *this);
 }

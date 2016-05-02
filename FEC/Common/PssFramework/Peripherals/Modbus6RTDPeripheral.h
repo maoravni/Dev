@@ -35,6 +35,11 @@ public:
     virtual ElementBase* getElementByIndex(int index);
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
+
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* MODBUS6RTDPERIPHERAL_H_ */

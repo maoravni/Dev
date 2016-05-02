@@ -7,6 +7,8 @@
 
 #include "ModbusDataCardPeripheral.h"
 #include <logger.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
+
 
 ModbusDataCardPeripheral::ModbusDataCardPeripheral(uint8_t slaveId) :
 ModbusAnalogInputPeripheralBase(slaveId)
@@ -99,4 +101,10 @@ ElementBase* ModbusDataCardPeripheral::getElementByPssId(int pssId)
 
 void ModbusDataCardPeripheral::setScalingCoeff(int index, float aCoeff, float bCoeff)
 {
+}
+
+int ModbusDataCardPeripheral::serialize(F_FILE* f)
+{
+    Serializer<ModbusDataCardPeripheral> s;
+    return s.serialize(f, *this);
 }

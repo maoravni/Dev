@@ -39,9 +39,13 @@ public:
     virtual void setupInverter();
     virtual void resetInverter();
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
 private:
     void storeConfiguration();
     void performInverterAutotune();
+
+    template <class T> friend class Serializer;
 
 };
 

@@ -28,6 +28,7 @@ class AnalogInputPeripheral: public AnalogInputPeripheralBase
 
 public:
     AnalogInputPeripheral();
+    AnalogInputPeripheral(F_FILE* f);
     virtual ~AnalogInputPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_AI;}
@@ -58,6 +59,10 @@ public:
     virtual void setScalingCoeff(int index, float aCoeff, float bCoeff);
     virtual void setSensorType(int index, uint8_t type) {}
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* ANALOGINPUTPERIPHERAL_H_ */

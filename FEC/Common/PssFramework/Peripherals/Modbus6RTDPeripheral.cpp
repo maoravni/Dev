@@ -8,6 +8,7 @@
 #include "Modbus6RTDPeripheral.h"
 #include <stdio.h>
 #include <logger.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
 
 Modbus6RTDPeripheral::Modbus6RTDPeripheral(uint8_t slaveId) :
         ModbusInputPeripheralBase(slaveId)
@@ -90,4 +91,10 @@ ElementBase* Modbus6RTDPeripheral::getElementByPssId(int pssId)
 
 void Modbus6RTDPeripheral::enableElementByIndex(int index, bool enable)
 {
+}
+
+int Modbus6RTDPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Modbus6RTDPeripheral> s;
+    return s.serialize(f, *this);
 }

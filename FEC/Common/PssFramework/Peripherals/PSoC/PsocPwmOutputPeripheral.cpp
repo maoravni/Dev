@@ -8,6 +8,7 @@
 #include "PsocPwmOutputPeripheral.h"
 #include "PsocHandler.h"
 #include <Peripherals/PeripheralRepository.h>
+#include "Persistency/PsocPeripheralSerializers.h"
 
 PsocPwmOutputPeripheral::PsocPwmOutputPeripheral()
 {
@@ -163,3 +164,8 @@ void PsocPwmOutputPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
+int PsocPwmOutputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocPwmOutputPeripheral> s;
+    return s.serialize(f, *this);
+}

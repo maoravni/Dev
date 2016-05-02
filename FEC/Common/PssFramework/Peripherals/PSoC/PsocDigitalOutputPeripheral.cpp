@@ -8,6 +8,7 @@
 #include "PsocDigitalOutputPeripheral.h"
 #include "PsocHandler.h"
 #include <Peripherals/PeripheralRepository.h>
+#include "Persistency/PsocPeripheralSerializers.h"
 
 #define M_OUTPUT_VALUE 1
 
@@ -106,3 +107,8 @@ void PsocDigitalOutputPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
+int PsocDigitalOutputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocDigitalOutputPeripheral> s;
+    return s.serialize(f, *this);
+}

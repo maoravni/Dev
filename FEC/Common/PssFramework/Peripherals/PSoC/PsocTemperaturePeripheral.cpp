@@ -5,10 +5,11 @@
  *      Author: maora
  */
 
-    #include "Peripherals/PSoC/PsocTemperaturePeripheral.h"
+#include "Peripherals/PSoC/PsocTemperaturePeripheral.h"
 #include <Elements/ElementRepository.h>
 #include "PsocHandler.h"
 #include <Controls/ControlRepository.h>
+#include "Persistency/PsocPeripheralSerializers.h"
 
 void bp()
 {
@@ -149,3 +150,8 @@ void PsocTemperaturePeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
+int PsocTemperaturePeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocTemperaturePeripheral> s;
+    return s.serialize(f, *this);
+}

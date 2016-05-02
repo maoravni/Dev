@@ -10,6 +10,8 @@
 #include <Elements/ElementRepository.h>
 #include <assert.h>
 #include <opto_out.h>
+#include <Persistency/PeripheralSerializers.h>
+
 
 DigitalOutputsPeripheral::DigitalOutputsPeripheral()
 {
@@ -72,4 +74,10 @@ ElementBase* DigitalOutputsPeripheral::getElementByPssId(int pssId)
 void DigitalOutputsPeripheral::enableElementByIndex(int index, bool enable)
 {
     m_enabledArray[index] = enable;
+}
+
+int DigitalOutputsPeripheral::serialize(F_FILE* f)
+{
+    Serializer<DigitalOutputsPeripheral> s;
+    return s.serialize(f, *this);
 }

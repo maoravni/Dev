@@ -30,6 +30,7 @@
 #ifdef FEC2_BOARD
 #include "Mi3I2CIrPeripheral.h"
 #endif
+//#include "Persistency/PeripheralSerializers.h"
 
 
 typedef DynamicArray<PeripheralBase*> T_PeripheralVector;
@@ -90,6 +91,9 @@ public:
     {
         return m_dryContactOutput;
     }
+
+    template <class T> friend class Serializer;
+
 };
 
 

@@ -63,9 +63,15 @@ public:
 
     bool createTask();
 
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
 private:
     void reassignCounterOffset();
     void setDutyCycle(int i);
+
+    template <class T> friend class Serializer;
+
 };
 
 #endif /* SWPWMOUTPUTDEVICE_H_ */

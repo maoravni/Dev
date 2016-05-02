@@ -96,6 +96,9 @@ public:
     virtual void setupInverter() = 0;
     virtual void setInverterType() = 0;
     virtual void resetInverter() = 0;
+
+    template <class T> friend class Serializer;
+
 };
 
 #endif /* MODBUSINVERTER_H_ */

@@ -109,8 +109,9 @@ class Mi3Sensor
 private:
     ValidationElementFloat* m_targTempElement;
 //    ValidationElementFloat* m_ambTempElement;
-    uint8_t m_status;
     uint8_t m_address;
+
+    uint8_t m_status;
     uint8_t m_numberOfReadFailures;
 
     I2C_TypeDef* m_i2cChannel;
@@ -152,6 +153,7 @@ public:
     }
 
     bool setI2CChannel(int channelIndex);
+    int getI2CChannel();
 
 private:
     uint8_t read(uint8_t reg, float &data);
@@ -162,6 +164,8 @@ private:
     uint8_t write(uint8_t reg, uint32_t &data);
     uint8_t write(uint8_t reg, int32_t &data);
     uint8_t write(uint8_t reg, uint8_t* data);
+
+    template <class T> friend class Serializer;
 
 };
 

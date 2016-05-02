@@ -35,6 +35,7 @@ private:
     portTickType m_previousWakeupTime;
 
     ElementU32* m_resetCount;
+
     GPIO_TypeDef* m_powerGpioPort;
     uint16_t m_powerGpioPin;
 
@@ -91,6 +92,12 @@ public:
         if (m_powerGpioPort != NULL)
             m_powerGpioPort->BSRRL = m_powerGpioPin;
     }
+
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
+
 };
 
 #endif /* MI3I2CIRPERIPHERAL_H_ */

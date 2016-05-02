@@ -36,6 +36,11 @@ public:
      * @return
      */
     virtual void enableElementByIndex(int index, bool enable);
+
+    virtual int serialize(F_FILE* f);
+    virtual int deserialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* VIRTUALPERIPHERAL_H_ */

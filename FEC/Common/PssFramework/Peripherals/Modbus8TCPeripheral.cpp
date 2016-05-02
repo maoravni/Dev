@@ -7,6 +7,8 @@
 
 #include "Modbus8TCPeripheral.h"
 #include <logger.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
+
 
 Modbus8TCPeripheral::Modbus8TCPeripheral(uint8_t slaveId) :
         ModbusAnalogInputPeripheralBase(slaveId)
@@ -100,4 +102,10 @@ ElementBase* Modbus8TCPeripheral::getElementByPssId(int pssId)
 
 void Modbus8TCPeripheral::setScalingCoeff(int index, float aCoeff, float bCoeff)
 {
+}
+
+int Modbus8TCPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Modbus8TCPeripheral> s;
+    return s.serialize(f, *this);
 }

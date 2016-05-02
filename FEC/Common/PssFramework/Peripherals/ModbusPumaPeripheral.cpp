@@ -9,6 +9,8 @@
 #include <Elements/ElementRepository.h>
 #include <logger.h>
 #include <task.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
+
 
 #define M_PUMA_CHANNEL_START_ADDRESS 1001
 #define M_PUMA_ERROR_START_ADDRESS 1008
@@ -169,4 +171,10 @@ bool ModbusPumaPeripheral::initPuma()
     }
 
     return true;
+}
+
+int ModbusPumaPeripheral::serialize(F_FILE* f)
+{
+    Serializer<ModbusPumaPeripheral> s;
+    return s.serialize(f, *this);
 }

@@ -7,6 +7,7 @@
 
 #include "PsocDigitalInputPeripheral.h"
 #include "PsocHandler.h"
+#include "Persistency/PsocPeripheralSerializers.h"
 
 PsocDigitalInputPeripheral::PsocDigitalInputPeripheral()
 {
@@ -66,3 +67,8 @@ void PsocDigitalInputPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
+int PsocDigitalInputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocDigitalInputPeripheral> s;
+    return s.serialize(f, *this);
+}

@@ -359,6 +359,10 @@ void TestTask::run()
     ElementRepository::getInstance().destroyAllElements();
 
     PersistencyManager::getInstance()->deserializeElements();
+
+    PersistencyManager::getInstance()->serializePeripherals();
+
+    PersistencyManager::getInstance()->deserializePeripherals();
 #endif
 
     for (;;)

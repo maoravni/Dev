@@ -6,6 +6,8 @@
  */
 
 #include "ModbusInverterCommanderSK.h"
+#include "Persistency/ModbusPeripheralSerializers.h"
+
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_INVERTER_SAMPLE_INTERVAL 250
@@ -161,4 +163,10 @@ void ModbusInverterCommanderSK::setupInverterMotorCurrent(float value)
 
 void ModbusInverterCommanderSK::setupInverterMotorNominalRPM(float value)
 {
+}
+
+int ModbusInverterCommanderSK::serialize(F_FILE* f)
+{
+    Serializer<ModbusInverterCommanderSK> s;
+    return s.serialize(f, *this);
 }

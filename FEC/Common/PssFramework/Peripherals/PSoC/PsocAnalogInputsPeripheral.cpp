@@ -8,6 +8,7 @@
 #include "Peripherals/PSoC/PsocAnalogInputsPeripheral.h"
 #include <Elements/ElementRepository.h>
 #include "PsocHandler.h"
+#include <Persistency/PsocPeripheralSerializers.h>
 
 #define M_PSOC_COUNTS_TO_VOLTS      (float)(5.0/4096.0)
 #define M_PSOC_ANALOG_IN_GAIN       (M_PSOC_COUNTS_TO_VOLTS)
@@ -206,3 +207,8 @@ void PsocAnalogInputsPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
+int PsocAnalogInputsPeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocAnalogInputsPeripheral> s;
+    return s.serialize(f, *this);
+}

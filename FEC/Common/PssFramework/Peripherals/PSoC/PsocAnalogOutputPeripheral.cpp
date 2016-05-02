@@ -7,6 +7,7 @@
 
 #include "PsocAnalogOutputPeripheral.h"
 #include "PsocHandler.h"
+#include "Persistency/PsocPeripheralSerializers.h"
 
 PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral()
 {
@@ -99,4 +100,10 @@ void PsocAnalogOutputPeripheral::raiseError(E_PsocErrorBits error, bool state)
         }
         break;
     }
+}
+
+int PsocAnalogOutputPeripheral::serialize(F_FILE* f)
+{
+    Serializer<PsocAnalogOutputPeripheral> s;
+    return s.serialize(f, *this);
 }

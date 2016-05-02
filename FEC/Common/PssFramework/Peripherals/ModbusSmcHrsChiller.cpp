@@ -6,6 +6,7 @@
  */
 
 #include <Peripherals/ModbusSmcHrsChiller.h>
+#include "Persistency/ModbusPeripheralSerializers.h"
 
 #define M_NUMBER_OF_RETRIES 10
 #define M_SMC_CHILLERS_DEFAULT_UPDATE_INTERVAL 10000
@@ -131,4 +132,10 @@ ElementBase* ModbusSmcHrsChiller::getElementByPssId(int pssId)
 
 void ModbusSmcHrsChiller::enableElementByIndex(int index, bool enable)
 {
+}
+
+int ModbusSmcHrsChiller::serialize(F_FILE* f)
+{
+    Serializer<ModbusSmcHrsChiller> s;
+    return s.serialize(f, *this);
 }
