@@ -50,6 +50,7 @@ enum E_AckStatus
     E_AckStatus_Canceled = 0x8,
     E_AckStatus_InvalidCRC = 0x10,
     E_AckStatus_Timeout = 0x20,
+    E_AckStatus_InvalidControl = 0x40,
     E_AckStatus_NotImplemented = 0x8000
 //E_AckStatus_Size
 };

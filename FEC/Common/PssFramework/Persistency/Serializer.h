@@ -32,6 +32,7 @@ protected:
     int m_fileStartPos;
 public:
     SerializerBase():m_fileStartPos(-1){}
+    virtual ~SerializerBase() {}
 
     virtual uint8_t getSerializationVersion() = 0;
     virtual uint8_t getClassType() = 0;

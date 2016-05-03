@@ -10,7 +10,7 @@
 
 #include "PeripheralBase.h"
 
-class InputPeripheralBase: public virtual PeripheralBase
+class InputPeripheralBase: public PeripheralBase
 {
 public:
     InputPeripheralBase();
