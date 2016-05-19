@@ -26,6 +26,7 @@ class ModbusDataCardPeripheral : public ModbusAnalogInputPeripheralBase
     ValidationElementFloat* m_temperatureElementsArray[M_DataCard_NUM_OF_SENSORS];
 public:
     ModbusDataCardPeripheral(uint8_t slaveId);
+    ModbusDataCardPeripheral(F_FILE* f);
     virtual ~ModbusDataCardPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_DataCard;}
@@ -43,7 +44,7 @@ public:
     virtual void setScalingCoeff(int index, float aCoeff, float bCoeff);
     virtual void setSensorType(int index, uint8_t type) {}
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

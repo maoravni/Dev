@@ -84,8 +84,13 @@ public:
 
     virtual void startRecovery();
 
+    virtual void serialize(F_FILE* f);
+
+
 private:
     DeviceProtectionChecker* getElementInProtection(E_ProtectionCheckerType checkerType, ElementBase* element);
+
+    template <class T> friend class Serializer;
 };
 
 inline bool ProtectionControl::onInitControl()

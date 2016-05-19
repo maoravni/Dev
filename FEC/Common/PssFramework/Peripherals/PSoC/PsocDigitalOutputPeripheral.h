@@ -46,7 +46,7 @@ public:
     virtual void raiseError(E_PsocErrorBits error, bool state);
     virtual void raiseWarning(E_PSSWarnings warning, bool state) {}
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

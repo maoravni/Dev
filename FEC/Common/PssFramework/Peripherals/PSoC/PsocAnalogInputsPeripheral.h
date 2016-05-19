@@ -62,7 +62,7 @@ public:
     virtual void setUpdateInterval(uint16_t updateInterval);
     virtual void setLowPassFilter(uint16_t LowPassFilterWindow);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 private:
 

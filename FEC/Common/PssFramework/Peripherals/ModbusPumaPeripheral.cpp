@@ -173,8 +173,14 @@ bool ModbusPumaPeripheral::initPuma()
     return true;
 }
 
-int ModbusPumaPeripheral::serialize(F_FILE* f)
+ModbusPumaPeripheral::ModbusPumaPeripheral(F_FILE* f) : ModbusInputPeripheralBase(0)
 {
     Serializer<ModbusPumaPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void ModbusPumaPeripheral::serialize(F_FILE* f)
+{
+    Serializer<ModbusPumaPeripheral> s;
+    s.serialize(f, *this);
 }

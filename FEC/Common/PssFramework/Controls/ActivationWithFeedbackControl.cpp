@@ -10,6 +10,7 @@
 #include <PscSubsystem.h>
 #include <logger.h>
 #include <Tasks/UpdateSchedulerTask.h>
+#include <Persistency/ControlSerializers.h>
 
 #define M_ACTIVATION_TIMEOUT_TYPE 0
 #define M_IGNORE_PROTECTION_DELAY_TYPE 1
@@ -1038,4 +1039,10 @@ void ActivationWithFeedbackControl::writeOutputs(E_ActivationState activationSta
             m_outputDisableDevice->setValue((uint32_t)1);
         break;
     }
+}
+
+void ActivationWithFeedbackControl::serialize(F_FILE* f)
+{
+    Serializer<ActivationWithFeedbackControl> s;
+    s.serialize(f, *this);
 }

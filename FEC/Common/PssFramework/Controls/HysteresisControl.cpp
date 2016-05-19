@@ -10,6 +10,7 @@
 #include "ControlRepository.h"
 #include <PscSubsystem.h>
 #include <logger.h>
+#include <Persistency/ControlSerializers.h>
 
 HysteresisControl::HysteresisControl()
 {
@@ -372,4 +373,10 @@ E_ActivationState HysteresisControl::getActivationState()
         return E_ActivationState_Active;
     else
         return E_ActivationState_Inactive;
+}
+
+void HysteresisControl::serialize(F_FILE* f)
+{
+    Serializer<HysteresisControl> s;
+    s.serialize(f, *this);
 }

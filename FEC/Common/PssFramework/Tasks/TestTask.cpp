@@ -363,6 +363,11 @@ void TestTask::run()
     PersistencyManager::getInstance()->serializePeripherals();
 
     PersistencyManager::getInstance()->deserializePeripherals();
+
+    PersistencyManager::getInstance()->serializeControls();
+
+    //PersistencyManager::getInstance()->deserializeControls();
+
 #endif
 
     for (;;)

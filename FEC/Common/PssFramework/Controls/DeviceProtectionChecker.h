@@ -78,6 +78,9 @@ public:
     }
     virtual E_DeviceProtectionState calcProtectionState(ElementBase* element);
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 inline bool DeviceProtectionChecker::modifyProtectionResultAccordingToMissingPriority(bool result)

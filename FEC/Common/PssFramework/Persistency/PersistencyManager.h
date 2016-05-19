@@ -34,6 +34,9 @@ public:
 
     void serializePeripherals();
     void deserializePeripherals();
+
+    void serializeControls();
+    void deserializeControls();
 };
 
 #endif /* PERSISTENCYMANAGER_H_ */

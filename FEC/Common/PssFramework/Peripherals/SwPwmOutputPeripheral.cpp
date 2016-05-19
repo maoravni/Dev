@@ -256,8 +256,15 @@ void SwPwmOutputPeripheral::reassignCounterOffset()
     }
 }
 
-int SwPwmOutputPeripheral::serialize(F_FILE* f)
+void SwPwmOutputPeripheral::serialize(F_FILE* f)
 {
     Serializer<SwPwmOutputPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }
+
+SwPwmOutputPeripheral::SwPwmOutputPeripheral(F_FILE* f)
+{
+    Serializer<SwPwmOutputPeripheral> s;
+    s.serialize(f, *this);
+}
+

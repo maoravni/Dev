@@ -23,6 +23,7 @@ private:
 
 public:
     ModbusInverterSchneiderAtv32(uint8_t slaveId);
+    ModbusInverterSchneiderAtv32(F_FILE* f);
     virtual ~ModbusInverterSchneiderAtv32();
 
     virtual void readInputs();
@@ -39,7 +40,7 @@ public:
     virtual void setupInverter();
     virtual void resetInverter();
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 private:
     void storeConfiguration();

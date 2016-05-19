@@ -94,8 +94,8 @@ public:
 
     virtual bool checkIfCanSendUpdate();
 
-    virtual int serialize(F_FILE* f);// {return _serialize(f);}
-    virtual int deserialize(F_FILE* f);// {return _serialize(f);}
+    virtual void serialize(F_FILE* f);// {return _serialize(f);}
+    virtual void deserialize(F_FILE* f);// {return _serialize(f);}
 
 private:
     virtual void _setValue(_type value)
@@ -241,17 +241,17 @@ inline bool Element<_type>::checkIfCanSendUpdate()
 }
 
 template<class _type>
-inline int Element<_type>::serialize(F_FILE* f)
+inline void Element<_type>::serialize(F_FILE* f)
 {
     Serializer<Element<_type> > s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }
 
 template<class _type>
-inline int Element<_type>::deserialize(F_FILE* f)
+inline void Element<_type>::deserialize(F_FILE* f)
 {
     Serializer<Element<_type> > s;
-    return s.deserialize(f, *this);
+    s.deserialize(f, *this);
 }
 
 #endif /* ELEMENT_H_ */

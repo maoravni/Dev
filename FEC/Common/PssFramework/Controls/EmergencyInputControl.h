@@ -67,6 +67,9 @@ public:
 
     bool isEmergencyActive();
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* EMERGENCYINPUTCONTROL_H_ */

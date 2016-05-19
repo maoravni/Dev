@@ -9,6 +9,7 @@
 #include <Peripherals/PeripheralRepository.h>
 #include <Peripherals/PSoC/PsocManager.h>
 #include <PscServer/PscMessageHandler.h>
+#include <Persistency/ControlSerializers.h>
 
 #define M_AIR_PRESSURE_INDEX 2
 #define M_TUB_ENGAGE_INDEX 0
@@ -156,5 +157,11 @@ bool LiftPbOnErrorCcsGen3::initInputElements(int cableId)
 bool LiftPbOnErrorCcsGen3::onRecoverFromEmr()
 {
     return true;
+}
+
+void LiftPbOnErrorCcsGen3::serialize(F_FILE* f)
+{
+    Serializer<LiftPbOnErrorCcsGen3> s;
+    s.serialize(f, *this);
 }
 

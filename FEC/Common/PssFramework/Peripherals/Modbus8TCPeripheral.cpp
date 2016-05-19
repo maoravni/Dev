@@ -104,8 +104,14 @@ void Modbus8TCPeripheral::setScalingCoeff(int index, float aCoeff, float bCoeff)
 {
 }
 
-int Modbus8TCPeripheral::serialize(F_FILE* f)
+Modbus8TCPeripheral::Modbus8TCPeripheral(F_FILE* f) : ModbusAnalogInputPeripheralBase(0)
 {
     Serializer<Modbus8TCPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void Modbus8TCPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Modbus8TCPeripheral> s;
+    s.serialize(f, *this);
 }

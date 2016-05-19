@@ -39,6 +39,7 @@ class SwPwmOutputPeripheral: public OutputPeripheralBase, public AManagedTask
 
 public:
     SwPwmOutputPeripheral();
+    SwPwmOutputPeripheral(F_FILE* f);
     virtual ~SwPwmOutputPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_SwPwm;}
@@ -63,7 +64,7 @@ public:
 
     bool createTask();
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
 private:

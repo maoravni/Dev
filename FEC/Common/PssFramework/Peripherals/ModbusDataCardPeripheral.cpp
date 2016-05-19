@@ -103,8 +103,14 @@ void ModbusDataCardPeripheral::setScalingCoeff(int index, float aCoeff, float bC
 {
 }
 
-int ModbusDataCardPeripheral::serialize(F_FILE* f)
+ModbusDataCardPeripheral::ModbusDataCardPeripheral(F_FILE* f) : ModbusAnalogInputPeripheralBase(0)
 {
     Serializer<ModbusDataCardPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void ModbusDataCardPeripheral::serialize(F_FILE* f)
+{
+    Serializer<ModbusDataCardPeripheral> s;
+    s.serialize(f, *this);
 }

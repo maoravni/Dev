@@ -247,9 +247,14 @@ public:
 
     void printDependencyErrors();
     void printFeedbackErrors();
+
+    virtual void serialize(F_FILE* f);
+
 private:
     void startIgnoringProtections();
     bool checkValidOutputs();
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* ACTIVATIONWITHFEEDBACKCONTROL_H_ */

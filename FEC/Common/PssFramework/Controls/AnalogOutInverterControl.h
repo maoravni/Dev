@@ -10,6 +10,7 @@
 
 #include "ControlBase.h"
 #include <Elements/ElementRepository.h>
+#include <Persistency/ControlSerializers.h>
 
 class AnalogOutInverterControl: public ControlBase
 {
@@ -52,9 +53,13 @@ public:
 
     virtual E_ActivationState getActivationState(){return (m_requestedSetpointElement > 0) ? E_ActivationState_Active : E_ActivationState_Inactive;}
 
+    virtual void serialize(F_FILE* f);
+
 
 private:
     void setOutputValue(float value);
+
+    template <class T> friend class Serializer;
 
 };
 

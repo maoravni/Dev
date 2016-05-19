@@ -29,6 +29,9 @@ public:
     virtual E_PSSWarnings getWarningType(){return E_PSSWarnings_CurrentLoopBelowLimit;}
     virtual E_DeviceProtectionState calcProtectionState(ElementBase* element);
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* PROTECTIONCURRENTLIMITSCHECKER_H_ */

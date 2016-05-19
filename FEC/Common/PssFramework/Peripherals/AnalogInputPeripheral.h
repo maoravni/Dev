@@ -59,7 +59,7 @@ public:
     virtual void setScalingCoeff(int index, float aCoeff, float bCoeff);
     virtual void setSensorType(int index, uint8_t type) {}
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

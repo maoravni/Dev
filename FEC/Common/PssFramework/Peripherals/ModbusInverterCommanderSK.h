@@ -17,6 +17,7 @@ class ModbusInverterCommanderSK: /*public OutputPeripheralBase, public InputPeri
 {
 public:
     ModbusInverterCommanderSK(uint8_t slaveId);
+    ModbusInverterCommanderSK(F_FILE* f);
     virtual ~ModbusInverterCommanderSK();
 
     virtual void readInputs();
@@ -34,7 +35,7 @@ public:
     virtual void setupInverter();
     virtual void resetInverter();
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 };
 

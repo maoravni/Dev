@@ -9,6 +9,7 @@
 #include <Peripherals/PeripheralRepository.h>
 #include <Peripherals/PSoC/PsocManager.h>
 #include <PscServer/PscMessageHandler.h>
+#include <Persistency/ControlSerializers.h>
 
 #define M_AIR_PRESSURE_INDEX 2
 #define M_TUB_ENGAGE_INDEX 0
@@ -162,4 +163,10 @@ bool LiftPbOnError::initInputElements(int cableId)
 bool LiftPbOnError::onRecoverFromEmr()
 {
     return true;
+}
+
+void LiftPbOnError::serialize(F_FILE* f)
+{
+    Serializer<LiftPbOnError> s;
+    s.serialize(f, *this);
 }

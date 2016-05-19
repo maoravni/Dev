@@ -93,8 +93,14 @@ void Modbus6RTDPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
-int Modbus6RTDPeripheral::serialize(F_FILE* f)
+Modbus6RTDPeripheral::Modbus6RTDPeripheral(F_FILE* f) : ModbusInputPeripheralBase(0)
 {
     Serializer<Modbus6RTDPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void Modbus6RTDPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Modbus6RTDPeripheral> s;
+    s.serialize(f, *this);
 }

@@ -64,6 +64,10 @@ public:
     virtual E_DeviceProtectionState calcProtectionState(ElementBase* element) = 0;
     virtual void setNewProtectionState(E_DeviceProtectionState state);
     virtual void timeoutExpired(uint16_t timeoutType);
+
+    virtual void serialize(F_FILE* f) = 0;
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* PROTECTIONCHECKERBASE_H_ */

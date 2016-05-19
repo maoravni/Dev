@@ -118,6 +118,10 @@ public:
     {
         m_pssId = pssId;
     }
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 typedef std::vector<DeviceThresholdChecker> T_DeviceCheckerList;

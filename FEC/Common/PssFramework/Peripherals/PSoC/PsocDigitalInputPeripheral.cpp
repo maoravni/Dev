@@ -67,8 +67,8 @@ void PsocDigitalInputPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
-int PsocDigitalInputPeripheral::serialize(F_FILE* f)
+void PsocDigitalInputPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocDigitalInputPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }

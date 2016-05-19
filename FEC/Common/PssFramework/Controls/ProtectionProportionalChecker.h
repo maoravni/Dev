@@ -32,6 +32,9 @@ public:
     virtual E_PSSWarnings getWarningType(){return E_PSSWarnings_ControlExceedsLimits;}
     virtual E_DeviceProtectionState calcProtectionState(ElementBase* element);
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* ProtectionProportionalChecker_H_ */

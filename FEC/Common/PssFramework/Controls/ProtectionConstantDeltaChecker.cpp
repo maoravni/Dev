@@ -6,6 +6,7 @@
  */
 
 #include "Controls/ProtectionConstantDeltaChecker.h"
+#include <Persistency/ControlSerializers.h>
 
 ProtectionConstantDeltaChecker::ProtectionConstantDeltaChecker()
 {
@@ -74,4 +75,10 @@ E_DeviceProtectionState ProtectionConstantDeltaChecker::calcProtectionState(Elem
         state = E_DeviceProtectionState_SoftLimitExceeded;
 
     return state;
+}
+
+void ProtectionConstantDeltaChecker::serialize(F_FILE* f)
+{
+    Serializer<ProtectionConstantDeltaChecker> s;
+    s.serialize(f, *this);
 }

@@ -82,6 +82,8 @@ public:
 
     void setBoardInReady(bool state);
     void startRecovery();
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* CONTROLREPOSITORY_H_ */

@@ -20,6 +20,7 @@ class ModbusPumaPeripheral: public ModbusInputPeripheralBase
     bool m_userRegistersInitialized;
 public:
     ModbusPumaPeripheral(uint8_t slaveId);
+    ModbusPumaPeripheral(F_FILE* f);
     virtual ~ModbusPumaPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_Puma;}
@@ -34,7 +35,7 @@ public:
     virtual void enableElementByIndex(int index, bool enable);
     virtual bool initPuma();
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

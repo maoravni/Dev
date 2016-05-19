@@ -7,7 +7,7 @@
 
 #include <Persistency/PsocPeripheralSerializers.h>
 
-int Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInputsPeripheral& p)
+void Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInputsPeripheral& p)
 {
     storeStartPosition(f);
 
@@ -37,11 +37,9 @@ int Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInput
     M_FWRITE_VARIABLE(p.m_lpfCoeff, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutputPeripheral& p)
+void Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutputPeripheral& p)
 {
     storeStartPosition(f);
 
@@ -65,11 +63,9 @@ int Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutpu
     M_FWRITE_VARIABLE(temp, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInputPeripheral& p)
+void Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInputPeripheral& p)
 {
     storeStartPosition(f);
 
@@ -93,11 +89,9 @@ int Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInpu
     M_FWRITE_VARIABLE(temp, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOutputPeripheral& p)
+void Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOutputPeripheral& p)
 {
     storeStartPosition(f);
 
@@ -121,11 +115,9 @@ int Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOut
     M_FWRITE_VARIABLE(temp, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperaturePeripheral& p)
+void Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperaturePeripheral& p)
 {
     storeStartPosition(f);
 
@@ -155,11 +147,9 @@ int Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperatureP
     M_FWRITE_VARIABLE(p.m_lpfCoeff, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPeripheral& p)
+void Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPeripheral& p)
 {
     storeStartPosition(f);
 
@@ -186,7 +176,5 @@ int Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPerip
     M_FWRITE_VARIABLE(p.m_pwmChannelRampParameters, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 

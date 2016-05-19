@@ -150,8 +150,8 @@ void PsocTemperaturePeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
-int PsocTemperaturePeripheral::serialize(F_FILE* f)
+void PsocTemperaturePeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocTemperaturePeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }

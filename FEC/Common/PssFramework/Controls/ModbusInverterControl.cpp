@@ -11,6 +11,7 @@
 #include <Peripherals/PeripheralRepository.h>
 #include "logger.h"
 #include <Tasks/UpdateSchedulerTask.h>
+#include <Persistency/ControlSerializers.h>
 
 #define M_TIMEOUT_STOP 0
 #define M_TIMEOUT_DELAY 1
@@ -477,3 +478,8 @@ void ModbusInverterControl::setBoardInReady(bool state)
 //    }
 //}
 
+void ModbusInverterControl::serialize(F_FILE* f)
+{
+    Serializer<ModbusInverterControl> s;
+    s.serialize(f, *this);
+}

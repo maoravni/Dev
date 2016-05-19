@@ -54,6 +54,7 @@ public:
 
 public:
     Mi3I2CIrPeripheral();
+    Mi3I2CIrPeripheral(F_FILE* f);
     virtual ~Mi3I2CIrPeripheral();
 
     /**
@@ -93,7 +94,7 @@ public:
             m_powerGpioPort->BSRRL = m_powerGpioPin;
     }
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

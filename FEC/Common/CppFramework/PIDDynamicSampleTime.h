@@ -21,6 +21,7 @@
 class PIDDynamicSampleTime
 {
     /*working variables*/
+    // temporary vars:
     portTickType m_lastTick;
     portTickType m_lastDTermTick;
     float m_input, m_output, m_setpoint, m_lastOutput;

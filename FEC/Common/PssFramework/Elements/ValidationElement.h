@@ -211,8 +211,8 @@ public:
     virtual uint32_t getErrors();
     virtual uint32_t getWarnings();
 
-    virtual int serialize(F_FILE* f);
-    virtual int deserialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
+    virtual void deserialize(F_FILE* f);
 
 private:
     void _setValue(_type value);
@@ -494,17 +494,17 @@ inline bool ValidationElement<_type>::checkIfCanSendUpdate()
 }
 
 template<class _type>
-inline int ValidationElement<_type>::serialize(F_FILE* f)
+inline void ValidationElement<_type>::serialize(F_FILE* f)
 {
     Serializer<ValidationElement<_type> > s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }
 
 template<class _type>
-inline int ValidationElement<_type>::deserialize(F_FILE* f)
+inline void ValidationElement<_type>::deserialize(F_FILE* f)
 {
     Serializer<ValidationElement<_type> > s;
-    return s.deserialize(f, *this);
+    s.deserialize(f, *this);
 }
 
 #endif /* VALIDATIONELEMENT_H_ */

@@ -11,6 +11,7 @@
 #include <Controls/ControlRepository.h>
 #include <dg_input_cnfg.h>
 #include <PscServer/PscMessageHandler.h>
+#include <Persistency/ControlSerializers.h>
 
 #define M_EMERGENCY_INPUT_INDEX 5
 
@@ -103,4 +104,10 @@ bool EmergencyInputControl::onRecoverFromEmr()
 bool EmergencyInputControl::isEmergencyActive()
 {
     return (m_emergencyActive);
+}
+
+void EmergencyInputControl::serialize(F_FILE* f)
+{
+    Serializer<EmergencyInputControl> s;
+    s.serialize(f, *this);
 }

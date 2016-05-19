@@ -138,6 +138,9 @@ private:
         m_deactivateSetpointElement->addObserver(this);
     }
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* HysteresisControl_H_ */

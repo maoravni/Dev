@@ -141,8 +141,14 @@ void InternalTemperatureSensors::setScalingCoeff(int index, float aCoeff, float 
 {
 }
 
-int InternalTemperatureSensors::serialize(F_FILE* f)
+InternalTemperatureSensors::InternalTemperatureSensors(F_FILE* f)
 {
     Serializer<InternalTemperatureSensors> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void InternalTemperatureSensors::serialize(F_FILE* f)
+{
+    Serializer<InternalTemperatureSensors> s;
+    s.serialize(f, *this);
 }

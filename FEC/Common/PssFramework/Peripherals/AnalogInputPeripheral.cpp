@@ -133,9 +133,9 @@ void AnalogInputPeripheral::setScalingCoeff(int index, float aCoeff, float bCoef
     m_scalingB[index] += bCoeff;
 }
 
-int AnalogInputPeripheral::serialize(F_FILE* f)
+void AnalogInputPeripheral::serialize(F_FILE* f)
 {
     Serializer<AnalogInputPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }
 

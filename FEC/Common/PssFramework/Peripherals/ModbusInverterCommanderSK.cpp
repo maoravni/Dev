@@ -165,8 +165,14 @@ void ModbusInverterCommanderSK::setupInverterMotorNominalRPM(float value)
 {
 }
 
-int ModbusInverterCommanderSK::serialize(F_FILE* f)
+void ModbusInverterCommanderSK::serialize(F_FILE* f)
 {
     Serializer<ModbusInverterCommanderSK> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
+}
+
+ModbusInverterCommanderSK::ModbusInverterCommanderSK(F_FILE* f) : ModbusInverterPeripheralBase(0)
+{
+    Serializer<ModbusInverterCommanderSK> s;
+    s.deserialize(f, *this);
 }

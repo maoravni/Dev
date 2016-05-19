@@ -7,6 +7,7 @@
 
 #include <Controls/CalculateOnTwoDevicesControl.h>
 #include <PscServer/PscMasterServer.h>
+#include <Persistency/ControlSerializers.h>
 
 CalculateOnTwoDevicesControl::CalculateOnTwoDevicesControl()
 {
@@ -187,5 +188,41 @@ void MinTwoDevicesControl::execute()
     float input2 = m_input2->getValueF();
     float result = (input1 < input2) ? input1 : input2;
     m_calculatedOutput->setValue(result);
+}
+
+void MinTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<MinTwoDevicesControl> s;
+    s.serialize(f, *this);
+}
+
+void DivideTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<DivideTwoDevicesControl> s;
+    s.serialize(f, *this);
+}
+
+void AddTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<AddTwoDevicesControl> s;
+    s.serialize(f, *this);
+}
+
+void MaxTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<MaxTwoDevicesControl> s;
+    s.serialize(f, *this);
+}
+
+void MultiplyTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<MultiplyTwoDevicesControl> s;
+    s.serialize(f, *this);
+}
+
+void SubtractTwoDevicesControl::serialize(F_FILE* f)
+{
+    Serializer<SubtractTwoDevicesControl> s;
+    s.serialize(f, *this);
 }
 

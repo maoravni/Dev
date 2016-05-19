@@ -235,3 +235,9 @@ void LeakDetectionControl::calculateLpfCoeff()
 {
     m_filterCoeff = (float)m_window/(float)m_updateInterval;
 }
+
+void LeakDetectionControl::serialize(F_FILE* f)
+{
+    Serializer<LeakDetectionControl> s;
+    s.serialize(f, *this);
+}

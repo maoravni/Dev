@@ -8,6 +8,7 @@
 #include <Controls/ConcentrationControl.h>
 #include <PscServer/PscMasterServer.h>
 #include <Tasks/UpdateSchedulerTask.h>
+#include <Persistency/ControlSerializers.h>
 
 ConcentrationControl::ConcentrationControl()
 {
@@ -281,3 +282,8 @@ E_ActivationState ConcentrationControl::getActivationState()
         return E_ActivationState_Inactive;
 }
 
+void ConcentrationControl::serialize(F_FILE* f)
+{
+    Serializer<ConcentrationControl> s;
+    s.serialize(f, *this);
+}

@@ -70,8 +70,14 @@ void VirtualPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
-int VirtualPeripheral::serialize(F_FILE* f)
+void VirtualPeripheral::serialize(F_FILE* f)
 {
     Serializer<VirtualPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
+}
+
+VirtualPeripheral::VirtualPeripheral(F_FILE* f)
+{
+    Serializer<VirtualPeripheral> s;
+    s.deserialize(f, *this);
 }

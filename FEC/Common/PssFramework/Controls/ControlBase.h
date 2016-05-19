@@ -95,11 +95,12 @@ class ControlBase: public IObserver/*, public ErrorBitManager*/
 private:
     uint16_t m_controlIndex; //!< ID of the element in the element repository.
     uint16_t m_pssId; //!< ID of the element assigned by the SUM.
+    bool m_stopOnEmrBehavior;
+    bool m_stopOnDisconnection;
+
     T_ControlStatus m_controlExceptions;
     T_ControlStatus m_previousControlExceptions;
 
-    bool m_stopOnEmrBehavior;
-    bool m_stopOnDisconnection;
 //    uint32_t m_errorBits;
 //    uint32_t m_warningBits;
 
@@ -234,6 +235,8 @@ public:
         m_stopOnDisconnection = stopOnDisconnection;
     }
 
+    virtual void serialize(F_FILE* f) = 0;
+
 private:
     void setControlExceptions(E_ExceptionState errors, E_ExceptionState warnings);
 
@@ -245,6 +248,8 @@ protected:
     void endStopOnEmr();
     void endRecoverFromEmr();
 
+
+    template <class T> friend class Serializer;
 };
 
 

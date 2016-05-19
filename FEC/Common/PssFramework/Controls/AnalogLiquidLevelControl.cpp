@@ -9,6 +9,7 @@
 #include <PscSubsystem.h>
 #include <Elements/ElementRepository.h>
 #include <PscServer/PscMasterServer.h>
+#include <Persistency/ControlSerializers.h>
 
 AnalogLiquidLevelControl::AnalogLiquidLevelControl()
 {
@@ -150,4 +151,10 @@ bool AnalogLiquidLevelControl::onMove2Error()
     execute();
     endMove2Error();
     return true;
+}
+
+void AnalogLiquidLevelControl::serialize(F_FILE* f)
+{
+    Serializer<AnalogLiquidLevelControl> s;
+    s.serialize(f, *this);
 }

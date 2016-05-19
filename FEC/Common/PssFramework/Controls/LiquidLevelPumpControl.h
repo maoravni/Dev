@@ -121,6 +121,10 @@ public:
     {
         return m_midSetpoint;
     }
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* LIQUIDLEVELPUMPCONTROL_H_ */

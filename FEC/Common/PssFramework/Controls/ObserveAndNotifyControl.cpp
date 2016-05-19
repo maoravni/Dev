@@ -11,6 +11,8 @@
 #include <PscServer/PscMessageHandler.h>
 #include "ObserveAndNotifyControl.h"
 #include <PscServer/PscMasterServer.h>
+#include <Persistency/ControlSerializers.h>
+
 
 ObserveAndNotifyControl::ObserveAndNotifyControl() :
         ControlBase()
@@ -216,4 +218,11 @@ bool ObserveAndNotifyControl::onRecoverFromEmr()
     endRecoverFromEmr();
     return true;
 }
+
+void ObserveAndNotifyControl::serialize(F_FILE* f)
+{
+    Serializer<ObserveAndNotifyControl> s;
+    s.serialize(f, *this);
+}
+
 

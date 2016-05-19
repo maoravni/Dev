@@ -10,6 +10,7 @@
 
 #include "ControlBase.h"
 
+
 class LiquidLevel3Sensors: public ControlBase
 {
     ElementBase* m_lowSensor;
@@ -82,6 +83,10 @@ public:
     {
         return m_calculatedOutputLevel;
     }
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* LIQUIDLEVEL3SENSORS_H_ */

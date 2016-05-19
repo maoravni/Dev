@@ -95,6 +95,8 @@ public:
 
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
 
+    virtual void serialize(F_FILE* f);
+
 private:
 
     bool waitForStableLevel(float level);

@@ -84,7 +84,7 @@ public:
      */
     virtual void enableElementByIndex(int index, bool enable) = 0;
 
-    virtual int serialize(F_FILE* f) = 0;
+    virtual void serialize(F_FILE* f) = 0;
     virtual int deserialize(F_FILE* f);
 
     virtual void startRecovery() {}

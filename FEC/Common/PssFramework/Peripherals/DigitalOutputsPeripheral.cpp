@@ -76,8 +76,14 @@ void DigitalOutputsPeripheral::enableElementByIndex(int index, bool enable)
     m_enabledArray[index] = enable;
 }
 
-int DigitalOutputsPeripheral::serialize(F_FILE* f)
+DigitalOutputsPeripheral::DigitalOutputsPeripheral(F_FILE* f)
 {
     Serializer<DigitalOutputsPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void DigitalOutputsPeripheral::serialize(F_FILE* f)
+{
+    Serializer<DigitalOutputsPeripheral> s;
+    s.serialize(f, *this);
 }

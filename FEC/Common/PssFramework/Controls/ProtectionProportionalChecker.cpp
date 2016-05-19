@@ -6,6 +6,7 @@
  */
 
 #include "Controls/ProtectionProportionalChecker.h"
+#include <Persistency/ControlSerializers.h>
 
 ProtectionProportionalChecker::ProtectionProportionalChecker()
 {
@@ -78,4 +79,10 @@ E_DeviceProtectionState ProtectionProportionalChecker::calcProtectionState(Eleme
             state = E_DeviceProtectionState_SoftLimitExceeded;
     }
     return state;
+}
+
+void ProtectionProportionalChecker::serialize(F_FILE* f)
+{
+    Serializer<ProtectionProportionalChecker> s;
+    s.serialize(f, *this);
 }

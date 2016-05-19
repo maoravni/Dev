@@ -10,6 +10,8 @@
 #include <PscSubsystem.h>
 #include <Elements/ElementRepository.h>
 #include "logger.h"
+#include <Persistency/ControlSerializers.h>
+
 
 LiquidLevelPumpControl::LiquidLevelPumpControl()
 {
@@ -228,4 +230,10 @@ bool LiquidLevelPumpControl::setSetpoint(float low, float mid, float high, uint3
     m_lastSn = sn;
 
     return true;
+}
+
+void LiquidLevelPumpControl::serialize(F_FILE* f)
+{
+    Serializer<LiquidLevelPumpControl> s;
+    s.serialize(f, *this);
 }

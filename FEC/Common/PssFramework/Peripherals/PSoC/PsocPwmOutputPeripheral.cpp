@@ -164,8 +164,8 @@ void PsocPwmOutputPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
-int PsocPwmOutputPeripheral::serialize(F_FILE* f)
+void PsocPwmOutputPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocPwmOutputPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }

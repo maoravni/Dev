@@ -400,8 +400,14 @@ void ModbusInverterSchneiderAtv32::setupInverterMotorNominalRPM(float value)
     m_nominalRpm = value;
 }
 
-int ModbusInverterSchneiderAtv32::serialize(F_FILE* f)
+void ModbusInverterSchneiderAtv32::serialize(F_FILE* f)
 {
     Serializer<ModbusInverterSchneiderAtv32> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
+}
+
+ModbusInverterSchneiderAtv32::ModbusInverterSchneiderAtv32(F_FILE* f) : ModbusInverterPeripheralBase(0)
+{
+    Serializer<ModbusInverterSchneiderAtv32> s;
+    s.deserialize(f, *this);
 }

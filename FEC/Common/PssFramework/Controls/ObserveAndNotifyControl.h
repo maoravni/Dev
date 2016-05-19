@@ -63,6 +63,10 @@ public:
     {
         return true;
     }
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* OBSERVE_AND_NOTIFY_CONTROL_H_ */

@@ -18,6 +18,7 @@ class VirtualPeripheral: public PeripheralBase
 
 public:
     VirtualPeripheral(E_PeripheralType peripheralType);
+    VirtualPeripheral(F_FILE* f);
     virtual ~VirtualPeripheral();
 
     virtual void execute();
@@ -37,7 +38,7 @@ public:
      */
     virtual void enableElementByIndex(int index, bool enable);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

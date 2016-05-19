@@ -241,8 +241,14 @@ void Mi3I2CIrPeripheral::startRecovery()
     m_performReset = true;
 }
 
-int Mi3I2CIrPeripheral::serialize(F_FILE* f)
+Mi3I2CIrPeripheral::Mi3I2CIrPeripheral(F_FILE* f)
 {
     Serializer<Mi3I2CIrPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void Mi3I2CIrPeripheral::serialize(F_FILE* f)
+{
+    Serializer<Mi3I2CIrPeripheral> s;
+    s.serialize(f, *this);
 }

@@ -21,6 +21,7 @@ class AnalogOutCurrentPeripheral: public OutputPeripheralBase
 
 public:
     AnalogOutCurrentPeripheral();
+    AnalogOutCurrentPeripheral(F_FILE* f);
     virtual ~AnalogOutCurrentPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_AO;}
@@ -35,7 +36,7 @@ public:
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

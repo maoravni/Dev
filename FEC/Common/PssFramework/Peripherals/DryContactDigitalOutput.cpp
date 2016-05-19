@@ -72,8 +72,14 @@ void DryContactDigitalOutput::startRecovery()
     setDryContactState(true);
 }
 
-int DryContactDigitalOutput::serialize(F_FILE* f)
+DryContactDigitalOutput::DryContactDigitalOutput(F_FILE* f)
 {
     Serializer<DryContactDigitalOutput> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void DryContactDigitalOutput::serialize(F_FILE* f)
+{
+    Serializer<DryContactDigitalOutput> s;
+    s.serialize(f, *this);
 }

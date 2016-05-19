@@ -67,6 +67,10 @@ public:
     {
         return true;
     }
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* LIFTPBONERROR_H_ */

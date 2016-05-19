@@ -19,13 +19,12 @@ struct ElementBaseInfo
     uint8_t monitoringEnabled;
 };
 
-int Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_SerializationElementType eType)
+void Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_SerializationElementType eType)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
-    if (f_write(&eType, 1, 1, f) != 1)
-        return 0;
+    M_FWRITE_VARIABLE(eType, f);
 
     serializeVersion(f);
 
@@ -36,586 +35,446 @@ int Serializer<ElementBase>::serialize(F_FILE* f, ElementBase& e, E_Serializatio
     ebi.maxInterval = e.m_maxInterval;
     ebi.monitoringEnabled = e.m_monitoringEnabled;
 
-    if (f_write(&ebi, sizeof(ebi), 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(ebi, f);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ElementBase>::deserialize(F_FILE* f, ElementBase& e)
+void Serializer<ElementBase>::deserialize(F_FILE* f, ElementBase& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     ElementBaseInfo ebi;
 
-    if (f_read(&ebi, sizeof(ebi), 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(ebi, f);
 
     //e.elementIndex = ebi.m_elementIndex;
     if (e.m_elementIndex != ebi.elementIndex)
-        return 0;
+        throw "Bad Serialization";
 
     e.m_pssId = ebi.pssId;
     e.m_minInterval = ebi.minInterval;
     e.m_maxInterval = ebi.maxInterval;
     e.m_monitoringEnabled = ebi.monitoringEnabled;
-
-    return 1;
 }
 
-int Serializer<Element<uint32_t> >::serialize(F_FILE* f, Element<uint32_t>& e)
+void Serializer<Element<uint32_t> >::serialize(F_FILE* f, Element<uint32_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U32);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U32);
 }
 
-int Serializer<Element<uint32_t> >::deserialize(F_FILE* f, Element<uint32_t>& e)
+void Serializer<Element<uint32_t> >::deserialize(F_FILE* f, Element<uint32_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<int32_t> >::serialize(F_FILE* f, Element<int32_t>& e)
+void Serializer<Element<int32_t> >::serialize(F_FILE* f, Element<int32_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S32);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S32);
 }
 
-int Serializer<Element<int32_t> >::deserialize(F_FILE* f, Element<int32_t>& e)
+void Serializer<Element<int32_t> >::deserialize(F_FILE* f, Element<int32_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<uint8_t> >::serialize(F_FILE* f, Element<uint8_t>& e)
+void Serializer<Element<uint8_t> >::serialize(F_FILE* f, Element<uint8_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U8);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U8);
 }
 
-int Serializer<Element<uint8_t> >::deserialize(F_FILE* f, Element<uint8_t>& e)
+void Serializer<Element<uint8_t> >::deserialize(F_FILE* f, Element<uint8_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<int8_t> >::serialize(F_FILE* f, Element<int8_t>& e)
+void Serializer<Element<int8_t> >::serialize(F_FILE* f, Element<int8_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S8);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S8);
 }
 
-int Serializer<Element<int8_t> >::deserialize(F_FILE* f, Element<int8_t>& e)
+void Serializer<Element<int8_t> >::deserialize(F_FILE* f, Element<int8_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<float> >::serialize(F_FILE* f, Element<float>& e)
+void Serializer<Element<float> >::serialize(F_FILE* f, Element<float>& e)
 {
     Serializer<ElementBase> s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Float);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Float);
 }
 
-int Serializer<Element<float> >::deserialize(F_FILE* f, Element<float>& e)
+void Serializer<Element<float> >::deserialize(F_FILE* f, Element<float>& e)
 {
     Serializer<ElementBase> s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<int16_t> >::serialize(F_FILE* f, Element<int16_t>& e)
+void Serializer<Element<int16_t> >::serialize(F_FILE* f, Element<int16_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S16);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_S16);
 }
 
-int Serializer<Element<int16_t> >::deserialize(F_FILE* f, Element<int16_t>& e)
+void Serializer<Element<int16_t> >::deserialize(F_FILE* f, Element<int16_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<Element<uint16_t> >::serialize(F_FILE* f, Element<uint16_t>& e)
+void Serializer<Element<uint16_t> >::serialize(F_FILE* f, Element<uint16_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U16);
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_U16);
 }
 
-int Serializer<Element<uint16_t> >::deserialize(F_FILE* f, Element<uint16_t>& e)
+void Serializer<Element<uint16_t> >::deserialize(F_FILE* f, Element<uint16_t>& e)
 {
     Serializer < ElementBase > s;
-    return s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 }
 
-int Serializer<ValidationElement<float> >::serialize(F_FILE* f, ValidationElement<float>& e)
+void Serializer<ValidationElement<float> >::serialize(F_FILE* f, ValidationElement<float>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_Float, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_Float) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_Float);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<float> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ValidationElement<float> >::deserialize(F_FILE* f, ValidationElement<float>& e)
+void Serializer<ValidationElement<float> >::deserialize(F_FILE* f, ValidationElement<float>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<float> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElement<uint8_t>& e)
+void Serializer<ValidationElement<uint8_t> >::serialize(F_FILE* f, ValidationElement<uint8_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U8, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U8) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U8);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<uint8_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
 
-    return 1;
-
 }
 
-int Serializer<ValidationElement<uint8_t> >::deserialize(F_FILE* f, ValidationElement<uint8_t>& e)
+void Serializer<ValidationElement<uint8_t> >::deserialize(F_FILE* f, ValidationElement<uint8_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<uint8_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<uint16_t> >::serialize(F_FILE* f, ValidationElement<uint16_t>& e)
+void Serializer<ValidationElement<uint16_t> >::serialize(F_FILE* f, ValidationElement<uint16_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U16, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U16) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U16);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<uint16_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ValidationElement<uint16_t> >::deserialize(F_FILE* f, ValidationElement<uint16_t>& e)
+void Serializer<ValidationElement<uint16_t> >::deserialize(F_FILE* f, ValidationElement<uint16_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<uint16_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationElement<uint32_t>& e)
+void Serializer<ValidationElement<uint32_t> >::serialize(F_FILE* f, ValidationElement<uint32_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_U32, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U32) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_U32);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<uint32_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
 
-    return 1;
-
 }
 
-int Serializer<ValidationElement<uint32_t> >::deserialize(F_FILE* f, ValidationElement<uint32_t>& e)
+void Serializer<ValidationElement<uint32_t> >::deserialize(F_FILE* f, ValidationElement<uint32_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<uint32_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<int8_t> >::serialize(F_FILE* f, ValidationElement<int8_t>& e)
+void Serializer<ValidationElement<int8_t> >::serialize(F_FILE* f, ValidationElement<int8_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S8, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S8) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S8);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<int8_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ValidationElement<int8_t> >::deserialize(F_FILE* f, ValidationElement<int8_t>& e)
+void Serializer<ValidationElement<int8_t> >::deserialize(F_FILE* f, ValidationElement<int8_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<int8_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<int16_t> >::serialize(F_FILE* f, ValidationElement<int16_t>& e)
+void Serializer<ValidationElement<int16_t> >::serialize(F_FILE* f, ValidationElement<int16_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S16, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S16) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S16);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<int16_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ValidationElement<int16_t> >::deserialize(F_FILE* f, ValidationElement<int16_t>& e)
+void Serializer<ValidationElement<int16_t> >::deserialize(F_FILE* f, ValidationElement<int16_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<int16_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 
-int Serializer<ValidationElement<int32_t> >::serialize(F_FILE* f, ValidationElement<int32_t>& e)
+void Serializer<ValidationElement<int32_t> >::serialize(F_FILE* f, ValidationElement<int32_t>& e)
 {
     storeStartPosition(f);
 
     // write the element type before the version:
     if (f_putc(E_SerializationElementType_Validation_S32, f) == -1)
-        return 0;
+        throw "File operation Failed";
 
     serializeVersion(f);
 
     // serialize the base class.
     Serializer < ElementBase > s;
-    if (s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S32) == 0)
-        return 0;
+    s.serialize(f, *(dynamic_cast<ElementBase*>(&e)), E_SerializationElementType_Validation_S32);
 
     // write the missing device priority
-    if (f_write(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FWRITE_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer < RangeChecker<int32_t> > rs;
-    if (rs.serialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.serialize(f, e.m_warningRange) == 0)
-        return 0;
+    rs.serialize(f, e.m_allowedRange);
+    rs.serialize(f, e.m_workingRange);
+    rs.serialize(f, e.m_warningRange);
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<ValidationElement<int32_t> >::deserialize(F_FILE* f, ValidationElement<int32_t>& e)
+void Serializer<ValidationElement<int32_t> >::deserialize(F_FILE* f, ValidationElement<int32_t>& e)
 {
     deserializeRecordSize(f);
 
     uint8_t dataType;
-    if (f_read(&dataType, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(dataType, f);
 
     deserializeVersion(f);
 
     // serialize the base class.
     Serializer<ElementBase> s;
-    if (s.deserialize(f, *(dynamic_cast<ElementBase*>(&e))) == 0)
-        return 0;
+    s.deserialize(f, *(dynamic_cast<ElementBase*>(&e)));
 
     // write the missing device priority
-    if (f_read(&e.m_missingDevicePriority, 1, 1, f) == 0)
-        return 0;
+    M_FREAD_VARIABLE(e.m_missingDevicePriority, f);
 
     Serializer<RangeChecker<int32_t> > rs;
-    if (rs.deserialize(f, e.m_allowedRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_workingRange) == 0)
-        return 0;
-
-    if (rs.deserialize(f, e.m_warningRange) == 0)
-        return 0;
-
-    return 1;
+    rs.deserialize(f, e.m_allowedRange);
+    rs.deserialize(f, e.m_workingRange);
+    rs.deserialize(f, e.m_warningRange);
 }
 

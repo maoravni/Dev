@@ -68,8 +68,14 @@ void AnalogOutCurrentPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
-int AnalogOutCurrentPeripheral::serialize(F_FILE* f)
+AnalogOutCurrentPeripheral::AnalogOutCurrentPeripheral(F_FILE* f)
 {
     Serializer<AnalogOutCurrentPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void AnalogOutCurrentPeripheral::serialize(F_FILE* f)
+{
+    Serializer<AnalogOutCurrentPeripheral> s;
+    s.serialize(f, *this);
 }

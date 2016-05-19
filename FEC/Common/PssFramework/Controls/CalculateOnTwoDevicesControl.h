@@ -86,6 +86,8 @@ public:
     }
 
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
+
+    template <class T> friend class Serializer;
 };
 
 class SubtractTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -95,6 +97,9 @@ public:
     virtual ~SubtractTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
+
 };
 
 class AddTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -104,6 +109,8 @@ public:
     virtual ~AddTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
 };
 
 class MultiplyTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -113,6 +120,8 @@ public:
     virtual ~MultiplyTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
 };
 
 class DivideTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -122,6 +131,8 @@ public:
     virtual ~DivideTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
 };
 
 class MaxTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -131,6 +142,8 @@ public:
     virtual ~MaxTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
 };
 
 class MinTwoDevicesControl: public CalculateOnTwoDevicesControl
@@ -140,6 +153,8 @@ public:
     virtual ~MinTwoDevicesControl();
 
     virtual void execute();
+
+    virtual void serialize(F_FILE* f);
 };
 
 #endif /* CALCULATEONTWODEVICESCONTROL_H_ */

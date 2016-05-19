@@ -207,8 +207,8 @@ void PsocAnalogInputsPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
-int PsocAnalogInputsPeripheral::serialize(F_FILE* f)
+void PsocAnalogInputsPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocAnalogInputsPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }

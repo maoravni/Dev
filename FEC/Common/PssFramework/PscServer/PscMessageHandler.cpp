@@ -3145,49 +3145,6 @@ void PscMessageHandler::MessageDefine3SensorWaterTankHandler(unsigned long param
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 }
 
-void PscMessageHandler::MessageDefineLeakageDetectionControlHandler(unsigned long param)
-{
-    PscMessageStruct* message = &m_messages[param];
-    PSSDefineLeakageDetectionControlMsg* payload = &(message->payload.pSSDefineLeakageDetectionControlMsg);
-
-    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
-
-    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
-
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSDefineLeakageDetectionControlMsg: cableId=%d pssId={[PSSID:%d]} tank={[PSSID:%d]} tub={[PSSID:%d]} upper=%f lower=%f",
-            payload->cableId, payload->pssId, payload->tankLevelPSSID, payload->tubLevelPSSID,
-            payload->upperBoundForLeak, payload->lowerBoundForLeak);
-
-    // TODO: Add a check, so when an allocation fails we move the board to error state.
-    LeakDetectionControl* control = new LeakDetectionControl();
-    control->setPssId(payload->pssId);
-
-    ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->tankLevelPSSID);
-
-    if (element == NULL)
-    {
-        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->tankLevelPSSID,
-                E_AckStatus_InvalidDevice);
-        return;
-    }
-
-    control->setElementTankLevel(element);
-
-    element = ElementRepository::getInstance().getElementByPssId(payload->tubLevelPSSID);
-
-    if (element == NULL)
-    {
-        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->tubLevelPSSID,
-                E_AckStatus_InvalidDevice);
-        return;
-    }
-
-    control->setElementTubLevel(element);
-
-    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
-}
-
 void PscMessageHandler::MessageDefineAnalogSensorWaterTankHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];
@@ -3313,39 +3270,6 @@ void PscMessageHandler::MessageActivateActivationWithFeedbackControlHandler(unsi
 
 }
 
-void PscMessageHandler::MessageActivateLeakageDetectionControlHandler(unsigned long param)
-{
-    PscMessageStruct* message = &m_messages[param];
-    PSSActivateLeakageDetectionControlMsg *payload = &(message->payload.pSSActivateLeakageDetectionControlMsg);
-
-    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
-
-    M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
-            payload->pssId);
-
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSActivateLeakageDetectionControlMsg: cableId=%d pssId={[PSSID:%d]} stage=%d timeout=%d window=%d deviation=%f",
-            payload->cableId, payload->pssId, payload->calibrationStage, payload->stabilizationTimeout,
-            payload->calculationWindow, payload->allowedDeviation);;
-
-    ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
-
-    if (control == NULL || control->getControlType() != E_ControlType_LeakageDetectionControl)
-    {
-        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId,
-                E_AckStatus_InvalidDevice);
-        return;
-    }
-
-// Send ACK that the command was accepted.
-    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
-
-	LeakDetectionControl *leakDetectionControl = static_cast<LeakDetectionControl*>(control);
-
-    leakDetectionControl->activateControl(payload->calibrationStage, payload->stabilizationTimeout,
-            payload->calculationWindow, payload->allowedDeviation, message->header.sn);
-
-}
 
 void PscMessageHandler::MessageGetErrorsHandler(unsigned long param)
 {
@@ -3657,3 +3581,82 @@ void PscMessageHandler::MessageSetLeakageDetectionParametersHandler(unsigned lon
 {
     MessageNotHandled(param);
 }
+void PscMessageHandler::MessageDefineLeakageDetectionControlHandler(unsigned long param)
+{
+    MessageNotHandled(param);
+//    PscMessageStruct* message = &m_messages[param];
+//    PSSDefineLeakageDetectionControlMsg* payload = &(message->payload.pSSDefineLeakageDetectionControlMsg);
+//
+//    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+//
+//    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
+//
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+//            "PSSDefineLeakageDetectionControlMsg: cableId=%d pssId={[PSSID:%d]} tank={[PSSID:%d]} tub={[PSSID:%d]} upper=%f lower=%f",
+//            payload->cableId, payload->pssId, payload->tankLevelPSSID, payload->tubLevelPSSID,
+//            payload->upperBoundForLeak, payload->lowerBoundForLeak);
+//
+//    // TODO: Add a check, so when an allocation fails we move the board to error state.
+//    LeakDetectionControl* control = new LeakDetectionControl();
+//    control->setPssId(payload->pssId);
+//
+//    ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->tankLevelPSSID);
+//
+//    if (element == NULL)
+//    {
+//        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->tankLevelPSSID,
+//                E_AckStatus_InvalidDevice);
+//        return;
+//    }
+//
+//    control->setElementTankLevel(element);
+//
+//    element = ElementRepository::getInstance().getElementByPssId(payload->tubLevelPSSID);
+//
+//    if (element == NULL)
+//    {
+//        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->tubLevelPSSID,
+//                E_AckStatus_InvalidDevice);
+//        return;
+//    }
+//
+//    control->setElementTubLevel(element);
+//
+//    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+}
+
+void PscMessageHandler::MessageActivateLeakageDetectionControlHandler(unsigned long param)
+{
+    MessageNotHandled(param);
+//    PscMessageStruct* message = &m_messages[param];
+//    PSSActivateLeakageDetectionControlMsg *payload = &(message->payload.pSSActivateLeakageDetectionControlMsg);
+//
+//    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+//
+//    M_CHECK_BOARD_STATE2(E_BoardState_Ready, E_BoardState_EMR, message->header.id.full, message->header.sn,
+//            payload->pssId);
+//
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+//            "PSSActivateLeakageDetectionControlMsg: cableId=%d pssId={[PSSID:%d]} stage=%d timeout=%d window=%d deviation=%f",
+//            payload->cableId, payload->pssId, payload->calibrationStage, payload->stabilizationTimeout,
+//            payload->calculationWindow, payload->allowedDeviation);;
+//
+//    ControlBase* control = ControlRepository::getInstance().getControlByPssId(payload->pssId);
+//
+//    if (control == NULL || control->getControlType() != E_ControlType_LeakageDetectionControl)
+//    {
+//        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId,
+//                E_AckStatus_InvalidDevice);
+//        return;
+//    }
+//
+//// Send ACK that the command was accepted.
+//    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+//
+//    LeakDetectionControl *leakDetectionControl = static_cast<LeakDetectionControl*>(control);
+//
+//    leakDetectionControl->activateControl(payload->calibrationStage, payload->stabilizationTimeout,
+//            payload->calculationWindow, payload->allowedDeviation, message->header.sn);
+//
+}
+

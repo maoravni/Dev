@@ -108,11 +108,15 @@ public:
             float cndLow, float cndHigh, float cndLoRange, float cndHighRange, float cndLoWarn, float cndHighWarn,
             uint32_t delay, uint32_t sn);
 
+
+    virtual void serialize(F_FILE* f);
 private:
     void resetOutput();
     void executeLevelControl();
     void executeLimitsCheck(ValidationElementFloat* checkingElement, float inputValue);
     void resetControl();
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* CONCENTRATIONCONTROL_H_ */

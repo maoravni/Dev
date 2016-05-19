@@ -125,6 +125,9 @@ public:
 
     virtual void setPssId(uint16_t deviceId);
 
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 private:
     void resetOutput();
 };

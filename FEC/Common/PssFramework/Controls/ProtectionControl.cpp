@@ -7,6 +7,7 @@
 
 #include "ProtectionControl.h"
 #include <Peripherals/PeripheralRepository.h>
+#include <Persistency/ControlSerializers.h>
 
 ProtectionControl::ProtectionControl()
 {
@@ -120,4 +121,10 @@ bool ProtectionControl::onRecoverFromEmr()
 void ProtectionControl::startRecovery()
 {
     m_dryContactElement->setValue(1);
+}
+
+void ProtectionControl::serialize(F_FILE* f)
+{
+    Serializer<ProtectionControl> s;
+    s.serialize(f, *this);
 }

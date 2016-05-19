@@ -69,9 +69,13 @@ public:
 
     virtual void startRecovery();
 
+    virtual void serialize(F_FILE* f);
+
 
 private:
     void updateSetpoints();
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* MODBUSINVERTERCONTROL_H_ */

@@ -79,6 +79,11 @@ public:
     }
 
     virtual E_ActivationState getActivationState(){return E_ActivationState_Unknown;}
+
+    virtual void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
+
 };
 
 

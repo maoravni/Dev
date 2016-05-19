@@ -27,8 +27,8 @@ template<> class Serializer<ModbusPeripheralBase> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusPeripheralBase;}
-    int serialize(F_FILE* f, ModbusPeripheralBase &p);
-    int deserialize(F_FILE* f, ModbusPeripheralBase &p);
+    void serialize(F_FILE* f, ModbusPeripheralBase &p);
+    void deserialize(F_FILE* f, ModbusPeripheralBase &p);
 };
 
 template<> class Serializer<ModbusInverterPeripheralBase> : public SerializerBase
@@ -36,8 +36,8 @@ template<> class Serializer<ModbusInverterPeripheralBase> : public SerializerBas
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusInverterPeripheralBase;}
-    int serialize(F_FILE* f, ModbusInverterPeripheralBase &p);
-    int deserialize(F_FILE* f, ModbusInverterPeripheralBase &p);
+    void serialize(F_FILE* f, ModbusInverterPeripheralBase &p);
+    void deserialize(F_FILE* f, ModbusInverterPeripheralBase &p);
 };
 
 template<> class Serializer<ModbusSmcHrsChiller> : public SerializerBase
@@ -45,8 +45,8 @@ template<> class Serializer<ModbusSmcHrsChiller> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusSmcHrsChiller;}
-    int serialize(F_FILE* f, ModbusSmcHrsChiller &p);
-    int deserialize(F_FILE* f, ModbusSmcHrsChiller &p);
+    void serialize(F_FILE* f, ModbusSmcHrsChiller &p);
+    void deserialize(F_FILE* f, ModbusSmcHrsChiller &p);
 };
 
 template<> class Serializer<Modbus6RTDPeripheral> : public SerializerBase
@@ -54,8 +54,8 @@ template<> class Serializer<Modbus6RTDPeripheral> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_Modbus6RTDPeripheral;}
-    int serialize(F_FILE* f, Modbus6RTDPeripheral &p);
-    int deserialize(F_FILE* f, Modbus6RTDPeripheral &p);
+    void serialize(F_FILE* f, Modbus6RTDPeripheral &p);
+    void deserialize(F_FILE* f, Modbus6RTDPeripheral &p);
 };
 
 template<> class Serializer<ModbusInverterCommanderSK> : public SerializerBase
@@ -63,8 +63,8 @@ template<> class Serializer<ModbusInverterCommanderSK> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusInverterCommanderSK;}
-    int serialize(F_FILE* f, ModbusInverterCommanderSK &p);
-    int deserialize(F_FILE* f, ModbusInverterCommanderSK &p);
+    void serialize(F_FILE* f, ModbusInverterCommanderSK &p);
+    void deserialize(F_FILE* f, ModbusInverterCommanderSK &p);
 };
 
 template<> class Serializer<ModbusInverterSchneiderAtv32> : public SerializerBase
@@ -72,8 +72,8 @@ template<> class Serializer<ModbusInverterSchneiderAtv32> : public SerializerBas
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusInverterSchneiderAtv32;}
-    int serialize(F_FILE* f, ModbusInverterSchneiderAtv32 &p);
-    int deserialize(F_FILE* f, ModbusInverterSchneiderAtv32 &p);
+    void serialize(F_FILE* f, ModbusInverterSchneiderAtv32 &p);
+    void deserialize(F_FILE* f, ModbusInverterSchneiderAtv32 &p);
 };
 
 template<> class Serializer<ModbusPumaPeripheral> : public SerializerBase
@@ -81,8 +81,8 @@ template<> class Serializer<ModbusPumaPeripheral> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusPumaPeripheral;}
-    int serialize(F_FILE* f, ModbusPumaPeripheral &p);
-    int deserialize(F_FILE* f, ModbusPumaPeripheral &p);
+    void serialize(F_FILE* f, ModbusPumaPeripheral &p);
+    void deserialize(F_FILE* f, ModbusPumaPeripheral &p);
 };
 
 template<> class Serializer<Modbus8TCPeripheral> : public SerializerBase
@@ -90,8 +90,8 @@ template<> class Serializer<Modbus8TCPeripheral> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_Modbus8TCPeripheral;}
-    int serialize(F_FILE* f, Modbus8TCPeripheral &p);
-    int deserialize(F_FILE* f, Modbus8TCPeripheral &p);
+    void serialize(F_FILE* f, Modbus8TCPeripheral &p);
+    void deserialize(F_FILE* f, Modbus8TCPeripheral &p);
 };
 
 template<> class Serializer<ModbusDataCardPeripheral> : public SerializerBase
@@ -99,8 +99,8 @@ template<> class Serializer<ModbusDataCardPeripheral> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusDataCardPeripheral;}
-    int serialize(F_FILE* f, ModbusDataCardPeripheral &p);
-    int deserialize(F_FILE* f, ModbusDataCardPeripheral &p);
+    void serialize(F_FILE* f, ModbusDataCardPeripheral &p);
+    void deserialize(F_FILE* f, ModbusDataCardPeripheral &p);
 };
 
 template<> class Serializer<ModbusInverterUnidriveM200> : public SerializerBase
@@ -108,8 +108,8 @@ template<> class Serializer<ModbusInverterUnidriveM200> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_PeripheralSerializationType_ModbusInverterUnidriveM200;}
-    int serialize(F_FILE* f, ModbusInverterUnidriveM200 &p);
-    int deserialize(F_FILE* f, ModbusInverterUnidriveM200 &p);
+    void serialize(F_FILE* f, ModbusInverterUnidriveM200 &p);
+    void deserialize(F_FILE* f, ModbusInverterUnidriveM200 &p);
 };
 
 #endif /* MODBUSPERIPHERALSERIALIZERS_H_ */

@@ -23,8 +23,8 @@ struct EntityMapRecord
 
 typedef std::vector<EntityMapRecord> T_EntityMapRecordVector;
 
-#define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) return 0
-#define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) return 0
+#define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
+#define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
 
 class SerializerBase
 {
@@ -36,8 +36,8 @@ public:
 
     virtual uint8_t getSerializationVersion() = 0;
     virtual uint8_t getClassType() = 0;
-    //virtual int serialize(F_FILE* f, T &t) = 0;
-    //virtual int deserialize(F_FILE* f, T &t);
+    //virtual void serialize(F_FILE* f, T &t) = 0;
+    //virtual void deserialize(F_FILE* f, T &t);
 
     void storeStartPosition(F_FILE* f);
     void updateRecordSize(F_FILE* f);
@@ -48,6 +48,7 @@ public:
 
     void serializeClassType(F_FILE* f);
     uint8_t deserializeClassType(F_FILE* f);
+
 
 };
 

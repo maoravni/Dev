@@ -17,10 +17,10 @@ template<> class Serializer<PeripheralRepository> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return -1;}
-    int serialize(F_FILE* f, PeripheralRepository &e);
-    int deserialize(F_FILE* f, PeripheralRepository &e);
+    void serialize(F_FILE* f, PeripheralRepository &e);
+    void deserialize(F_FILE* f, PeripheralRepository &e);
 
-    int deserializePeripheral(F_FILE* f, PeripheralRepository &e);
+    void deserializePeripheral(F_FILE* f, PeripheralRepository &e);
 };
 
 #endif /* PERIPHERALREPOSITORYSERIALIZER_H_ */

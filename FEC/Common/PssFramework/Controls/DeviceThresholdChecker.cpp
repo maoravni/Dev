@@ -6,6 +6,7 @@
  */
 
 #include <Controls/DeviceThresholdChecker.h>
+#include <Persistency/ControlSerializers.h>
 
 //DeviceThresholdChecker::DeviceThresholdChecker()
 //{
@@ -18,3 +19,8 @@
 //    // TODO Auto-generated destructor stub
 //}
 
+void DeviceThresholdChecker::serialize(F_FILE* f)
+{
+    Serializer<DeviceThresholdChecker> s;
+    s.serialize(f, *this);
+}

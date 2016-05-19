@@ -9,6 +9,7 @@
 #include <PscSubsystem.h>
 #include <Elements/ElementRepository.h>
 #include <PscServer/PscMasterServer.h>
+#include <Persistency/ControlSerializers.h>
 
 LiquidLevel3Sensors::LiquidLevel3Sensors()
 {
@@ -122,6 +123,12 @@ bool LiquidLevel3Sensors::sendNotification()
     PscMasterServer::getInstance().sendMessage(replyMessage);
 
     return true;
+}
+
+void LiquidLevel3Sensors::serialize(F_FILE* f)
+{
+    Serializer<LiquidLevel3Sensors> s;
+    s.serialize(f, *this);
 }
 
 //void LiquidLevel3Sensors::addProtectionElement(ValidationElementBase* element)

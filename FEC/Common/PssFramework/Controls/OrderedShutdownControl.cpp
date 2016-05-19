@@ -187,3 +187,9 @@ void OrderedShutdownControl::executeCurrentOperation()
         }
     }
 }
+
+void OrderedShutdownControl::serialize(F_FILE* f)
+{
+    Serializer<OrderedShutdownControl> s;
+    s.serialize(f, *this);
+}

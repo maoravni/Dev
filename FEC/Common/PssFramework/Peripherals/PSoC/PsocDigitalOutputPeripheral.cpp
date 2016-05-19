@@ -107,8 +107,8 @@ void PsocDigitalOutputPeripheral::raiseError(E_PsocErrorBits error, bool state)
     }
 }
 
-int PsocDigitalOutputPeripheral::serialize(F_FILE* f)
+void PsocDigitalOutputPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocDigitalOutputPeripheral> s;
-    return s.serialize(f, *this);
+    s.serialize(f, *this);
 }

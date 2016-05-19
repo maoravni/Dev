@@ -9,7 +9,7 @@
 #include <Peripherals/Mi3I2CIrPeripheral.h>
 #include <Peripherals/Mi3Sensor.h>
 
-int Serializer<Mi3I2CIrPeripheral>::serialize(F_FILE* f, Mi3I2CIrPeripheral& p)
+void Serializer<Mi3I2CIrPeripheral>::serialize(F_FILE* f, Mi3I2CIrPeripheral& p)
 {
     int result;
 
@@ -38,11 +38,34 @@ int Serializer<Mi3I2CIrPeripheral>::serialize(F_FILE* f, Mi3I2CIrPeripheral& p)
     }
 
     updateRecordSize(f);
-
-    return 1;
 }
 
-int Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
+void Serializer<Mi3I2CIrPeripheral>::deserialize(F_FILE* f, Mi3I2CIrPeripheral& p)
+{
+    deserializeRecordSize(f);
+    deserializeClassType(f);
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t temp;
+
+    // read the number of elements:
+    M_FREAD_VARIABLE(temp, f);
+
+    // TODO: check that the read number of elements is the same as the peripheral.
+
+    // read first element index:
+    M_FREAD_VARIABLE(temp, f);
+
+    Serializer<Mi3Sensor> sensorSerializer;
+
+    // TODO: Deserialize Mi3 Sensors.
+
+}
+
+void Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
 {
     int result;
 
@@ -56,6 +79,4 @@ int Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
 
     // TODO: Serialize Mi3 sensor configuration.
     updateRecordSize(f);
-
-    return 1;
 }

@@ -26,6 +26,7 @@ class DigitalInputsPeripheral: public InputPeripheralBase
 
 public:
     DigitalInputsPeripheral();
+    DigitalInputsPeripheral(F_FILE* f);
     virtual ~DigitalInputsPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_DI;}
@@ -37,7 +38,7 @@ public:
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

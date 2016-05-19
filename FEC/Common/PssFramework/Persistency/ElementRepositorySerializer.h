@@ -17,10 +17,10 @@ template<> class Serializer<ElementRepository> : public SerializerBase
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return 0;}
-    int serialize(F_FILE* f, ElementRepository &e);
-    int deserialize(F_FILE* f, ElementRepository &e);
+    void serialize(F_FILE* f, ElementRepository &e);
+    void deserialize(F_FILE* f, ElementRepository &e);
 
-    int deserializeElement(F_FILE* f, ElementRepository &e);
+    void deserializeElement(F_FILE* f, ElementRepository &e);
 };
 
 #endif /* REPOSITORYSERIALIZERS_H_ */

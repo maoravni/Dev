@@ -7,6 +7,7 @@
 
 #include "DeviceProtectionChecker.h"
 #include <Tasks/UpdateSchedulerTask.h>
+#include <Persistency/ControlSerializers.h>
 
 DeviceProtectionChecker::DeviceProtectionChecker()
 {
@@ -73,3 +74,8 @@ bool DeviceProtectionChecker::requestValueChange(ElementBase* element)
     return true;
 }
 
+void DeviceProtectionChecker::serialize(F_FILE* f)
+{
+    Serializer<DeviceProtectionChecker> s;
+    s.serialize(f, *this);
+}

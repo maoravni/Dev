@@ -19,6 +19,7 @@ class DryContactDigitalOutput: public OutputPeripheralBase
 
 public:
     DryContactDigitalOutput();
+    DryContactDigitalOutput(F_FILE* f);
     virtual ~DryContactDigitalOutput();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_DryContact;}
@@ -37,7 +38,7 @@ public:
 
     virtual void startRecovery();
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

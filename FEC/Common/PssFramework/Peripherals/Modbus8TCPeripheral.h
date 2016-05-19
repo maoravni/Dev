@@ -26,6 +26,7 @@ class Modbus8TCPeripheral : public ModbusAnalogInputPeripheralBase
     ValidationElementFloat* m_temperatureElementsArray[M_8TC_NUM_OF_SENSORS];
 public:
     Modbus8TCPeripheral(uint8_t slaveId);
+    Modbus8TCPeripheral(F_FILE* f);
     virtual ~Modbus8TCPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_8TC;}
@@ -42,7 +43,7 @@ public:
     virtual void setScalingCoeff(int index, float aCoeff, float bCoeff);
     virtual void setSensorType(int index, uint8_t type) {}
 
-    virtual int serialize(F_FILE* f);
+    virtual void  serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

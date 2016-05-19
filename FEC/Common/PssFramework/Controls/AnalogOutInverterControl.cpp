@@ -8,6 +8,7 @@
 #include "AnalogOutInverterControl.h"
 #include <PscSubsystem.h>
 #include <PscServer/PscMasterServer.h>
+#include <Persistency/ControlSerializers.h>
 
 AnalogOutInverterControl::AnalogOutInverterControl()
 {
@@ -171,3 +172,8 @@ bool AnalogOutInverterControl::onRecoverFromEmr()
     return true;
 }
 
+void AnalogOutInverterControl::serialize(F_FILE* f)
+{
+    Serializer<AnalogOutInverterControl> s;
+    s.serialize(f, *this);
+}

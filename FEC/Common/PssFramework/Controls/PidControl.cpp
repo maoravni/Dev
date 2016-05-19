@@ -11,6 +11,7 @@
 #include <logger.h>
 #include <PscServer/PscMasterServer.h>
 #include <Tasks/UpdateSchedulerTask.h>
+#include <Persistency/ControlSerializers.h>
 
 PidControl::PidControl()
 {
@@ -564,4 +565,10 @@ void PidControl::resetOutput()
 //    }
 //    else
         m_output->sendDeviceStatus();
+}
+
+void PidControl::serialize(F_FILE* f)
+{
+    Serializer<PidControl> s;
+    s.serialize(f, *this);
 }

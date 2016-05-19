@@ -6,6 +6,7 @@
  */
 
 #include <Controls/ProtectionCurrentLimitsChecker.h>
+#include <Persistency/ControlSerializers.h>
 
 ProtectionCurrentLimitsChecker::ProtectionCurrentLimitsChecker()
 {
@@ -69,4 +70,8 @@ E_DeviceProtectionState ProtectionCurrentLimitsChecker::calcProtectionState(Elem
     return state;
 }
 
-
+void ProtectionCurrentLimitsChecker::serialize(F_FILE* f)
+{
+    Serializer<ProtectionCurrentLimitsChecker> s;
+    s.serialize(f, *this);
+}

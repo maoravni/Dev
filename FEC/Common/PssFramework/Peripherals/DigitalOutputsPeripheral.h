@@ -26,6 +26,7 @@ class DigitalOutputsPeripheral: public OutputPeripheralBase
 
 public:
     DigitalOutputsPeripheral();
+    DigitalOutputsPeripheral(F_FILE* f);
     virtual ~DigitalOutputsPeripheral();
 
     // TODO: need to be able to config a digital output back to a digital output?
@@ -41,7 +42,7 @@ public:
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

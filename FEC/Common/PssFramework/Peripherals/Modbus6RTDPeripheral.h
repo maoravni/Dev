@@ -23,6 +23,7 @@ class Modbus6RTDPeripheral : /*public InputPeripheralBase, public ModbusPeripher
     ValidationElementFloat* m_temperatureElementsArray[M_6RTD_NUM_OF_SENSORS];
 public:
     Modbus6RTDPeripheral(uint8_t slaveId);
+    Modbus6RTDPeripheral(F_FILE* f);
     virtual ~Modbus6RTDPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_6RTD;}
@@ -36,7 +37,7 @@ public:
     virtual ElementBase* getElementByPssId(int pssId);
     virtual void enableElementByIndex(int index, bool enable);
 
-    virtual int serialize(F_FILE* f);
+    virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
     template <class T> friend class Serializer;

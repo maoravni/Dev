@@ -198,8 +198,8 @@ public:
     virtual uint32_t getErrors() = 0;
     virtual uint32_t getWarnings() = 0;
 
-    virtual int serialize(F_FILE* f) = 0;
-    virtual int deserialize(F_FILE* f) = 0;
+    virtual void serialize(F_FILE* f) = 0;
+    virtual void deserialize(F_FILE* f) = 0;
 protected:
     virtual void sendDeviceStatus(uint8_t value);
     virtual void sendDeviceStatus(uint16_t value);

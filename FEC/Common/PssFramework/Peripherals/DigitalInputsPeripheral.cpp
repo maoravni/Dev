@@ -91,8 +91,14 @@ void DigitalInputsPeripheral::enableElementByIndex(int index, bool enable)
 {
 }
 
-int DigitalInputsPeripheral::serialize(F_FILE* f)
+DigitalInputsPeripheral::DigitalInputsPeripheral(F_FILE* f)
 {
     Serializer<DigitalInputsPeripheral> s;
-    return s.serialize(f, *this);
+    s.deserialize(f, *this);
+}
+
+void DigitalInputsPeripheral::serialize(F_FILE* f)
+{
+    Serializer<DigitalInputsPeripheral> s;
+    s.serialize(f, *this);
 }
