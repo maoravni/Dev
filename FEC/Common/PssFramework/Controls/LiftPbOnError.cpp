@@ -170,3 +170,10 @@ void LiftPbOnError::serialize(F_FILE* f)
     Serializer<LiftPbOnError> s;
     s.serialize(f, *this);
 }
+
+LiftPbOnError::LiftPbOnError(F_FILE* f)
+{
+    Serializer<LiftPbOnError> s;
+    s.deserialize(f, *this);
+}
+

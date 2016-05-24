@@ -23,6 +23,7 @@ class LiftPbOnErrorCcsGen3: public ControlBase
 
 public:
     LiftPbOnErrorCcsGen3();
+    LiftPbOnErrorCcsGen3(F_FILE* f);
     virtual ~LiftPbOnErrorCcsGen3();
 
     virtual E_ControlType getControlType()

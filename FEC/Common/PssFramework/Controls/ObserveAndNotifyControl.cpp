@@ -226,3 +226,9 @@ void ObserveAndNotifyControl::serialize(F_FILE* f)
 }
 
 
+ObserveAndNotifyControl::ObserveAndNotifyControl(F_FILE* f)
+{
+    Serializer<ObserveAndNotifyControl> s;
+    s.deserialize(f, *this);
+}
+

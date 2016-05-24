@@ -237,3 +237,10 @@ void LiquidLevelPumpControl::serialize(F_FILE* f)
     Serializer<LiquidLevelPumpControl> s;
     s.serialize(f, *this);
 }
+
+LiquidLevelPumpControl::LiquidLevelPumpControl(F_FILE* f)
+{
+    Serializer<LiquidLevelPumpControl> s;
+    s.deserialize(f, *this);
+}
+

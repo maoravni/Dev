@@ -21,6 +21,7 @@ class LiftPbOnError: public ControlBase
 
 public:
     LiftPbOnError();
+    LiftPbOnError(F_FILE* f);
     virtual ~LiftPbOnError();
 
     virtual E_ControlType getControlType()

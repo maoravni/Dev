@@ -37,6 +37,7 @@ class PidControl: public ControlBase
 
 public:
     PidControl();
+    PidControl(F_FILE* f);
     virtual ~PidControl();
 
     void setPowerLimit(float maxPower);

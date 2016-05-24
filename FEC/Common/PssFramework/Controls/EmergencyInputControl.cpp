@@ -111,3 +111,10 @@ void EmergencyInputControl::serialize(F_FILE* f)
     Serializer<EmergencyInputControl> s;
     s.serialize(f, *this);
 }
+
+EmergencyInputControl::EmergencyInputControl(F_FILE* f)
+{
+    Serializer<EmergencyInputControl> s;
+    s.deserialize(f, *this);
+}
+

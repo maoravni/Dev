@@ -38,6 +38,7 @@ class HysteresisControl: public ControlBase
 
 public:
     HysteresisControl();
+    HysteresisControl(F_FILE* f);
     virtual ~HysteresisControl();
 
     virtual void updateNotification(ElementBase* element);

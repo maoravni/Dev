@@ -22,6 +22,7 @@ class LiftPbOnErrorCcsGen2: public ControlBase
 
 public:
     LiftPbOnErrorCcsGen2();
+    LiftPbOnErrorCcsGen2(F_FILE* f);
     virtual ~LiftPbOnErrorCcsGen2();
 
     virtual E_ControlType getControlType()

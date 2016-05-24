@@ -21,6 +21,7 @@ class AnalogLiquidLevelControl: public ControlBase
 
 public:
     AnalogLiquidLevelControl();
+    AnalogLiquidLevelControl(F_FILE* f);
     virtual ~AnalogLiquidLevelControl();
 
     virtual E_ControlType getControlType()

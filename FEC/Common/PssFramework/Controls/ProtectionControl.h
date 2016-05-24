@@ -22,6 +22,7 @@ class ProtectionControl: public ControlBase
 
 public:
     ProtectionControl();
+    ProtectionControl(F_FILE* f);
     virtual ~ProtectionControl();
 
     virtual E_ControlType getControlType()

@@ -572,3 +572,10 @@ void PidControl::serialize(F_FILE* f)
     Serializer<PidControl> s;
     s.serialize(f, *this);
 }
+
+PidControl::PidControl(F_FILE* f)
+{
+    Serializer<PidControl> s;
+    s.deserialize(f, *this);
+}
+

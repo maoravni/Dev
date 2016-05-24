@@ -34,6 +34,7 @@ class LiquidLevelPumpControl: public ControlBase
 
 public:
     LiquidLevelPumpControl();
+    LiquidLevelPumpControl(F_FILE* f);
     virtual ~LiquidLevelPumpControl();
 
     virtual E_ControlType getControlType()

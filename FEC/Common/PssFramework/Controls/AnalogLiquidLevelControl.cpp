@@ -158,3 +158,10 @@ void AnalogLiquidLevelControl::serialize(F_FILE* f)
     Serializer<AnalogLiquidLevelControl> s;
     s.serialize(f, *this);
 }
+
+AnalogLiquidLevelControl::AnalogLiquidLevelControl(F_FILE* f)
+{
+    Serializer<AnalogLiquidLevelControl> s;
+    s.deserialize(f, *this);
+}
+

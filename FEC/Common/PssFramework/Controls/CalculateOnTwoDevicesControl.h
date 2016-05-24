@@ -94,6 +94,7 @@ class SubtractTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     SubtractTwoDevicesControl();
+    SubtractTwoDevicesControl(F_FILE* f);
     virtual ~SubtractTwoDevicesControl();
 
     virtual void execute();
@@ -106,6 +107,7 @@ class AddTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     AddTwoDevicesControl();
+    AddTwoDevicesControl(F_FILE* f);
     virtual ~AddTwoDevicesControl();
 
     virtual void execute();
@@ -117,6 +119,7 @@ class MultiplyTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     MultiplyTwoDevicesControl();
+    MultiplyTwoDevicesControl(F_FILE* f);
     virtual ~MultiplyTwoDevicesControl();
 
     virtual void execute();
@@ -128,6 +131,7 @@ class DivideTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     DivideTwoDevicesControl();
+    DivideTwoDevicesControl(F_FILE* f);
     virtual ~DivideTwoDevicesControl();
 
     virtual void execute();
@@ -139,6 +143,7 @@ class MaxTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     MaxTwoDevicesControl();
+    MaxTwoDevicesControl(F_FILE* f);
     virtual ~MaxTwoDevicesControl();
 
     virtual void execute();
@@ -150,6 +155,7 @@ class MinTwoDevicesControl: public CalculateOnTwoDevicesControl
 {
 public:
     MinTwoDevicesControl();
+    MinTwoDevicesControl(F_FILE* f);
     virtual ~MinTwoDevicesControl();
 
     virtual void execute();

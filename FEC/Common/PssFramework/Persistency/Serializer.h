@@ -25,6 +25,7 @@ typedef std::vector<EntityMapRecord> T_EntityMapRecordVector;
 
 #define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
 #define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
+#define M_FREAD_AND_REFERENCE_ELEMENT
 
 class SerializerBase
 {

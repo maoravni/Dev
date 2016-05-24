@@ -17,6 +17,7 @@ class EmergencyInputControl: public ControlBase
     bool m_emergencyActive;
 public:
     EmergencyInputControl();
+    EmergencyInputControl(F_FILE* f);
     virtual ~EmergencyInputControl();
 
     virtual E_ControlType getControlType()

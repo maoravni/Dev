@@ -17,6 +17,7 @@ class ObserveAndNotifyControl: public ControlBase
 
 public:
     ObserveAndNotifyControl();
+    ObserveAndNotifyControl(F_FILE* f);
     virtual ~ObserveAndNotifyControl();
 
     virtual E_ControlType getControlType()

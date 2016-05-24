@@ -57,9 +57,9 @@ void AnalogOutInverterControl::setOutputValue(float value)
     if (m_enableOutput != NULL)
     {
         if (value == 0)
-            m_enableOutput->setValue((uint32_t)0);
+            m_enableOutput->setValue((uint32_t) 0);
         else
-            m_enableOutput->setValue((uint32_t)1);
+            m_enableOutput->setValue((uint32_t) 1);
     }
 }
 
@@ -177,3 +177,10 @@ void AnalogOutInverterControl::serialize(F_FILE* f)
     Serializer<AnalogOutInverterControl> s;
     s.serialize(f, *this);
 }
+
+AnalogOutInverterControl::AnalogOutInverterControl(F_FILE* f)
+{
+    Serializer<AnalogOutInverterControl> s;
+    s.deserialize(f, *this);
+}
+

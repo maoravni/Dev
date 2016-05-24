@@ -20,6 +20,7 @@ class AnalogOutInverterControl: public ControlBase
 
 public:
     AnalogOutInverterControl();
+    AnalogOutInverterControl(F_FILE* f);
     virtual ~AnalogOutInverterControl();
 
     bool setSetpoint(float value, uint32_t sn);

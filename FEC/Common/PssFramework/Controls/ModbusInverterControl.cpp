@@ -483,3 +483,10 @@ void ModbusInverterControl::serialize(F_FILE* f)
     Serializer<ModbusInverterControl> s;
     s.serialize(f, *this);
 }
+
+ModbusInverterControl::ModbusInverterControl(F_FILE* f)
+{
+    Serializer<ModbusInverterControl> s;
+    s.deserialize(f, *this);
+}
+

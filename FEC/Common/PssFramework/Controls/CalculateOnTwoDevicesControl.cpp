@@ -196,10 +196,22 @@ void MinTwoDevicesControl::serialize(F_FILE* f)
     s.serialize(f, *this);
 }
 
+MinTwoDevicesControl::MinTwoDevicesControl(F_FILE* f)
+{
+    Serializer<MinTwoDevicesControl> s;
+    s.deserialize(f, *this);
+}
+
 void DivideTwoDevicesControl::serialize(F_FILE* f)
 {
     Serializer<DivideTwoDevicesControl> s;
     s.serialize(f, *this);
+}
+
+DivideTwoDevicesControl::DivideTwoDevicesControl(F_FILE* f)
+{
+    Serializer<DivideTwoDevicesControl> s;
+    s.deserialize(f, *this);
 }
 
 void AddTwoDevicesControl::serialize(F_FILE* f)
@@ -208,10 +220,22 @@ void AddTwoDevicesControl::serialize(F_FILE* f)
     s.serialize(f, *this);
 }
 
+AddTwoDevicesControl::AddTwoDevicesControl(F_FILE* f)
+{
+    Serializer<AddTwoDevicesControl> s;
+    s.deserialize(f, *this);
+}
+
 void MaxTwoDevicesControl::serialize(F_FILE* f)
 {
     Serializer<MaxTwoDevicesControl> s;
     s.serialize(f, *this);
+}
+
+MaxTwoDevicesControl::MaxTwoDevicesControl(F_FILE* f)
+{
+    Serializer<MaxTwoDevicesControl> s;
+    s.deserialize(f, *this);
 }
 
 void MultiplyTwoDevicesControl::serialize(F_FILE* f)
@@ -220,9 +244,21 @@ void MultiplyTwoDevicesControl::serialize(F_FILE* f)
     s.serialize(f, *this);
 }
 
+MultiplyTwoDevicesControl::MultiplyTwoDevicesControl(F_FILE* f)
+{
+    Serializer<MultiplyTwoDevicesControl> s;
+    s.deserialize(f, *this);
+}
+
 void SubtractTwoDevicesControl::serialize(F_FILE* f)
 {
     Serializer<SubtractTwoDevicesControl> s;
     s.serialize(f, *this);
+}
+
+SubtractTwoDevicesControl::SubtractTwoDevicesControl(F_FILE* f)
+{
+    Serializer<SubtractTwoDevicesControl> s;
+    s.deserialize(f, *this);
 }
 

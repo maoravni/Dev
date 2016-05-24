@@ -26,6 +26,7 @@ class ModbusInverterControl: public ControlBase
 
 public:
     ModbusInverterControl();
+    ModbusInverterControl(F_FILE* f);
     virtual ~ModbusInverterControl();
 
     bool setSetpointSnActivationDelay(float value, uint32_t sn, uint32_t activationDelay);

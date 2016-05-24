@@ -30,6 +30,7 @@ class ConcentrationControl: public ControlBase
 
 public:
     ConcentrationControl();
+    ConcentrationControl(F_FILE* f);
     virtual ~ConcentrationControl();
 
     virtual void updateNotification(ElementBase* element);

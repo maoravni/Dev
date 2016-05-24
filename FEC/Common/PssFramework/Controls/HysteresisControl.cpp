@@ -380,3 +380,10 @@ void HysteresisControl::serialize(F_FILE* f)
     Serializer<HysteresisControl> s;
     s.serialize(f, *this);
 }
+
+HysteresisControl::HysteresisControl(F_FILE* f)
+{
+    Serializer<HysteresisControl> s;
+    s.deserialize(f, *this);
+}
+

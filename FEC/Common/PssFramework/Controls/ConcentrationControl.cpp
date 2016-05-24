@@ -287,3 +287,10 @@ void ConcentrationControl::serialize(F_FILE* f)
     Serializer<ConcentrationControl> s;
     s.serialize(f, *this);
 }
+
+ConcentrationControl::ConcentrationControl(F_FILE* f)
+{
+    Serializer<ConcentrationControl> s;
+    s.deserialize(f, *this);
+}
+

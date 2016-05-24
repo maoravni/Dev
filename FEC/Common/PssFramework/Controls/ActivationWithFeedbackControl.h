@@ -167,6 +167,7 @@ class ActivationWithFeedbackControl: public ControlBase
 
 public:
     ActivationWithFeedbackControl();
+    ActivationWithFeedbackControl(F_FILE* f);
     virtual ~ActivationWithFeedbackControl();
 
     void setOutputEnableDevice(ElementBase* element);

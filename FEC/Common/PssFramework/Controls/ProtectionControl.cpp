@@ -128,3 +128,9 @@ void ProtectionControl::serialize(F_FILE* f)
     Serializer<ProtectionControl> s;
     s.serialize(f, *this);
 }
+ProtectionControl::ProtectionControl(F_FILE* f)
+{
+    Serializer<ProtectionControl> s;
+    s.deserialize(f, *this);
+}
+

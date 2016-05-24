@@ -165,3 +165,9 @@ void LiftPbOnErrorCcsGen2::serialize(F_FILE* f)
     Serializer<LiftPbOnErrorCcsGen2> s;
     s.serialize(f, *this);
 }
+LiftPbOnErrorCcsGen2::LiftPbOnErrorCcsGen2(F_FILE* f)
+{
+    Serializer<LiftPbOnErrorCcsGen2> s;
+    s.deserialize(f, *this);
+}
+

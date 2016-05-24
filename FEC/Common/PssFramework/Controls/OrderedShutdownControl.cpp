@@ -193,3 +193,10 @@ void OrderedShutdownControl::serialize(F_FILE* f)
     Serializer<OrderedShutdownControl> s;
     s.serialize(f, *this);
 }
+
+OrderedShutdownControl::OrderedShutdownControl(F_FILE* f)
+{
+    Serializer<OrderedShutdownControl> s;
+    s.deserialize(f, *this);
+}
+

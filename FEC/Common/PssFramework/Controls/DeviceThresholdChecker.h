@@ -82,6 +82,7 @@ public:
     {
 
     }
+    DeviceThresholdChecker(F_FILE* f);
 
     ElementBase* getElement()
     {

@@ -366,7 +366,7 @@ void TestTask::run()
 
     PersistencyManager::getInstance()->serializeControls();
 
-    //PersistencyManager::getInstance()->deserializeControls();
+    PersistencyManager::getInstance()->deserializeControls();
 
 #endif
 

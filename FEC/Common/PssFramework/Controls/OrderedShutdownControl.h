@@ -42,6 +42,7 @@ private:
 
 public:
     OrderedShutdownControl();
+    OrderedShutdownControl(F_FILE* f);
     virtual ~OrderedShutdownControl();
 
     virtual E_ControlType getControlType() {return E_ControlType_OrderedShutdown;}

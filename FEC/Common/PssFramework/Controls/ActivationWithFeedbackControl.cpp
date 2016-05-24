@@ -1046,3 +1046,10 @@ void ActivationWithFeedbackControl::serialize(F_FILE* f)
     Serializer<ActivationWithFeedbackControl> s;
     s.serialize(f, *this);
 }
+
+ActivationWithFeedbackControl::ActivationWithFeedbackControl(F_FILE* f)
+{
+    Serializer<ActivationWithFeedbackControl> s;
+    s.deserialize(f, *this);
+}
+
