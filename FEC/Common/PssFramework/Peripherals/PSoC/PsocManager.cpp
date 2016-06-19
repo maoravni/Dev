@@ -26,43 +26,43 @@
 
 //int lastTickCount;
 
-T_PsocHandler::T_PsocHandler()
-{
-    cableId = -1;
-//    m_psocPrimaryFunction = E_PsocPrimaryFunction_Undefined;
-    psocHandler.setPsocCommState(E_PsocCommState_Disabled);
-    reset();
-}
+//T_PsocHandler::T_PsocHandler()
+//{
+//    cableId = -1;
+////    m_psocPrimaryFunction = E_PsocPrimaryFunction_Undefined;
+//    psocHandler.setPsocCommState(E_PsocCommState_Disabled);
+//    reset();
+//}
 
-void T_PsocHandler::reset()
-{
-    temperaturePeripheral = NULL;
-    pwmPeripheral = NULL;
-    digitalOutPeripheral = NULL;
-    digitalInPeripheral = NULL;
-    analogInPeripheral = NULL;
-    analogOutPeripheral = NULL;
-    comFailures = 0;
-    spiComFailures = 0;
-    nextRequest = E_PsocRequest_ReadTemperaturePwmDi;
-    lastOutputsStatus = false;
-//    psocHandler.reset();
-}
+//void T_PsocHandler::reset()
+//{
+//    temperaturePeripheral = NULL;
+//    pwmPeripheral = NULL;
+//    digitalOutPeripheral = NULL;
+//    digitalInPeripheral = NULL;
+//    analogInPeripheral = NULL;
+//    analogOutPeripheral = NULL;
+//    comFailures = 0;
+//    spiComFailures = 0;
+//    nextRequest = E_PsocRequest_ReadTemperaturePwmDi;
+//    lastOutputsStatus = false;
+////    psocHandler.reset();
+//}
 
-void T_PsocHandler::resetPsocOutputs()
-{
-    if (psocHandler.getPsocCommState() != E_PsocCommState_Enabled)
-        return;
-
-    // reset all outputs on the PSoC:
-    psocHandler.resetOutputs();
-
-    // wait until all outputs have been written:
-//    while (psocHandler.isPendingUpdate())
-//    {
-//        vTaskDelay(10);
-//    }
-}
+//void T_PsocHandler::resetPsocOutputs()
+//{
+//    if (psocHandler.getPsocCommState() != E_PsocCommState_Enabled)
+//        return;
+//
+//    // reset all outputs on the PSoC:
+//    psocHandler.resetOutputs();
+//
+//    // wait until all outputs have been written:
+////    while (psocHandler.isPendingUpdate())
+////    {
+////        vTaskDelay(10);
+////    }
+//}
 
 PsocManager::PsocManager()
 {
@@ -80,6 +80,7 @@ PsocManager::PsocManager()
     m_totalNumberOfPsocs = Psc_GetNumberOfSlaves();
     m_isInBootloader = false;
     m_isSpiResetPending = false;
+    m_isInSerialization = false;
 
     m_lastRequest = E_PsocCommands_EmptyCommand;
     m_pBoardState = NULL;
@@ -380,7 +381,8 @@ void PsocManager::run()
     for (;;)
     {
         ITM_EVENT8(2, m_currentPsoc + 1);
-        execute(m_currentPsoc);
+        if (!m_isInSerialization)
+            execute(m_currentPsoc);
         if (advanceToNextPsoc() && m_isSpiResetPending)
             resetSpiCommunication();
         // force a task switch in case a higher priority task is required.

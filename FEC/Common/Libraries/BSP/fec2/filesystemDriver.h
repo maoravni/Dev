@@ -16,7 +16,9 @@ extern "C"
 #endif
 
 int filesystemDriver_init();
+int filesystemDriver_free();
 void filesystemDriver_printFree();
+int filesystemDriver_format();
 
 #ifdef __cplusplus
 }

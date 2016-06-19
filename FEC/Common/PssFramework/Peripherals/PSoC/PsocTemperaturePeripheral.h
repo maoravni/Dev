@@ -28,6 +28,7 @@ class PsocTemperaturePeripheral: public AnalogInputPeripheralBase, public PsocPe
 
 public:
     PsocTemperaturePeripheral();
+    PsocTemperaturePeripheral(F_FILE* f);
     virtual ~PsocTemperaturePeripheral();
 
     virtual void readInputs();

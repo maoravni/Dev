@@ -32,6 +32,7 @@ class PsocAnalogInputsPeripheral: public AnalogInputPeripheralBase, public PsocP
 
 public:
     PsocAnalogInputsPeripheral();
+    PsocAnalogInputsPeripheral(F_FILE* f);
     virtual ~PsocAnalogInputsPeripheral();
 
     virtual void readInputs();

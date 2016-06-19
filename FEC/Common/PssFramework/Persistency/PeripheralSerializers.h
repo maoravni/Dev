@@ -140,7 +140,4 @@ public:
 };
 
 
-
-
-
     #endif /* PERIPHERALSERIALIZERS_H_ */

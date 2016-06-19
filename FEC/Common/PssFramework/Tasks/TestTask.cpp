@@ -48,6 +48,9 @@
 #include <controls/ConcentrationControl.h>
 #include <filesystemdriver.h>
 #include <Persistency/PersistencyManager.h>
+#include <Peripherals/ModbusInverterSchneiderAtv32.h>
+#include <Peripherals/ModbusInverterCommanderSK.h>
+#include <Peripherals/ModbusInverterUnidriveM200.h>
 
 TestTask::TestTask()
 {
@@ -317,56 +320,48 @@ void TestTask::run()
 
 // filesystem test
 #if 1
-    int result = filesystemDriver_init();
-    int e = 1;
 
-    filesystemDriver_printFree();
+//    filesystemDriver_init();
+//    filesystemDriver_format();
+//    filesystemDriver_free();
 
-    ElementBase* element;
+//    DigitalInputsPeripheral* p = new DigitalInputsPeripheral();
+//    p->getElementByIndex(3)->setPssId(3);
+//    p->getElementByIndex(5)->setPssId(2);
+//    p->setPssId(10);
 
-    element = ElementRepository::getInstance().addElementFloat();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementI16();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementI32();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementI8();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementU16();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementU32();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addElementU8();
-    element->setPssId(e++);
+//    PeripheralRepository::getInstance().addPeripheral(p);
 
-    element = ElementRepository::getInstance().addValidationElementFloat();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementI16();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementI32();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementI8();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementU16();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementU32();
-    element->setPssId(e++);
-    element = ElementRepository::getInstance().addValidationElementU8();
-    element->setPssId(e++);
+    PscMessageHandler::getInstance()->getPsocManager()->initTemperaturePeripheralByCableId(1, 100, 100, 10, 4);
+    PscMessageHandler::getInstance()->getPsocManager()->initPwmPeripheralByCableId(1, 101, 6);
+    PscMessageHandler::getInstance()->getPsocManager()->initAnalogOutputPeripheralByCableId(1, 102, 2);
+    PscMessageHandler::getInstance()->getPsocManager()->initDigitalOutputPeripheralByCableId(1, 103, 6);
+    PscMessageHandler::getInstance()->getPsocManager()->initDigitalInputPeripheralByCableId(1, 104, 6);
+    PscMessageHandler::getInstance()->getPsocManager()->initAnalogInputPeripheralByCableId(1, 555, 200, 5, 2);
 
-    PersistencyManager::getInstance()->serializeElements();
+    VirtualPeripheral* virtPeriph = new VirtualPeripheral(E_PeripheralType_VirtualFloatPeripheral);
+    virtPeriph->getElementByIndex(0);
+    virtPeriph->getElementByIndex(1);
+    virtPeriph->getElementByIndex(2);
+    virtPeriph->getElementByIndex(3);
+    virtPeriph->getElementByIndex(4);
+    PeripheralRepository::getInstance().addPeripheral(virtPeriph);
 
-    ElementRepository::getInstance().destroyAllElements();
+    PeripheralRepository::getInstance().initDigitalOutputs(0, 12);
+    PeripheralRepository::getInstance().initSwPwmOutput(0, 12);
+    PeripheralRepository::getInstance().initDryContactOutput(0);
+    PeripheralRepository::getInstance().initDigitalInputs(0, 12);
 
-    PersistencyManager::getInstance()->deserializeElements();
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterSchneiderAtv32(2));
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterCommanderSK(3));
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterUnidriveM200(4));
+    PeripheralRepository::getInstance().addPeripheral(new Modbus6RTDPeripheral(5));
+    PeripheralRepository::getInstance().addPeripheral(new Modbus8TCPeripheral(6));
+    PeripheralRepository::getInstance().addPeripheral(new ModbusPumaPeripheral(7));
+    PeripheralRepository::getInstance().addPeripheral(new ModbusDataCardPeripheral(8));
 
-    PersistencyManager::getInstance()->serializePeripherals();
-
-    PersistencyManager::getInstance()->deserializePeripherals();
-
-    PersistencyManager::getInstance()->serializeControls();
-
-    PersistencyManager::getInstance()->deserializeControls();
+    PersistencyManager::getInstance()->serializeConfiguration();
+    PersistencyManager::getInstance()->deserializeConfiguration();
 
 #endif
 

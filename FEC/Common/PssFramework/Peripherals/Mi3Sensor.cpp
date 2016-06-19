@@ -7,6 +7,7 @@
 
 #include "Peripherals/Mi3Sensor.h"
 #include "Peripherals/Mi3I2CIrPeripheral.h"
+#include "Persistency/Mi3PeripheralSerializer.h"ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 
 #if defined STM32F4XX
 #include <stm32f4xx.h>
@@ -26,7 +27,7 @@
 //#define I2C_SPEED 10000
 //#define I2C_DUTYCYCLE  I2C_DutyCycle_16_9
 /* I2Cx Communication boards Interface */
-#define I2C1_DMA                      DMA1
+#define I2C1_DMA                      DMA1dddd
 #define I2C1_DMA_CHANNEL              DMA_Channel_1
 #define I2C1_DR_ADDRESS               ((uint32_t)0x40005410)
 #define I2C1_DMA_STREAM_TX            DMA1_Stream6
@@ -87,7 +88,7 @@ void I2C1_init(void)
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_I2C1); // SDA
 
     // configure I2C1
-    I2C_InitStruct.I2C_ClockSpeed = 50000;         // 100kHz
+    I2C_InitStruct.I2C_ClockSpeed = 10000;         // 100kHz
     I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;         // I2C mode
     I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2; // 50% duty cycle --> standard
     I2C_InitStruct.I2C_OwnAddress1 = 0x00;          // own address, not relevant in master mode
@@ -364,8 +365,15 @@ Mi3Sensor::Mi3Sensor()
     m_targTempElement = ElementRepository::getInstance().addValidationElementFloat();
     m_numberOfReadFailures = 0;
     m_i2cChannel = I2C1;
-//    m_ambTempElement = ElementRepository::getInstance().addValidationElementFloat();
+
 }
+
+Mi3Sensor::Mi3Sensor(F_FILE* f)
+{
+    Serializer<Mi3Sensor> s;
+    s.deserialize(f, *this);
+}
+
 
 SensorConfiguration::SensorConfiguration()
 {
@@ -471,8 +479,12 @@ bool Mi3Sensor::readTargetTemp()
     }
     if (m_numberOfReadFailures > 0)
     {
-        m_targTempElement->setValueValid(true);
-        m_numberOfReadFailures = 0;
+        // try to download the configuration to the sensor. If successful it means the sensor went back online.
+        if (downloadConfiguraton())
+        {
+            m_targTempElement->setValueValid(true);
+            m_numberOfReadFailures = 0;
+        }
     }
     m_targTempElement->setValue(val);
 //    taskEXIT_CRITICAL();
@@ -607,5 +619,67 @@ bool Mi3Sensor::setI2CChannel(int channelIndex)
     default:
         return false;
     }
+    return true;
+}
+
+void Mi3Sensor::setAmbientBackgroundCompensation(bool val)
+{
+    m_sensorConfiguration.m_ambientBackgroundCompensation = val;
+}
+
+void Mi3Sensor::setEmissivity(float val)
+{
+    m_sensorConfiguration.m_emissivity = val;
+}
+
+void Mi3Sensor::setTransmissivity(float val)
+{
+    m_sensorConfiguration.m_transmissivity = val;
+}
+
+void Mi3Sensor::setBottomTemp(float val)
+{
+    m_sensorConfiguration.m_bottomTemp = val;
+}
+
+void Mi3Sensor::setTopTemp(float val)
+{
+    m_sensorConfiguration.m_topTemp = val;
+}
+
+void Mi3Sensor::setGain(float val)
+{
+    m_sensorConfiguration.m_gain = val;
+}
+
+void Mi3Sensor::setOffset(float val)
+{
+    m_sensorConfiguration.m_offset = val;
+}
+
+void Mi3Sensor::setAmbientBackground(float val)
+{
+    m_sensorConfiguration.m_ambientBackground = val;
+}
+
+bool Mi3Sensor::downloadConfiguraton()
+{
+    if (!writeEmissivity(m_sensorConfiguration.m_emissivity))
+        return false;
+    if (!writeTransmissivity(m_sensorConfiguration.m_transmissivity))
+        return false;
+    if (!writeBottomTemp(m_sensorConfiguration.m_bottomTemp))
+        return false;
+    if (!writeTopTemp(m_sensorConfiguration.m_topTemp))
+        return false;
+    if (!writeGain(m_sensorConfiguration.m_gain))
+        return false;
+    if (!writeOffset(m_sensorConfiguration.m_offset))
+        return false;
+    if (!writeAmbientBackground(m_sensorConfiguration.m_ambientBackground))
+        return false;
+    if (!writeAmbientBackgroundCompensation(m_sensorConfiguration.m_ambientBackgroundCompensation))
+        return false;
+
     return true;
 }

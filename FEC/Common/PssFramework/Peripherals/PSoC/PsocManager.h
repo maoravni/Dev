@@ -22,27 +22,27 @@
 
 #define M_MAX_NUMBER_OF_PSOC 10
 
-class T_PsocHandler
-{
-public:
-//    E_PsocState state;
-    uint8_t cableId;
-//    E_PsocPrimaryFunction psocPrimaryFunction;
-    uint8_t comFailures; //!< Number of communication failures.
-    uint8_t spiComFailures;
-    PsocHandler psocHandler;
-    E_PsocRequest nextRequest;
-    bool lastOutputsStatus;
-    PsocTemperaturePeripheral* temperaturePeripheral;
-    PsocPwmOutputPeripheral* pwmPeripheral;
-    PsocAnalogOutputPeripheral* analogOutPeripheral;
-    PsocDigitalOutputPeripheral* digitalOutPeripheral;
-    PsocDigitalInputPeripheral* digitalInPeripheral;
-    PsocAnalogInputsPeripheral* analogInPeripheral;
-    T_PsocHandler();
-    void reset();
-    void resetPsocOutputs();
-};
+//class T_PsocHandler
+//{
+//public:
+////    E_PsocState state;
+//    uint8_t cableId;
+////    E_PsocPrimaryFunction psocPrimaryFunction;
+//    uint8_t comFailures; //!< Number of communication failures.
+//    uint8_t spiComFailures;
+//    PsocHandler psocHandler;
+//    E_PsocRequest nextRequest;
+//    bool lastOutputsStatus;
+//    PsocTemperaturePeripheral* temperaturePeripheral;
+//    PsocPwmOutputPeripheral* pwmPeripheral;
+//    PsocAnalogOutputPeripheral* analogOutPeripheral;
+//    PsocDigitalOutputPeripheral* digitalOutPeripheral;
+//    PsocDigitalInputPeripheral* digitalInPeripheral;
+//    PsocAnalogInputsPeripheral* analogInPeripheral;
+//    T_PsocHandler();
+//    void reset();
+//    void resetPsocOutputs();
+//};
 
 class PsocManager: public AManagedTask
 {
@@ -58,6 +58,7 @@ private:
     int m_globalSpiComFailues;
     bool m_isInBootloader;
     bool m_isSpiResetPending;
+    bool m_isInSerialization;
 
     PsocHandler m_psocHandlers[M_MAX_NUMBER_OF_PSOC];
 
@@ -105,7 +106,8 @@ public:
     bool initAnalogOutputPeripheralByCableId(int cableId, int pssId, int numberOfDevices);
     bool initDigitalOutputPeripheralByCableId(int cableId, int pssId, int numberOfDevices);
     bool initDigitalInputPeripheralByCableId(int cableId, int pssId, int numberOfDevices);
-    bool initAnalogInputPeripheralByCableId(int cableId, int pssId, int sampleInterval, int lpfWindow, int numberOfDevices);
+    bool initAnalogInputPeripheralByCableId(int cableId, int pssId, int sampleInterval, int lpfWindow,
+            int numberOfDevices);
 
     bool initTemperaturePeripheralByIndex(int index, int pssId, int sampleInterval, int lpfWindow, int numberOfDevices);
     bool initPwmPeripheralByIndex(int index, int pssId, int numberOfDevices);
@@ -160,6 +162,16 @@ public:
     void setBoardMode(E_BoardMode boardMode)
     {
         m_boardMode = boardMode;
+    }
+
+    bool isIsInSerialization() const
+    {
+        return m_isInSerialization;
+    }
+
+    void setIsInSerialization(bool isInSerialization)
+    {
+        m_isInSerialization = isInSerialization;
     }
 
 private:
@@ -244,9 +256,14 @@ private:
 
     void resetPsocOutputs(PsocHandler* psocHandler);
 
-	virtual portBASE_TYPE onCreate(const portCHAR * const pcName, unsigned portSHORT usStackDepth, unsigned portBASE_TYPE uxPriority) { return pdTRUE; }
+    virtual portBASE_TYPE onCreate(const portCHAR * const pcName, unsigned portSHORT usStackDepth,
+            unsigned portBASE_TYPE uxPriority)
+    {
+        return pdTRUE;
+    }
 
     friend class PsocAppLoader;
+    template <class T> friend class Serializer;
 };
 
 #endif /* PSOCMANAGER_H_ */

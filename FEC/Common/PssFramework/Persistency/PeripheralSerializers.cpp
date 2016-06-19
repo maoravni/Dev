@@ -38,7 +38,7 @@ void Serializer<PeripheralBase>::deserialize(F_FILE* f, PeripheralBase& p)
 //    Serializer<PeripheralBase> baseS;
 //    baseS.deserialize(f, p);
 
-    //TODO: Compare the index assigned from the repository to the one read from the file.
+//TODO: Compare the index assigned from the repository to the one read from the file.
     M_FREAD_VARIABLE(p.m_peripheralRepIndex, f);
     M_FREAD_VARIABLE(p.m_pssId, f);
     M_FREAD_VARIABLE(p.m_updateInterval, f);
@@ -82,18 +82,17 @@ void Serializer<AnalogInputPeripheral>::deserialize(F_FILE* f, AnalogInputPeriph
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
-    if (temp != p.getElementCount())
-        throw "Bad Deserialization";
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    M_FREAD_VARIABLE(temp, f);
-
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
         p.m_inputElementsArray[i] =
-                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(temp + i));
+                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
     }
 
     M_FREAD_VARIABLE(p.m_scalingA, f);
@@ -134,20 +133,22 @@ void Serializer<AnalogOutCurrentPeripheral>::deserialize(F_FILE* f, AnalogOutCur
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
     // read first element index:
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
         p.m_elementArray[i] = dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
-                temp + i));
+                firstElementIndex + i));
     }
 }
 
@@ -185,19 +186,22 @@ void Serializer<DigitalInputsPeripheral>::deserialize(F_FILE* f, DigitalInputsPe
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
     // read first element index:
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
-        p.m_elementsArray[i] = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(temp + i));
+        p.m_elementsArray[i] = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(
+                firstElementIndex + i));
     }
 }
 
@@ -237,19 +241,22 @@ void Serializer<DigitalOutputsPeripheral>::deserialize(F_FILE* f, DigitalOutputs
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
     // read first element index:
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
-        p.m_elementArray[i] = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(temp + i));
+        p.m_elementArray[i] = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(
+                firstElementIndex + i));
     }
 
     M_FREAD_VARIABLE(p.m_enabledArray, f);
@@ -281,6 +288,47 @@ void Serializer<SwPwmOutputPeripheral>::serialize(F_FILE* f, SwPwmOutputPeripher
     M_FWRITE_VARIABLE(p.m_channelStateArray, f);
 
     updateRecordSize(f);
+}
+
+void Serializer<SwPwmOutputPeripheral>::deserialize(F_FILE* f, SwPwmOutputPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+//    uint16_t temp;
+
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    // TODO: check that the read number of elements is the same as the peripheral.
+
+    // read first element index:
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_dutyCycleElementArray[i] =
+                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
+    }
+
+    M_FREAD_VARIABLE(p.m_channelsEnabled, f);
+    M_FREAD_VARIABLE(p.m_channelStateArray, f);
+
+    // reset the currentCounter and dutyCycleLength:
+    for (int i = 0; i < p.getElementCount(); ++i)
+    {
+        p.m_channelStateArray[i].currentCounter = 0;
+        p.m_channelStateArray[i].dutyCycleLength = 0;
+    }
 }
 
 void Serializer<DryContactDigitalOutput>::serialize(F_FILE* f, DryContactDigitalOutput& p)
@@ -317,17 +365,19 @@ void Serializer<DryContactDigitalOutput>::deserialize(F_FILE* f, DryContactDigit
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
     // read first element index:
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    p.m_element = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(temp));
+    p.m_element = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(firstElementIndex));
 }
 
 void Serializer<InternalTemperatureSensors>::serialize(F_FILE* f, InternalTemperatureSensors& p)
@@ -367,20 +417,23 @@ void Serializer<InternalTemperatureSensors>::deserialize(F_FILE* f, InternalTemp
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+// read the number of elements:
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
     // read first element index:
-    M_FREAD_VARIABLE(temp, f);
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
 
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
         p.m_temperatureElementsArray[i] =
-                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(temp + i));
+                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
     }
 
     M_FREAD_VARIABLE(p.m_aCoeff, f);
@@ -427,23 +480,29 @@ void Serializer<VirtualPeripheral>::deserialize(F_FILE* f, VirtualPeripheral& p)
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+//    uint16_t temp;
 
-    // read the peripheral type:
-    M_FREAD_VARIABLE(temp, f);
+// read the peripheral type:
+    uint16_t elementCount;
+    uint16_t firstElementIndex;
+    uint16_t peripheralType;
+    M_FREAD_VARIABLE(peripheralType, f);
 
-    p.m_peripheralType = (E_PeripheralType)temp;
+    p.m_peripheralType = (E_PeripheralType) peripheralType;
 
     // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+    M_FREAD_VARIABLE(elementCount, f);
 
     // TODO: check that the read number of elements is the same as the peripheral.
 
-    // read first element index:
-    M_FREAD_VARIABLE(temp, f);
-
-    for (int i = 0; i < p.getElementCount(); ++i)
+    for (int i = 0; i < elementCount; ++i)
     {
-        p.m_elementList[i] = ElementRepository::getInstance().getElementByIndex(temp + i);
+        if (p.m_peripheralType == E_PeripheralType_VirtualFloatPeripheral)
+        {
+            ValidationElementFloat *e;
+            M_FREAD_AND_REFERENCE_ELEMENT_WITH_CAST(e, ValidationElementFloat, f);
+            p.m_elementList.push_back(e);
+        }
+        //p.m_elementList[i] = ElementRepository::getInstance().getElementByIndex(firstElementIndex + i);
     }
 }

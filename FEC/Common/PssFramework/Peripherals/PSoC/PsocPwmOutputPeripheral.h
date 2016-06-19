@@ -36,6 +36,7 @@ class PsocPwmOutputPeripheral: public OutputPeripheralBase, public PsocPeriphera
 
 public:
     PsocPwmOutputPeripheral();
+    PsocPwmOutputPeripheral(F_FILE* f);
     virtual ~PsocPwmOutputPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_HwPWM; }

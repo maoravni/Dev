@@ -131,24 +131,7 @@ bool Mi3I2CIrPeripheral::configureSensor(int address, SensorConfiguration& senso
     if (sensor == NULL)
         return false;
 
-    if (!sensor->writeEmissivity(sensorConfig.m_emissivity))
-        return false;
-    if (!sensor->writeTransmissivity(sensorConfig.m_transmissivity))
-        return false;
-    if (!sensor->writeBottomTemp(sensorConfig.m_bottomTemp))
-        return false;
-    if (!sensor->writeTopTemp(sensorConfig.m_topTemp))
-        return false;
-    if (!sensor->writeGain(sensorConfig.m_gain))
-        return false;
-    if (!sensor->writeOffset(sensorConfig.m_offset))
-        return false;
-    if (!sensor->writeAmbientBackground(sensorConfig.m_ambientBackground))
-        return false;
-    if (!sensor->writeAmbientBackgroundCompensation(sensorConfig.m_ambientBackgroundCompensation))
-        return false;
-
-    return true;
+    return sensor->downloadConfiguraton();
 }
 
 void Mi3I2CIrPeripheral::run()

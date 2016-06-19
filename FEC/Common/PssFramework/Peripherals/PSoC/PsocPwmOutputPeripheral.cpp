@@ -169,3 +169,10 @@ void PsocPwmOutputPeripheral::serialize(F_FILE* f)
     Serializer<PsocPwmOutputPeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocPwmOutputPeripheral::PsocPwmOutputPeripheral(F_FILE* f)
+{
+    Serializer<PsocPwmOutputPeripheral> s;
+    s.deserialize(f, *this);
+}
+

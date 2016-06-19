@@ -14,6 +14,8 @@
 #include "PeripheralRepositorySerializer.h"
 #include "ControlRepositorySerializer.h"
 #include <logger.h>
+#include <filesystemDriver.h>
+#include <PscServer/PscMessageHandler.h>
 
 PersistencyManager* PersistencyManager::p_instance = NULL;
 
@@ -26,6 +28,55 @@ PersistencyManager::PersistencyManager()
 PersistencyManager::~PersistencyManager()
 {
     // TODO Auto-generated destructor stub
+}
+
+void PersistencyManager::serializeConfiguration()
+{
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
+
+    int result = filesystemDriver_init();
+    int e = 1;
+
+    filesystemDriver_printFree();
+
+    serializeElements();
+    serializePeripherals();
+
+    filesystemDriver_free();
+
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
+}
+
+void PersistencyManager::deserializeConfiguration()
+{
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
+
+    int result = filesystemDriver_init();
+    int e = 1;
+
+    filesystemDriver_printFree();
+
+    PeripheralRepository::getInstance().destroyAllPeripherals();
+    ElementRepository::getInstance().destroyAllElements();
+
+    try
+    {
+        deserializeElements();
+    } catch (char const *msg)
+    {
+        printf("deserializeElements exception:", msg, "\n");
+    }
+    try
+    {
+        deserializePeripherals();
+    } catch (char const *msg)
+    {
+        printf("deserializePeripherals exception:", msg, "\n");
+    }
+
+    filesystemDriver_free();
+
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
 }
 
 void PersistencyManager::serializeElements()
@@ -44,7 +95,13 @@ void PersistencyManager::deserializeElements()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements deserialization");
     F_FILE* f = f_open("elements", "r");
     Serializer<ElementRepository> s;
-    s.deserialize(f, ElementRepository::getInstance());
+    try
+    {
+        s.deserialize(f, ElementRepository::getInstance());
+    } catch (char const *msg)
+    {
+        printf("deserializeElements exception:", msg, "\n");
+    }
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Elements deserialization ended");
 //    return result;
@@ -66,7 +123,13 @@ void PersistencyManager::deserializePeripherals()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals deserialization");
     F_FILE* f = f_open("periphs", "r");
     Serializer<PeripheralRepository> s;
-    s.deserialize(f, PeripheralRepository::getInstance());
+    try
+    {
+        s.deserialize(f, PeripheralRepository::getInstance());
+    } catch (char const *msg)
+    {
+        printf("deserializePeripherals exception:", msg, "\n");
+    }
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals deserialization ended");
 //    return result;

@@ -161,6 +161,10 @@ void ModbusInverterPeripheralBase::startRecovery()
     setupInverter();
     resetInverter();
 }
+
+ModbusInverterPeripheralBase::ModbusInverterPeripheralBase(F_FILE* f) : ModbusInputOutputPeripheralBase(0)
+{
+}
 //void ModbusInverterPeripheralBase::setInverterType(E_ModbusInverterType inverterType)
 //{
 //    m_inverterType = inverterType;

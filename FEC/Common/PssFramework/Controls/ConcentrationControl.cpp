@@ -65,19 +65,19 @@ void ConcentrationControl::executeLevelControl()
             m_conditionerValve->setValue((uint32_t) 0);
             m_waterValve->setValue((uint32_t) 0);
         }
-        else
+    }
+    else
+    {
+        if (m_tankLevel->getValueF() < m_liquidLevelLowSetpoint->getValueF())
         {
-            if (m_tankLevel->getValueF() < m_liquidLevelLowSetpoint->getValueF())
+            m_fillState = true;
+            if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
             {
-                m_fillState = true;
-                if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
-                {
-                    m_conditionerValve->setValue(m_conditionerValveActivationValue);
-                }
-                else
-                {
-                    m_waterValve->setValue(m_waterValveActivationValue);
-                }
+                m_conditionerValve->setValue(m_conditionerValveActivationValue);
+            }
+            else
+            {
+                m_waterValve->setValue(m_waterValveActivationValue);
             }
         }
     }
@@ -112,11 +112,11 @@ void ConcentrationControl::executeLimitsCheck(ValidationElementFloat* checkingEl
 
 void ConcentrationControl::execute()
 {
-    float tankLevel = m_tankLevel->getValueF();
-    float concentration = m_concentration->getValueF();
-
     if (m_timeoutExpired = false)
         return;
+
+    float tankLevel = m_tankLevel->getValueF();
+    float concentration = m_concentration->getValueF();
 
     executeLevelControl();
     switch (m_controlState)

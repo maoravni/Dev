@@ -26,6 +26,7 @@ class PsocDigitalOutputPeripheral: public OutputPeripheralBase, public PsocPerip
 
 public:
     PsocDigitalOutputPeripheral();
+    PsocDigitalOutputPeripheral(F_FILE* f);
     virtual ~PsocDigitalOutputPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_HwPWM; }

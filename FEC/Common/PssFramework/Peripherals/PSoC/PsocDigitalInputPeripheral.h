@@ -26,6 +26,7 @@ class PsocDigitalInputPeripheral: public InputPeripheralBase, public PsocPeriphe
 
 public:
     PsocDigitalInputPeripheral();
+    PsocDigitalInputPeripheral(F_FILE* f);
     virtual ~PsocDigitalInputPeripheral();
 
     virtual void readInputs();

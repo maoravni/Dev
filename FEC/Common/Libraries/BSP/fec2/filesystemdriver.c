@@ -21,10 +21,22 @@ int filesystemDriver_init()
     return result;
 }
 
+int filesystemDriver_free()
+{
+    return f_delvolume();
+}
+
 void filesystemDriver_printFree()
 {
     F_SPACE space;
     fn_getfreespace(&space);
     printf("total %d free %d used %d bad %d totalH %d freeH %d usedH %d badH %d\n", space.total, space.free, space.used,
             space.bad, space.total_high, space.free_high, space.used_high, space.bad_high);
+}
+
+int filesystemDriver_format()
+{
+    int result;
+    result = f_format(F_FAT12_MEDIA);
+    return result;
 }

@@ -29,6 +29,10 @@ public:
         return p_instance;
     }
 
+    void serializeConfiguration();
+    void deserializeConfiguration();
+
+private:
     void serializeElements();
     void deserializeElements();
 

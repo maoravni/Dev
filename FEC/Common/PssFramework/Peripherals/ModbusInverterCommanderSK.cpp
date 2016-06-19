@@ -171,7 +171,7 @@ void ModbusInverterCommanderSK::serialize(F_FILE* f)
     s.serialize(f, *this);
 }
 
-ModbusInverterCommanderSK::ModbusInverterCommanderSK(F_FILE* f) : ModbusInverterPeripheralBase(0)
+ModbusInverterCommanderSK::ModbusInverterCommanderSK(F_FILE* f) : ModbusInverterPeripheralBase(f)
 {
     Serializer<ModbusInverterCommanderSK> s;
     s.deserialize(f, *this);

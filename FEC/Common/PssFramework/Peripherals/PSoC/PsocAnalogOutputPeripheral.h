@@ -26,6 +26,7 @@ class PsocAnalogOutputPeripheral: public OutputPeripheralBase, public PsocPeriph
 
 public:
     PsocAnalogOutputPeripheral();
+    PsocAnalogOutputPeripheral(F_FILE* f);
     virtual ~PsocAnalogOutputPeripheral();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_AO; }

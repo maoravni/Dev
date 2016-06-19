@@ -107,3 +107,10 @@ void PsocAnalogOutputPeripheral::serialize(F_FILE* f)
     Serializer<PsocAnalogOutputPeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral(F_FILE* f)
+{
+    Serializer<PsocAnalogOutputPeripheral> s;
+    s.deserialize(f, *this);
+}
+

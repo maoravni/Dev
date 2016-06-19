@@ -6,6 +6,7 @@
  */
 
 #include <Persistency/PsocPeripheralSerializers.h>
+#include <PscServer/PscMessageHandler.h>
 
 void Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInputsPeripheral& p)
 {
@@ -39,6 +40,46 @@ void Serializer<PsocAnalogInputsPeripheral>::serialize(F_FILE* f, PsocAnalogInpu
     updateRecordSize(f);
 }
 
+void Serializer<PsocAnalogInputsPeripheral>::deserialize(F_FILE* f, PsocAnalogInputsPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setAnalogInPeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_analogElementsArray[i] =
+                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
+    }
+
+    M_FREAD_VARIABLE(p.m_aCoeff, f);
+    M_FREAD_VARIABLE(p.m_bCoeff, f);
+    M_FREAD_VARIABLE(p.m_filterSettleCounts, f);
+    M_FREAD_VARIABLE(p.m_lpfCoeff, f);
+}
+
 void Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutputPeripheral& p)
 {
     storeStartPosition(f);
@@ -63,6 +104,40 @@ void Serializer<PsocAnalogOutputPeripheral>::serialize(F_FILE* f, PsocAnalogOutp
     M_FWRITE_VARIABLE(temp, f);
 
     updateRecordSize(f);
+}
+
+void Serializer<PsocAnalogOutputPeripheral>::deserialize(F_FILE* f, PsocAnalogOutputPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setAnalogOutPeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_elementArray[i] = dynamic_cast<ValidationElementU8*>(ElementRepository::getInstance().getElementByIndex(
+                firstElementIndex + i));
+    }
 }
 
 void Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInputPeripheral& p)
@@ -91,6 +166,40 @@ void Serializer<PsocDigitalInputPeripheral>::serialize(F_FILE* f, PsocDigitalInp
     updateRecordSize(f);
 }
 
+void Serializer<PsocDigitalInputPeripheral>::deserialize(F_FILE* f, PsocDigitalInputPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setDigitalInPeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_inputElementsArray[i] = dynamic_cast<ElementU8*>(ElementRepository::getInstance().getElementByIndex(
+                firstElementIndex + i));
+    }
+}
+
 void Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOutputPeripheral& p)
 {
     storeStartPosition(f);
@@ -115,6 +224,41 @@ void Serializer<PsocDigitalOutputPeripheral>::serialize(F_FILE* f, PsocDigitalOu
     M_FWRITE_VARIABLE(temp, f);
 
     updateRecordSize(f);
+}
+
+void Serializer<PsocDigitalOutputPeripheral>::deserialize(F_FILE* f, PsocDigitalOutputPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setDigitalOutPeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_outputElementArray[i] =
+                dynamic_cast<ValidationElementU8*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
+    }
 }
 
 void Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperaturePeripheral& p)
@@ -149,6 +293,47 @@ void Serializer<PsocTemperaturePeripheral>::serialize(F_FILE* f, PsocTemperature
     updateRecordSize(f);
 }
 
+void Serializer<PsocTemperaturePeripheral>::deserialize(F_FILE* f, PsocTemperaturePeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setTemperaturePeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_temperatureElementsArray[i] =
+                dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                        firstElementIndex + i));
+    }
+
+    M_FREAD_VARIABLE(p.m_aCoeff, f);
+    M_FREAD_VARIABLE(p.m_bCoeff, f);
+    M_FREAD_VARIABLE(p.m_hardLimit, f);
+    M_FREAD_VARIABLE(p.m_sensorType, f);
+    M_FREAD_VARIABLE(p.m_lpfCoeff, f);
+}
+
 void Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPeripheral& p)
 {
     storeStartPosition(f);
@@ -178,3 +363,40 @@ void Serializer<PsocPwmOutputPeripheral>::serialize(F_FILE* f, PsocPwmOutputPeri
     updateRecordSize(f);
 }
 
+void Serializer<PsocPwmOutputPeripheral>::deserialize(F_FILE* f, PsocPwmOutputPeripheral& p)
+{
+    deserializeRecordSize(f);
+
+    deserializeClassType(f);
+
+    deserializeVersion(f);
+
+    Serializer<PeripheralBase> baseS;
+    baseS.deserialize(f, p);
+
+    uint16_t cableId;
+    M_FREAD_VARIABLE(cableId, f);
+
+    PsocHandler* psocHandler = PscMessageHandler::getInstance()->getPsocManager()->getPsocHandlerByCableId(cableId);
+    if (psocHandler == NULL)
+        throw "CableId Not Found";
+
+    p.m_psocHandler = psocHandler;
+    psocHandler->setPwmPeripheral(&p);
+
+    uint16_t elementCount;
+    M_FREAD_VARIABLE(elementCount, f);
+
+    uint16_t firstElementIndex;
+    M_FREAD_VARIABLE(firstElementIndex, f);
+
+    for (int i = 0; i < elementCount; ++i)
+    {
+        p.m_dutyCycleElementArray[i] = dynamic_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByIndex(
+                firstElementIndex + i));
+    }
+
+    M_FREAD_VARIABLE(p.m_pwmChannelType, f);
+    M_FREAD_VARIABLE(p.m_pwmChannelRampParameters, f);
+
+}

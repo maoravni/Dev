@@ -30,29 +30,11 @@
 #include <Controls/ProtectionProportionalChecker.h>
 #include <Controls/ControlRepository.h>
 
-#define M_FREAD_AND_REFERENCE_ELEMENT(element, file) \
-    { \
-        uint16_t temp; \
-        M_FREAD_VARIABLE(temp, file); \
-        element = ElementRepository::getInstance().getElementByPssId(temp); \
-        if (element == NULL) \
-            throw "Element not found"; \
-    }
-
 #define M_FREAD_AND_REFERENCE_CONTROL(element, file) \
     { \
         uint16_t temp; \
         M_FREAD_VARIABLE(temp, file); \
         element = ControlRepository::getInstance().getControlByPssId(temp); \
-        if (element == NULL) \
-            throw "Element not found"; \
-    }
-
-#define M_FREAD_AND_REFERENCE_ELEMENT_WITH_CAST(element, castTo, file) \
-    { \
-        uint16_t temp; \
-        M_FREAD_VARIABLE(temp, file); \
-        element = dynamic_cast<castTo*>(ElementRepository::getInstance().getElementByPssId(temp)); \
         if (element == NULL) \
             throw "Element not found"; \
     }

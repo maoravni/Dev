@@ -249,19 +249,19 @@ void DMA1_Stream5_IRQHandler(void)
 }
 
 /*-------- Tx DMA TC Interrupt --------*/
-void DMA1_Stream6_IRQHandler(void)
-{
-    // Disable DMA RX Channel
-    DMA_Cmd(I2C1_DMA_STREAM_TX, DISABLE);
-    // Disable I2C DMA request
-    I2C_DMACmd(I2C1, DISABLE);
-    // Clear any pending flag on Rx Stream
-    DMA_ClearFlag(I2C1_DMA_STREAM_TX,
-            I2C1_TX_DMA_TCFLAG | I2C1_TX_DMA_FEIFLAG | I2C1_TX_DMA_DMEIFLAG | I2C1_TX_DMA_TEIFLAG
-                    | I2C1_TX_DMA_HTIFLAG );
-    I2C1 ->CR1 |= I2C_CR1_STOP;
-//    g_I2C_Tx_Process_Flag = 0;
-}
+//void DMA1_Stream6_IRQHandler(void)
+//{
+//    // Disable DMA RX Channel
+//    DMA_Cmd(I2C1_DMA_STREAM_TX, DISABLE);
+//    // Disable I2C DMA request
+//    I2C_DMACmd(I2C1, DISABLE);
+//    // Clear any pending flag on Rx Stream
+//    DMA_ClearFlag(I2C1_DMA_STREAM_TX,
+//            I2C1_TX_DMA_TCFLAG | I2C1_TX_DMA_FEIFLAG | I2C1_TX_DMA_DMEIFLAG | I2C1_TX_DMA_TEIFLAG
+//                    | I2C1_TX_DMA_HTIFLAG );
+//    I2C1 ->CR1 |= I2C_CR1_STOP;
+////    g_I2C_Tx_Process_Flag = 0;
+//}
 
 /*-------- I2C Event Interrupt --------*/
 void I2C1_EV_IRQHandler(void)

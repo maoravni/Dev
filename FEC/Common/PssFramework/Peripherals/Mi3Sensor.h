@@ -108,8 +108,9 @@ class Mi3Sensor
 {
 private:
     ValidationElementFloat* m_targTempElement;
-//    ValidationElementFloat* m_ambTempElement;
     uint8_t m_address;
+
+    SensorConfiguration m_sensorConfiguration;
 
     uint8_t m_status;
     uint8_t m_numberOfReadFailures;
@@ -118,19 +119,22 @@ private:
 
 public:
     Mi3Sensor();
+    Mi3Sensor(F_FILE* f);
 
     void setTargTempElementPssId(int pssId);
 
     bool readTargetTemp();
     bool readStatus();
-    bool writeAmbientBackgroundCompensation(bool val);
-    bool writeEmissivity(float val);
-    bool writeTransmissivity(float val);
-    bool writeBottomTemp(float val);
-    bool writeTopTemp(float val);
-    bool writeGain(float val);
-    bool writeOffset(float val);
-    bool writeAmbientBackground(float val);
+
+    void setAmbientBackgroundCompensation(bool val);
+    void setEmissivity(float val);
+    void setTransmissivity(float val);
+    void setBottomTemp(float val);
+    void setTopTemp(float val);
+    void setGain(float val);
+    void setOffset(float val);
+    void setAmbientBackground(float val);
+    bool downloadConfiguraton();
 
     uint8_t getAddress() const
     {
@@ -164,6 +168,15 @@ private:
     uint8_t write(uint8_t reg, uint32_t &data);
     uint8_t write(uint8_t reg, int32_t &data);
     uint8_t write(uint8_t reg, uint8_t* data);
+
+    bool writeAmbientBackgroundCompensation(bool val);
+    bool writeEmissivity(float val);
+    bool writeTransmissivity(float val);
+    bool writeBottomTemp(float val);
+    bool writeTopTemp(float val);
+    bool writeGain(float val);
+    bool writeOffset(float val);
+    bool writeAmbientBackground(float val);
 
     template <class T> friend class Serializer;
 

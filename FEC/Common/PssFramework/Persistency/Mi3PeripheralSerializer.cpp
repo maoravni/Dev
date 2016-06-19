@@ -49,20 +49,16 @@ void Serializer<Mi3I2CIrPeripheral>::deserialize(F_FILE* f, Mi3I2CIrPeripheral& 
     Serializer<PeripheralBase> baseS;
     baseS.deserialize(f, p);
 
-    uint16_t temp;
+    uint16_t numberOfSensors;
 
     // read the number of elements:
-    M_FREAD_VARIABLE(temp, f);
+    M_FREAD_VARIABLE(numberOfSensors, f);
 
-    // TODO: check that the read number of elements is the same as the peripheral.
-
-    // read first element index:
-    M_FREAD_VARIABLE(temp, f);
-
-    Serializer<Mi3Sensor> sensorSerializer;
-
-    // TODO: Deserialize Mi3 Sensors.
-
+    for (int i = 0; i < numberOfSensors; ++i)
+    {
+        Mi3Sensor* mi3Sensor = new Mi3Sensor(f);
+        p.m_sensorList.push_back(mi3Sensor);
+    }
 }
 
 void Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
@@ -77,6 +73,19 @@ void Serializer<Mi3Sensor>::serialize(F_FILE* f, Mi3Sensor& s)
     M_FWRITE_VARIABLE(temp, f);
     M_FWRITE_VARIABLE(s.m_address, f);
 
+    M_FWRITE_VARIABLE(s.m_sensorConfiguration, f);
+
     // TODO: Serialize Mi3 sensor configuration.
     updateRecordSize(f);
+}
+
+void Serializer<Mi3Sensor>::deserialize(F_FILE* f, Mi3Sensor& s)
+{
+    deserializeRecordSize(f);
+    deserializeClassType(f);
+    deserializeVersion(f);
+
+    M_FREAD_AND_REFERENCE_ELEMENT_WITH_CAST(s.m_targTempElement, ValidationElementFloat, f);
+    M_FREAD_VARIABLE(s.m_address, f);
+    M_FREAD_VARIABLE(s.m_sensorConfiguration, f);
 }

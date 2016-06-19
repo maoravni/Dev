@@ -229,7 +229,7 @@ void ModbusInverterUnidriveM200::setupInverterMotorNominalRPM(float value)
 {
 }
 
-ModbusInverterUnidriveM200::ModbusInverterUnidriveM200(F_FILE* f) : ModbusInverterPeripheralBase(0)
+ModbusInverterUnidriveM200::ModbusInverterUnidriveM200(F_FILE* f) : ModbusInverterPeripheralBase(f)
 {
     Serializer<ModbusInverterUnidriveM200> s;
     s.deserialize(f, *this);

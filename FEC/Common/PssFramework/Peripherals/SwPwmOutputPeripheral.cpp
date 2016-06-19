@@ -265,6 +265,6 @@ void SwPwmOutputPeripheral::serialize(F_FILE* f)
 SwPwmOutputPeripheral::SwPwmOutputPeripheral(F_FILE* f)
 {
     Serializer<SwPwmOutputPeripheral> s;
-    s.serialize(f, *this);
+    s.deserialize(f, *this);
 }
 

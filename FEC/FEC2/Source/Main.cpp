@@ -383,14 +383,6 @@ template<> void templateTest(unsigned int uuu)
 
 int main(int ac, char* av[])
 {
-
-    int iii;
-    unsigned int uuu;
-    templateTest(iii);
-    templateTest(uuu);
-    char ccc;
-    //templateTest(ccc);
-
 #ifdef WIN32
     optionCount = ac;
     optionArray = av;

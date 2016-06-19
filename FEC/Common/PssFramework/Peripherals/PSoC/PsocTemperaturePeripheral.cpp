@@ -155,3 +155,10 @@ void PsocTemperaturePeripheral::serialize(F_FILE* f)
     Serializer<PsocTemperaturePeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocTemperaturePeripheral::PsocTemperaturePeripheral(F_FILE* f)
+{
+    Serializer<PsocTemperaturePeripheral> s;
+    s.deserialize(f, *this);
+}
+

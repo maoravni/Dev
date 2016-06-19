@@ -62,7 +62,10 @@ static char in_use = 0;
  ***************************************************************************/
 static int eeprom_readsector(F_DRIVER * driver, void * data, unsigned long sector)
 {
-    eeprom_rd_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+//    printf("EEPROM Reading sector %x\n", sector);
+    //uint32_t result = eeprom_read_buffer_sequential(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+    I2C1_BufferRead(data, MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE);
+    //eeprom_rd_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
     return 0;
 }
 
@@ -71,7 +74,9 @@ static int eeprom_readsector(F_DRIVER * driver, void * data, unsigned long secto
  ***************************************************************************/
 static int eeprom_writesector(F_DRIVER * driver, void * data, unsigned long sector)
 {
-    eeprom_wr_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+//    printf("EEPROM Writing sector %x\n", sector);
+    //eeprom_wr_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+    I2C1_BufferWrite(data, MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE);
     return 0;
 }
 

@@ -41,6 +41,7 @@ protected:
 
 public:
     ModbusInverterPeripheralBase(uint8_t slaveId);
+    ModbusInverterPeripheralBase(F_FILE* f);
     virtual ~ModbusInverterPeripheralBase();
 
     virtual E_PeripheralType getPeripheralType() {return E_PeripheralType_Inverter;}

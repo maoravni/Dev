@@ -406,7 +406,7 @@ void ModbusInverterSchneiderAtv32::serialize(F_FILE* f)
     s.serialize(f, *this);
 }
 
-ModbusInverterSchneiderAtv32::ModbusInverterSchneiderAtv32(F_FILE* f) : ModbusInverterPeripheralBase(0)
+ModbusInverterSchneiderAtv32::ModbusInverterSchneiderAtv32(F_FILE* f) : ModbusInverterPeripheralBase(f)
 {
     Serializer<ModbusInverterSchneiderAtv32> s;
     s.deserialize(f, *this);

@@ -60,6 +60,9 @@ void Serializer<ModbusInverterPeripheralBase>::deserialize(F_FILE* f, ModbusInve
     Serializer<ModbusPeripheralBase> baseS;
     baseS.deserialize(f, p);
 
+    Serializer<PeripheralBase> pbS;
+    pbS.deserialize(f,
+            *(dynamic_cast<PeripheralBase*>(dynamic_cast<InputPeripheralBase*>(dynamic_cast<InputOutputPeripheralBase*>(dynamic_cast<ModbusInputOutputPeripheralBase*>(&p))))));
     uint16_t temp;
 
     // read the index of the output frequency.

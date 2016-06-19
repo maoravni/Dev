@@ -72,3 +72,10 @@ void PsocDigitalInputPeripheral::serialize(F_FILE* f)
     Serializer<PsocDigitalInputPeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocDigitalInputPeripheral::PsocDigitalInputPeripheral(F_FILE* f)
+{
+    Serializer<PsocDigitalInputPeripheral> s;
+    s.deserialize(f, *this);
+}
+

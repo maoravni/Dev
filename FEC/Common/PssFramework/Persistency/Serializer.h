@@ -23,9 +23,26 @@ struct EntityMapRecord
 
 typedef std::vector<EntityMapRecord> T_EntityMapRecordVector;
 
-#define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
-#define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) throw "File operation Failed"
-#define M_FREAD_AND_REFERENCE_ELEMENT
+#define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) throw __FILE__, __LINE__,"File operation Failed"
+#define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) throw __FILE__, __LINE__,"File operation Failed"
+#define M_FREAD_AND_REFERENCE_ELEMENT(element, file) \
+    { \
+        uint16_t temp; \
+        M_FREAD_VARIABLE(temp, file); \
+        element = ElementRepository::getInstance().getElementByIndex(temp); \
+        if (element == NULL) \
+            throw __FILE__, __LINE__,"Element not found"; \
+    }
+#define M_FREAD_AND_REFERENCE_ELEMENT_WITH_CAST(element, castTo, file) \
+    { \
+        uint16_t temp; \
+        M_FREAD_VARIABLE(temp, file); \
+        element = dynamic_cast<castTo*>(ElementRepository::getInstance().getElementByIndex(temp)); \
+        if (element == NULL) \
+            throw __FILE__, __LINE__,"Element not found"; \
+    }
+
+
 
 class SerializerBase
 {

@@ -112,3 +112,10 @@ void PsocDigitalOutputPeripheral::serialize(F_FILE* f)
     Serializer<PsocDigitalOutputPeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocDigitalOutputPeripheral::PsocDigitalOutputPeripheral(F_FILE* f)
+{
+    Serializer<PsocDigitalOutputPeripheral> s;
+    s.deserialize(f, *this);
+}
+

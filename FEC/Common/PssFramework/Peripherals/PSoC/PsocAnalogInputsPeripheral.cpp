@@ -212,3 +212,10 @@ void PsocAnalogInputsPeripheral::serialize(F_FILE* f)
     Serializer<PsocAnalogInputsPeripheral> s;
     s.serialize(f, *this);
 }
+
+PsocAnalogInputsPeripheral::PsocAnalogInputsPeripheral(F_FILE* f)
+{
+    Serializer<PsocAnalogInputsPeripheral> s;
+    s.deserialize(f, *this);
+}
+

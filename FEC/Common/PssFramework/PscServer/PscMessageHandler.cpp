@@ -1447,14 +1447,14 @@ void PscMessageHandler::MessageSetMi3IrDeviceConfigHandler(unsigned long param)
             payload->aCoff = 1;
             payload->bCoff = 0;
         }
-        mi3Sensor->writeGain(payload->aCoff);
-        mi3Sensor->writeOffset(payload->bCoff);
-        mi3Sensor->writeAmbientBackground(payload->ambientBackground);
-        mi3Sensor->writeAmbientBackgroundCompensation(payload->ambientBackgroundCompensation);
-        mi3Sensor->writeBottomTemp(payload->bottomTemp);
-        mi3Sensor->writeTopTemp(payload->topTemp);
-        mi3Sensor->writeEmissivity(payload->emissivity);
-        mi3Sensor->writeTransmissivity(payload->transmissivity);
+        mi3Sensor->setGain(payload->aCoff);
+        mi3Sensor->setOffset(payload->bCoff);
+        mi3Sensor->setAmbientBackground(payload->ambientBackground);
+        mi3Sensor->setAmbientBackgroundCompensation(payload->ambientBackgroundCompensation);
+        mi3Sensor->setBottomTemp(payload->bottomTemp);
+        mi3Sensor->setTopTemp(payload->topTemp);
+        mi3Sensor->setEmissivity(payload->emissivity);
+        mi3Sensor->setTransmissivity(payload->transmissivity);
     }
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
 #else
