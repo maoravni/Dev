@@ -10,7 +10,9 @@
 
 #include <stdint.h>
 #include <cybootloaderutils/cybtldr_parse.h>
+#ifndef FEC_BOOTLOADER
 #include <Peripherals/PSoC/PsocManager.h>
+#endif
 
 using namespace std;
 
@@ -78,6 +80,7 @@ struct FlashRowHeader
     unsigned char checksum;
 };
 
+#ifndef FEC_BOOTLOADER
 class PsocAppLoader : public AppLoaderBase
 {
 private:
@@ -106,4 +109,6 @@ public:
 
     friend class TestTask;
 };
+#endif
+
 #endif /* APPLOADER_H_ */

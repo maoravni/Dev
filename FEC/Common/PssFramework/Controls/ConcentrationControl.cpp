@@ -61,6 +61,7 @@ void ConcentrationControl::executeLevelControl()
     {
         if (m_tankLevel->getValueF() > m_liquidLevelHighSetpoint)
         {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Stopped Fill");
             m_fillState = false;
             m_conditionerValve->setValue((uint32_t) 0);
             m_waterValve->setValue((uint32_t) 0);
@@ -73,10 +74,12 @@ void ConcentrationControl::executeLevelControl()
             m_fillState = true;
             if (m_concentration->getValueF() < m_concentrationLowSetpoint->getValueF())
             {
+                M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Started Filling Conditioner");
                 m_conditionerValve->setValue(m_conditionerValveActivationValue);
             }
             else
             {
+                M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Started Filling Water");
                 m_waterValve->setValue(m_waterValveActivationValue);
             }
         }

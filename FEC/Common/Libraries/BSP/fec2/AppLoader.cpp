@@ -102,6 +102,7 @@ bool StAppLoader::endAppLoad()
     }
 }
 
+#ifndef FEC_BOOTLOADER
 PsocAppLoader::PsocAppLoader(PsocManager* psocManager) :
         m_pPsocManager(psocManager), m_chksumtype(0), m_siliconId(0), m_siliconRev(0), m_isFirstLine(1), m_reachedEol(
                 0), m_currentBufferIndex(0)
@@ -405,4 +406,5 @@ int PsocAppLoader::writeRowDataFromFlashToPSoC()
 
     return err;
 }
+#endif
 
