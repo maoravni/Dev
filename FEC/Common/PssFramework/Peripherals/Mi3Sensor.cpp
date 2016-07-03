@@ -7,7 +7,7 @@
 
 #include "Peripherals/Mi3Sensor.h"
 #include "Peripherals/Mi3I2CIrPeripheral.h"
-#include "Persistency/Mi3PeripheralSerializer.h"ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+#include "Persistency/Mi3PeripheralSerializer.h"
 
 #if defined STM32F4XX
 #include <stm32f4xx.h>
