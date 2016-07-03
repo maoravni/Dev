@@ -1,5 +1,5 @@
 /*
- * PscMasterServer.cpp
+ send* PscMasterServer.cpp
  *
  *  Created on: 4 Jul 2013
  *      Author: maora
@@ -382,7 +382,7 @@ void PscMasterServer::sendAck(unsigned long messageId, unsigned long sn, uint16_
 
     int logLevel = M_LOGGER_LEVEL_DEBUG;
     if (status != E_AckStatus_Success)
-        logLevel = M_LOGGER_LEVEL_WARNING;
+        logLevel = M_LOGGER_LEVEL_ERROR;
 
     M_LOGGER_LOGF(logLevel, "Ack Message ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
             messageId, boardId, pssId, status, sn);
@@ -405,7 +405,11 @@ void PscMasterServer::sendError(uint16_t boardId, uint16_t pssId, uint16_t secon
     payload.secondaryPssId = secondaryPssId;
     payload.errors = errors;
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+    int logLevel = M_LOGGER_LEVEL_ERROR;
+    if (errors == 0)
+        logLevel = M_LOGGER_LEVEL_DEBUG;
+
+    M_LOGGER_LOGF(logLevel, "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
             pssId, secondaryPssId, errors);
 
     sendMessage(reply);
@@ -426,7 +430,11 @@ void PscMasterServer::sendWarning(uint16_t boardId, uint16_t pssId, uint16_t sec
     payload.secondaryPssId = secondaryPssId;
     payload.warnings = warnings;
 
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x",
+    int logLevel = M_LOGGER_LEVEL_WARNING;
+    if (warnings == 0)
+        logLevel = M_LOGGER_LEVEL_DEBUG;
+
+    M_LOGGER_LOGF(logLevel, "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x",
             boardId, pssId, secondaryPssId, warnings);
 
     sendMessage(reply);

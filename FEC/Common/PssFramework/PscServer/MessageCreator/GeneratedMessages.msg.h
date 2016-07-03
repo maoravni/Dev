@@ -24,6 +24,7 @@
 #define MSG_ActivateObserveAndNotifyControlMsg 0x318
 #define MSG_ActivateWaterTankControl 0x312
 #define MSG_ActivateWaterTankLevelControl 0x313
+#define MSG_AddActivationInputDevice 0x229
 #define MSG_AddShutdownOperation 0x222
 #define MSG_ConfigControlStopConditions 0x223
 #define MSG_Define3SensorWaterTankLevel 0x216
@@ -151,6 +152,7 @@ M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateObserveAndNotifyControlMsg + APP_MSG, MessageActivateObserveAndNotifyControlMsgHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateWaterTankControl + APP_MSG, MessageActivateWaterTankControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateWaterTankLevelControl + APP_MSG, MessageActivateWaterTankLevelControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_AddActivationInputDevice + APP_MSG, MessageAddActivationInputDeviceHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_AddShutdownOperation + APP_MSG, MessageAddShutdownOperationHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ConfigControlStopConditions + APP_MSG, MessageConfigControlStopConditionsHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_Define3SensorWaterTankLevel + APP_MSG, MessageDefine3SensorWaterTankLevelHandler)

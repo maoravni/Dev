@@ -99,6 +99,14 @@ struct PSSActivateWaterTankLevelControlMsg {
 	float highLevelSetPoint;
 	};
 
+struct PSSAddActivationInputDeviceMsg {
+	unsigned short cableId;
+	unsigned short controlPssId;
+	unsigned short devicePssId;
+	char activationType;
+	char activeHigh;
+	};
+
 struct PSSAddShutdownOperation {
 	unsigned short cableId;
 	unsigned short controlPssId;
@@ -276,6 +284,8 @@ struct PSSDefineActivationWithFeedbackControlMsg {
 	unsigned short deactivationTimeout;
 	char activationWithFeedbackBehaviorOnInit;
 	unsigned int ignoreProtectionsDelay;
+	unsigned short activationFeedbackOutputPSSId;
+	unsigned short deactivationFeedbackOutputPSSId;
 	};
 
 struct PSSDefineAnalogOutInverterControlMsg {
@@ -953,6 +963,7 @@ union PSSMsgType{
 	struct PSSActivateObserveAndNotifyControlMsg pSSActivateObserveAndNotifyControlMsg;
 	struct PSSActivateWaterTankControlMsg pSSActivateWaterTankControlMsg;
 	struct PSSActivateWaterTankLevelControlMsg pSSActivateWaterTankLevelControlMsg;
+	struct PSSAddActivationInputDeviceMsg pSSAddActivationInputDeviceMsg;
 	struct PSSAddShutdownOperation pSSAddShutdownOperation;
 	struct PSSConfigControlStopConditions pSSConfigControlStopConditions;
 	struct PSSDefine3SensorWaterTankLevelMsg pSSDefine3SensorWaterTankLevelMsg;

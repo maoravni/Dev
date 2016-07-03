@@ -15,19 +15,67 @@
 #define M_ACTIVATION_TIMEOUT_TYPE 0
 #define M_IGNORE_PROTECTION_DELAY_TYPE 1
 
+/**
+ @startuml
+
+ [*] --> On
+ On --> Init : Init
+ Init --> Unknown : Behavior On Init
+ Init --> Active : Behavior On Init
+ Init --> Inactive : Behavior On Init
+
+ state Unknown {
+ [*] --> UnknownActivationNotReady : Dep Not Filled
+ [*] --> UnknownActivationReady : Dep Filled
+ UnknownActivationNotReady -right-> UnknownActivationReady : Dep Filled
+ UnknownActivationReady -left-> UnknownActivationNotReady : Dep Not Filled
+ }
+
+ UnknownActivationReady -right-> UnknownMoveToActivate : Activate
+ UnknownMoveToActivate -right-> Active : FB and Dep Filled
+ UnknownMoveToActivate -left-> UnknownActivationReady : Timeout on FB
+ UnknownMoveToActivate -left-> UnknownActivationNotReady : Dep Not Filled
+
+ state Active {
+ [*] --> ActiveDeactivationNotReady : Dep Not Filled
+ [*] --> ActiveDeactivationReady : Dep Filled
+ ActiveDeactivationNotReady -right-> ActiveDeactivationReady : Dep Filled
+ ActiveDeactivationReady -left-> ActiveDeactivationNotReady : Dep Not Filled
+ }
+
+ state Inactive {
+ [*] --> InactiveActivationNotReady : Dep Not Filled
+ [*] --> InactiveActivationReady : Dep Filled
+ InactiveActivationNotReady -right-> InactiveActivationReady : Dep Filled
+ InactiveActivationReady -left-> InactiveActivationNotReady : Dep Not Filled
+ }
+
+ InactiveActivationReady -left-> InactiveMoveToActivate
+ InactiveMoveToActivate -left-> Active : FB and Dep Filled
+ InactiveMoveToActivate -right-> InactiveActivationReady
+ InactiveMoveToActivate -right-> InactiveActivationNotReady : Dep Not Filled
+
+ @enduml
+ */
 ActivationWithFeedbackControl::ActivationWithFeedbackControl()
 {
     m_outputEnableDevice = NULL;
     m_outputDisableDevice = NULL;
-//    m_activationTimeout = 0;
-//    m_deactivationTimeout = 0;
+    m_feedbackEnabledDevice = NULL;
+    m_feedbackDisabledDevice = NULL;
+    m_pActivateControlDeviceList = NULL;
+    m_pDeactivateControlDeviceList = NULL;
+
     m_activationState = E_ActivationState_Unknown;
     m_previousActivationState = E_ActivationState_Unknown;
     m_behaviorOnInit = E_ActivationBehaviorOnInit_Unknown;
-    m_lastProtectionState = false;
+    m_lastProtectionActiveState = false;
+    m_lastFeedbackResult = false;
+    m_lastDependencyResult = false;
     m_ignoreProtections = false;
     m_activationOutputValue = 1;
     setIgnoreProtectionsDelay(0);
+
 }
 
 ActivationWithFeedbackControl::~ActivationWithFeedbackControl()
@@ -38,11 +86,27 @@ ActivationWithFeedbackControl::~ActivationWithFeedbackControl()
     {
         (*dclIt).getElement()->removeObserver(this);
     }
+    T_IODeviceCheckerListIterator iodIt;
 
-//    for (dclIt = m_dependentCheckers.begin(); dclIt != m_dependentCheckers.end(); ++dclIt)
-//    {
-//        (*dclIt).getElement()->removeObserver(this);
-//    }
+    if (m_pActivateControlDeviceList != NULL)
+    {
+        for (iodIt = m_pActivateControlDeviceList->begin(); iodIt != m_pActivateControlDeviceList->end(); ++iodIt)
+        {
+            (iodIt)->getElement()->removeObserver(this);
+        }
+        delete m_pActivateControlDeviceList;
+        m_pActivateControlDeviceList = NULL;
+    }
+    if (m_pDeactivateControlDeviceList != NULL)
+    {
+        for (iodIt = m_pDeactivateControlDeviceList->begin(); iodIt != m_pDeactivateControlDeviceList->end(); ++iodIt)
+        {
+            (iodIt)->getElement()->removeObserver(this);
+        }
+        delete m_pDeactivateControlDeviceList;
+        m_pDeactivateControlDeviceList = NULL;
+    }
+
 }
 
 void ActivationWithFeedbackControl::addFeedbackElement(ElementBase* element, float thresholdValue, bool greaterThan,
@@ -58,36 +122,22 @@ void ActivationWithFeedbackControl::addFeedbackElement(ElementBase* element, flo
     m_feedbackCheckers.push_back(checker);
 }
 
-//void ActivationWithFeedbackControl::addDependentElement(ElementBase* element, float thresholdValue, bool greaterThan,
-//        bool deactivate, bool lock, int checkType)
-//{
-//    DeviceThresholdChecker checker;
-//    element->addObserver(this);
-//    checker.setElement(getPssId(), element);
-//    checker.m_thresholdValue = thresholdValue;
-//    checker.m_greaterThan = greaterThan;
-//    checker.m_deactivateOnChange = deactivate;
-//    checker.m_lockChange = lock;
-//    checker.m_dependencyCheckType = (E_DependencyCheckType) checkType;
-//    m_dependentCheckers.push_back(checker);
-//}
-
 void ActivationWithFeedbackControl::execute()
 {
-    bool feedbacksConsider, feedbacksIgnore;
-    bool depsConsider, depsIgnore;
+    bool /*feedbacksConsider, */feedbacksIgnore;
+    bool /*depsConsider, */depsIgnore;
     bool outputsValid = checkValidOutputs();
     switch (m_controlState)
     {
     case E_ControlState_Move2Ready:
-        checkAllFeedbacks(m_activationState, feedbacksConsider, feedbacksIgnore);
-        checkAllDependencies(m_activationState, m_controlState, depsConsider, depsIgnore);
+        checkAllFeedbacks(m_activationState, m_lastFeedbackResult, feedbacksIgnore);
+        checkAllDependencies(m_activationState, m_controlState, m_lastDependencyResult, depsIgnore);
         if (m_activationState == E_ActivationState_Active)
         {
-            if (feedbacksConsider)
+            if (m_lastFeedbackResult)
                 clearFeedbackCheckFailures(E_PSSErrors_ActivationFailed);
             // check all feedback devices. If they're all activated, move to ready:
-            if (feedbacksConsider && depsConsider && outputsValid)
+            if (m_lastFeedbackResult && m_lastDependencyResult && outputsValid)
             {
                 m_controlState = E_ControlState_Ready;
 
@@ -96,7 +146,7 @@ void ActivationWithFeedbackControl::execute()
             }
 
             // if the dependency check failed:
-            if (!depsConsider)
+            if (!m_lastDependencyResult)
             {
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Deactivating control {[PSSID:%d]}", getPssId());
                 // send errors to the OPC about the errors.
@@ -112,7 +162,7 @@ void ActivationWithFeedbackControl::execute()
 //                raiseError(0, E_PSSErrors_ActivationFailed, true);
                 // if also the dependencies, considering the "deactivate on change" has failed,
                 // change the activation state.
-                if (!depsConsider)
+                if (!m_lastDependencyResult)
                     setActivationState(m_previousActivationState, 0);
             }
             else
@@ -120,11 +170,11 @@ void ActivationWithFeedbackControl::execute()
         }
         else
         {
-            if (!feedbacksConsider)
+            if (!m_lastFeedbackResult)
                 clearFeedbackCheckFailures(E_PSSErrors_ActivationFailed);
-            if (!depsConsider)
+            if (!m_lastDependencyResult)
                 clearDependencyCheckFailures(E_PSSErrors_ActivationNotReady);
-            if (!(feedbacksConsider && depsConsider))
+            if (!(m_lastFeedbackResult && m_lastDependencyResult))
                 m_controlState = E_ControlState_Ready;
         }
         if (m_controlState == E_ControlState_Ready)
@@ -140,18 +190,12 @@ void ActivationWithFeedbackControl::execute()
         // TOOD: When timeout expires,send seq ended failure.
         break;
     case E_ControlState_Ready:
-        checkAllFeedbacks(m_activationState, feedbacksConsider, feedbacksIgnore);
-        checkAllDependencies(m_activationState, m_controlState, depsConsider, depsIgnore);
+        checkAllFeedbacks(m_activationState, m_lastFeedbackResult, feedbacksIgnore);
+        checkAllDependencies(m_activationState, m_controlState, m_lastDependencyResult, depsIgnore);
         if (m_activationState == E_ActivationState_Active)
         {
-//            if (!depsIgnore)
-//                logDependencyCheckFailures(m_activationState, m_controlState, E_PSSErrors_ActivationFailed);
-//            if (!feedbacksIgnore)
-//                logFeedbackCheckFailures(m_activationState, E_PSSErrors_ActivationFailed);
-
-            if (!(feedbacksConsider && depsConsider && outputsValid))
+            if (!(m_lastFeedbackResult && m_lastDependencyResult && outputsValid))
             {
-                // TODO: Issue an error when the feedback devices change state while in ready.
                 m_controlState = E_ControlState_Standby;
                 logDependencyCheckFailures(m_activationState, m_controlState, E_PSSErrors_ActivationFailed);
                 logFeedbackCheckFailures(m_activationState, E_PSSErrors_ActivationFailed);
@@ -162,7 +206,6 @@ void ActivationWithFeedbackControl::execute()
         }
         break;
     default:
-//        checkAllDependencies(m_activationState, m_controlState);
         break;
     }
 }
@@ -172,7 +215,7 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
     if (m_controlState == E_ControlState_On)
         return false;
 
-    bool depsConsider, depsIgnore;
+    bool /*depsConsider, */depsIgnore;
 
 //    raiseError(0, E_PSSErrors_ActivationFailed, false);
 //    clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
@@ -188,12 +231,12 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
     m_controlState = E_ControlState_Move2Ready;
     m_activationOutputValue = outputValue;
 
-    if (m_activationOutputValue != 0)
+    if (outputValue != 0)
     {
         // check if all dependent devices are in the correct state.
-        checkAllDependencies(E_ActivationState_Active, m_controlState, depsConsider, depsIgnore);
+        checkAllDependencies(E_ActivationState_Active, m_controlState, m_lastDependencyResult, depsIgnore);
         // if we are already at the requested activation state, ignore the dependencies and start the activation.
-        if ((m_previousActivationState == E_ActivationState_Active) || depsConsider)
+        if ((m_previousActivationState == E_ActivationState_Active) || m_lastDependencyResult)
         {
             raiseError(0, E_PSSErrors_ActivationFailed, false);
             clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
@@ -214,13 +257,14 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
                     getPssId());
             logDependencyCheckFailures(E_ActivationState_Active, m_controlState, E_PSSErrors_ActivationFailed);
         }
-        return depsConsider;
+        return m_lastDependencyResult;
     }
     else
     {
+        //m_activationOutputValue = outputValue;
         // check if all dependent devices are in the correct state.
-        checkAllDependencies(E_ActivationState_Inactive, m_controlState, depsConsider, depsIgnore);
-        if ((m_previousActivationState == E_ActivationState_Inactive) || !depsConsider)
+        checkAllDependencies(E_ActivationState_Inactive, m_controlState, m_lastDependencyResult, depsIgnore);
+        if ((m_previousActivationState == E_ActivationState_Inactive) || !m_lastDependencyResult)
         {
             raiseError(0, E_PSSErrors_ActivationFailed, false);
             clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
@@ -241,14 +285,14 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
                     getPssId());
             logDependencyCheckFailures(E_ActivationState_Inactive, m_controlState, E_PSSErrors_ActivationFailed);
         }
-        return !depsConsider;
+        return !m_lastDependencyResult;
     }
 
 }
 
 void ActivationWithFeedbackControl::executeBehaviorOnInit()
 {
-    bool resultConsider, resultIgnore;
+    bool resultIgnore;
     switch (m_behaviorOnInit)
     {
     case E_ActivationBehaviorOnInit_Unknown:
@@ -261,16 +305,16 @@ void ActivationWithFeedbackControl::executeBehaviorOnInit()
         setActivationState(E_ActivationState_Active, m_lastSn);
         break;
     case E_ActivationBehaviorOnInit_AccordingToFeedback:
-        checkAllFeedbacks(E_ActivationState_Active, resultConsider, resultIgnore);
-        if (resultConsider)
+        checkAllFeedbacks(E_ActivationState_Active, m_lastFeedbackResult, resultIgnore);
+        if (m_lastFeedbackResult)
         {
             setActivationState(E_ActivationState_Active, m_lastSn);
             m_previousActivationState = E_ActivationState_Active;
         }
         else
         {
-            checkAllFeedbacks(E_ActivationState_Inactive, resultConsider, resultIgnore);
-            if (resultConsider == false)
+            checkAllFeedbacks(E_ActivationState_Inactive, m_lastFeedbackResult, resultIgnore);
+            if (m_lastFeedbackResult == false)
             {
                 setActivationState(E_ActivationState_Inactive, m_lastSn);
                 m_previousActivationState = E_ActivationState_Inactive;
@@ -288,6 +332,8 @@ void ActivationWithFeedbackControl::executeBehaviorOnInit()
 
 bool ActivationWithFeedbackControl::onInitControl()
 {
+    m_activateSignalHigh = -1;
+    m_deactivateSignalHigh = -1;
     executeBehaviorOnInit();
     ControlBase::endInitControl();
     return true;
@@ -352,12 +398,16 @@ void ActivationWithFeedbackControl::updateNotification(ElementBase* element)
     if (m_controlState == E_ControlState_On)
         return;
 
+    checkCommandDevices();
+
     execute();
 
     checkAllDependenciesForOppositeState();
 
     if (m_controlState == E_ControlState_Move2Ready || m_controlState == E_ControlState_Ready)
         executeLocalProtectionCheck(element);
+
+    calculateFeedbackOutputs();
 }
 
 bool ActivationWithFeedbackControl::requestValueChange(ElementBase* element)
@@ -574,228 +624,48 @@ void ActivationWithFeedbackControl::logFeedbackCheckFailures(E_ActivationState a
     }
 }
 
-/**
- * Check all feedbacks for the state of the control.
- * The "state" parameters controls whether to check if all feedbacks are true, or if all feedbacks are false.
- * If "state" is "Active", the function will return "true" if all feedbacks are true.
- * If "state" is "Inactive", the function will return "false" if all feedbacks are false.
- * @param state
- * @return
- */
-//bool ActivationWithFeedbackControl::checkAllDependencies(E_ActivationState activationState, E_ControlState controlState)
-//{
-//    T_DeviceCheckerListIterator i;
-//    bool result, temp;
-//    if (controlState == E_ControlState_Ready)
-//    {
-//        if (activationState == E_ActivationState_Active)
-//        {
-//            result = true;
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (*i).checkDevice(true) || !(*i).m_deactivateOnChange;
-//                result &= temp;
-//            }
-////            raiseError(0, E_PSSErrors_ActivationNotReady, (result == false));
-//            return (result == true);
-//        }
-//        else
-//        {
-//            result = false;
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (!(*i).checkDevice(false) && !(*i).m_deactivateOnChange);
-//                result |= temp;
-//            }
-////            raiseError(0, E_PSSErrors_ActivationNotReady, (result == true));
-//            return result;
-//        }
-//    }
-//    else
-//    {
-//        if (activationState == E_ActivationState_Active)
-//        {
-//            result = true;
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (*i).checkDevice(true);
-//                result &= temp;
-//            }
-////            raiseError(0, E_PSSErrors_ActivationNotReady, (result == false));
-//            return (result == true);
-//        }
-//        else
-//        {
-//            result = false;
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = !(*i).checkDevice(false);
-//                result |= temp;
-//            }
-////            raiseError(0, E_PSSErrors_ActivationNotReady, (result == true));
-//            return result;
-//        }
-//    }
-//}
-//bool ActivationWithFeedbackControl::checkAllDependenciesForOppositeState()
-//{
-//    bool result;
-//    switch (m_activationState)
-//    {
-//    case E_ActivationState_Active:
-//        result = checkAllDependencies(E_ActivationState_Inactive, E_ControlState_Standby);
-////        raiseError(0, E_PSSErrors_ActivationNotReady, (result == true));
-//        if (result)
-//            logDependencyCheckFailures(E_ActivationState_Inactive, E_ControlState_Standby,
-//                    E_PSSErrors_ActivationNotReady);
-//        else
-//            clearDependencyCheckFailures(E_PSSErrors_ActivationNotReady);
-//        return result;
-//    case E_ActivationState_Unknown:
-//    case E_ActivationState_Inactive:
-//        result = checkAllDependencies(E_ActivationState_Active, E_ControlState_Standby);
-////        raiseError(0, E_PSSErrors_ActivationNotReady, (result == false));
-//        if (result == false)
-//            logDependencyCheckFailures(E_ActivationState_Active, E_ControlState_Standby,
-//                    E_PSSErrors_ActivationNotReady);
-//        else
-//            clearDependencyCheckFailures(E_PSSErrors_ActivationNotReady);
-//        return result;
-//    }
-//    return false;
-//}
-//void ActivationWithFeedbackControl::logDependencyCheckFailures(E_ActivationState activationState,
-//        E_ControlState controlState, E_PSSErrors error)
-//{
-//    T_DeviceCheckerListIterator i;
-//    bool temp;
-//    if (controlState == E_ControlState_Ready)
-//    {
-//        if (activationState == E_ActivationState_Active)
-//        {
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (*i).checkDevice(true) || !(*i).m_deactivateOnChange;
-//                if (!(*i).compareToPreviousCheckResult(temp))
-//                {
-//                    if (temp)
-//                    {
-//                        raiseError((*i).getPssId(), error, false);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-//                    }
-//                    else
-//                    {
-//                        raiseError((*i).getPssId(), error, true);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-////                    (*i).m_previousCheckResult = temp;
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (!(*i).checkDevice(false) && !(*i).m_deactivateOnChange);
-//                if (!(*i).compareToPreviousCheckResult(temp))
-//                {
-//                    if (temp)
-//                    {
-//                        raiseError((*i).getPssId(), error, true);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-//                    }
-//                    else
-//                    {
-//                        raiseError((*i).getPssId(), error, false);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-////                    (*i).m_previousCheckResult = temp;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        if (activationState == E_ActivationState_Active)
-//        {
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = (*i).checkDevice(true);
-//                if (!(*i).compareToPreviousCheckResult(temp))
-//                {
-//                    if (temp)
-//                    {
-//                        raiseError((*i).getPssId(), error, false);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-//                    }
-//                    else
-//                    {
-//                        raiseError((*i).getPssId(), error, true);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-////                    (*i).m_previousCheckResult = temp;
-//                    }
-//                }
-//            }
-//        }
-//        else
-//        {
-//            for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//            {
-//                temp = !(*i).checkDevice(false);
-//                if (!(*i).compareToPreviousCheckResult(temp))
-//                {
-//                    if (temp)
-//                    {
-//                        raiseError((*i).getPssId(), error, true);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-//                    }
-//                    else
-//                    {
-//                        raiseError((*i).getPssId(), error, false);
-//                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-//                                "ActivationWithFeedbackControl operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
-//                                getPssId(), (*i).getElement()->getPssId());
-////                    (*i).m_previousCheckResult = temp;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-//bool ActivationWithFeedbackControl::checkAllDependencies()
-//{
-//    int i;
-//    bool result = true;
-//    for (i = 0; i < m_dependentCheckers.size(); ++i)
-//        result &= m_dependentCheckers[i].checkDevice();
-//
-//    return result;
-//}
-//
+void ActivationWithFeedbackControl::setFeedbackEnabledDevice(ElementBase* element)
+{
+    m_feedbackEnabledDevice = element;
+}
+
+void ActivationWithFeedbackControl::setFeedbackDisabledDevice(ElementBase* element)
+{
+    m_feedbackDisabledDevice = element;
+}
+
 void ActivationWithFeedbackControl::setOutputEnableDevice(ElementBase* element)
 {
     m_outputEnableDevice = element;
-    m_outputEnableDevice->addObserver(this);
+//    m_outputEnableDevice->addObserver(this);
 }
 
 void ActivationWithFeedbackControl::setOutputDisableDevice(ElementBase* element)
 {
     m_outputDisableDevice = element;
-    m_outputDisableDevice->addObserver(this);
+//    m_outputDisableDevice->addObserver(this);
+}
+
+void ActivationWithFeedbackControl::addActivateDevice(ElementBase* element, bool activeHigh)
+{
+    IODeviceChecker iod;
+    iod.setElement(element);
+    element->addObserver(this);
+    iod.setActivateHigh(activeHigh);
+    if (m_pActivateControlDeviceList == NULL)
+        m_pActivateControlDeviceList = new T_IODeviceCheckerList();
+    m_pActivateControlDeviceList->push_back(iod);
+}
+
+void ActivationWithFeedbackControl::addDeactivateDevice(ElementBase* element, bool activeHigh)
+{
+    IODeviceChecker iod;
+    iod.setElement(element);
+    element->addObserver(this);
+    iod.setActivateHigh(activeHigh);
+    if (m_pDeactivateControlDeviceList == NULL)
+        m_pDeactivateControlDeviceList = new T_IODeviceCheckerList();
+    m_pDeactivateControlDeviceList->push_back(iod);
 }
 
 void ActivationWithFeedbackControl::setActivationState(E_ActivationState activationState, uint32_t sn)
@@ -818,6 +688,8 @@ void ActivationWithFeedbackControl::setActivationState(E_ActivationState activat
 
     if (m_isProtectionActive)
         activationState = E_ActivationState_Unknown;
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "setActivationState: %d", activationState);
 
     switch (activationState)
     {
@@ -886,20 +758,20 @@ bool ActivationWithFeedbackControl::executeLocalProtectionCheck(ElementBase* ele
     ControlBase::executeProtectionCheck(element/*, E_PSSErrors_DeviceExceedsSoftLimits*/);
 
     // if the previous protection state is different than the new
-    if (m_lastProtectionState != m_isProtectionActive)
+    if (m_lastProtectionActiveState != m_isProtectionActive)
     {
         // if the previous protection state was inactive, store the activation state:
-        if (m_lastProtectionState == false)
+        if (m_lastProtectionActiveState == false)
             m_inProtectionActivationState = m_activationState;
 
         if (m_isProtectionActive)
             //setActivationState(E_ActivationState_Inactive, 0);
-            writeOutputs(E_ActivationState_Inactive);
+            writeOutputs(E_ActivationState_Unknown);
         else
             //setActivationState(m_inProtectionActivationState, 0);
             writeOutputs(m_activationState);
     }
-    m_lastProtectionState = m_isProtectionActive;
+    m_lastProtectionActiveState = m_isProtectionActive;
     return m_isProtectionActive;
 }
 
@@ -917,10 +789,10 @@ bool ActivationWithFeedbackControl::executeLocalProtectionCheck()
     ControlBase::executeProtectionCheck(/*, E_PSSErrors_DeviceExceedsSoftLimits*/);
 
     // if the previous protection state is different than the new
-    if (m_lastProtectionState != m_isProtectionActive)
+    if (m_lastProtectionActiveState != m_isProtectionActive)
     {
         // if the previous protection state was inactive, store the activation state:
-        if (m_lastProtectionState == false)
+        if (m_lastProtectionActiveState == false)
             m_inProtectionActivationState = m_activationState;
 
         if (m_isProtectionActive)
@@ -928,7 +800,7 @@ bool ActivationWithFeedbackControl::executeLocalProtectionCheck()
         else
             setActivationState(m_inProtectionActivationState, 0);
     }
-    m_lastProtectionState = m_isProtectionActive;
+    m_lastProtectionActiveState = m_isProtectionActive;
     return m_isProtectionActive;
 }
 
@@ -963,14 +835,76 @@ void ActivationWithFeedbackControl::sendCurrentErrors()
 {
     m_errorBitManager.sendCurrentErrors();
     T_DeviceCheckerListIterator i;
-//    for (i = m_feedbackCheckers.begin(); i != m_feedbackCheckers.end(); ++i)
+}
+
+void ActivationWithFeedbackControl::checkCommandDevices()
+{
+    int activateSignalHigh = -1;
+    int deactivateSignalHigh = -1;
+
+    if (m_pActivateControlDeviceList == NULL && m_pDeactivateControlDeviceList == NULL)
+        return;
+
+    // set the signals high as default.
+    T_IODeviceCheckerListIterator iodIt;
+    // first calculate the state of the activate signals:
+    if (m_pActivateControlDeviceList != NULL)
+    {
+        activateSignalHigh = 1;
+        for (iodIt = m_pActivateControlDeviceList->begin(); iodIt != m_pActivateControlDeviceList->end(); ++iodIt)
+        {
+            activateSignalHigh &= (iodIt)->isActive();
+        }
+    }
+    if (m_pDeactivateControlDeviceList != NULL)
+    {
+        deactivateSignalHigh = 1;
+        for (iodIt = m_pDeactivateControlDeviceList->begin(); iodIt != m_pDeactivateControlDeviceList->end(); ++iodIt)
+        {
+            deactivateSignalHigh &= (iodIt)->isActive();
+        }
+    }
+
+    // if both signals are -1 it means something went wrong, so set to unkown.
+//    if ((activateSignalHigh == -1 && deactivateSignalHigh == -1) ||
+//            (activateSignalHigh > 0 && deactivateSignalHigh > 0))
+    if (m_activateSignalHigh == activateSignalHigh && m_deactivateSignalHigh == deactivateSignalHigh)
+        return;
+
+    m_activateSignalHigh = activateSignalHigh;
+    m_deactivateSignalHigh = deactivateSignalHigh;
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "activate %d deactivate %d activationState %d", activateSignalHigh, deactivateSignalHigh, m_activationState);
+//    if (activateSignalHigh == deactivateSignalHigh && m_activationState != E_ActivationState_Unknown)
 //    {
-//        (*i).sendCurrentErrors();
+//        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Control {[PSSID:%d]} IO activation state: Unknown", getPssId());
+//        setActivationState(E_ActivationState_Unknown, 0);
 //    }
-//    for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//    {
-//        (*i).sendCurrentErrors();
-//    }
+//    else
+        if ((activateSignalHigh > 0 || (deactivateSignalHigh == 0 && activateSignalHigh == -1))
+            && m_activationState != E_ActivationState_Active)
+    {
+//        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Control {[PSSID:%d]} IO activation state: Active", getPssId());
+        m_controlState = E_ControlState_Move2Ready;
+        setActivationState(E_ActivationState_Active, 0);
+    }
+    else if ((deactivateSignalHigh > 0 || (activateSignalHigh == 0 && deactivateSignalHigh == -1))
+            && m_activationState != E_ActivationState_Inactive)
+    {
+//        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Control {[PSSID:%d]} IO activation state: Inactive", getPssId());
+        m_controlState = E_ControlState_Move2Ready;
+        setActivationState(E_ActivationState_Inactive, 0);
+    }
+}
+
+void ActivationWithFeedbackControl::calculateFeedbackOutputs()
+{
+    if (m_feedbackEnabledDevice == NULL && m_feedbackDisabledDevice == NULL)
+        return;
+
+    m_feedbackEnabledDevice->setValue(
+            (m_outputEnableDevice->getValueI32() != 0 && m_lastDependencyResult
+                    && m_lastFeedbackResult && !m_lastProtectionActiveState));
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "FB: {[PSSID:%d]} %d %d %d %d -> %d", getPssId(), m_outputEnableDevice->getValueI32(), m_lastDependencyResult, m_lastFeedbackResult, m_lastProtectionActiveState, m_feedbackEnabledDevice->getValueI32());
 }
 
 bool ActivationWithFeedbackControl::checkValidOutputs()
@@ -998,15 +932,6 @@ void ActivationWithFeedbackControl::clearFeedbackCheckFailures(E_PSSErrors error
     }
 }
 
-//void ActivationWithFeedbackControl::clearDependencyCheckFailures(E_PSSErrors error)
-//{
-//    T_DeviceCheckerListIterator i;
-//    for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
-//    {
-//        raiseError((*i).getPssId(), error, false);
-//    }
-//}
-
 void ActivationWithFeedbackControl::startRecovery()
 {
     clearFeedbackCheckFailures(E_PSSErrors_ActivationFailed);
@@ -1018,25 +943,29 @@ void ActivationWithFeedbackControl::startRecovery()
 
 void ActivationWithFeedbackControl::writeOutputs(E_ActivationState activationState)
 {
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "writeOutputs: %d", activationState);
     switch (activationState)
     {
     case E_ActivationBehaviorOnInit_Unknown:
         if (m_outputEnableDevice != NULL)
-            m_outputEnableDevice->setValue((uint32_t)0);
+            m_outputEnableDevice->setValue((uint32_t) 0);
         if (m_outputDisableDevice != NULL)
-            m_outputDisableDevice->setValue((uint32_t)0);
+            m_outputDisableDevice->setValue((uint32_t) 0);
         break;
     case E_ActivationState_Active:
+        if (m_activationOutputValue == 0)
+            m_activationOutputValue = 1;
+//        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "writeOutputs m_activationOutputValue: %d", m_activationOutputValue);
         if (m_outputEnableDevice != NULL)
             m_outputEnableDevice->setValue(m_activationOutputValue);
         if (m_outputDisableDevice != NULL)
-            m_outputDisableDevice->setValue((uint32_t)0);
+            m_outputDisableDevice->setValue((uint32_t) 0);
         break;
     case E_ActivationState_Inactive:
         if (m_outputEnableDevice != NULL)
-            m_outputEnableDevice->setValue((uint32_t)0);
+            m_outputEnableDevice->setValue((uint32_t) 0);
         if (m_outputDisableDevice != NULL)
-            m_outputDisableDevice->setValue((uint32_t)1);
+            m_outputDisableDevice->setValue((uint32_t) 1);
         break;
     }
 }

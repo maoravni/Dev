@@ -732,10 +732,10 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     // we need to do it anyway so the dry contact will open.
     ControlRepository::getInstance().initProtectionControl();
 #ifdef FEC2_BOARD
-//#ifndef DEBUG
+#ifndef DRYER_DEBUG
     if (m_boardMode != E_BoardMode_HwValidation)
         ControlRepository::getInstance().initEmergencyInputControl();
-//#endif
+#endif
 #endif
 
     // TODO: move to state machine?
@@ -2034,10 +2034,10 @@ void PscMessageHandler::MessageDefineActivationWithFeedbackControlHandler(unsign
     M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssID);
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-            "PSSDefineActivationWithFeedbackControlMsg: cableId=%d pssId={[PSSID:%d]} activate={[PSSID:%d]} deactivate={[PSSID:%d]} activateTimeout=%d deactivateTimeout=%d BehaveOnInit=%d ignoreProtDly=%d",
+            "PSSDefineActivationWithFeedbackControlMsg: cableId=%d pssId={[PSSID:%d]} activate={[PSSID:%d]} deactivate={[PSSID:%d]} activateTimeout=%d deactivateTimeout=%d BehaveOnInit=%d ignoreProtDly=%d fbOutAct={[PSSID:%d]} fbOutDeact={[PSSID:%d]}",
             payload->cableId, payload->pssID, payload->activatePSSId, payload->deactivatePSSId,
             payload->activationTimeout, payload->deactivationTimeout, payload->activationWithFeedbackBehaviorOnInit,
-            payload->ignoreProtectionsDelay);
+            payload->ignoreProtectionsDelay, payload->activationFeedbackOutputPSSId, payload->deactivationFeedbackOutputPSSId);
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ActivationWithFeedbackControl* control = new ActivationWithFeedbackControl();
@@ -2072,6 +2072,34 @@ void PscMessageHandler::MessageDefineActivationWithFeedbackControlHandler(unsign
 //    control->setDeactivationTimeout(payload->deactivationTimeout);
     control->setIgnoreProtectionsDelay(payload->ignoreProtectionsDelay);
     control->setBehaviorOnInit(payload->activationWithFeedbackBehaviorOnInit);
+
+    if (payload->activationFeedbackOutputPSSId != 0)
+    {
+        ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->activationFeedbackOutputPSSId);
+
+        if (element == NULL)
+        {
+            sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->activationFeedbackOutputPSSId,
+                    E_AckStatus_InvalidDevice);
+            return;
+        }
+
+        control->setFeedbackEnabledDevice(element);
+    }
+
+    if (payload->deactivationFeedbackOutputPSSId != 0)
+    {
+        ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->deactivationFeedbackOutputPSSId);
+
+        if (element == NULL)
+        {
+            sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->deactivationFeedbackOutputPSSId,
+                    E_AckStatus_InvalidDevice);
+            return;
+        }
+
+        control->setFeedbackDisabledDevice(element);
+    }
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssID, E_AckStatus_Success);
 }
@@ -2215,6 +2243,52 @@ void PscMessageHandler::MessageAddFeedbackDeviceToControlHandler(unsigned long p
     }
 
     control->addFeedbackElement(element, thresholdVal, payload->greaterThan, payload->deactivateControlOnChange);
+
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->controlPssId, E_AckStatus_Success);
+
+}
+
+void PscMessageHandler::MessageAddActivationInputDeviceHandler(unsigned long param)
+{
+    PscMessageStruct* message = &m_messages[param];
+    PSSAddActivationInputDeviceMsg* payload = &(message->payload.pSSAddActivationInputDeviceMsg);
+
+    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->controlPssId);
+
+    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->controlPssId);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSAddActivationInputDeviceMsg: cableId=%d controlPssId={[PSSID:%d]} devicePssId={[PSSID:%d]} activationType=%d activeHigh=%d",
+            payload->cableId, payload->controlPssId, payload->devicePssId, payload->activationType,
+            payload->activeHigh);
+
+    ControlBase* tempControl = ControlRepository::getInstance().getControlByPssId(payload->controlPssId);
+
+// TODO: Support dependency checks to the tempControl base, so all controls will support it.
+    if (tempControl == NULL || tempControl->getControlType() != E_ControlType_ActivationWithFeedback)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->controlPssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    ActivationWithFeedbackControl* control = static_cast<ActivationWithFeedbackControl*>(tempControl);
+
+    ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->devicePssId);
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->devicePssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+#pragma diag_suppress=Pa039
+
+    if (payload->activationType == 1)
+        control->addActivateDevice(element, (payload->activeHigh != 0));
+    else
+        control->addDeactivateDevice(element, (payload->activeHigh != 0));
 
     sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->controlPssId, E_AckStatus_Success);
 

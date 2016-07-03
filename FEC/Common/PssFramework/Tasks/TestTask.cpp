@@ -51,6 +51,7 @@
 #include <Peripherals/ModbusInverterSchneiderAtv32.h>
 #include <Peripherals/ModbusInverterCommanderSK.h>
 #include <Peripherals/ModbusInverterUnidriveM200.h>
+#include <Controls/ControlRepository.h>
 
 TestTask::TestTask()
 {
@@ -319,7 +320,7 @@ void TestTask::run()
 //    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
 // filesystem test
-#if 1
+#ifdef EEPROM_TEST
 
 //    filesystemDriver_init();
 //    filesystemDriver_format();
@@ -362,6 +363,52 @@ void TestTask::run()
 
     PersistencyManager::getInstance()->serializeConfiguration();
     PersistencyManager::getInstance()->deserializeConfiguration();
+
+#endif
+
+#define ActivationWithFeedbackTest
+#ifdef ActivationWithFeedbackTest
+    PscMessageHandler::getInstance()->getPsocManager()->initDigitalInputPeripheralByIndex(6, 1, 6);
+    PscMessageHandler::getInstance()->getPsocManager()->enablePsoc(6);
+    PeripheralRepository::getInstance().initDigitalOutputs(2, 12);
+
+    ActivationWithFeedbackControl signalTest;
+    signalTest.setPssId(10);
+    ElementBase *tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(2)->getElementByIndex(0);
+    tempElement->setPssId(3);
+    signalTest.setOutputEnableDevice(tempElement);
+    tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(2)->getElementByIndex(1);
+    tempElement->setPssId(4);
+    signalTest.setOutputDisableDevice(tempElement);
+    tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(1)->getElementByIndex(1);
+    tempElement->setPssId(5);
+    signalTest.addActivateDevice(tempElement, true);
+    tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(1)->getElementByIndex(0);
+    tempElement->setPssId(6);
+    signalTest.addDeactivateDevice(tempElement, true);
+
+    ProtectionControl *protCont = ControlRepository::getInstance().getProtectionControl();
+    DeviceProtectionChecker *protChecker = protCont->createDeviceProtectionChecker();
+
+    tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(1)->getElementByIndex(2);
+    tempElement->setPssId(7);
+    protChecker->setElement(tempElement);
+    protChecker->setDebounceTimeout(0);
+    protChecker->updateSoftProtectionRange(1, 2, true, false);
+    protChecker->updateHardProtectionRange(0, 0, false, false);
+    signalTest.addProtectionChecker(protChecker);
+
+    tempElement = PeripheralRepository::getInstance().getPeripheralByPssId(2)->getElementByIndex(5);
+    tempElement->setPssId(8);
+    signalTest.setFeedbackEnabledDevice(tempElement);
+
+
+    ControlRepository::getInstance().addControl(&signalTest);
+
+    UpdateSchedulerTask::getInstance()->setBoardInReady(true);
+
+    delay(100);
+    signalTest.initControl(0, 0);
 
 #endif
 
