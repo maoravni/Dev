@@ -89,6 +89,15 @@ QueueNode* UpdateSchedulerTaskBase::findNode(E_NodeType nodeType, uint16_t pssId
         node = node->m_next;
     }
 
+    if (m_currentWaitingNode != NULL)
+    {
+        if (m_currentWaitingNode->getNodeType() == nodeType && m_currentWaitingNode->getPssId() == pssId && m_currentWaitingNode->getSubType() == subType)
+        {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_VERBOSE, "Found Queue Node {[PSSID:%d]}", pssId);
+            return m_currentWaitingNode;
+        }
+    }
+
     return node;
 }
 

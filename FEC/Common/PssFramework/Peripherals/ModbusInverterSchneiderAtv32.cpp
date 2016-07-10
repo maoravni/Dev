@@ -10,7 +10,7 @@
 #include "Persistency/ModbusPeripheralSerializers.h"
 
 #define M_NUMBER_OF_RETRIES 10
-#define M_INVERTER_SAMPLE_INTERVAL 250
+#define M_INVERTER_SAMPLE_INTERVAL 50
 #define M_INVERTER_FREQUENCY_SETPOINT_ADDRESS 8502
 #define M_INVERTER_CONTROL_WORD_ADDRESS 8501
 #define M_INVERTER_RESET_ADDRESS 7128
@@ -20,8 +20,38 @@
 #define M_INVERTER_AUTOTUNE 9608
 #define M_INVERTER_AUTOTUNE_STATE 9609
 #define M_INVERTER_AUTOMATIC_AUTOTUNE 9615
+#define M_INVERTER_COM_SCAN_INPUT_ADDRESS 12741
 
 //#define M_OUTPUT_ENABLE_RETRIES 10
+
+struct T_Atv32StatusWordBits
+{
+    uint8_t readyToSwitchOn:1;
+    uint8_t ready:1;
+    uint8_t running:1;
+    uint8_t faultDetected:1;
+
+    uint8_t powerPresent:1;
+    uint8_t emrStop:1;
+    uint8_t switchOnDisable:1;
+    uint8_t alarm:1;
+
+    uint8_t reserved0:1;
+    uint8_t remoteCommand:1;
+    uint8_t targetReached:1;
+    uint8_t exceededLimits:1;
+
+    uint8_t reserved1:1;
+    uint8_t reserved2:1;
+    uint8_t stopPressed:1;
+    uint8_t direction:1;
+};
+
+union T_Atv32StatusWord
+{
+    uint16_t word;
+    T_Atv32StatusWordBits bits;
+};
 
 struct T_Atv32RegisterSetup
 {
@@ -55,6 +85,11 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
         { 11230, 10 }, // default fast stop ramp divider is 10.
         { 11204, 133 }, // assign LI5 to fast stop.
         { M_INVERTER_AUTOMATIC_AUTOTUNE, 0 },
+        // setup continuous modbus addresses:
+        {12701, 3201}, // status word
+        {12702, M_INVERTER_OUTPUT_FREQUENCY_ADDRESS}, // output frequency
+        {12703, M_INVERTER_OUTPUT_CURRENT_ADDRESS}, // output current
+        {12704, M_INVERTER_LOGIC_INPUTS_ADDRESS}, // logic input states.
         { 0, 0 } };
 
 //static const T_Atv32RegisterSetup Atv32DryerRegisterSetup[] =
@@ -99,12 +134,15 @@ void ModbusInverterSchneiderAtv32::readInputs()
     int16_t outFreq;
     int16_t outCurrent;
     uint16_t logicInputs;
-    int16_t inverterData[3];
+    T_Atv32StatusWord statusWord;
+    int16_t inverterData[4];
     uint32_t buffLength;
 
     E_ModbusError error;
 
-    error = readHoldingRegs(getSlaveId(), M_INVERTER_OUTPUT_FREQUENCY_ADDRESS, 3, (uint8_t*) &inverterData, buffLength);
+//    M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "(%x) readInputs %d", this, getSlaveId());
+
+    error = readHoldingRegs(getSlaveId(), M_INVERTER_COM_SCAN_INPUT_ADDRESS, 4, (uint8_t*) &inverterData, buffLength);
     if (error != E_ModbusError_Ok)
     {
         ++m_numOfFailedReads;
@@ -131,22 +169,16 @@ void ModbusInverterSchneiderAtv32::readInputs()
     }
     m_numOfFailedReads = 0;
 
-    outFreq = SWAP_16(inverterData[0]);
+    statusWord.word = SWAP_16(inverterData[0]);
+    outFreq = SWAP_16(inverterData[1]);
     outCurrent = SWAP_16(inverterData[2]);
+    logicInputs = SWAP_16(inverterData[3]);
+
     m_outputFrequency->setValue((float) (outFreq * m_frequencyMultiplier));
     m_outputCurrent->setValue((float) (outCurrent * m_currentMultiplier));
 
     if (m_outputEnable != NULL)
     {
-        error = readHoldingRegs(getSlaveId(), M_INVERTER_LOGIC_INPUTS_ADDRESS, 1, (uint8_t*) &logicInputs, buffLength);
-        if (error != E_ModbusError_Ok)
-        {
-            ++m_numOfFailedReads;
-            return;
-        }
-
-        logicInputs = SWAP_16(logicInputs);
-
         if ((logicInputs & 1) != (m_outputEnable->getValueU32() != 0))
             ++m_numOfFailedEnables;
         else

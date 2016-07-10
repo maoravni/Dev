@@ -90,6 +90,7 @@ private:
     uint8_t m_slaveId;
 
     static portTickType m_lastGoodResponseTickCount; //!< last good response tick count. Used for timeout when the device stops responding.
+    static uint32_t m_countOfSuccessfulReads;
 
     T_GeneralModbusSetupVector m_generalModbusSetupVector;
 

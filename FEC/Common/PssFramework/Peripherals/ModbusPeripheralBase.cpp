@@ -18,6 +18,7 @@ extern "C" T_UsartRespBuffer usartResponseBuffer;
 uint8_t m_minimumDelayBetweenRequests = 10;
 uint16_t m_responseTimeout = 250;
 portTickType ModbusPeripheralBase::m_lastGoodResponseTickCount = 0; //!< last good response tick count. Used for timeout when the device stops responding.
+uint32_t ModbusPeripheralBase::m_countOfSuccessfulReads = 0;
 
 int lastTransactionDelay;
 
@@ -67,7 +68,10 @@ E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCod
     for (i = 0; i < m_numOfRetries; ++i)
     {
         if (i > 0)
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "Modbus Device %d response error %d retry %d startAddress %d, lastTransactionDelay %d", m_slaveId, result, i, startAddress, lastTransactionDelay);
+        {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_TRACE, "Modbus Device %d response error %d goodCount %d retry %d startAddress %d, lastTransactionDelay %d", m_slaveId, result, m_countOfSuccessfulReads, i, startAddress, lastTransactionDelay);
+            m_countOfSuccessfulReads = 0;
+        }
 
         // send the buffer to the device:
         usartResponseBuffer.resp_len = 0;
@@ -118,6 +122,10 @@ E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCod
         }
     }
 
+    if (result == E_ModbusError_Ok)
+        ++m_countOfSuccessfulReads;
+    else
+        m_countOfSuccessfulReads = 0;
     return result;
 }
 
@@ -194,6 +202,10 @@ E_ModbusError ModbusPeripheralBase::writeSingleReg(uint8_t slaveId, uint16_t add
     }
 
     clearTimeoutFlag();
+    if (result == E_ModbusError_Ok)
+        ++m_countOfSuccessfulReads;
+    else
+        m_countOfSuccessfulReads = 0;
     return result;
 }
 

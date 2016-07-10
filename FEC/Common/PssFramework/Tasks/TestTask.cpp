@@ -366,7 +366,7 @@ void TestTask::run()
 
 #endif
 
-#define ActivationWithFeedbackTest
+//#define ActivationWithFeedbackTest
 #ifdef ActivationWithFeedbackTest
     PscMessageHandler::getInstance()->getPsocManager()->initDigitalInputPeripheralByIndex(6, 1, 6);
     PscMessageHandler::getInstance()->getPsocManager()->enablePsoc(6);
@@ -409,6 +409,18 @@ void TestTask::run()
 
     delay(100);
     signalTest.initControl(0, 0);
+
+#endif
+
+#define ModbusTest
+#ifdef ModbusTest
+    CLogger::getInstance().setAllTaskMask(M_LOGGER_LEVEL_TRACE);
+    ChangeUsartBaudrate(USART3, 38400);
+    ModbusInverterSchneiderAtv32* modbusPeriph = new ModbusInverterSchneiderAtv32(2);
+    //modbusPeriph->setUpdateInterval(50);
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)modbusPeriph);
+    UpdateSchedulerTask::getInstance()->setBoardInReady(true);
+    ModbusSchedulerTask::getInstance()->setBoardInReady(true);
 
 #endif
 
