@@ -660,18 +660,18 @@ void USART2_IRQHandler(void) {
 #endif
 
 #ifdef USE_USART3
-void USART3_IRQHandler(void) {
-	/* Check if interrupt was because data is received */
-	if (USART3->SR & USART_SR_RXNE) {
-		#ifdef TM_USART3_USE_CUSTOM_IRQ
-			/* Call user function */
-			TM_USART3_ReceiveHandler(USART3->DR);
-		#else
-			/* Put received data into internal buffer */
-			TM_USART_INT_InsertToBuffer(&TM_USART3, USART3->DR);
-		#endif
-	}
-}
+//void USART3_IRQHandler(void) {
+//	/* Check if interrupt was because data is received */
+//	if (USART3->SR & USART_SR_RXNE) {
+//		#ifdef TM_USART3_USE_CUSTOM_IRQ
+//			/* Call user function */
+//			TM_USART3_ReceiveHandler(USART3->DR);
+//		#else
+//			/* Put received data into internal buffer */
+//			TM_USART_INT_InsertToBuffer(&TM_USART3, USART3->DR);
+//		#endif
+//	}
+//}
 #endif
 
 #ifdef USE_UART4

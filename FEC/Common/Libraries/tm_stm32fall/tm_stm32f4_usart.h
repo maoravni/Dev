@@ -32,7 +32,7 @@
 
 /* C++ detection */
 #ifdef __cplusplus
-extern C {
+extern "C" {
 #endif
 
 /**
@@ -223,7 +223,7 @@ UART8        |PE1    PE0     |-      -       |-      -
 #define USE_USART3
 //#define USE_UART4
 //#define USE_UART5
-//#define USE_USART6
+#define USE_USART6
 //#define USE_UART7
 //#define USE_UART8
 #endif

@@ -61,12 +61,19 @@
 #include <psocSpiWithDma.h>
 #include <iwdg.h>
 #include <rtc.h>
+#include <tm_stm32f4_usart.h>
+#include <tm_stm32f4_usart_dma.h>
+#include <FreeRTOS.h>
+#include <semphr.h>
 
 #ifdef __GNUC__
 uint32_t StayInBootLoader __attribute__((at(0x20000000)));
 #else
 __no_init uint32_t StayInBootLoader @ 0x20000000;
 #endif
+
+
+extern xSemaphoreHandle usartResponseCompleteSemaphore;
 //uint32_t checksum;
 
 /* --- GLOBAL_EXTERNALS ----------------------------------------------------- */
@@ -183,27 +190,12 @@ void stm32f2_spi_cnfg();
  */
 uint32_t ChangeUsartBaudrate(USART_TypeDef *UsartName, uint32_t Des_USART_BaudRate)
 {
-    uint32_t res = ERROR;
-    uint32_t i, cnfg_data_size = sizeof(usarts_cfng_data) / sizeof(USART_CNFG_ST);
-    USART_InitTypeDef NewCommParams;
-
-    for (i = 0; i < cnfg_data_size; i++)
-    {
-        if (usarts_cfng_data[i].UsartName == UsartName)
-        {
-            break;
-        }
-    }
-
-    if (i < cnfg_data_size)
-    {
-        memcpy(&(NewCommParams), &(usarts_cfng_data[i].CommParams), sizeof(USART_InitTypeDef));
-        NewCommParams.USART_BaudRate = Des_USART_BaudRate;
-        USART_Init(usarts_cfng_data[i].UsartName, &(NewCommParams));
-        res = OK;
-    }
-
-    return res;
+    if (UsartName == USART3)
+        TM_USART_Init(USART3, TM_USART_PinsPack_3, Des_USART_BaudRate);
+    if (UsartName == USART6)
+        TM_USART_Init(USART6, TM_USART_PinsPack_2, Des_USART_BaudRate);
+        
+    return OK;
 }/*  */
 
 /*
@@ -368,18 +360,13 @@ void stm32f2_spi_cnfg()
  *-----------------------------------------------------------------------------*/
 void stm32f2_usart_cnfg()
 {
-    uint32_t i, cnfg_data_size = sizeof(usarts_cfng_data) / sizeof(USART_CNFG_ST);
+    TM_USART_Init(USART3, TM_USART_PinsPack_3, 38400);
+    TM_USART_Init(USART6, TM_USART_PinsPack_2, 115200);
 
-    for (i = 0; i < cnfg_data_size; i++)
-    {
-        init_usart(usarts_cfng_data[i].UsartName);
-        usarts_cfng_data[i].ClkCmdFun(usarts_cfng_data[i].UsartClk, ENABLE);
-        USART_Init(usarts_cfng_data[i].UsartName, &(usarts_cfng_data[i].CommParams));
-        NVIC_Init(&(usarts_cfng_data[i].NvicParams));
-        USART_Cmd(usarts_cfng_data[i].UsartName, ENABLE);
-        USART_ITConfig(usarts_cfng_data[i].UsartName, USART_IT_RXNE, ENABLE);
-//      USART_ITConfig(usarts_cfng_data[i].UsartName, USART_IT_TC, ENABLE);
-    }/* for */
+    TM_USART_DMA_Init(USART3);
+    TM_USART_DMA_EnableInterrupts(USART3);
+
+    vSemaphoreCreateBinary(usartResponseCompleteSemaphore);
 
 }/* stm32f2_usart_cnfg */
 /*----------------------------------------------------------------------------
@@ -495,11 +482,11 @@ void resetBoard(int bootloader)
     case 0:
         StayInBootLoader = 0;
         break;
-    // this means stay in bootloader no matter what.
+        // this means stay in bootloader no matter what.
     case 1:
         StayInBootLoader = 0x11111111;
         break;
-    // this means to burn the application from temporary area to main area.
+        // this means to burn the application from temporary area to main area.
     case 2:
         StayInBootLoader = 0x22222222;
         break;

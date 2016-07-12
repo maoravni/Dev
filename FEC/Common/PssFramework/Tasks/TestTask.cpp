@@ -52,6 +52,8 @@
 #include <Peripherals/ModbusInverterCommanderSK.h>
 #include <Peripherals/ModbusInverterUnidriveM200.h>
 #include <Controls/ControlRepository.h>
+#include <tm_stm32f4_usart_dma.h>
+#include <usart.h>
 
 TestTask::TestTask()
 {
@@ -415,6 +417,22 @@ void TestTask::run()
 #define ModbusTest
 #ifdef ModbusTest
     CLogger::getInstance().setAllTaskMask(M_LOGGER_LEVEL_TRACE);
+    ChangeUsartBaudrate(USART3, 19200);
+    ModbusInverterSchneiderAtv32* modbusPeriph = new ModbusInverterSchneiderAtv32(2);
+    modbusPeriph->setPssId(1);
+//    Modbus8TCPeripheral* modbusPeriph2 = new Modbus8TCPeripheral(3);
+//    modbusPeriph2->setUpdateInterval(50);
+//    modbusPeriph2->setPssId(2);
+//    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)modbusPeriph2);
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)modbusPeriph);
+    UpdateSchedulerTask::getInstance()->setBoardInReady(true);
+    ModbusSchedulerTask::getInstance()->setBoardInReady(true);
+
+#endif
+
+#define ModbusTest
+#ifdef ModbusTest
+    CLogger::getInstance().setAllTaskMask(M_LOGGER_LEVEL_TRACE);
     ChangeUsartBaudrate(USART3, 38400);
     ModbusInverterSchneiderAtv32* modbusPeriph = new ModbusInverterSchneiderAtv32(2);
     //modbusPeriph->setUpdateInterval(50);
@@ -426,8 +444,10 @@ void TestTask::run()
 
     for (;;)
     {
+//        usart3_set_dir(true);
+//        TM_USART_DMA_Send(USART3, data, 8);
 //        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "test log");
-        delay(10000);
+        delay(1000);
     }
 
 }

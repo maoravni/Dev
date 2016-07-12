@@ -11,11 +11,14 @@
 #include <crc16.h>
 #include <string.h>
 #include <Tasks/UpdateSchedulerTask.h>
+#include <tm_stm32f4_usart_dma.h>
 
 extern "C" xSemaphoreHandle usartResponseCompleteSemaphore;
 extern "C" T_UsartRespBuffer usartResponseBuffer;
 
-uint8_t m_minimumDelayBetweenRequests = 10;
+T_ModbusRtuRequestFrame requestFrame;
+
+uint8_t m_minimumDelayBetweenRequests = 2;
 uint16_t m_responseTimeout = 250;
 portTickType ModbusPeripheralBase::m_lastGoodResponseTickCount = 0; //!< last good response tick count. Used for timeout when the device stops responding.
 uint32_t ModbusPeripheralBase::m_countOfSuccessfulReads = 0;
@@ -49,7 +52,6 @@ E_ModbusError ModbusPeripheralBase::readInputRegs(uint8_t slaveId, uint16_t star
 E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCode, uint8_t slaveId,
         uint16_t startAddress, uint16_t numOfRegs, uint8_t* buffer, uint32_t& bufferLength)
 {
-    T_ModbusRtuRequestFrame requestFrame;
     uint16_t responseCrc, expectedResponseCrc;
 
 
@@ -75,11 +77,11 @@ E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCod
 
         // send the buffer to the device:
         usartResponseBuffer.resp_len = 0;
-        usart3_set_dir(true);
 
         transactionDelay();
 
-        send_buf(requestFrame.buffer, 8, M_ModbusUart );
+        usart3_set_dir(true);
+        TM_USART_DMA_Send(M_ModbusUart, requestFrame.buffer, 8);
 
         // take the semaphore to wait for response
 //        puts("usart take");
@@ -131,7 +133,6 @@ E_ModbusError ModbusPeripheralBase::generalReadRegs(E_ModbusFunctionCode funcCod
 
 E_ModbusError ModbusPeripheralBase::writeSingleReg(uint8_t slaveId, uint16_t address, uint16_t value)
 {
-    T_ModbusRtuRequestFrame requestFrame;
     uint16_t responseCrc, expectedResponseCrc;
 
     E_ModbusError result = E_ModbusError_NoSlaveResponse;
@@ -151,11 +152,11 @@ E_ModbusError ModbusPeripheralBase::writeSingleReg(uint8_t slaveId, uint16_t add
     {
         // send the buffer to the device:
         usartResponseBuffer.resp_len = 0;
-        usart3_set_dir(true);
 
         transactionDelay();
 
-        send_buf(requestFrame.buffer, 8, M_ModbusUart );
+        usart3_set_dir(true);
+        TM_USART_DMA_Send(M_ModbusUart, requestFrame.buffer, 8);
 
         // take the semaphore to wait for response
         if (xSemaphoreTake(usartResponseCompleteSemaphore, m_responseTimeout) == pdTRUE && usartResponseBuffer.resp_len != 0)

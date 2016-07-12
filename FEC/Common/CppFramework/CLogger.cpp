@@ -26,6 +26,8 @@
 #include <lwip/netif.h>
 #include <dg_in_ctrl.h>
 #include <lwip/stats.h>
+#include <tm_stm32f4_gpio.h>
+#include <tm_stm32f4_usart.h>
 #ifdef WIN32
 #include <win32/PortAllocations.h>
 #endif
@@ -147,7 +149,7 @@ void CLogger::run()
 //                }
                 if (m_outputUartEnable)
                 {
-                    send_buf((uint8_t*) msgToSend.c_str(), msgLength, USART6 );
+                    TM_USART_Send(USART6, (uint8_t*)msgToSend.c_str(), msgLength);
                 }
 //                if (m_outputUsbVcpEnable)
 //                {
