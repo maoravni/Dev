@@ -30,6 +30,8 @@
 #include "ObserveAndNotifyControl.h"
 #include "CalculateOnTwoDevicesControl.h"
 #include "ConcentrationControl.h"
+#include "ConcentrationCalculatorControl.h"
+#include "ProtectionAggregatorControl.h"
 
 //typedef DynamicArray<ControlBase*> T_ControlArray;
 typedef std::vector<ControlBase*> T_ControlList;

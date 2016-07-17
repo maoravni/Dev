@@ -54,6 +54,8 @@ enum E_ControlType
     E_ControlType_CalculateOnTwoDevices,
     E_ControlType_LiftPbOnErrorCcsGen3,
     E_ControlType_ConcentrationControl,
+    E_ControlType_ConcentrationCalculatorControl,
+    E_ControlType_ProtectionAggregatorControl,
 };
 
 enum E_ExceptionState

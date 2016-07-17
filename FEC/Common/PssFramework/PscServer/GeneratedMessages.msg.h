@@ -25,6 +25,8 @@
 #define MSG_ActivateHysteresisTemperatureControl 0x311
 #define MSG_DefineAnalogSensorWaterTank 0x215
 #define MSG_DefineCalculateOnTwoDevicesControl 0x227
+#define MSG_DefineConcentrationCalculatorControl 0x230
+#define MSG_DefineProtectionAggregatorControl 0x231
 #define MSG_DefineConcentrationControl 0x228
 #define MSG_DefineConstantDeltaProtection 0x219
 #define MSG_DefineCurrentLimitsProtection 0x225
@@ -146,6 +148,8 @@ M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateHysteresisTemperatureControl + APP_MSG, MessageActivateHysteresisTemperatureControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineAnalogSensorWaterTank + APP_MSG, MessageDefineAnalogSensorWaterTankHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineCalculateOnTwoDevicesControl + APP_MSG, MessageDefineCalculateOnTwoDevicesControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineConcentrationCalculatorControl + APP_MSG, MessageDefineConcentrationCalculatorControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineProtectionAggregatorControl + APP_MSG, MessageDefineProtectionAggregatorControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineConcentrationControl + APP_MSG, MessageDefineConcentrationControlHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineConstantDeltaProtection + APP_MSG, MessageDefineConstantDeltaProtectionHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_DefineCurrentLimitsProtection + APP_MSG, MessageDefineCurrentLimitsProtectionHandler)

@@ -29,6 +29,7 @@
 #include <Controls/ProtectionCurrentLimitsChecker.h>
 #include <Controls/ProtectionProportionalChecker.h>
 #include <Controls/ControlRepository.h>
+#include <Controls/ProtectionAggregatorControl.h>
 
 #define M_FREAD_AND_REFERENCE_CONTROL(element, file) \
     { \
@@ -1035,4 +1036,82 @@ void Serializer<T_OperationNode>::deserialize(F_FILE* f, T_OperationNode& c)
     M_FREAD_AND_REFERENCE_CONTROL(c.control, f);
     M_FREAD_VARIABLE(c.operation, f);
     M_FREAD_VARIABLE(c.setpoint, f);
+}
+
+void Serializer<ConcentrationCalculatorControl>::serialize(F_FILE* f, ConcentrationCalculatorControl& c)
+{
+    storeStartPosition(f);
+    serializeClassType(f);
+    serializeVersion(f);
+
+    Serializer<ControlBase> baseC;
+    baseC.serialize(f, c);
+
+    M_FWRITE_VARIABLE(c.m_viscosity->m_pssId, f);
+    M_FWRITE_VARIABLE(c.m_temperature->m_pssId, f);
+    M_FWRITE_VARIABLE(c.m_calculatedOutput->m_pssId, f);
+
+    M_FWRITE_VARIABLE(c.m_concentration1, f);
+    M_FWRITE_VARIABLE(c.m_intercept1, f);
+    M_FWRITE_VARIABLE(c.m_slope1, f);
+    M_FWRITE_VARIABLE(c.m_concentration2, f);
+    M_FWRITE_VARIABLE(c.m_intercept2, f);
+    M_FWRITE_VARIABLE(c.m_slope2, f);
+
+    updateRecordSize(f);
+}
+
+void Serializer<ConcentrationCalculatorControl>::deserialize(F_FILE* f, ConcentrationCalculatorControl& c)
+{
+    deserializeRecordSize(f);
+    deserializeClassType(f);
+    deserializeVersion(f);
+
+    Serializer<ControlBase> baseS;
+    baseS.deserialize(f, c);
+
+    M_FREAD_AND_REFERENCE_ELEMENT(c.m_viscosity, f);
+    M_FREAD_AND_REFERENCE_ELEMENT(c.m_temperature, f);
+    M_FREAD_AND_REFERENCE_ELEMENT(c.m_calculatedOutput, f);
+
+    M_FREAD_VARIABLE(c.m_concentration1, f);
+    M_FREAD_VARIABLE(c.m_intercept1, f);
+    M_FREAD_VARIABLE(c.m_slope1, f);
+    M_FREAD_VARIABLE(c.m_concentration2, f);
+    M_FREAD_VARIABLE(c.m_intercept2, f);
+    M_FREAD_VARIABLE(c.m_slope2, f);
+
+}
+
+void Serializer<ProtectionAggregatorControl>::serialize(F_FILE* f, ProtectionAggregatorControl& c)
+{
+    storeStartPosition(f);
+    serializeClassType(f);
+    serializeVersion(f);
+
+    Serializer<ControlBase> baseC;
+    baseC.serialize(f, c);
+
+    M_FWRITE_VARIABLE(c.m_calculatedOutput->m_pssId, f);
+
+    M_FWRITE_VARIABLE(c.m_negateResult, f);
+    M_FWRITE_VARIABLE(c.m_bitwiseOperation, f);
+
+    updateRecordSize(f);
+}
+
+void Serializer<ProtectionAggregatorControl>::deserialize(F_FILE* f, ProtectionAggregatorControl& c)
+{
+    deserializeRecordSize(f);
+    deserializeClassType(f);
+    deserializeVersion(f);
+
+    Serializer<ControlBase> baseS;
+    baseS.deserialize(f, c);
+
+    M_FREAD_AND_REFERENCE_ELEMENT(c.m_calculatedOutput, f);
+
+    M_FREAD_VARIABLE(c.m_negateResult, f);
+    M_FREAD_VARIABLE(c.m_bitwiseOperation, f);
+
 }

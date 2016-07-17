@@ -136,6 +136,28 @@ struct PSSDefineCalculateOnTwoDevicesControlMsg {
 	unsigned short calculationFunction;
 	};
 
+struct PSSDefineConcentrationCalculatorControlMsg {
+	unsigned short cableId;
+	unsigned short pssId;
+	unsigned short viscosityInputPssId;
+	unsigned short temperatureInputPssId;
+	unsigned short concentrationOutputPssId;
+	float concentration1;
+	float intercept1;
+	float slope1;
+	float concentration2;
+	float intercept2;
+	float slope2;
+	};
+
+struct PSSDefineProtectionAggregatorControl {
+	unsigned short cableId;
+	unsigned short pssId;
+	unsigned short outputPssId;
+	char negateResult;
+	unsigned short bitwiseOperation;
+	};
+
 struct PSSDefineConcentrationControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
@@ -901,6 +923,8 @@ union PSSMsgType{
 	struct PSSActivateHysteresisTemperatureControlMsg pSSActivateHysteresisTemperatureControlMsg;
 	struct PSSDefineAnalogSensorWaterTankMsg pSSDefineAnalogSensorWaterTankMsg;
 	struct PSSDefineCalculateOnTwoDevicesControlMsg pSSDefineCalculateOnTwoDevicesControlMsg;
+	struct PSSDefineConcentrationCalculatorControlMsg pSSDefineConcentrationCalculatorControlMsg;
+	struct PSSDefineProtectionAggregatorControl pSSDefineProtectionAggregatorControl;
 	struct PSSDefineConcentrationControlMsg pSSDefineConcentrationControlMsg;
 	struct PSSDefineConstantDeltaProtectionMsg pSSDefineConstantDeltaProtectionMsg;
 	struct PSSDefineCurrentLimitsProtectionMsg pSSDefineCurrentLimitsProtectionMsg;

@@ -43,6 +43,8 @@ enum E_ControlSerializationType
     E_ControlSerializationType_CalculateOnTwoDevicesControl,
     E_ControlSerializationType_ProtectionCheckerBase,
     E_ControlSerializationType_T_OperationNode,
+    E_ControlSerializationType_ConcentrationCalculatorControl,
+    E_ControlSerializationType_ProtectionAggregatorControl,
 };
 
 class ControlBase;
@@ -354,5 +356,26 @@ public:
     void serialize(F_FILE* f, T_OperationNode &c);
     void deserialize(F_FILE* f, T_OperationNode &c);
 };
+
+class ConcentrationCalculatorControl;
+template<> class Serializer<ConcentrationCalculatorControl> : public SerializerBase
+{
+public:
+    uint8_t getSerializationVersion() {return 1;}
+    uint8_t getClassType() {return E_ControlSerializationType_ConcentrationCalculatorControl;}
+    void serialize(F_FILE* f, ConcentrationCalculatorControl &c);
+    void deserialize(F_FILE* f, ConcentrationCalculatorControl &c);
+};
+
+class ProtectionAggregatorControl;
+template<> class Serializer<ProtectionAggregatorControl> : public SerializerBase
+{
+public:
+    uint8_t getSerializationVersion() {return 1;}
+    uint8_t getClassType() {return E_ControlSerializationType_ProtectionAggregatorControl;}
+    void serialize(F_FILE* f, ProtectionAggregatorControl &c);
+    void deserialize(F_FILE* f, ProtectionAggregatorControl &c);
+};
+
 
 #endif /* CONTROLSERIALIZERS_H_ */

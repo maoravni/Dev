@@ -3445,6 +3445,96 @@ void PscMessageHandler::MessageAddShutdownOperationHandler(unsigned long param)
     }
 }
 
+void PscMessageHandler::MessageDefineProtectionAggregatorControlHandler(unsigned long param)
+{
+    PscMessageStruct* message = &m_messages[param];
+    PSSDefineProtectionAggregatorControl* payload = &(message->payload.pSSDefineProtectionAggregatorControl);
+
+    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSDefineProtectionAggregatorControl: cableId=%d pssId={[PSSID:%d]} output={[PSSID:%d]} bitOp=%d negate=%d",
+            payload->cableId, payload->pssId, payload->outputPssId, payload->bitwiseOperation, payload->negateResult);
+
+    ProtectionAggregatorControl *control = new ProtectionAggregatorControl();
+
+// TODO: Add a check, so when an allocation fails we move the board to error state.
+    control->setPssId(payload->pssId);
+
+    ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->outputPssId);
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->outputPssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setOutputElement(element);
+
+    control->setOperation((E_BitwiseOperation)payload->bitwiseOperation, payload->negateResult);
+
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+}
+
+void PscMessageHandler::MessageDefineConcentrationCalculatorControlHandler(unsigned long param)
+{
+    PscMessageStruct* message = &m_messages[param];
+    PSSDefineConcentrationCalculatorControlMsg* payload = &(message->payload.pSSDefineConcentrationCalculatorControlMsg);
+
+    M_CHECK_BOARD_ID(payload->cableId, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn, payload->pssId);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "PSSDefineConcentrationCalculatorControlMsg: cableId=%d pssId={[PSSID:%d]} viscosity={[PSSID:%d]} temperature={[PSSID:%d]} output={[PSSID:%d]} c1=%f i1=%f s1=%f c2=%f i2=%f s2=%f",
+            payload->cableId, payload->pssId, payload->viscosityInputPssId, payload->temperatureInputPssId, payload->concentrationOutputPssId,
+            payload->concentration1, payload->intercept1, payload->slope1, payload->concentration2, payload->intercept2, payload->slope2);
+
+    ConcentrationCalculatorControl *control = new ConcentrationCalculatorControl();
+
+// TODO: Add a check, so when an allocation fails we move the board to error state.
+    control->setPssId(payload->pssId);
+
+    ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->viscosityInputPssId);
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->viscosityInputPssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setViscosityElement(element);
+
+    element = ElementRepository::getInstance().getElementByPssId(payload->temperatureInputPssId);
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->temperatureInputPssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setTemperatureElement(element);
+
+    element = ElementRepository::getInstance().getElementByPssId(payload->concentrationOutputPssId);
+
+    if (element == NULL)
+    {
+        sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->concentrationOutputPssId,
+                E_AckStatus_InvalidDevice);
+        return;
+    }
+
+    control->setOutputElement(element);
+
+
+    sendAck(message->header.id.full, message->header.sn, payload->cableId, payload->pssId, E_AckStatus_Success);
+}
+
 void PscMessageHandler::MessageStartApplicationUploadHandler(unsigned long param)
 {
     PscMessageStruct* message = &m_messages[param];

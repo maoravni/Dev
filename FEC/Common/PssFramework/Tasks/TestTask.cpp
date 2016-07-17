@@ -430,18 +430,6 @@ void TestTask::run()
 
 #endif
 
-#define ModbusTest
-#ifdef ModbusTest
-    CLogger::getInstance().setAllTaskMask(M_LOGGER_LEVEL_TRACE);
-    ChangeUsartBaudrate(USART3, 38400);
-    ModbusInverterSchneiderAtv32* modbusPeriph = new ModbusInverterSchneiderAtv32(2);
-    //modbusPeriph->setUpdateInterval(50);
-    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)modbusPeriph);
-    UpdateSchedulerTask::getInstance()->setBoardInReady(true);
-    ModbusSchedulerTask::getInstance()->setBoardInReady(true);
-
-#endif
-
     for (;;)
     {
 //        usart3_set_dir(true);
