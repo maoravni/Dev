@@ -23,7 +23,8 @@ enum E_NodeType
     E_NodeType_PeripheralNode,
     E_NodeType_TimeoutNode,
     E_NodeType_ProtectionChecker,
-    E_NodeType_ForcedUpdate
+    E_NodeType_ForcedUpdate,
+    E_NodeType_ConfigurationSerializer
 };
 
 //#define M_PROFILE_SCHEDULER_JITTER
@@ -262,6 +263,27 @@ public:
     virtual void execute();
 };
 
+class ConfigurationSerializer: public TimeoutQueueNode
+{
+public:
+    ConfigurationSerializer() :
+            TimeoutQueueNode()
+    {
+    }
+
+    E_NodeType getNodeType()
+    {
+        return E_NodeType_ConfigurationSerializer;
+    }
+
+    virtual uint16_t getPssId()
+    {
+        return M_FORCED_UPDATE_TIMEOUT_PSSID;
+    }
+
+    virtual void execute();
+};
+
 struct T_UpdateEvent
 {
     IObserver* observer;
@@ -333,6 +355,7 @@ public:
     void resumeScheduler();
 
     void addForcedUpdateTimeout();
+    void startConfigurationSerialization();
 
 private:
     QueueNode* popHead();

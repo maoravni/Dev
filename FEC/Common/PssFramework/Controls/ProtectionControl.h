@@ -12,6 +12,9 @@
 #include <DynamicArray.h>
 #include <Elements/ValidationElementBase.h>
 #include <elements/Element.h>
+#include "ProtectionConstantDeltaChecker.h"
+#include "ProtectionCurrentLimitsChecker.h"
+#include "ProtectionProportionalChecker.h"
 
 //typedef DynamicArray<ValidationElementBase*> T_ElementArray;
 
@@ -41,6 +44,8 @@ public:
     {
         return m_dryContactElement;
     }
+
+    ProtectionCheckerBase* getProtectionByIndex(int index);
 
     void setDryContactElement(ElementU8* dryContactElement)
     {
@@ -73,7 +78,9 @@ public:
         return true;
     }
     virtual DeviceProtectionChecker* createDeviceProtectionChecker();
-    virtual void addProtectionCheckerButDontSubsribe(ProtectionCheckerBase* protection);
+    virtual ProtectionCurrentLimitsChecker* createProtectionCurrentLimitsChecker();
+    virtual ProtectionConstantDeltaChecker* createProtectionConstantDeltaChecker();
+    virtual ProtectionProportionalChecker* createProtectionProportionalChecker();
 
     bool getElementUpperHardLimit(ElementBase* element, float& limit);
     bool getElementLowerHardLimit(ElementBase* element, float& limit);
@@ -90,6 +97,7 @@ public:
 
 private:
     DeviceProtectionChecker* getElementInProtection(E_ProtectionCheckerType checkerType, ElementBase* element);
+    virtual void addProtectionCheckerButDontSubsribe(ProtectionCheckerBase* protection);
 
     template <class T> friend class Serializer;
 };
@@ -117,5 +125,6 @@ inline bool ProtectionControl::onMove2Error()
     endMove2Error();
     return true;
 }
+
 
 #endif /* PROTECTIONCONTROL_H_ */

@@ -23,6 +23,17 @@ PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral()
     m_firstElementIndex = m_elementArray[0]->getElementIndex();
 }
 
+PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral(F_FILE* f)
+{
+    Serializer<PsocAnalogOutputPeripheral> s;
+    s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_PSOC_ANALOG_OUTPUTS; ++i)
+    {
+        m_elementArray[i]->addObserver(this);
+    }
+}
+
 PsocAnalogOutputPeripheral::~PsocAnalogOutputPeripheral()
 {
     for (int i = 0; i < M_NUM_OF_PSOC_ANALOG_OUTPUTS; ++i)
@@ -106,11 +117,5 @@ void PsocAnalogOutputPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocAnalogOutputPeripheral> s;
     s.serialize(f, *this);
-}
-
-PsocAnalogOutputPeripheral::PsocAnalogOutputPeripheral(F_FILE* f)
-{
-    Serializer<PsocAnalogOutputPeripheral> s;
-    s.deserialize(f, *this);
 }
 

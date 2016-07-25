@@ -76,6 +76,7 @@ DryContactDigitalOutput::DryContactDigitalOutput(F_FILE* f)
 {
     Serializer<DryContactDigitalOutput> s;
     s.deserialize(f, *this);
+    m_element->addObserver(this);
 }
 
 void DryContactDigitalOutput::serialize(F_FILE* f)

@@ -115,7 +115,7 @@ void ConcentrationControl::executeLimitsCheck(ValidationElementFloat* checkingEl
 
 void ConcentrationControl::execute()
 {
-    if (m_timeoutExpired = false)
+    if (m_timeoutExpired == false)
         return;
 
     float tankLevel = m_tankLevel->getValueF();
@@ -295,5 +295,9 @@ ConcentrationControl::ConcentrationControl(F_FILE* f)
 {
     Serializer<ConcentrationControl> s;
     s.deserialize(f, *this);
+    setElementConcentrationInput(m_concentration);
+    setElementTankLevelInput(m_tankLevel);
+    setElementConditionerValve(m_conditionerValve, m_conditionerValveActivationValue);
+    setElementWaterValve(m_waterValve, m_waterValveActivationValue);
 }
 

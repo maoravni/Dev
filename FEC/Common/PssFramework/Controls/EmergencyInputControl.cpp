@@ -116,5 +116,6 @@ EmergencyInputControl::EmergencyInputControl(F_FILE* f)
 {
     Serializer<EmergencyInputControl> s;
     s.deserialize(f, *this);
+    setEmergencyInputElement(m_emergencyInputElement);
 }
 

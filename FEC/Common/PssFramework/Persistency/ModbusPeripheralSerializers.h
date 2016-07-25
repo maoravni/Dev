@@ -10,6 +10,7 @@
 
 #include "PeripheralSerializers.h"
 #include <Peripherals/ModbusInverterPeripheralBase.h>
+#include "Serializer.h"
 
 
 class ModbusSmcHrsChiller;

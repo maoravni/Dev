@@ -156,7 +156,9 @@ public:
     /**
      * Update the logger UDP IP Address:
      */
-    void updateOutputUdpIpAddress(in_addr& ipAddress);
+    void setOutputUdpIpAddress(in_addr& ipAddress);
+    void setOutputUdpIpAddress(uint32_t ipAddress);
+    uint32_t getOutputUdpIpAddress();
     /**
      * Enable logger output to UART.
      * @param enable

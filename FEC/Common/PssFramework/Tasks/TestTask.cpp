@@ -322,19 +322,11 @@ void TestTask::run()
 //    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
 // filesystem test
+#define EEPROM_TEST
 #ifdef EEPROM_TEST
 
-//    filesystemDriver_init();
-//    filesystemDriver_format();
-//    filesystemDriver_free();
-
-//    DigitalInputsPeripheral* p = new DigitalInputsPeripheral();
-//    p->getElementByIndex(3)->setPssId(3);
-//    p->getElementByIndex(5)->setPssId(2);
-//    p->setPssId(10);
-
-//    PeripheralRepository::getInstance().addPeripheral(p);
-
+//#define TEST_SER
+#ifdef TEST_SER
     PscMessageHandler::getInstance()->getPsocManager()->initTemperaturePeripheralByCableId(1, 100, 100, 10, 4);
     PscMessageHandler::getInstance()->getPsocManager()->initPwmPeripheralByCableId(1, 101, 6);
     PscMessageHandler::getInstance()->getPsocManager()->initAnalogOutputPeripheralByCableId(1, 102, 2);
@@ -355,7 +347,8 @@ void TestTask::run()
     PeripheralRepository::getInstance().initDryContactOutput(0);
     PeripheralRepository::getInstance().initDigitalInputs(0, 12);
 
-    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterSchneiderAtv32(2));
+    ModbusInverterSchneiderAtv32* modbusInverterPeriph = new ModbusInverterSchneiderAtv32(2);
+    PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)modbusInverterPeriph);
     PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterCommanderSK(3));
     PeripheralRepository::getInstance().addPeripheral((InputPeripheralBase*)new ModbusInverterUnidriveM200(4));
     PeripheralRepository::getInstance().addPeripheral(new Modbus6RTDPeripheral(5));
@@ -363,8 +356,66 @@ void TestTask::run()
     PeripheralRepository::getInstance().addPeripheral(new ModbusPumaPeripheral(7));
     PeripheralRepository::getInstance().addPeripheral(new ModbusDataCardPeripheral(8));
 
+    PidControl* pidControl = new PidControl();
+    pidControl->setElementInput(static_cast<ValidationElementFloat*>(PscMessageHandler::getInstance()->getPsocManager()->getTemperaturePeripheralByCableId(1)->getElementByIndex(0)));
+    pidControl->setElementOutput(PscMessageHandler::getInstance()->getPsocManager()->getAnalogOutPeripheralByCableId(1)->getElementByIndex(0), false);
+    ControlRepository::getInstance().addControl(pidControl);
+
+    DeviceProtectionChecker* deviceProt = ControlRepository::getInstance().getProtectionControl()->createDeviceProtectionChecker();
+    deviceProt->setElement(PscMessageHandler::getInstance()->getPsocManager()->getTemperaturePeripheralByCableId(1)->getElementByIndex(1));
+    deviceProt->setSoftProtectionRange(0, 1, false, true);
+    deviceProt->setHardProtectionRange(1, 2, false, false);
+    pidControl->addProtectionChecker(deviceProt);
+
+    ProtectionConstantDeltaChecker* deltaProt = ControlRepository::getInstance().getProtectionControl()->createProtectionConstantDeltaChecker();
+    deltaProt->setElement(PscMessageHandler::getInstance()->getPsocManager()->getTemperaturePeripheralByCableId(1)->getElementByIndex(2));
+    deltaProt->setAllowedDelta(30, 30);
+    deltaProt->setReferenceElement(PscMessageHandler::getInstance()->getPsocManager()->getTemperaturePeripheralByCableId(1)->getElementByIndex(3));
+    pidControl->addProtectionChecker(deltaProt);
+
+    ProtectionCurrentLimitsChecker* currentProt = ControlRepository::getInstance().getProtectionControl()->createProtectionCurrentLimitsChecker();
+    currentProt->setElement(PscMessageHandler::getInstance()->getPsocManager()->getDigitalInPeripheralByCableId(1)->getElementByIndex(0));
+    currentProt->setLimits(10, 20, 30);
+    pidControl->addProtectionChecker(currentProt);
+
+    ProtectionProportionalChecker* propProt = ControlRepository::getInstance().getProtectionControl()->createProtectionProportionalChecker();
+    propProt->setElement(PscMessageHandler::getInstance()->getPsocManager()->getAnalogInPeripheralByCableId(1)->getElementByIndex(0));
+    propProt->setReferenceElement(PscMessageHandler::getInstance()->getPsocManager()->getAnalogInPeripheralByCableId(1)->getElementByIndex(1));
+    propProt->setParameters(1, 2, 3, 4);
+    pidControl->addProtectionChecker(propProt);
+
+    DeviceThresholdChecker checker;
+    checker.setElement(pidControl->getPssId(), PscMessageHandler::getInstance()->getPsocManager()->getDigitalInPeripheralByCableId(1)->getElementByIndex(1));
+    checker.m_thresholdValue = 1;
+    checker.m_greaterThan = true;
+    checker.m_deactivateOnChange = true;
+    checker.m_lockChange = true;
+    checker.m_dependencyCheckType = (E_DependencyCheckType) E_DependencyCheckType_Activate;
+    pidControl->addDependentElement(checker);
+
+    AnalogOutInverterControl* analogOutInverter = new AnalogOutInverterControl();
+    analogOutInverter->setOutputEnableElement(static_cast<ElementU8*>(PeripheralRepository::getInstance().getDigitalOutputsPeripheral()->getElementByIndex(1)));
+    analogOutInverter->setSetpointElement(static_cast<ValidationElementFloat*>(PscMessageHandler::getInstance()->getPsocManager()->getAnalogOutPeripheralByCableId(1)->getElementByIndex(1)));
+    ControlRepository::getInstance().addControl(analogOutInverter);
+
+    ModbusInverterControl* modbusInverter = new ModbusInverterControl();
+    modbusInverter->setOutputEnableElement(PeripheralRepository::getInstance().getDigitalOutputsPeripheral()->getElementByIndex(2));
+    modbusInverter->setOutputFrequencyElement(modbusInverterPeriph->getElementByIndex(0));
+    modbusInverter->setOutputCurrentElement(modbusInverterPeriph->getElementByIndex(1));
+    modbusInverter->setOutputSetpointElement(modbusInverterPeriph->getElementByIndex(2));
+    ControlRepository::getInstance().addControl(modbusInverter);
+
     PersistencyManager::getInstance()->serializeConfiguration();
+    printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
+#endif
+
+#define TEST_DESER
+#ifdef TEST_DESER
     PersistencyManager::getInstance()->deserializeConfiguration();
+    printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
+
+    PersistencyManager::getInstance()->deleteAllEntities();
+#endif
 
 #endif
 
@@ -414,7 +465,7 @@ void TestTask::run()
 
 #endif
 
-#define ModbusTest
+//#define ModbusTest
 #ifdef ModbusTest
     CLogger::getInstance().setAllTaskMask(M_LOGGER_LEVEL_TRACE);
     ChangeUsartBaudrate(USART3, 19200);

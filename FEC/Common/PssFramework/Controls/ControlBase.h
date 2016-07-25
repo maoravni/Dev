@@ -199,6 +199,7 @@ public:
     virtual void addProtectionChecker(ProtectionCheckerBase* protectionChecker);
     virtual void addFeedbackElement(ElementBase* element, float thresholdValue, bool greaterThan, bool deactivate) = 0;
     virtual void addDependentElement(ElementBase* element, float thresholdValue, bool greaterThan, bool deactivate, bool lock, int checkType);
+    virtual void addDependentElement(DeviceThresholdChecker &checker);
 
     virtual void logDependencyCheckFailures(E_ActivationState state, E_ControlState controlState, E_PSSErrors error);
     virtual void clearDependencyCheckFailures(E_PSSErrors error);

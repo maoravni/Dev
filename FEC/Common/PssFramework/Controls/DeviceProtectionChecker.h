@@ -30,6 +30,7 @@ private:
 
 public:
     DeviceProtectionChecker();
+    DeviceProtectionChecker(F_FILE* f);
     virtual ~DeviceProtectionChecker();
 
     virtual void updateNotification(ElementBase* element);
@@ -44,8 +45,8 @@ public:
     virtual bool requestValueChange(ElementBase* element);
 
 //    void setElement(ElementBase* element);
-    void updateSoftProtectionRange(float low, float high, bool useLow, bool useHigh);
-    void updateHardProtectionRange(float low, float high, bool useLow, bool useHigh);
+    void setSoftProtectionRange(float low, float high, bool useLow, bool useHigh);
+    void setHardProtectionRange(float low, float high, bool useLow, bool useHigh);
 //    void addObserver(IObserver* observer);
 
     bool isInsideLimit();
@@ -97,6 +98,7 @@ inline bool DeviceProtectionChecker::modifyProtectionResultAccordingToMissingPri
             result = false;
         break;
     }
+    return result;
 }
 
 inline bool DeviceProtectionChecker::isInsideLimit()

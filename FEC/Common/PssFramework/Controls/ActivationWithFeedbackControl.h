@@ -24,6 +24,7 @@ private:
 
 public:
     IODeviceChecker():m_element(0), m_activateHigh(true){}
+    IODeviceChecker(F_FILE* f);
 
     bool isActive()
     {
@@ -49,6 +50,10 @@ public:
     {
         m_element = element;
     }
+
+    void serialize(F_FILE* f);
+
+    template <class T> friend class Serializer;
 
 };
 

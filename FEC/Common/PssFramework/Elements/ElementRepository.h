@@ -59,6 +59,8 @@ public:
 //    void sendUpdateNotificationForAllElements();
 
     void destroyAllElements();
+
+    int getObserverCount();
 private:
 
     template <class T> friend class Serializer;

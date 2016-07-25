@@ -95,6 +95,7 @@ public:
 
     void setPort(unsigned short port);
     void setIpAddress(in_addr& ipAddress);
+    in_addr getIpAddress();
 };
 
 #endif /* CUdpConnectorSocket_H_ */

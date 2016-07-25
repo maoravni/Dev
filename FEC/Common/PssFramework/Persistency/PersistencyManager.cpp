@@ -16,13 +16,13 @@
 #include <logger.h>
 #include <filesystemDriver.h>
 #include <PscServer/PscMessageHandler.h>
+#include <task.h>
 
 PersistencyManager* PersistencyManager::p_instance = NULL;
 
 PersistencyManager::PersistencyManager()
 {
-    // TODO Auto-generated constructor stub
-
+    m_fecBoardConfiguration.getParametersFromBoard();
 }
 
 PersistencyManager::~PersistencyManager()
@@ -32,6 +32,7 @@ PersistencyManager::~PersistencyManager()
 
 void PersistencyManager::serializeConfiguration()
 {
+    portTickType startTick = xTaskGetTickCount();
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
 
     int result = filesystemDriver_init();
@@ -39,16 +40,20 @@ void PersistencyManager::serializeConfiguration()
 
     filesystemDriver_printFree();
 
+    serializeBoard();
     serializeElements();
     serializePeripherals();
+    serializeControls();
 
     filesystemDriver_free();
 
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
+    printf("Serialization Time: %d\n", xTaskGetTickCount()-startTick);
 }
 
 void PersistencyManager::deserializeConfiguration()
 {
+    portTickType startTick = xTaskGetTickCount();
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
 
     int result = filesystemDriver_init();
@@ -56,15 +61,24 @@ void PersistencyManager::deserializeConfiguration()
 
     filesystemDriver_printFree();
 
-    PeripheralRepository::getInstance().destroyAllPeripherals();
-    ElementRepository::getInstance().destroyAllElements();
+    deleteAllEntities();
 
+    try
+    {
+        deserializeBoard();
+        m_fecBoardConfiguration.setParametersToBoard();
+    } catch (char const *msg)
+    {
+        printf("deserializeBoards exception:", msg, "\n");
+        deleteAllEntities();
+    }
     try
     {
         deserializeElements();
     } catch (char const *msg)
     {
         printf("deserializeElements exception:", msg, "\n");
+        deleteAllEntities();
     }
     try
     {
@@ -72,11 +86,57 @@ void PersistencyManager::deserializeConfiguration()
     } catch (char const *msg)
     {
         printf("deserializePeripherals exception:", msg, "\n");
+        deleteAllEntities();
+    }
+    try
+    {
+        deserializeControls();
+    } catch (char const *msg)
+    {
+        printf("deserializeControls exception:", msg, "\n");
+        deleteAllEntities();
     }
 
     filesystemDriver_free();
 
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
+
+    printf("Deserialization Time: %d\n", xTaskGetTickCount()-startTick);
+}
+
+void PersistencyManager::serializeBoard()
+{
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting board serialization");
+    F_FILE* f = f_open("board", "w+");
+    Serializer<FecBoardConfiguration> s;
+    s.serialize(f, m_fecBoardConfiguration);
+    f_close(f);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Board serialization ended");
+//    return result;
+}
+
+void PersistencyManager::deserializeBoard()
+{
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting board deserialization");
+    F_FILE* f = f_open("board", "r");
+
+//    FecBoardConfiguration newBoardConfiguration;
+//
+    Serializer<FecBoardConfiguration> s;
+    try
+    {
+        s.deserialize(f, m_fecBoardConfiguration);
+    } catch (char const *msg)
+    {
+        printf("deserializeElements exception:", msg, "\n");
+    }
+    f_close(f);
+
+//    if (m_fecBoardConfiguration.compareToCurrentParameters(newBoardConfiguration))
+//        memcpy(&m_fecBoardConfiguration, &newBoardConfiguration, sizeof(FecBoardConfiguration));
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Board deserialization ended");
+//    return result;
 }
 
 void PersistencyManager::serializeElements()
@@ -155,4 +215,13 @@ void PersistencyManager::deserializeControls()
     f_close(f);
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Controls deserialization ended");
 //    return result;
+}
+
+void PersistencyManager::deleteAllEntities()
+{
+    PscMessageHandler::getInstance()->reset();
+//    PeripheralRepository::getInstance().destroyAllPeripherals();
+//    ElementRepository::getInstance().destroyAllElements();
+//    ControlRepository::getInstance().destroyAllControls();
+
 }

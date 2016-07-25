@@ -17,6 +17,7 @@
 #define ITM_EVENT8
 //#endif
 #include <Controls/ControlRepository.h>
+#include <Persistency/PersistencyManager.h>
 
 #define M_KEEP_ALIVE_TIMEOUT_MULTIPLIER 5
 
@@ -340,6 +341,22 @@ void UpdateSchedulerTaskBase::addForcedUpdateTimeout()
     insertNode(newNode);
 }
 
+void UpdateSchedulerTaskBase::startConfigurationSerialization()
+{
+    //    cancelTimeout(control);
+    QueueNode *node = findNode(E_NodeType_ConfigurationSerializer, 10000, 0);
+
+    if (node != NULL)
+    {
+        ConfigurationSerializer* oldNode = static_cast<ConfigurationSerializer*>(node);
+        oldNode->m_obsolete = true;
+    }
+
+    ConfigurationSerializer *newNode = new ConfigurationSerializer();
+    newNode->m_timeout = 10000;
+    insertNode(newNode);
+}
+
 void UpdateSchedulerTaskBase::cancelTimeout(ControlBase* control, uint16_t timeoutType)
 {
     QueueNode *node = getHead();
@@ -544,6 +561,15 @@ void UpdateSchedulerTaskBase::suspendScheduler()
 void UpdateSchedulerTaskBase::resumeScheduler()
 {
     m_runloopSyncSemaphore.give();
+}
+
+void ConfigurationSerializer::execute()
+{
+    m_obsolete = true;
+    m_timeout = 0;
+
+//    PersistencyManager::getInstance()->serializeConfiguration();
+//    printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
 }
 
 void ForcedUpdateTimeoutQueueNode::execute()

@@ -96,7 +96,10 @@ void AnalogOutInverterControl::setSetpointElement(ValidationElementFloat* elemen
 {
     m_deviceSetpoint = element;
 //    m_deviceSetpoint->addObserver(this);
-    m_requestedSetpointElement = ElementRepository::getInstance().addValidationElementFloat();
+    if (m_requestedSetpointElement == NULL)
+    {
+        m_requestedSetpointElement = ElementRepository::getInstance().addValidationElementFloat();
+    }
     m_requestedSetpointElement->addObserver(this);
     m_requestedSetpointElement->setPssId(getPssId());
 //    m_setpoint->setPssId(getPssId());
@@ -182,5 +185,6 @@ AnalogOutInverterControl::AnalogOutInverterControl(F_FILE* f)
 {
     Serializer<AnalogOutInverterControl> s;
     s.deserialize(f, *this);
+    setSetpointElement(m_deviceSetpoint);
 }
 

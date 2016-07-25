@@ -18,9 +18,11 @@ private:
 
 public:
     ProtectionCurrentLimitsChecker();
+    ProtectionCurrentLimitsChecker(F_FILE* f);
+
     virtual ~ProtectionCurrentLimitsChecker();
 
-    void updateLimits(float lowWarning, float lowError, float high);
+    void setLimits(float lowWarning, float lowError, float high);
 
     virtual void updateNotification(ElementBase* element);
     virtual bool requestValueChange(ElementBase* element) {return true;}

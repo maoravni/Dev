@@ -224,8 +224,8 @@
  */
 #if !defined(WIN32) && !defined(__GNUC__)
 extern "C" __root unsigned int __checksum;
-extern "C" unsigned int __checksum_begin;
-extern "C" unsigned int __checksum_end;
+extern "C" __root unsigned int __checksum_begin;
+extern "C" __root unsigned int __checksum_end;
 extern "C" unsigned short slow_crc16(unsigned short sum, unsigned char *p, unsigned int len);
 #endif
 
@@ -365,21 +365,6 @@ extern "C" HeapRegion_t xHeapRegions[];
 int optionCount;
 char **optionArray;
 #endif
-
-template<class T> void templateTest(T t)
-{
-    static_assert(sizeof(T) == 0, "ttt");
-}
-
-template<> void templateTest(int iii)
-{
-    printf("iii\n");
-}
-
-template<> void templateTest(unsigned int uuu)
-{
-    printf("uuu\n");
-}
 
 int main(int ac, char* av[])
 {

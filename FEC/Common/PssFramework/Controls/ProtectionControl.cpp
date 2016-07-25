@@ -64,6 +64,27 @@ DeviceProtectionChecker* ProtectionControl::createDeviceProtectionChecker()
     return deviceChecker;
 }
 
+ProtectionCurrentLimitsChecker* ProtectionControl::createProtectionCurrentLimitsChecker()
+{
+    ProtectionCurrentLimitsChecker* p = new ProtectionCurrentLimitsChecker();
+    addProtectionCheckerButDontSubsribe(p);
+    return p;
+}
+
+ProtectionConstantDeltaChecker* ProtectionControl::createProtectionConstantDeltaChecker()
+{
+    ProtectionConstantDeltaChecker* p = new ProtectionConstantDeltaChecker();
+    addProtectionCheckerButDontSubsribe(p);
+    return p;
+}
+
+ProtectionProportionalChecker* ProtectionControl::createProtectionProportionalChecker()
+{
+    ProtectionProportionalChecker* p = new ProtectionProportionalChecker();
+    addProtectionCheckerButDontSubsribe(p);
+    return p;
+}
+
 bool ProtectionControl::getElementUpperHardLimit(ElementBase* element, float& limit)
 {
     bool result;
@@ -84,8 +105,10 @@ bool ProtectionControl::getElementLowerHardLimit(ElementBase* element, float& li
     return true;
 }
 
+//TODO: This method should be placed in the control base.
 void ProtectionControl::addProtectionCheckerButDontSubsribe(ProtectionCheckerBase* protection)
 {
+    protection->setProtectionIndex(m_protectionCheckers.size());
     m_protectionCheckers.push_back(protection);
 }
 
@@ -132,5 +155,10 @@ ProtectionControl::ProtectionControl(F_FILE* f)
 {
     Serializer<ProtectionControl> s;
     s.deserialize(f, *this);
+}
+
+ProtectionCheckerBase* ProtectionControl::getProtectionByIndex(int index)
+{
+    return m_protectionCheckers[index];
 }
 

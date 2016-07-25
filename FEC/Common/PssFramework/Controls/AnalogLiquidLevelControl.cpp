@@ -163,5 +163,6 @@ AnalogLiquidLevelControl::AnalogLiquidLevelControl(F_FILE* f)
 {
     Serializer<AnalogLiquidLevelControl> s;
     s.deserialize(f, *this);
+    setElementLevelSensor(m_levelSensorElement);
 }
 

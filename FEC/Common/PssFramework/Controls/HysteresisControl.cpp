@@ -385,5 +385,8 @@ HysteresisControl::HysteresisControl(F_FILE* f)
 {
     Serializer<HysteresisControl> s;
     s.deserialize(f, *this);
+    setElementInput(m_input);
+    setElementActivateSetpoint(m_activateSetpointElement);
+    setElementDeactivateSetpoint(m_deactivateSetpointElement);
 }
 

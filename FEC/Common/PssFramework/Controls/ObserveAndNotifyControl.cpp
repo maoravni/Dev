@@ -230,5 +230,7 @@ ObserveAndNotifyControl::ObserveAndNotifyControl(F_FILE* f)
 {
     Serializer<ObserveAndNotifyControl> s;
     s.deserialize(f, *this);
+    m_setpoint->addObserver(this);
+    setElementInput(m_input);
 }
 

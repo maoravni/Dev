@@ -577,5 +577,8 @@ PidControl::PidControl(F_FILE* f)
 {
     Serializer<PidControl> s;
     s.deserialize(f, *this);
+    m_setpoint->addObserver(this);
+    setElementInput(m_input);
+    setElementOutput(m_output, m_outputIsControl);
 }
 

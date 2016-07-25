@@ -260,3 +260,8 @@ void ElementBase::sendWarning(uint16_t cableId, uint16_t pssId, uint32_t warning
 {
     PscMasterServer::getInstance().sendWarning(cableId, pssId, 0, warnings);
 }
+
+int ElementBase::getObserverCount()
+{
+    return m_observerList.size();
+}

@@ -65,6 +65,22 @@ void Serializer<ControlRepository>::serialize(F_FILE* f, ControlRepository& cr)
 
     T_EntityMapRecordVector entityMapVec;
 
+    T_ControlRepositoryIndexes ici;
+    if (cr.m_protectionControl == NULL)
+        ici.m_protectionControl = -1;
+    else
+        ici.m_protectionControl = cr.m_protectionControl->getControlIndex();
+    if (cr.m_emergencyInputControl == NULL)
+        ici.m_emergencyInputControl = -1;
+    else
+        ici.m_emergencyInputControl = cr.m_emergencyInputControl->getControlIndex();
+    if (cr.m_orderedShutdownControl == NULL)
+        ici.m_orderedShutdownControl = -1;
+    else
+        ici.m_orderedShutdownControl = cr.m_orderedShutdownControl->getControlIndex();
+
+    M_FWRITE_VARIABLE(ici, f);
+
     // serialize each of the peripherals:
     for (int i = 0; i < cr.m_controlList.size(); ++i)
     {
@@ -88,12 +104,6 @@ void Serializer<ControlRepository>::serialize(F_FILE* f, ControlRepository& cr)
         M_FWRITE_VARIABLE(entityMapVec[i], f);
     }
 
-    T_ControlRepositoryIndexes ici;
-    ici.m_protectionControl = cr.m_protectionControl->getControlIndex();
-    ici.m_emergencyInputControl = cr.m_emergencyInputControl->getControlIndex();
-    ici.m_orderedShutdownControl = cr.m_orderedShutdownControl->getControlIndex();
-
-    M_FWRITE_VARIABLE(ici, f);
 }
 
 void Serializer<ControlRepository>::deserialize(F_FILE* f, ControlRepository& cr)
@@ -111,179 +121,190 @@ void Serializer<ControlRepository>::deserialize(F_FILE* f, ControlRepository& cr
 
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Deserializing %d/%d Controls", numOfControls, cr.m_controlList.size());
 
-    EntityMapRecord entityMapRecord;
-    T_EntityMapRecordVector entityMapVec;
-
-    // serialize each of the peripherals:
-    for (int i = 0; i < cr.m_controlList.size(); ++i)
-    {
-        M_FREAD_VARIABLE(entityMapRecord, f);
-
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping control %d @ %d", entityMapRecord.pssId, entityMapRecord.filePos);
-
-        entityMapVec.push_back(entityMapRecord);
-    }
+    EntityMapRecord mapRecord;
+    T_EntityMapRecordVector mapVec;
 
     for (int i = 0; i < numOfControls; ++i)
     {
-        deserializeControl(f, cr);
+        M_FREAD_VARIABLE(mapRecord, f);
+
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping control %d @ %d", mapRecord.pssId, mapRecord.filePos);
+
+        mapVec.push_back(mapRecord);
     }
 
-    // TODO: deserialize the hard referenced controls:
-    T_ControlRepositoryIndexes ici;
-    ici.m_protectionControl = cr.m_protectionControl->getControlIndex();
-    ici.m_emergencyInputControl = cr.m_emergencyInputControl->getControlIndex();
-    ici.m_orderedShutdownControl = cr.m_orderedShutdownControl->getControlIndex();
+    EntityMapRecord entityMapRecord;
+    T_EntityMapRecordVector entityMapVec;
 
-    M_FWRITE_VARIABLE(ici, f);
+    T_ControlRepositoryIndexes ici;
+    M_FREAD_VARIABLE(ici, f);
+
+    for (int i = 0; i < numOfControls; ++i)
+    {
+        ControlBase* c = deserializeControl(f, cr);
+
+//        if (c->m_controlIndex == ici.m_protectionControl)
+//            cr.m_protectionControl = static_cast<ProtectionControl*>(c);
+        if (c->m_controlIndex == ici.m_emergencyInputControl)
+            cr.m_emergencyInputControl = static_cast<EmergencyInputControl*>(c);
+        if (c->m_controlIndex == ici.m_orderedShutdownControl)
+            cr.m_orderedShutdownControl = static_cast<OrderedShutdownControl*>(c);
+    }
+
 }
 
-void Serializer<ControlRepository>::deserializeControl(F_FILE* f, ControlRepository& cr)
+ControlBase* Serializer<ControlRepository>::deserializeControl(F_FILE* f, ControlRepository& cr)
 {
     int elementStartPosition;
     elementStartPosition = f_tell(f);
 
     deserializeRecordSize(f);
 
-    uint8_t classType = deserializeClassType(f);
+    uint8_t classType;
+    M_FREAD_VARIABLE(classType, f);
 
     if (f_seek(f, elementStartPosition, F_SEEK_SET) != F_NO_ERROR)
         throw "File operation Failed";
 
+    ControlBase* c;
     switch (classType)
     {
     case E_ControlSerializationType_ControlBase:
         throw "Bad Deserialisation";
     case E_ControlSerializationType_LiquidLevel3Sensors:
     {
-        ControlBase* c = new LiquidLevel3Sensors;
-        ControlRepository::getInstance().addControl(c);
+        c = new LiquidLevel3Sensors;
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_PidControl:
     {
-        ControlBase* c = new PidControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new PidControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_ActivationWithFeedbackControl:
     {
-        ControlBase* c = new ActivationWithFeedbackControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new ActivationWithFeedbackControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_AddTwoDevicesControl:
     {
-        ControlBase* c = new AddTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new AddTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_AnalogLiquidLevelControl:
     {
-        ControlBase* c = new AnalogLiquidLevelControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new AnalogLiquidLevelControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_AnalogOutInverterControl:
     {
-        ControlBase* c = new AnalogOutInverterControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new AnalogOutInverterControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_ConcentrationControl:
     {
-        ControlBase* c = new ConcentrationControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new ConcentrationControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_DivideTwoDevicesControl:
     {
-        ControlBase* c = new DivideTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new DivideTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_EmergencyInputControl:
     {
-        ControlBase* c = new EmergencyInputControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new EmergencyInputControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_HysteresisControl:
     {
-        ControlBase* c = new HysteresisControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new HysteresisControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_LiftPbOnError:
     {
-        ControlBase* c = new LiftPbOnError(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new LiftPbOnError(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_LiftPbOnErrorCcsGen2:
     {
-        ControlBase* c = new LiftPbOnErrorCcsGen2(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new LiftPbOnErrorCcsGen2(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_LiftPbOnErrorCcsGen3:
     {
-        ControlBase* c = new LiftPbOnErrorCcsGen3(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new LiftPbOnErrorCcsGen3(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_LiquidLevelPumpControl:
     {
-        ControlBase* c = new LiquidLevelPumpControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new LiquidLevelPumpControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_MaxTwoDevicesControl:
     {
-        ControlBase* c = new MaxTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new MaxTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_MinTwoDevicesControl:
     {
-        ControlBase* c = new MinTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new MinTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_ModbusInverterControl:
     {
-        ControlBase* c = new ModbusInverterControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new ModbusInverterControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_MultiplyTwoDevicesControl:
     {
-        ControlBase* c = new MultiplyTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new MultiplyTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_ObserveAndNotifyControl:
     {
-        ControlBase* c = new ObserveAndNotifyControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new ObserveAndNotifyControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_OrderedShutdownControl:
     {
-        ControlBase* c = new OrderedShutdownControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new OrderedShutdownControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_ProtectionControl:
     {
-        ControlBase* c = new ProtectionControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new ProtectionControl(f);
+        if (cr.m_protectionControl == NULL)
+        {
+            cr.m_protectionControl = static_cast<ProtectionControl*>(c);
+        }
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_SubtractTwoDevicesControl:
     {
-        ControlBase* c = new SubtractTwoDevicesControl(f);
-        ControlRepository::getInstance().addControl(c);
+        c = new SubtractTwoDevicesControl(f);
+        cr.addControl(c);
         break;
     }
     case E_ControlSerializationType_DeviceProtectionChecker:
@@ -305,5 +326,7 @@ void Serializer<ControlRepository>::deserializeControl(F_FILE* f, ControlReposit
     default:
         throw "Bad Deserialisation";
     }
+
+    return c;
 }
 

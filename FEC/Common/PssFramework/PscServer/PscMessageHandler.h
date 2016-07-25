@@ -66,7 +66,7 @@ private:
 
     BoardStateMachine m_boardState;
     E_BoardMode m_boardMode;
-    bool m_deleteControlsOnDisconnection;
+    //bool m_deleteControlsOnDisconnection;
 
     PscMessageStruct m_messages[MESSAGE_QUEUE_SIZE];
     unsigned long m_currentMessage;
@@ -75,6 +75,9 @@ private:
     uint16_t m_masterControllerId;
     uint16_t m_deviceType;
     uint16_t m_boardAddress;
+    uint32_t m_usartBaudRate;
+    uint32_t m_lastConfigurationHash;
+    uint32_t m_lastConfigurationTimestamp;
 
     CBinarySemaphore m_postMessageSemaphore;
 
@@ -193,6 +196,8 @@ public:
 private:
     void suspendScheduler();
     void resumeScheduler();
+
+    friend class FecBoardConfiguration;
 };
 
 #endif /* PSCMESSAGEHANDLER_H_ */

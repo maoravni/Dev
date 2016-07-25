@@ -45,6 +45,7 @@ enum E_ControlSerializationType
     E_ControlSerializationType_T_OperationNode,
     E_ControlSerializationType_ConcentrationCalculatorControl,
     E_ControlSerializationType_ProtectionAggregatorControl,
+    E_ControlSerializationType_IODeviceChecker,
 };
 
 class ControlBase;
@@ -54,11 +55,13 @@ public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_ControlSerializationType_ControlBase;}
     void serialize(F_FILE* f, ControlBase &c);
+    virtual void serializeProtection(F_FILE* f, ControlBase& c);
     void deserialize(F_FILE* f, ControlBase &c);
+    virtual void deserializeProtection(F_FILE* f, ControlBase& c);
 };
 
 class LiquidLevel3Sensors;
-template<> class Serializer<LiquidLevel3Sensors> : public SerializerBase
+template<> class Serializer<LiquidLevel3Sensors> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -68,7 +71,7 @@ public:
 };
 
 class PidControl;
-template<> class Serializer<PidControl> : public SerializerBase
+template<> class Serializer<PidControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -78,7 +81,7 @@ public:
 };
 
 class ActivationWithFeedbackControl;
-template<> class Serializer<ActivationWithFeedbackControl> : public SerializerBase
+template<> class Serializer<ActivationWithFeedbackControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -88,7 +91,7 @@ public:
 };
 
 class ConcentrationControl;
-template<> class Serializer<ConcentrationControl> : public SerializerBase
+template<> class Serializer<ConcentrationControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -98,7 +101,7 @@ public:
 };
 
 class ObserveAndNotifyControl;
-template<> class Serializer<ObserveAndNotifyControl> : public SerializerBase
+template<> class Serializer<ObserveAndNotifyControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -108,7 +111,7 @@ public:
 };
 
 class LiftPbOnError;
-template<> class Serializer<LiftPbOnError> : public SerializerBase
+template<> class Serializer<LiftPbOnError> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -118,7 +121,7 @@ public:
 };
 
 class LiftPbOnErrorCcsGen3;
-template<> class Serializer<LiftPbOnErrorCcsGen3> : public SerializerBase
+template<> class Serializer<LiftPbOnErrorCcsGen3> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -128,7 +131,7 @@ public:
 };
 
 class OrderedShutdownControl;
-template<> class Serializer<OrderedShutdownControl> : public SerializerBase
+template<> class Serializer<OrderedShutdownControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -138,7 +141,7 @@ public:
 };
 
 class AnalogLiquidLevelControl;
-template<> class Serializer<AnalogLiquidLevelControl> : public SerializerBase
+template<> class Serializer<AnalogLiquidLevelControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -148,7 +151,7 @@ public:
 };
 
 class HysteresisControl;
-template<> class Serializer<HysteresisControl> : public SerializerBase
+template<> class Serializer<HysteresisControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -158,7 +161,7 @@ public:
 };
 
 class AnalogOutInverterControl;
-template<> class Serializer<AnalogOutInverterControl> : public SerializerBase
+template<> class Serializer<AnalogOutInverterControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -168,7 +171,7 @@ public:
 };
 
 class LiftPbOnErrorCcsGen2;
-template<> class Serializer<LiftPbOnErrorCcsGen2> : public SerializerBase
+template<> class Serializer<LiftPbOnErrorCcsGen2> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -178,17 +181,19 @@ public:
 };
 
 class ProtectionControl;
-template<> class Serializer<ProtectionControl> : public SerializerBase
+template<> class Serializer<ProtectionControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
     uint8_t getClassType() {return E_ControlSerializationType_ProtectionControl;}
     void serialize(F_FILE* f, ProtectionControl &c);
+    virtual void serializeProtection(F_FILE* f, ControlBase& c);
     void deserialize(F_FILE* f, ProtectionControl &c);
+    virtual void deserializeProtection(F_FILE* f, ControlBase& c);
 };
 
 class EmergencyInputControl;
-template<> class Serializer<EmergencyInputControl> : public SerializerBase
+template<> class Serializer<EmergencyInputControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -198,7 +203,7 @@ public:
 };
 
 class ModbusInverterControl;
-template<> class Serializer<ModbusInverterControl> : public SerializerBase
+template<> class Serializer<ModbusInverterControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -208,7 +213,7 @@ public:
 };
 
 class DivideTwoDevicesControl;
-template<> class Serializer<DivideTwoDevicesControl> : public SerializerBase
+template<> class Serializer<DivideTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -218,7 +223,7 @@ public:
 };
 
 class MinTwoDevicesControl;
-template<> class Serializer<MinTwoDevicesControl> : public SerializerBase
+template<> class Serializer<MinTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -228,7 +233,7 @@ public:
 };
 
 class LiquidLevelPumpControl;
-template<> class Serializer<LiquidLevelPumpControl> : public SerializerBase
+template<> class Serializer<LiquidLevelPumpControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -238,7 +243,7 @@ public:
 };
 
 class AddTwoDevicesControl;
-template<> class Serializer<AddTwoDevicesControl> : public SerializerBase
+template<> class Serializer<AddTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -248,7 +253,7 @@ public:
 };
 
 class MaxTwoDevicesControl;
-template<> class Serializer<MaxTwoDevicesControl> : public SerializerBase
+template<> class Serializer<MaxTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -258,7 +263,7 @@ public:
 };
 
 class MultiplyTwoDevicesControl;
-template<> class Serializer<MultiplyTwoDevicesControl> : public SerializerBase
+template<> class Serializer<MultiplyTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -268,7 +273,7 @@ public:
 };
 
 class SubtractTwoDevicesControl;
-template<> class Serializer<SubtractTwoDevicesControl> : public SerializerBase
+template<> class Serializer<SubtractTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -288,7 +293,7 @@ public:
 };
 
 class ProtectionConstantDeltaChecker;
-template<> class Serializer<ProtectionConstantDeltaChecker> : public SerializerBase
+template<> class Serializer<ProtectionConstantDeltaChecker> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -328,7 +333,7 @@ public:
 };
 
 class CalculateOnTwoDevicesControl;
-template<> class Serializer<CalculateOnTwoDevicesControl> : public SerializerBase
+template<> class Serializer<CalculateOnTwoDevicesControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -358,7 +363,7 @@ public:
 };
 
 class ConcentrationCalculatorControl;
-template<> class Serializer<ConcentrationCalculatorControl> : public SerializerBase
+template<> class Serializer<ConcentrationCalculatorControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -368,7 +373,7 @@ public:
 };
 
 class ProtectionAggregatorControl;
-template<> class Serializer<ProtectionAggregatorControl> : public SerializerBase
+template<> class Serializer<ProtectionAggregatorControl> : public Serializer<ControlBase>
 {
 public:
     uint8_t getSerializationVersion() {return 1;}
@@ -377,5 +382,14 @@ public:
     void deserialize(F_FILE* f, ProtectionAggregatorControl &c);
 };
 
+class IODeviceChecker;
+template<> class Serializer<IODeviceChecker> : public SerializerBase
+{
+public:
+    uint8_t getSerializationVersion() {return 1;}
+    uint8_t getClassType() {return E_ControlSerializationType_IODeviceChecker;}
+    void serialize(F_FILE* f, IODeviceChecker &c);
+    void deserialize(F_FILE* f, IODeviceChecker &c);
+};
 
 #endif /* CONTROLSERIALIZERS_H_ */

@@ -26,12 +26,12 @@ DeviceProtectionChecker::~DeviceProtectionChecker()
 ////    m_observedElement->addObserver(this);
 //}
 
-void DeviceProtectionChecker::updateSoftProtectionRange(float low, float high, bool useLow, bool useHigh)
+void DeviceProtectionChecker::setSoftProtectionRange(float low, float high, bool useLow, bool useHigh)
 {
     m_softProtectionRange.updateRange(low, high, useLow, useHigh);
 }
 
-void DeviceProtectionChecker::updateHardProtectionRange(float low, float high, bool useLow, bool useHigh)
+void DeviceProtectionChecker::setHardProtectionRange(float low, float high, bool useLow, bool useHigh)
 {
     m_hardProtectionRange.updateRange(low, high, useLow, useHigh);
 }
@@ -79,3 +79,10 @@ void DeviceProtectionChecker::serialize(F_FILE* f)
     Serializer<DeviceProtectionChecker> s;
     s.serialize(f, *this);
 }
+
+DeviceProtectionChecker::DeviceProtectionChecker(F_FILE* f):ProtectionCheckerBase(f)
+{
+    Serializer<DeviceProtectionChecker> s;
+    s.deserialize(f, *this);
+}
+

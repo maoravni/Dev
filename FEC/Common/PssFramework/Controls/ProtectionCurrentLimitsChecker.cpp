@@ -25,7 +25,7 @@ ProtectionCurrentLimitsChecker::~ProtectionCurrentLimitsChecker()
 ////    m_observedElement->addObserver(this);
 //}
 
-void ProtectionCurrentLimitsChecker::updateLimits(float lowWarning, float lowError, float high)
+void ProtectionCurrentLimitsChecker::setLimits(float lowWarning, float lowError, float high)
 {
     m_allowedRangeError.updateRange(lowError, high, true, true);
     m_allowedRangeWarning.updateRange(lowWarning, high, true, true);
@@ -74,4 +74,10 @@ void ProtectionCurrentLimitsChecker::serialize(F_FILE* f)
 {
     Serializer<ProtectionCurrentLimitsChecker> s;
     s.serialize(f, *this);
+}
+
+ProtectionCurrentLimitsChecker::ProtectionCurrentLimitsChecker(F_FILE* f):ProtectionCheckerBase(f)
+{
+    Serializer<ProtectionCurrentLimitsChecker> s;
+    s.deserialize(f, *this);
 }

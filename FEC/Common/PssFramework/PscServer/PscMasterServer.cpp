@@ -163,7 +163,7 @@ void PscMasterServer::run()
         {
             m_isConnected = true;
             StatusLed::getInstance().setSpeed(E_AliveLedSpeed_Connected);
-            CLogger::getInstance().updateOutputUdpIpAddress(m_pTcpConnector->getRemoteIpAddress());
+            CLogger::getInstance().setOutputUdpIpAddress(m_pTcpConnector->getRemoteIpAddress());
             m_messageStruct.header.id.split.id = MSG_Connect;
             PscMessageHandler::getInstance()->handleMessage(m_messageStruct);
         }

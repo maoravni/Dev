@@ -58,11 +58,11 @@ public:
 
     virtual void enableElementByIndex(int index, bool enable);
 
-    void setFrequencySetpointElement(ElementBase* element)
-    {
-        m_frequencySetpoint = element;
-        m_frequencySetpoint->addObserver(this);
-    }
+//    void setFrequencySetpointElement(ElementBase* element)
+//    {
+//        m_frequencySetpoint = element;
+//        m_frequencySetpoint->addObserver(this);
+//    }
 
     void setOutputEnableElement(ElementBase* element)
     {

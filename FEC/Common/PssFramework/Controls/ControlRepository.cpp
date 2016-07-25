@@ -9,11 +9,8 @@
 
 ControlRepository ControlRepository::s_instance;
 
-ControlRepository::ControlRepository()
+ControlRepository::ControlRepository(): m_protectionControl(NULL), m_emergencyInputControl(NULL), m_orderedShutdownControl(NULL)
 {
-    m_protectionControl = NULL;
-    m_emergencyInputControl = NULL;
-    m_orderedShutdownControl = NULL;
 }
 
 ControlRepository::~ControlRepository()
@@ -44,6 +41,7 @@ ControlBase* ControlRepository::getControlByIndex(int index)
 
 void ControlRepository::addControl(ControlBase* control)
 {
+    getProtectionControl();
     control->setControlIndex(m_controlList.size());
     m_controlList.push_back(control);
 }
@@ -77,13 +75,17 @@ void ControlRepository::initProtectionControl()
     {
 //        PeripheralRepository::getInstance().initDryContactOutput();
         m_protectionControl = new ProtectionControl();
+        addControl(m_protectionControl);
     }
 }
 
 void ControlRepository::initEmergencyInputControl()
 {
     if (m_emergencyInputControl == NULL)
+    {
         m_emergencyInputControl = new EmergencyInputControl();
+        addControl(m_emergencyInputControl);
+    }
 }
 
 ProtectionControl* ControlRepository::getProtectionControl()
@@ -190,7 +192,10 @@ void ControlRepository::sendUpdateNotificationForAllControls()
 bool ControlRepository::addShutdownOperation(int delay, uint16_t control, E_ShutdownOperation operation, float setpoint)
 {
     if (m_orderedShutdownControl == NULL)
+    {
         m_orderedShutdownControl = new OrderedShutdownControl();
+        addControl(m_orderedShutdownControl);
+    }
 
     return m_orderedShutdownControl->addOperation(delay, control, operation, setpoint);
 }

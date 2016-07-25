@@ -117,5 +117,10 @@ PsocDigitalOutputPeripheral::PsocDigitalOutputPeripheral(F_FILE* f)
 {
     Serializer<PsocDigitalOutputPeripheral> s;
     s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_PSOC_PWM_OUTPUTS; ++i)
+    {
+        m_outputElementArray[i]->addObserver(this);
+    }
 }
 

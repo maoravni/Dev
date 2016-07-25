@@ -180,3 +180,18 @@ void ElementRepository::destroyAllElements()
 
     m_elementList.clear();
 }
+
+int ElementRepository::getObserverCount()
+{
+    T_ElementListIterator i;
+    int result = 0;
+    for (i = m_elementList.begin() ;i != m_elementList.end(); ++i)
+    {
+        int temp = (*i)->getObserverCount();
+        printf("PSSID %d, index %d: %d observers\n", (*i)->getPssId(), (*i)->getElementIndex(), temp);
+        result += temp;
+    }
+
+    return result;
+}
+

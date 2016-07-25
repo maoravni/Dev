@@ -94,7 +94,10 @@ PscMessageHandler::PscMessageHandler()
     m_pAppLoader = NULL;
 
     m_boardMode = E_BoardMode_Normal;
-    m_deleteControlsOnDisconnection = true;
+
+    m_usartBaudRate = 0;
+    m_lastConfigurationHash = 0;
+    m_lastConfigurationTimestamp = 0;
 }
 
 PscMessageHandler::~PscMessageHandler()
@@ -148,13 +151,12 @@ void PscMessageHandler::performBoardShutdown()
 
     reset();
 
-#ifdef FEC2_BOARD
-    m_psocManager.reset();
-#endif
+//#ifdef FEC2_BOARD
+//    m_psocManager.reset();
+//#endif
 
     m_boardState.eventShuttingDownComplete();
 
-    m_deleteControlsOnDisconnection = true;
     m_boardMode = E_BoardMode_Normal;
     m_psocManager.setBoardMode(m_boardMode);
 }
@@ -167,7 +169,7 @@ void PscMessageHandler::MessageDisconnect(unsigned long param)
     if (UpdateSchedulerTask::getInstance()->isBoardInReady())
         ControlRepository::getInstance().executeShutdownOperation(true);
 
-    if (m_deleteControlsOnDisconnection == true)
+    if (m_boardMode == E_BoardMode_Normal || m_boardMode == E_BoardMode_HwValidation)
     {
         performBoardShutdown();
     }
@@ -181,12 +183,11 @@ void PscMessageHandler::MessageConnect(unsigned long param)
 //    {
 //        delay(100);
 //    }
-    if (m_deleteControlsOnDisconnection == false)
+    if (m_boardMode == E_BoardMode_DeleteOnReconnection)
     {
         performBoardShutdown();
     }
     m_boardMode = E_BoardMode_Normal;
-    m_deleteControlsOnDisconnection = true;
 
     m_boardState.eventStartUp();
     // todo: move this to a more suitable place.
@@ -611,6 +612,7 @@ void PscMessageHandler::MessageSetBoardConfigurationHandler(unsigned long param)
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSSetBoardConfigMsg: cableId=%d ntpServerAddress=%x baudRate=%d",
             payload->cableId, payload->ntpServerAddress, payload->baudRate);
 
+    m_usartBaudRate = payload->baudRate;
 #ifndef WIN32
     if (sntp_server_address == 0 && payload->ntpServerAddress != 0)
         sntp_init(payload->ntpServerAddress);
@@ -722,7 +724,10 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSEndBoardConfig: cableId=%d deleteOnDisconnection=%d", payload->cableId,
             payload->deleteOnDisconnection);
 
-    m_deleteControlsOnDisconnection = payload->deleteOnDisconnection;
+    if (m_boardMode != E_BoardMode_HwValidation)
+    {
+        m_boardMode = (payload->deleteOnDisconnection) ? E_BoardMode_Normal : E_BoardMode_DeleteOnReconnection;
+    }
 
     //m_psocManager.startRecovery();
     //PeripheralRepository::getInstance().startRecovery();
@@ -754,7 +759,8 @@ void PscMessageHandler::MessageEndBoardConfigHandler(unsigned long param)
 
     PeripheralRepository::getInstance().getDryContactOutput()->setDryContactState(true);
 
-//    PersistencyManager::getInstance()->serializeElements();
+    UpdateSchedulerTask::getInstance()->startConfigurationSerialization();
+
 }
 
 void PscMessageHandler::MessageDefineOnboardPT100PeriphHandler(unsigned long param)
@@ -1579,45 +1585,45 @@ void PscMessageHandler::MessageDefineDeviceProtectionHandler(unsigned long param
     {
     case E_ValueType_S8:
     case E_ValueType_Bool:
-        deviceChecker->updateSoftProtectionRange(*(int8_t*) &lowerSoftLimit, *(int8_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(int8_t*) &lowerSoftLimit, *(int8_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(int8_t*) &lowerHardLimit, *(int8_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(int8_t*) &lowerHardLimit, *(int8_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_S16:
-        deviceChecker->updateSoftProtectionRange(*(int16_t*) &lowerSoftLimit, *(int16_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(int16_t*) &lowerSoftLimit, *(int16_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(int16_t*) &lowerHardLimit, *(int16_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(int16_t*) &lowerHardLimit, *(int16_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_S32:
-        deviceChecker->updateSoftProtectionRange(*(int32_t*) &lowerSoftLimit, *(int32_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(int32_t*) &lowerSoftLimit, *(int32_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(int32_t*) &lowerHardLimit, *(int32_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(int32_t*) &lowerHardLimit, *(int32_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_U8:
-        deviceChecker->updateSoftProtectionRange(*(uint8_t*) &lowerSoftLimit, *(uint8_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(uint8_t*) &lowerSoftLimit, *(uint8_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(uint8_t*) &lowerHardLimit, *(uint8_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(uint8_t*) &lowerHardLimit, *(uint8_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_U16:
-        deviceChecker->updateSoftProtectionRange(*(uint16_t*) &lowerSoftLimit, *(uint16_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(uint16_t*) &lowerSoftLimit, *(uint16_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(uint16_t*) &lowerHardLimit, *(uint16_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(uint16_t*) &lowerHardLimit, *(uint16_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_U32:
-        deviceChecker->updateSoftProtectionRange(*(uint32_t*) &lowerSoftLimit, *(uint32_t*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(uint32_t*) &lowerSoftLimit, *(uint32_t*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(uint32_t*) &lowerHardLimit, *(uint32_t*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(uint32_t*) &lowerHardLimit, *(uint32_t*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     case E_ValueType_Float:
-        deviceChecker->updateSoftProtectionRange(*(float*) &lowerSoftLimit, *(float*) &upperSoftLimit,
+        deviceChecker->setSoftProtectionRange(*(float*) &lowerSoftLimit, *(float*) &upperSoftLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
-        deviceChecker->updateHardProtectionRange(*(float*) &lowerHardLimit, *(float*) &upperHardLimit,
+        deviceChecker->setHardProtectionRange(*(float*) &lowerHardLimit, *(float*) &upperHardLimit,
                 payload->checkLowLimit, payload->checkHighLimit);
         break;
     }
@@ -1696,15 +1702,12 @@ void PscMessageHandler::MessageDefineConstantDeltaProtectionHandler(unsigned lon
     float upperDelta = payload->allowedUpperDelta;
     unsigned short debounceTimer = payload->debounceTimer;
 
-    ProtectionConstantDeltaChecker* protection = new ProtectionConstantDeltaChecker();
+    ProtectionConstantDeltaChecker* protection = ControlRepository::getInstance().getProtectionControl()->createProtectionConstantDeltaChecker();
 
     protection->setElement(element);
     protection->setReferenceElement(referenceElement);
-    protection->updateAllowedDelta(lowerDelta, upperDelta);
+    protection->setAllowedDelta(lowerDelta, upperDelta);
     control->addProtectionChecker(protection);
-
-    ProtectionControl *protectionRepository = ControlRepository::getInstance().getProtectionControl();
-    protectionRepository->addProtectionCheckerButDontSubsribe(protection);
 
     protection->setDebounceTimeout(debounceTimer);
 
@@ -1748,14 +1751,11 @@ void PscMessageHandler::MessageDefineCurrentLimitsProtectionHandler(unsigned lon
     float lowerErrorLimits = payload->lowerErrorLimits;
     unsigned short debounceTimer = payload->debounceTimer;
 
-    ProtectionCurrentLimitsChecker* protection = new ProtectionCurrentLimitsChecker();
+    ProtectionCurrentLimitsChecker* protection = ControlRepository::getInstance().getProtectionControl()->createProtectionCurrentLimitsChecker();
 
     protection->setElement(element);
-    protection->updateLimits(lowerWarningLimits, lowerErrorLimits, upperLimits);
+    protection->setLimits(lowerWarningLimits, lowerErrorLimits, upperLimits);
     control->addProtectionChecker(protection);
-
-    ProtectionControl *protectionRepository = ControlRepository::getInstance().getProtectionControl();
-    protectionRepository->addProtectionCheckerButDontSubsribe(protection);
 
     protection->setDebounceTimeout(debounceTimer);
 
@@ -1810,16 +1810,13 @@ void PscMessageHandler::MessageDefineProportionalProtectionHandler(unsigned long
     float offset = payload->inputOffset;
     unsigned short debounceTimer = payload->debounceTimer;
 
-    ProtectionProportionalChecker* protection = new ProtectionProportionalChecker();
+    ProtectionProportionalChecker* protection = ControlRepository::getInstance().getProtectionControl()->createProtectionProportionalChecker();
 
     protection->setElement(element);
     protection->setReferenceElement(referenceElement);
-    protection->updateParameters(gain, offset, lowerDelta, upperDelta);
+    protection->setParameters(gain, offset, lowerDelta, upperDelta);
 
     control->addProtectionChecker(protection);
-
-    ProtectionControl *protectionRepository = ControlRepository::getInstance().getProtectionControl();
-    protectionRepository->addProtectionCheckerButDontSubsribe(protection);
 
     protection->setDebounceTimeout(debounceTimer);
 
@@ -1858,6 +1855,7 @@ void PscMessageHandler::MessageDefinePIDControlHandler(unsigned long param)
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     PidControl* control = new PidControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
 // TODO: Have PID Control accept more element types.
     ValidationElementFloat* element =
@@ -1936,6 +1934,8 @@ void PscMessageHandler::MessageDefineConcentrationControlHandler(unsigned long p
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ConcentrationControl* control = new ConcentrationControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
+
 
 // TODO: Have PID Control accept more element types.
     ElementBase* element = (ElementRepository::getInstance().getElementByPssId(payload->concentrationInput));
@@ -2002,6 +2002,7 @@ void PscMessageHandler::MessageDefineObserveAndNotifyControlHandler(unsigned lon
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ObserveAndNotifyControl * control = new ObserveAndNotifyControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ValidationElementFloat* element =
 		static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->input));
@@ -2042,6 +2043,7 @@ void PscMessageHandler::MessageDefineActivationWithFeedbackControlHandler(unsign
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ActivationWithFeedbackControl* control = new ActivationWithFeedbackControl();
     control->setPssId(payload->pssID);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->activatePSSId);
 
@@ -2306,6 +2308,7 @@ void PscMessageHandler::MessageDefineAnalogOutInverterControlHandler(unsigned lo
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     AnalogOutInverterControl* control = new AnalogOutInverterControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ValidationElementFloat* element =
 		static_cast<ValidationElementFloat*>(ElementRepository::getInstance().getElementByPssId(payload->speedId));
@@ -2359,6 +2362,7 @@ void PscMessageHandler::MessageDefineModbusInverterControlHandler(unsigned long 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ModbusInverterControl* control = new ModbusInverterControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->enableId);
 
@@ -2933,6 +2937,7 @@ void PscMessageHandler::MessageDefineHysteresisTemperatureControlHandler(unsigne
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     HysteresisControl* control = new HysteresisControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
 // TODO: Have PID Control accept more element types.
     ValidationElementFloat* element =
@@ -3051,6 +3056,7 @@ void PscMessageHandler::MessageDefineSubtractTwoDevicesControlHandler(unsigned l
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     SubtractTwoDevicesControl* control = new SubtractTwoDevicesControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->input1);
 
@@ -3128,6 +3134,7 @@ void PscMessageHandler::MessageDefineCalculateOnTwoDevicesControlHandler(unsigne
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->input1);
 
@@ -3236,6 +3243,7 @@ void PscMessageHandler::MessageDefineAnalogSensorWaterTankHandler(unsigned long 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     AnalogLiquidLevelControl* control = new AnalogLiquidLevelControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->sensorPssid);
 
@@ -3269,6 +3277,7 @@ void PscMessageHandler::MessageDefine3SensorWaterTankLevelHandler(unsigned long 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     LiquidLevelPumpControl* control = new LiquidLevelPumpControl();
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->tankPssid);
 
@@ -3462,6 +3471,7 @@ void PscMessageHandler::MessageDefineProtectionAggregatorControlHandler(unsigned
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->outputPssId);
 
@@ -3497,6 +3507,7 @@ void PscMessageHandler::MessageDefineConcentrationCalculatorControlHandler(unsig
 
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     control->setPssId(payload->pssId);
+    ControlRepository::getInstance().addControl(control);
 
     ElementBase* element = ElementRepository::getInstance().getElementByPssId(payload->viscosityInputPssId);
 
@@ -3688,6 +3699,9 @@ void PscMessageHandler::reset()
     PeripheralRepository::getInstance().destroyAllPeripherals();
     ElementRepository::getInstance().destroyAllElements();
 
+#ifdef FEC2_BOARD
+    m_psocManager.reset();
+#endif
 }
 
 void PscMessageHandler::stopOnEmr()

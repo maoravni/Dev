@@ -20,10 +20,11 @@ private:
 
 public:
     ProtectionProportionalChecker();
+    ProtectionProportionalChecker(F_FILE* f);
     virtual ~ProtectionProportionalChecker();
 
     void setReferenceElement(ElementBase* element);
-    void updateParameters(float gain, float offset, float low, float high);
+    void setParameters(float gain, float offset, float low, float high);
 
     virtual void updateNotification(ElementBase* element);
     virtual bool requestValueChange(ElementBase* element) {return true;}

@@ -18,10 +18,11 @@ private:
 
 public:
     ProtectionConstantDeltaChecker();
+    ProtectionConstantDeltaChecker(F_FILE* f);
     virtual ~ProtectionConstantDeltaChecker();
 
     void setReferenceElement(ElementBase* element);
-    void updateAllowedDelta(float low, float high);
+    void setAllowedDelta(float low, float high);
 
     virtual void updateNotification(ElementBase* element);
     virtual bool requestValueChange(ElementBase* element) {return true;}

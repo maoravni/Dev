@@ -21,7 +21,7 @@ ControlBase::ControlBase()
     m_controlExceptions.full = 0;
     m_lastSn = 0;
     m_monitoringEnabled = false;
-    ControlRepository::getInstance().addControl(this);
+    //ControlRepository::getInstance().addControl(this);
     m_isProtectionActive = false;
     m_isProtectionWarningActive = false;
     m_isEnabled = false;
@@ -367,6 +367,7 @@ void ControlBase::addProtectionChecker(ProtectionCheckerBase* protectionChecker)
 {
     protectionChecker->addObserver(this);
 //    protectionChecker->setPssId(getPssId());
+    protectionChecker->setProtectionIndex(m_protectionCheckers.size());
     m_protectionCheckers.push_back(protectionChecker);
 }
 
@@ -553,6 +554,12 @@ void ControlBase::addDependentElement(ElementBase* element, float thresholdValue
     checker.m_lockChange = lock;
     checker.m_dependencyCheckType = (E_DependencyCheckType) checkType;
     m_dependentCheckers.push_back(checker);
+}
+
+void ControlBase::addDependentElement(DeviceThresholdChecker& checker)
+{
+    m_dependentCheckers.push_back(checker);
+    checker.getElement()->addObserver(this);
 }
 
 void ControlBase::logDependencyCheckFailures(E_ActivationState activationState, E_ControlState controlState,

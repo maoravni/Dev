@@ -242,5 +242,7 @@ LiquidLevelPumpControl::LiquidLevelPumpControl(F_FILE* f)
 {
     Serializer<LiquidLevelPumpControl> s;
     s.deserialize(f, *this);
+    setElementFillPump(m_fillPump);
+    setElementTankLevelInput(m_tankLevelInput);
 }
 

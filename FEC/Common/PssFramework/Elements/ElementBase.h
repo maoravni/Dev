@@ -70,6 +70,7 @@ public:
     virtual void updateObservers();
     void addObserver(IObserver* observer);
     void removeObserver(IObserver* observer);
+    int getObserverCount();
 
     uint16_t getPssId() const
     {

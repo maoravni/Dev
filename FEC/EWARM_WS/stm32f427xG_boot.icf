@@ -37,9 +37,9 @@ do not initialize  { section .noinit };
 
 place at address mem:__ICFEDIT_intvec_start__ { readonly section .intvec };
 
-/*define block CHECKSUM {section .checksum};*/
-/*place in ROM_region { readonly, first block CHECKSUM };*/
-place in ROM_region   { readonly };
+define block CHECKSUM {section .checksum};
+place in ROM_region { readonly, last block CHECKSUM };
+/*place in ROM_region   { readonly };*/
 place at end of ROM_region { readonly section .checksum };
 place in RAM_region   { readwrite,
                         block CSTACK, block HEAP };

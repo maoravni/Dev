@@ -80,10 +80,16 @@ DigitalOutputsPeripheral::DigitalOutputsPeripheral(F_FILE* f)
 {
     Serializer<DigitalOutputsPeripheral> s;
     s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_DIGITAL_OUT; ++i)
+    {
+        m_elementArray[i]->addObserver(this);
+    }
 }
 
 void DigitalOutputsPeripheral::serialize(F_FILE* f)
 {
     Serializer<DigitalOutputsPeripheral> s;
     s.serialize(f, *this);
+
 }

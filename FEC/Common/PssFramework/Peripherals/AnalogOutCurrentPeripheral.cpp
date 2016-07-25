@@ -72,6 +72,11 @@ AnalogOutCurrentPeripheral::AnalogOutCurrentPeripheral(F_FILE* f)
 {
     Serializer<AnalogOutCurrentPeripheral> s;
     s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_MA_OUT; ++i)
+    {
+        m_elementArray[i]->addObserver(this);
+    }
 }
 
 void AnalogOutCurrentPeripheral::serialize(F_FILE* f)

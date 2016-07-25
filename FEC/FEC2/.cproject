@@ -611,7 +611,7 @@
 							<builder buildPath="${ProjDirPath/Debug}" enabledIncrementalBuild="true" id="iar.arm.toolchain.builder.2.1881277646" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="false" stopOnErr="true" superClass="iar.arm.toolchain.builder.2"/>
 							<tool id="iar.arm.toolchain.compiler.v5.4.1.656040009" name="IAR C/C++ Compiler for ARM" superClass="iar.arm.toolchain.compiler.v5.4.1">
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0.1083690762" name="Generate debug information" superClass="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0" valueType="boolean"/>
-								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.1886720539" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" valueType="enumerated"/>
+								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.1886720539" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" value="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" valueType="enumerated"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optCSE.v5.4.0.1207775608" name="Disable common subexpression elimination" superClass="iar.arm.toolchain.compiler.option.optCSE.v5.4.0" value="true" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optUnroll.v5.4.0.13064512" name="Disable loop unrolling" superClass="iar.arm.toolchain.compiler.option.optUnroll.v5.4.0" value="true" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optInline.v5.4.0.1173666735" name="Disable function inlining" superClass="iar.arm.toolchain.compiler.option.optInline.v5.4.0" value="true" valueType="boolean"/>
@@ -624,6 +624,7 @@
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.1067056076" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.800438627" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/CMSIS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/tm_stm32fall}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/FreeRTOS-Plus-FAT-SL}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/uffs/src/platform/STM32F2}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/uffs/src/inc}&quot;"/>
@@ -657,8 +658,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/SW/APPLIC/INC&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/DB/INC&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/VCP_TERM&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/3rdParty/FreeRTOS_EC/Source&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/CppFramework&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/3rdParty/FreeRTOS_EC/Source&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/MODBUS&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../Common/AUX_TERM&quot;"/>
 								</option>

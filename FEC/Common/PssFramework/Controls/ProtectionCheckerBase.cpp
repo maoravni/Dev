@@ -17,6 +17,13 @@ ProtectionCheckerBase::ProtectionCheckerBase()
     m_debounceTimeoutStarted = false;
 }
 
+ProtectionCheckerBase::ProtectionCheckerBase(F_FILE* f)
+{
+    m_observedElement = NULL;
+    m_debounceTimeout = 0;
+    m_debounceTimeoutStarted = false;
+}
+
 ProtectionCheckerBase::~ProtectionCheckerBase()
 {
     m_observedElement->removeObserver(this);
@@ -84,5 +91,10 @@ void ProtectionCheckerBase::timeoutExpired(uint16_t timeoutType)
 
     if (state != m_protectionStatus->getValueU32())
         m_protectionStatus->setValue(state);
+}
+
+void ProtectionCheckerBase::setProtectionIndex(uint16_t index)
+{
+    m_protectionIndex = index;
 }
 

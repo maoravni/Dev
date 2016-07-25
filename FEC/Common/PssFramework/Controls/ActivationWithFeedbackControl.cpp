@@ -982,3 +982,14 @@ ActivationWithFeedbackControl::ActivationWithFeedbackControl(F_FILE* f)
     s.deserialize(f, *this);
 }
 
+IODeviceChecker::IODeviceChecker(F_FILE* f)
+{
+    Serializer<IODeviceChecker> s;
+    s.deserialize(f, *this);
+}
+
+void IODeviceChecker::serialize(F_FILE* f)
+{
+    Serializer<IODeviceChecker> s;
+    s.serialize(f, *this);
+}

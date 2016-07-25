@@ -174,6 +174,26 @@ public:
         m_isInSerialization = isInSerialization;
     }
 
+    int getPsocIndexByCableId(int cableId)
+    {
+        if (m_boardMode == E_BoardMode_HwValidation)
+        {
+            --cableId;
+            if (m_psocHandlers[cableId].getPsocCommState() != E_PsocCommState_Error)
+                return cableId;
+        }
+        else
+        {
+            for (int i = 0; i < m_totalNumberOfPsocs; ++i)
+            {
+                if (m_psocHandlers[i].getPsocCommState() != E_PsocCommState_Error
+                        && m_psocHandlers[i].getCableID() == cableId)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
 private:
     // TODO: initialize the hardware lines for the psoc.
     void initializeGpio();
@@ -206,26 +226,6 @@ private:
         if (index == -1)
             return NULL;
         return &m_psocHandlers[index];
-    }
-
-    int getPsocIndexByCableId(int cableId)
-    {
-        if (m_boardMode == E_BoardMode_HwValidation)
-        {
-            --cableId;
-            if (m_psocHandlers[cableId].getPsocCommState() != E_PsocCommState_Error)
-                return cableId;
-        }
-        else
-        {
-            for (int i = 0; i < m_totalNumberOfPsocs; ++i)
-            {
-                if (m_psocHandlers[i].getPsocCommState() != E_PsocCommState_Error
-                        && m_psocHandlers[i].getCableID() == cableId)
-                    return i;
-            }
-        }
-        return -1;
     }
 
     bool advanceToNextPsoc();

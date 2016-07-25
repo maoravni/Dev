@@ -1,4 +1,8 @@
 eclipse.preferences.version=1
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/C_INCLUDE/delimiter=;
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/C_INCLUDE/operation=remove
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/append=true
+environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/appendContributed=true
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/C_INCLUDE/delimiter=;
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/C_INCLUDE/operation=remove
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/append=true
@@ -7,6 +11,10 @@ environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.707484373/C_INCLUDE/operation=remove
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.707484373/append=true
 environment/buildEnvironmentInclude/iar.arm.toolchain.project.exe.configuration.release.v5.4.0.707484373/appendContributed=true
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/LIBRARY_PATH/delimiter=;
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/append=true
+environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594.583227238/appendContributed=true
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/LIBRARY_PATH/delimiter=;
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/LIBRARY_PATH/operation=remove
 environment/buildEnvironmentLibrary/iar.arm.toolchain.project.exe.configuration.debug.v5.4.0.1768052594/append=true

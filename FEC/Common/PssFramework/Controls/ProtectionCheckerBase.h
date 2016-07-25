@@ -29,6 +29,9 @@ enum E_ProtectionCheckerType
 
 class ProtectionCheckerBase : public IObserver/*, public ErrorBitManager*/
 {
+private:
+    uint16_t m_protectionIndex;
+
 protected:
     ElementBase* m_observedElement;
     ElementU8* m_protectionStatus;
@@ -37,6 +40,7 @@ protected:
 
 public:
     ProtectionCheckerBase();
+    ProtectionCheckerBase(F_FILE* f);
     virtual ~ProtectionCheckerBase();
 
     virtual void addObserver(IObserver* observer);
@@ -50,6 +54,8 @@ public:
     virtual E_PSSErrors getErrorType() = 0;
     virtual E_PSSWarnings getWarningType() = 0;
     virtual uint16_t getPssId();
+    void setProtectionIndex(uint16_t index);
+    uint16_t getProtectionIndex() {return m_protectionIndex;}
 
     uint16_t getDebounceTimeout() const
     {

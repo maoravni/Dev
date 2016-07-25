@@ -126,4 +126,6 @@ ConcentrationCalculatorControl::ConcentrationCalculatorControl(F_FILE* f)
 {
     Serializer<ConcentrationCalculatorControl> s;
     s.deserialize(f, *this);
+    setViscosityElement(m_viscosity);
+    setTemperatureElement(m_temperature);
 }

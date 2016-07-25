@@ -536,9 +536,21 @@ void CLogger::logTaskList()
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "\n%s", taskListMessage);
 }
 
-void CLogger::updateOutputUdpIpAddress(in_addr& ipAddress)
+void CLogger::setOutputUdpIpAddress(in_addr& ipAddress)
 {
     m_udpConnector.setIpAddress(ipAddress);
+}
+
+uint32_t CLogger::getOutputUdpIpAddress()
+{
+    return (uint32_t)m_udpConnector.getIpAddress().s_addr;
+}
+
+void CLogger::setOutputUdpIpAddress(uint32_t ipAddress)
+{
+    in_addr ip;
+    ip.s_addr = ipAddress;
+    setOutputUdpIpAddress(ip);
 }
 
 void CLogger::postMessageToLog(T_LoggerQueueItem &queueItem)

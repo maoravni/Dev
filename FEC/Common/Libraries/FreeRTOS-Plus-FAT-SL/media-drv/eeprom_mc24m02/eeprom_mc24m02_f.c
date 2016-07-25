@@ -50,6 +50,9 @@
 
 #include <eeprom_m24m02_dr.h>
 
+#include <FreeRTOS.h>
+#include <task.h>
+
 /* The F_DRIVER structure that is filled with the RAM disk versions of the read
  sector, write sector, etc. functions. */
 static F_DRIVER t_driver;
@@ -64,7 +67,9 @@ static int eeprom_readsector(F_DRIVER * driver, void * data, unsigned long secto
 {
 //    printf("EEPROM Reading sector %x\n", sector);
     //uint32_t result = eeprom_read_buffer_sequential(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+    taskENTER_CRITICAL();
     I2C1_BufferRead(data, MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE);
+    taskEXIT_CRITICAL();
     //eeprom_rd_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
     return 0;
 }
@@ -76,7 +81,9 @@ static int eeprom_writesector(F_DRIVER * driver, void * data, unsigned long sect
 {
 //    printf("EEPROM Writing sector %x\n", sector);
     //eeprom_wr_buf(MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE, data);
+    taskENTER_CRITICAL();
     I2C1_BufferWrite(data, MDRIVER_SECTOR_SIZE*sector, MDRIVER_SECTOR_SIZE);
+    taskEXIT_CRITICAL();
     return 0;
 }
 

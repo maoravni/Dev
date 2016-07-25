@@ -24,7 +24,7 @@ void ProtectionConstantDeltaChecker::setReferenceElement(ElementBase* element)
     m_referenceElement->addObserver(this);
 }
 
-void ProtectionConstantDeltaChecker::updateAllowedDelta(float low, float high)
+void ProtectionConstantDeltaChecker::setAllowedDelta(float low, float high)
 {
     // since we subtract the reference from the observed, we negate the low limit,
     // and check the difference against the range.
@@ -81,4 +81,11 @@ void ProtectionConstantDeltaChecker::serialize(F_FILE* f)
 {
     Serializer<ProtectionConstantDeltaChecker> s;
     s.serialize(f, *this);
+}
+
+ProtectionConstantDeltaChecker::ProtectionConstantDeltaChecker(F_FILE* f):ProtectionCheckerBase(f)
+{
+    Serializer<ProtectionConstantDeltaChecker> s;
+    s.deserialize(f, *this);
+    setReferenceElement(m_referenceElement);
 }

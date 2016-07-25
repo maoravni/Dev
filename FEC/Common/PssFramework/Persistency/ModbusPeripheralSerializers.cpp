@@ -5,6 +5,7 @@
  *      Author: maora
  */
 
+#include "ModbusPeripheralSerializers.h"
 #include <Peripherals/ModbusPeripheralBase.h>
 #include <Peripherals/ModbusInverterSchneiderAtv32.h>
 #include <Peripherals/ModbusInverterPeripheralBase.h>
@@ -74,6 +75,7 @@ void Serializer<ModbusInverterPeripheralBase>::deserialize(F_FILE* f, ModbusInve
 
     M_FREAD_VARIABLE(temp, f);
     p.m_frequencySetpoint = ElementRepository::getInstance().getElementByIndex(temp);
+    p.m_frequencySetpoint->addObserver(&p);
 
     M_FREAD_VARIABLE(temp, f);
     p.m_outputEnable = ElementRepository::getInstance().getElementByIndex(temp);

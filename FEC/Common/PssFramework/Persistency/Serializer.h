@@ -24,22 +24,37 @@ struct EntityMapRecord
 typedef std::vector<EntityMapRecord> T_EntityMapRecordVector;
 
 #define M_FWRITE_VARIABLE(v, f) if (f_write(&v, sizeof(v), 1, f) != 1) throw __FILE__, __LINE__,"File operation Failed"
+#define M_FWRITE_ELEMENT_REFERENCE(v, f) \
+    { \
+    uint16_t temp = 0xffff;\
+    if (v != NULL) temp = v->m_elementIndex; \
+    M_FWRITE_VARIABLE(temp, f); \
+    }
+
 #define M_FREAD_VARIABLE(v, f) if (f_read(&v, sizeof(v), 1, f) != 1) throw __FILE__, __LINE__,"File operation Failed"
 #define M_FREAD_AND_REFERENCE_ELEMENT(element, file) \
     { \
         uint16_t temp; \
         M_FREAD_VARIABLE(temp, file); \
-        element = ElementRepository::getInstance().getElementByIndex(temp); \
-        if (element == NULL) \
-            throw __FILE__, __LINE__,"Element not found"; \
+        if (temp == 0xffff) element = NULL; \
+        else \
+        { \
+            element = ElementRepository::getInstance().getElementByIndex(temp); \
+            if (element == NULL) \
+                throw __FILE__, __LINE__,"Element not found"; \
+        } \
     }
 #define M_FREAD_AND_REFERENCE_ELEMENT_WITH_CAST(element, castTo, file) \
     { \
         uint16_t temp; \
         M_FREAD_VARIABLE(temp, file); \
-        element = dynamic_cast<castTo*>(ElementRepository::getInstance().getElementByIndex(temp)); \
-        if (element == NULL) \
-            throw __FILE__, __LINE__,"Element not found"; \
+        if (temp == 0xffff) element = NULL; \
+        else \
+        { \
+            element = static_cast<castTo*>(ElementRepository::getInstance().getElementByIndex(temp)); \
+            if (element == NULL) \
+                throw __FILE__, __LINE__,"Element not found"; \
+        } \
     }
 
 
@@ -65,7 +80,7 @@ public:
     void deserializeVersion(F_FILE* f);
 
     void serializeClassType(F_FILE* f);
-    uint8_t deserializeClassType(F_FILE* f);
+    virtual uint8_t deserializeClassType(F_FILE* f);
 
 
 };

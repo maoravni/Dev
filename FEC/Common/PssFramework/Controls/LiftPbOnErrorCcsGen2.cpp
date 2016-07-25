@@ -169,5 +169,12 @@ LiftPbOnErrorCcsGen2::LiftPbOnErrorCcsGen2(F_FILE* f)
 {
     Serializer<LiftPbOnErrorCcsGen2> s;
     s.deserialize(f, *this);
+
+    m_tubEngage[0]->addObserver(this);
+    m_tubEngage[1]->addObserver(this);
+    m_tubDisengage[0]->addObserver(this);
+    m_tubDisengage[1]->addObserver(this);
+    m_airPressureOk->addObserver(this);
+    m_blanketMoving->addObserver(this);
 }
 

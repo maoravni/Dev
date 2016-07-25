@@ -214,3 +214,10 @@ void CUdpConnectorSocket::setIpAddress(in_addr& ipAddress)
     memcpy(&m_ipAddress, &ipAddress, sizeof(in_addr));
 //    m_ipAddress = ipAddress;
 }
+
+in_addr CUdpConnectorSocket::getIpAddress()
+{
+    in_addr ip;
+    memcpy(&ip, &m_ipAddress, sizeof(in_addr));
+    return ip;
+}

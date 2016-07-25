@@ -26,7 +26,7 @@ void ProtectionProportionalChecker::setReferenceElement(ElementBase* element)
     m_referenceElement->addObserver(this);
 }
 
-void ProtectionProportionalChecker::updateParameters(float gain, float offset, float low, float high)
+void ProtectionProportionalChecker::setParameters(float gain, float offset, float low, float high)
 {
     // since we divide the input by the reference, we get the percentage.
     // we then check if the ratio is in the limits.
@@ -85,4 +85,11 @@ void ProtectionProportionalChecker::serialize(F_FILE* f)
 {
     Serializer<ProtectionProportionalChecker> s;
     s.serialize(f, *this);
+}
+
+ProtectionProportionalChecker::ProtectionProportionalChecker(F_FILE* f):ProtectionCheckerBase(f)
+{
+    Serializer<ProtectionProportionalChecker> s;
+    s.deserialize(f, *this);
+    setReferenceElement(m_referenceElement);
 }

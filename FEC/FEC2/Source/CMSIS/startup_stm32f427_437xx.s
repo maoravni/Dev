@@ -195,7 +195,7 @@ __vector_table
         SECTION .text:CODE:REORDER:NOROOT(2)
 Reset_Handler
 
-        LDR     R0, =SystemInit
+get        LDR     R0, =SystemInit
         BLX     R0
         LDR     R0, =__iar_program_start
         BX      R0

@@ -26,6 +26,17 @@ PsocPwmOutputPeripheral::PsocPwmOutputPeripheral()
     memset(m_pwmChannelRampParameters, 0, sizeof(m_pwmChannelRampParameters));
 }
 
+PsocPwmOutputPeripheral::PsocPwmOutputPeripheral(F_FILE* f)
+{
+    Serializer<PsocPwmOutputPeripheral> s;
+    s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_PSOC_PWM_OUTPUTS; ++i)
+    {
+        m_dutyCycleElementArray[i]->addObserver(this);
+    }
+}
+
 PsocPwmOutputPeripheral::~PsocPwmOutputPeripheral()
 {
     for (int i = 0; i < M_NUM_OF_PSOC_PWM_OUTPUTS; ++i)
@@ -168,11 +179,5 @@ void PsocPwmOutputPeripheral::serialize(F_FILE* f)
 {
     Serializer<PsocPwmOutputPeripheral> s;
     s.serialize(f, *this);
-}
-
-PsocPwmOutputPeripheral::PsocPwmOutputPeripheral(F_FILE* f)
-{
-    Serializer<PsocPwmOutputPeripheral> s;
-    s.deserialize(f, *this);
 }
 

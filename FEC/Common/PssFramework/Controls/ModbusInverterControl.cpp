@@ -130,11 +130,10 @@ void ModbusInverterControl::setOutputEnableElement(ElementBase* element)
 void ModbusInverterControl::setInverterPeripheral(ModbusInverterPeripheralBase* inverter)
 {
 	//    m_setpoint = inverter->getFrequencySetpointElement();
-	m_outputCurrent = inverter->getOutputCurrentElement();
-	m_outputFrequency = inverter->getOutputFrequencyElement();
-	m_setpoint->addObserver(this);
+    setOutputCurrentElement(inverter->getOutputCurrentElement());
+    setOutputFrequencyElement(inverter->getOutputFrequencyElement());
+	//m_setpoint->addObserver(this);
 	//    m_outputCurrent->addObserver(this);
-	m_outputFrequency->addObserver(this);
 }
 
 void ModbusInverterControl::setOutputFrequencyElement(ElementBase* element)
@@ -488,5 +487,9 @@ ModbusInverterControl::ModbusInverterControl(F_FILE* f)
 {
     Serializer<ModbusInverterControl> s;
     s.deserialize(f, *this);
+
+    setOutputSetpointElement(m_setpoint);
+    setOutputFrequencyElement(m_outputFrequency);
+    setOutputCurrentElement(m_outputCurrent);
 }
 

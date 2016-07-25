@@ -175,5 +175,13 @@ LiftPbOnError::LiftPbOnError(F_FILE* f)
 {
     Serializer<LiftPbOnError> s;
     s.deserialize(f, *this);
+
+    m_airPressure->addObserver(this);
+    m_tubEngage[0]->addObserver(this);
+    m_tubEngage[1]->addObserver(this);
+    m_tubEngage[2]->addObserver(this);
+    m_tubEngage[3]->addObserver(this);
+    m_squeegeeEngage[0]->addObserver(this);
+    m_squeegeeEngage[1]->addObserver(this);
 }
 

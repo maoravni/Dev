@@ -266,5 +266,10 @@ SwPwmOutputPeripheral::SwPwmOutputPeripheral(F_FILE* f)
 {
     Serializer<SwPwmOutputPeripheral> s;
     s.deserialize(f, *this);
+
+    for (int i = 0; i < M_NUM_OF_DIGITAL_OUT; ++i)
+    {
+        m_dutyCycleElementArray[i]->addObserver(this);
+    }
 }
 

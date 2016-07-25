@@ -9,11 +9,14 @@
 #define PERSISTENCYMANAGER_H_
 
 #include <stdlib.h>
+#include "BoardSerializer.h"
 
 class PersistencyManager
 {
 private:
     static PersistencyManager* p_instance;
+
+    FecBoardConfiguration m_fecBoardConfiguration;
 
     PersistencyManager();
 public:
@@ -41,6 +44,13 @@ private:
 
     void serializeControls();
     void deserializeControls();
+
+    void serializeBoard();
+    void deserializeBoard();
+
+    void deleteAllEntities();
+
+    friend class TestTask;
 };
 
 #endif /* PERSISTENCYMANAGER_H_ */
