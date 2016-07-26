@@ -825,7 +825,13 @@ void PscMessageHandler::MessageDefineOnboardI2cMi3IrPeriphHandler(unsigned long 
         M_CHECK_BOARD_STATE(E_BoardState_Initializing, message->header.id.full, message->header.sn,
                 payload->periphPSSId);
 
-        Mi3I2CIrPeripheral* mi3Periph = new Mi3I2CIrPeripheral();
+        Mi3I2CIrPeripheral* mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();
+        if (mi3Periph == NULL)
+        {
+            PeripheralRepository::getInstance().initMi3IrSensorsPeripheral(payload->periphPSSId);
+            mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();
+        }
+
         if (mi3Periph == NULL)
             status = E_AckStatus_InvalidDevice;
         else
@@ -833,7 +839,6 @@ void PscMessageHandler::MessageDefineOnboardI2cMi3IrPeriphHandler(unsigned long 
             mi3Periph->setPssId(payload->periphPSSId);
             mi3Periph->setUpdateInterval(payload->sampleInterval);
 
-            PeripheralRepository::getInstance().addPeripheral(mi3Periph);
             status = E_AckStatus_Success;
         }
     }

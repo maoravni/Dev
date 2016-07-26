@@ -18,6 +18,7 @@
 #include <PscServer/PscMessageHandler.h>
 #include <task.h>
 
+
 PersistencyManager* PersistencyManager::p_instance = NULL;
 
 PersistencyManager::PersistencyManager()
@@ -33,8 +34,6 @@ PersistencyManager::~PersistencyManager()
 void PersistencyManager::serializeConfiguration()
 {
     portTickType startTick = xTaskGetTickCount();
-    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
-
     int result = filesystemDriver_init();
     int e = 1;
 
@@ -224,4 +223,27 @@ void PersistencyManager::deleteAllEntities()
 //    ElementRepository::getInstance().destroyAllElements();
 //    ControlRepository::getInstance().destroyAllControls();
 
+}
+
+void PersistencyManager::startEepromAccess()
+{
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
+
+    Mi3I2CIrPeripheral* mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();
+    if (mi3Periph != NULL)
+        mi3Periph->setIsInSerialization(true);
+
+    I2C1_init(M_I2C_EEPROM_BAUD_RATE);
+}
+
+void PersistencyManager::endEepromAccess()
+{
+    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
+
+    Mi3I2CIrPeripheral* mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();
+
+    I2C1_init(M_I2C_IR_SENSOR_BAUD_RATE);
+
+    if (mi3Periph != NULL)
+        mi3Periph->setIsInSerialization(false);
 }

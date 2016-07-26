@@ -260,8 +260,8 @@ void vInitTask(void *pvParameters)
     // start A2D
     a2d_init_hw();
 
-    I2C1_init();
-    I2C2_init();
+    I2C1_init(M_I2C_IR_SENSOR_BAUD_RATE);
+    I2C2_init(M_I2C_IR_SENSOR_BAUD_RATE);
     //    I2C1_DMA_IRQ_init();
 
     Psc_SubsystemCheckInit();

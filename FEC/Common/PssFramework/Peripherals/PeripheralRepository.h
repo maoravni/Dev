@@ -52,6 +52,7 @@ private:
     DigitalInputsPeripheral* m_digitalInputs;
     AnalogInputPeripheral* m_analogInputs;
     AnalogOutCurrentPeripheral* m_analogCurrentOutputs;
+    Mi3I2CIrPeripheral* m_mi3i2cIrSensorPeripheral;
 
 public:
     virtual ~PeripheralRepository();
@@ -72,6 +73,7 @@ public:
     bool initDigitalInputs(int pssId, int numberOfDevices);
     bool initAnalogInputs(int pssId, int numberOfDevices);
     bool initAnalogCurrentOutputs(int pssId, int numberOfDevices);
+    bool initMi3IrSensorsPeripheral(int pssId);
 
     void addPeripheral(PeripheralBase* device);
 
@@ -84,6 +86,7 @@ public:
     DigitalOutputsPeripheral* getDigitalOutputsPeripheral();
     SwPwmOutputPeripheral* getSwPwmOutputPeripheral();
     DigitalInputsPeripheral* getDigitalInputsPeripheral() {return m_digitalInputs;}
+    Mi3I2CIrPeripheral* getMi3I2cIrPeripheral() {return m_mi3i2cIrSensorPeripheral;}
 
     void destroyAllPeripherals();
 

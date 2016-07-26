@@ -12,6 +12,7 @@
 #include <Elements/ElementRepository.h>
 #include <list>
 #include "Mi3Sensor.h"
+#include <CBinarySemaphore.h>
 //#include <cpal.h>
 //#include <cpal_i2c.h>
 
@@ -49,6 +50,9 @@ private:
 
     bool m_performReset;
 
+    // this is used to indicate to the serializer that an update cycle is finished, and the EEPROM can be accessed.
+    CBinarySemaphore m_updateCycleFinishedSem;
+
 public:
 //    static CBinarySemaphore m_transferCompleteSemaphore;
 
@@ -80,6 +84,8 @@ public:
     virtual portBASE_TYPE onCreate(const portCHAR * const pcName, unsigned portSHORT usStackDepth, unsigned portBASE_TYPE uxPriority);
 
     virtual void setBoardInReady(bool state);
+
+    void setIsInSerialization(bool isInSerialization);
 
     virtual void startRecovery();
 

@@ -59,7 +59,7 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
 /*****************/
 //Mi3RxPacket      MasterRxMsg;
 //Mi3TxPacket      MasterTxMsg;
-void I2C1_init(void)
+void I2C1_init(uint32_t baudrate)
 {
 #ifndef WIN32
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -88,7 +88,7 @@ void I2C1_init(void)
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_I2C1); // SDA
 
     // configure I2C1
-    I2C_InitStruct.I2C_ClockSpeed = 10000;         // 100kHz
+    I2C_InitStruct.I2C_ClockSpeed = baudrate;         // 100kHz
     I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;         // I2C mode
     I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2; // 50% duty cycle --> standard
     I2C_InitStruct.I2C_OwnAddress1 = 0x00;          // own address, not relevant in master mode
@@ -110,7 +110,7 @@ void I2C1_init(void)
 #endif
 }
 
-void I2C2_init(void)
+void I2C2_init(uint32_t baudrate)
 {
 #ifndef WIN32
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -133,7 +133,7 @@ void I2C2_init(void)
     GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C2); // SDA
 
     // configure I2C2
-    I2C_InitStruct.I2C_ClockSpeed = 10000;         // 100kHz
+    I2C_InitStruct.I2C_ClockSpeed = baudrate;         // 100kHz
     I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;         // I2C mode
     I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2; // 50% duty cycle --> standard
     I2C_InitStruct.I2C_OwnAddress1 = 0x00;          // own address, not relevant in master mode

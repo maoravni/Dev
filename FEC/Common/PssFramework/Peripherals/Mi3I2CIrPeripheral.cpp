@@ -140,9 +140,16 @@ void Mi3I2CIrPeripheral::run()
     m_previousWakeupTime = getTickCount();
     bool allSensorsInvalid;
     int allSensorInvalidRetries = 0;
+
+    portBASE_TYPE semResult;
+
+    m_updateCycleFinishedSem.give();
+
     for (;;)
     {
-        if (m_boardInReady)
+        semResult = m_updateCycleFinishedSem.take(1000);
+
+        if (m_boardInReady && semResult == pdPASS)
         {
             if (m_performReset)
             {
@@ -184,6 +191,9 @@ void Mi3I2CIrPeripheral::run()
                 }
             }
         }
+
+        m_updateCycleFinishedSem.give();
+
         delayUntil(&m_previousWakeupTime, m_updateInterval);
     }
 }
@@ -235,3 +245,12 @@ void Mi3I2CIrPeripheral::serialize(F_FILE* f)
     Serializer<Mi3I2CIrPeripheral> s;
     s.serialize(f, *this);
 }
+
+void Mi3I2CIrPeripheral::setIsInSerialization(bool isInSerialization)
+{
+    if (isInSerialization)
+        m_updateCycleFinishedSem.take(10000);
+    else
+        m_updateCycleFinishedSem.give();
+}
+

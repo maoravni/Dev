@@ -50,6 +50,9 @@ private:
 
     void deleteAllEntities();
 
+    void startEepromAccess();
+    void endEepromAccess();
+
     friend class TestTask;
 };
 

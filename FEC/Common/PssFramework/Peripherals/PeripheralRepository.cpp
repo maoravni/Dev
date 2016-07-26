@@ -8,6 +8,7 @@
 #include "PeripheralRepository.h"
 #include <Tasks/UpdateSchedulerTask.h>
 #include <logger.h>
+#include "Mi3I2CIrPeripheral.h"
 
 PeripheralRepository PeripheralRepository::s_instance;
 
@@ -20,6 +21,7 @@ PeripheralRepository::PeripheralRepository()
     m_digitalInputs = NULL;
     m_analogCurrentOutputs = NULL;
     m_analogInputs = NULL;
+    m_mi3i2cIrSensorPeripheral = NULL;
 }
 
 PeripheralRepository::~PeripheralRepository()
@@ -87,35 +89,6 @@ void PeripheralRepository::initInternalPeripherals()
     initDryContactOutput(0);
     initDigitalInputs(0, 12);
     initAnalogCurrentOutputs(0, 2);
-//    if (m_internalTemperatureSensors == NULL)
-//    {
-//        m_internalTemperatureSensors = new InternalTemperatureSensors();
-//        addPeripheral(m_internalTemperatureSensors);
-//        m_internalTemperatureSensors->setUpdateInterval(200);
-//    }
-//    if (m_digitalOutputs == NULL) {
-//        m_digitalOutputs = new DigitalOutputsPeripheral();
-//        addPeripheral(m_digitalOutputs);
-//    }
-//    if (m_digitalInputs == NULL) {
-//        m_digitalInputs = new DigitalInputsPeripheral();
-//        addPeripheral(m_digitalInputs);
-//    }
-//    if (m_swPwmOutput == NULL)
-//    {
-//        m_swPwmOutput = new SwPwmOutputPeripheral();
-//        addPeripheral(m_swPwmOutput);
-//        m_swPwmOutput->createTask();
-//    }
-//    if (m_dryContactOutput == NULL) {
-//        m_dryContactOutput = new DryContactDigitalOutput();
-//        addPeripheral(m_dryContactOutput);
-//    }
-//    if (m_analogCurrentOutputs == NULL)
-//    {
-//        m_analogCurrentOutputs = new AnalogOutCurrentPeripheral();
-//        addPeripheral(m_analogCurrentOutputs);
-//    }
 }
 
 DigitalOutputsPeripheral* PeripheralRepository::getDigitalOutputsPeripheral()
@@ -160,6 +133,31 @@ bool PeripheralRepository::initDigitalOutputs(int pssId, int numberOfDevices)
 
     return true;
 }
+
+bool PeripheralRepository::initMi3IrSensorsPeripheral(int pssId)
+{
+    if (m_mi3i2cIrSensorPeripheral != NULL)
+    {
+        if (pssId == 0)
+        {
+            return true;
+        }
+        else if (m_mi3i2cIrSensorPeripheral->getPssId() == 0)
+        {
+            m_mi3i2cIrSensorPeripheral->setPssId(pssId);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    m_mi3i2cIrSensorPeripheral = new Mi3I2CIrPeripheral();
+    addPeripheral(m_mi3i2cIrSensorPeripheral);
+    m_mi3i2cIrSensorPeripheral->setPssId(pssId);
+
+    return true;
+}
+
 
 bool PeripheralRepository::initSwPwmOutput(int pssId, int numberOfDevices)
 {
@@ -378,3 +376,4 @@ void PeripheralRepository::startRecovery()
         m_periphVector[i]->startRecovery();
     }
 }
+
