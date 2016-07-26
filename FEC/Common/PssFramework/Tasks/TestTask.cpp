@@ -325,7 +325,7 @@ void TestTask::run()
 #define EEPROM_TEST
 #ifdef EEPROM_TEST
 
-//#define TEST_SER
+#define TEST_SER
 #ifdef TEST_SER
     PscMessageHandler::getInstance()->getPsocManager()->initTemperaturePeripheralByCableId(1, 100, 100, 10, 4);
     PscMessageHandler::getInstance()->getPsocManager()->initPwmPeripheralByCableId(1, 101, 6);
@@ -407,6 +407,8 @@ void TestTask::run()
 
     PersistencyManager::getInstance()->serializeConfiguration();
     printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
+
+    PersistencyManager::getInstance()->serializeEntity((InputPeripheralBase*)modbusInverterPeriph);
 #endif
 
 #define TEST_DESER

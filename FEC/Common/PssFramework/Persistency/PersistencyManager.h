@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include "BoardSerializer.h"
 
+class PeripheralBase;
+
 class PersistencyManager
 {
 private:
@@ -35,6 +37,8 @@ public:
     void serializeConfiguration();
     void deserializeConfiguration();
 
+    void serializeEntity(PeripheralBase* periph);
+
 private:
     void serializeElements();
     void deserializeElements();
@@ -50,8 +54,8 @@ private:
 
     void deleteAllEntities();
 
-    void startEepromAccess();
-    void endEepromAccess();
+    void startSerialization();
+    void endSerialization();
 
     friend class TestTask;
 };

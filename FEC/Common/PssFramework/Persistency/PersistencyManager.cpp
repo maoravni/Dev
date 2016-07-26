@@ -33,32 +33,19 @@ PersistencyManager::~PersistencyManager()
 
 void PersistencyManager::serializeConfiguration()
 {
-    portTickType startTick = xTaskGetTickCount();
-    int result = filesystemDriver_init();
-    int e = 1;
-
-    filesystemDriver_printFree();
-
+    startSerialization();
+    
     serializeBoard();
     serializeElements();
     serializePeripherals();
     serializeControls();
 
-    filesystemDriver_free();
-
-    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
-    printf("Serialization Time: %d\n", xTaskGetTickCount()-startTick);
+    endSerialization();
 }
 
 void PersistencyManager::deserializeConfiguration()
 {
-    portTickType startTick = xTaskGetTickCount();
-    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
-
-    int result = filesystemDriver_init();
-    int e = 1;
-
-    filesystemDriver_printFree();
+    startSerialization();
 
     deleteAllEntities();
 
@@ -96,11 +83,7 @@ void PersistencyManager::deserializeConfiguration()
         deleteAllEntities();
     }
 
-    filesystemDriver_free();
-
-    PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
-
-    printf("Deserialization Time: %d\n", xTaskGetTickCount()-startTick);
+    endSerialization();
 }
 
 void PersistencyManager::serializeBoard()
@@ -166,6 +149,23 @@ void PersistencyManager::deserializeElements()
 //    return result;
 }
 
+void PersistencyManager::serializeEntity(PeripheralBase* periph)
+{
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
+
+    startSerialization();
+
+    F_FILE* f = f_open("periphs", "w+");
+    Serializer<PeripheralRepository> s;
+    s.serializePeripheral(f, periph);
+    f_close(f);
+
+    endSerialization();
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+//    return result;
+}
+
 void PersistencyManager::serializePeripherals()
 {
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
@@ -225,7 +225,7 @@ void PersistencyManager::deleteAllEntities()
 
 }
 
-void PersistencyManager::startEepromAccess()
+void PersistencyManager::startSerialization()
 {
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
 
@@ -234,10 +234,16 @@ void PersistencyManager::startEepromAccess()
         mi3Periph->setIsInSerialization(true);
 
     I2C1_init(M_I2C_EEPROM_BAUD_RATE);
+
+    int result = filesystemDriver_init();
+    filesystemDriver_printFree();
+
 }
 
-void PersistencyManager::endEepromAccess()
+void PersistencyManager::endSerialization()
 {
+    filesystemDriver_free();
+
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
 
     Mi3I2CIrPeripheral* mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();

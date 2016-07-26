@@ -20,7 +20,8 @@ public:
     void serialize(F_FILE* f, PeripheralRepository &e);
     void deserialize(F_FILE* f, PeripheralRepository &e);
 
-    void deserializePeripheral(F_FILE* f, PeripheralRepository &e);
+    void serializePeripheral(F_FILE* f, PeripheralBase* p);
+    void deserializeNextPeripheral(F_FILE* f, PeripheralRepository &e);
 };
 
 #endif /* PERIPHERALREPOSITORYSERIALIZER_H_ */

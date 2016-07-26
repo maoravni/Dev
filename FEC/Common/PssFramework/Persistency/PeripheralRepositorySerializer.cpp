@@ -113,7 +113,7 @@ void Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralReposito
 
     for (int i = 0; i < numOfPeripherals; ++i)
     {
-        deserializePeripheral(f, pr);
+        deserializeNextPeripheral(f, pr);
     }
 
     T_InternalPeripheralIndexes ipi;
@@ -128,7 +128,43 @@ void Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralReposito
     pr.m_swPwmOutput = dynamic_cast<SwPwmOutputPeripheral*>(pr.getPeripheralByIndex(ipi.m_swPwmOutputIndex));
 }
 
-void Serializer<PeripheralRepository>::deserializePeripheral(F_FILE* f, PeripheralRepository& pr)
+void Serializer<PeripheralRepository>::serializePeripheral(F_FILE* f, PeripheralBase* p)
+{
+    // read the record size:
+    deserializeRecordSize(f);
+
+    // read the version:
+    deserializeVersion(f);
+
+    uint16_t numOfPeripherals;
+
+    M_FREAD_VARIABLE(numOfPeripherals, f);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Reading %d peripherals", numOfPeripherals);
+
+    EntityMapRecord mapRecord;
+    T_EntityMapRecordVector mapVec;
+
+    for (int i = 0; i < numOfPeripherals; ++i)
+    {
+        M_FREAD_VARIABLE(mapRecord, f);
+
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping peripheral %d @ %d", mapRecord.pssId, mapRecord.filePos);
+
+        mapVec.push_back(mapRecord);
+    }
+
+    // after reading the map record, we can go directly to the position of the peripheral and serialize it:
+    int periphIndex = p->getPeripheralRepIndex();
+    int periphPosition = mapVec[periphIndex].filePos;
+
+    if (f_seek(f, periphPosition, F_SEEK_SET) != F_NO_ERROR)
+        throw "File operation Failed";
+
+    p->serialize(f);
+}
+
+void Serializer<PeripheralRepository>::deserializeNextPeripheral(F_FILE* f, PeripheralRepository& pr)
 {
     int elementStartPosition;
     int currentRecordSize;
