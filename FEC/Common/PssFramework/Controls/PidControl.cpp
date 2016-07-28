@@ -201,7 +201,7 @@ void PidControl::execute()
         if (!m_timeoutExpired)
         {
             float inputValue = m_input->getValue();
-            if (m_pidCalc.getControllerDirection() == DIRECT && inputValue >= m_setpoint->getMaxWorking() && inputValue <= m_setpoint->getMaxWarning())
+            if (m_pidCalc.getControllerDirection() == DIRECT && inputValue >= m_setpoint->getMaxWorking())
             {
                 m_timeoutExpired = true;
                 m_pidCalc.setAutoMode(true);
