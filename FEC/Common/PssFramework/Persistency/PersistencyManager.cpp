@@ -18,7 +18,6 @@
 #include <PscServer/PscMessageHandler.h>
 #include <task.h>
 
-
 PersistencyManager* PersistencyManager::p_instance = NULL;
 
 PersistencyManager::PersistencyManager()
@@ -33,6 +32,9 @@ PersistencyManager::~PersistencyManager()
 
 void PersistencyManager::serializeConfiguration()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     startSerialization();
     
     serializeBoard();
@@ -45,6 +47,9 @@ void PersistencyManager::serializeConfiguration()
 
 void PersistencyManager::deserializeConfiguration()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     startSerialization();
 
     deleteAllEntities();
@@ -86,8 +91,23 @@ void PersistencyManager::deserializeConfiguration()
     endSerialization();
 }
 
+void PersistencyManager::serializeEntityBoard()
+{
+#ifdef NO_PERSISTENCY
+    return;
+#endif
+    startSerialization();
+
+    serializeBoard();
+
+    endSerialization();
+}
+
 void PersistencyManager::serializeBoard()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting board serialization");
     F_FILE* f = f_open("board", "w+");
     Serializer<FecBoardConfiguration> s;
@@ -99,6 +119,9 @@ void PersistencyManager::serializeBoard()
 
 void PersistencyManager::deserializeBoard()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting board deserialization");
     F_FILE* f = f_open("board", "r");
 
@@ -123,6 +146,9 @@ void PersistencyManager::deserializeBoard()
 
 void PersistencyManager::serializeElements()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements serialization");
     F_FILE* f = f_open("elements", "w+");
     Serializer<ElementRepository> s;
@@ -134,6 +160,9 @@ void PersistencyManager::serializeElements()
 
 void PersistencyManager::deserializeElements()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting elements deserialization");
     F_FILE* f = f_open("elements", "r");
     Serializer<ElementRepository> s;
@@ -149,25 +178,11 @@ void PersistencyManager::deserializeElements()
 //    return result;
 }
 
-void PersistencyManager::serializeEntity(PeripheralBase* periph)
-{
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
-
-    startSerialization();
-
-    F_FILE* f = f_open("periphs", "w+");
-    Serializer<PeripheralRepository> s;
-    s.serializePeripheral(f, periph);
-    f_close(f);
-
-    endSerialization();
-
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
-//    return result;
-}
-
 void PersistencyManager::serializePeripherals()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
     F_FILE* f = f_open("periphs", "w+");
     Serializer<PeripheralRepository> s;
@@ -179,6 +194,9 @@ void PersistencyManager::serializePeripherals()
 
 void PersistencyManager::deserializePeripherals()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals deserialization");
     F_FILE* f = f_open("periphs", "r");
     Serializer<PeripheralRepository> s;
@@ -196,6 +214,9 @@ void PersistencyManager::deserializePeripherals()
 
 void PersistencyManager::serializeControls()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting controls serialization");
     F_FILE* f = f_open("controls", "w+");
     Serializer<ControlRepository> s;
@@ -207,6 +228,9 @@ void PersistencyManager::serializeControls()
 
 void PersistencyManager::deserializeControls()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting controls deserialization");
     F_FILE* f = f_open("controls", "r");
     Serializer<ControlRepository> s;
@@ -218,6 +242,9 @@ void PersistencyManager::deserializeControls()
 
 void PersistencyManager::deleteAllEntities()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     PscMessageHandler::getInstance()->reset();
 //    PeripheralRepository::getInstance().destroyAllPeripherals();
 //    ElementRepository::getInstance().destroyAllElements();
@@ -227,6 +254,9 @@ void PersistencyManager::deleteAllEntities()
 
 void PersistencyManager::startSerialization()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(true);
 
     Mi3I2CIrPeripheral* mi3Periph = PeripheralRepository::getInstance().getMi3I2cIrPeripheral();
@@ -240,8 +270,71 @@ void PersistencyManager::startSerialization()
 
 }
 
+void PersistencyManager::serializeEntity(PeripheralBase* periph)
+{
+#ifdef NO_PERSISTENCY
+    return;
+#endif
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting peripherals serialization");
+
+    startSerialization();
+
+    F_FILE* f = f_open("periphs", "r+");
+    Serializer<PeripheralRepository> s;
+    s.serializePeripheral(f, periph);
+    f_close(f);
+
+    endSerialization();
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+//    return result;
+}
+
+void PersistencyManager::serializeEntity(ElementBase* element)
+{
+#ifdef NO_PERSISTENCY
+    return;
+#endif
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting element serialization");
+
+    startSerialization();
+
+    F_FILE* f = f_open("periphs", "r+");
+    Serializer<ElementRepository> s;
+    s.serializeElement(f, element);
+    f_close(f);
+
+    endSerialization();
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+//    return result;
+}
+
+void PersistencyManager::serializeEntity(ControlBase* control)
+{
+#ifdef NO_PERSISTENCY
+    return;
+#endif
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "starting control serialization");
+
+    startSerialization();
+
+    F_FILE* f = f_open("periphs", "r+");
+    Serializer<ControlRepository> s;
+    s.serializeControl(f, control);
+    f_close(f);
+
+    endSerialization();
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Peripherals serialization ended");
+//    return result;
+}
+
 void PersistencyManager::endSerialization()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     filesystemDriver_free();
 
     PscMessageHandler::getInstance()->getPsocManager()->setIsInSerialization(false);
@@ -253,3 +346,4 @@ void PersistencyManager::endSerialization()
     if (mi3Periph != NULL)
         mi3Periph->setIsInSerialization(false);
 }
+

@@ -445,6 +445,8 @@ struct PSSEndApplicationUpload {
 struct PSSEndBoardConfigMsg {
 	unsigned short cableId;
 	char deleteOnDisconnection;
+	__int64 configHash1;
+	__int64 configHash2;
 	};
 
 struct PSSGetBoardStatus {
@@ -495,6 +497,17 @@ struct PSSGetDefinedPeripheralsReplyMsg {
 	unsigned short devicesNum;
 	};
 
+struct PSSGetHashAndModifiedDateMsg {
+	unsigned short cableId;
+	};
+
+struct PSSGetHashAndModifiedDateReply {
+	unsigned short cableId;
+	__int64 lastModifiedDate;
+	__int64 configHash1;
+	__int64 configHash2;
+	};
+
 struct PSSGetLeakageDetectionParametersReplyMsg {
 	unsigned short cableId;
 	unsigned short pssId;
@@ -524,6 +537,11 @@ struct PSSGetStatusMsg {
 struct PSSInitControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
+	};
+
+struct PSSLastModifiedDateMsg {
+	unsigned short cableId;
+	__int64 lastModifiedDate;
 	};
 
 struct PSSNextAppPacket {
@@ -966,11 +984,14 @@ union PSSMsgType{
 	struct PSSGetCableIdReplyMsg pSSGetCableIdReplyMsg;
 	struct PSSGetDefinedPeripheralsMsg pSSGetDefinedPeripheralsMsg;
 	struct PSSGetDefinedPeripheralsReplyMsg pSSGetDefinedPeripheralsReplyMsg;
+	struct PSSGetHashAndModifiedDateMsg pSSGetHashAndModifiedDateMsg;
+	struct PSSGetHashAndModifiedDateReply pSSGetHashAndModifiedDateReply;
 	struct PSSGetLeakageDetectionParametersReplyMsg pSSGetLeakageDetectionParametersReplyMsg;
 	struct PSSGetPIDMsg pSSGetPIDMsg;
 	struct PSSGetPIDReplyMsg pSSGetPIDReplyMsg;
 	struct PSSGetStatusMsg pSSGetStatusMsg;
 	struct PSSInitControlMsg pSSInitControlMsg;
+	struct PSSLastModifiedDateMsg pSSLastModifiedDateMsg;
 	struct PSSNextAppPacket pSSNextAppPacket;
 	struct PSSResetBoardMsg pSSResetBoardMsg;
 	struct PSSResetToOnControlMsg pSSResetToOnControlMsg;

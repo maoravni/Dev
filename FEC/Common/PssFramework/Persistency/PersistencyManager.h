@@ -12,6 +12,8 @@
 #include "BoardSerializer.h"
 
 class PeripheralBase;
+class ElementBase;
+class ControlBase;
 
 class PersistencyManager
 {
@@ -38,6 +40,9 @@ public:
     void deserializeConfiguration();
 
     void serializeEntity(PeripheralBase* periph);
+    void serializeEntity(ElementBase* element);
+    void serializeEntity(ControlBase* control);
+    void serializeEntityBoard();
 
 private:
     void serializeElements();

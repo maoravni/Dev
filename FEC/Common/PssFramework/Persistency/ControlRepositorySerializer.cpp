@@ -89,7 +89,7 @@ void Serializer<ControlRepository>::serialize(F_FILE* f, ControlRepository& cr)
         entityMapRecord.filePos = f_tell(f);
         entityMapVec.push_back(entityMapRecord);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing control %d @ %d", entityMapRecord.pssId,
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing control {[PSSID:%d]} @ %d", entityMapRecord.pssId,
                 entityMapRecord.filePos);
 
         cr.m_controlList[i]->serialize(f);
@@ -128,7 +128,7 @@ void Serializer<ControlRepository>::deserialize(F_FILE* f, ControlRepository& cr
     {
         M_FREAD_VARIABLE(mapRecord, f);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping control %d @ %d", mapRecord.pssId, mapRecord.filePos);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping control {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
 
         mapVec.push_back(mapRecord);
     }
@@ -141,7 +141,7 @@ void Serializer<ControlRepository>::deserialize(F_FILE* f, ControlRepository& cr
 
     for (int i = 0; i < numOfControls; ++i)
     {
-        ControlBase* c = deserializeControl(f, cr);
+        ControlBase* c = deserializeNextControl(f, cr);
 
 //        if (c->m_controlIndex == ici.m_protectionControl)
 //            cr.m_protectionControl = static_cast<ProtectionControl*>(c);
@@ -153,180 +153,217 @@ void Serializer<ControlRepository>::deserialize(F_FILE* f, ControlRepository& cr
 
 }
 
-ControlBase* Serializer<ControlRepository>::deserializeControl(F_FILE* f, ControlRepository& cr)
+void Serializer<ControlRepository>::serializeControl(F_FILE* f, ControlBase* p)
 {
-    int elementStartPosition;
-    elementStartPosition = f_tell(f);
+    int result;
 
     deserializeRecordSize(f);
 
-    uint8_t classType;
-    M_FREAD_VARIABLE(classType, f);
+    deserializeVersion(f);
 
-    if (f_seek(f, elementStartPosition, F_SEEK_SET) != F_NO_ERROR)
+    // go over all elements and count the number of elements that have a PSSID:
+    uint16_t numOfControls = 0;
+
+    M_FREAD_VARIABLE(numOfControls, f);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Deserializing %d Controls", numOfControls);
+
+    EntityMapRecord mapRecord;
+    T_EntityMapRecordVector mapVec;
+
+    for (int i = 0; i < numOfControls; ++i)
+    {
+        M_FREAD_VARIABLE(mapRecord, f);
+
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping control {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
+
+        mapVec.push_back(mapRecord);
+    }
+
+    // after reading the map record, we can go directly to the position of the peripheral and serialize it:
+    int controlIndex = p->getControlIndex();
+    int controlPosition = mapVec[controlIndex].filePos;
+
+    if (f_seek(f, controlPosition, F_SEEK_SET) != F_NO_ERROR)
         throw "File operation Failed";
 
-    ControlBase* c;
-    switch (classType)
-    {
-    case E_ControlSerializationType_ControlBase:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_LiquidLevel3Sensors:
-    {
-        c = new LiquidLevel3Sensors;
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_PidControl:
-    {
-        c = new PidControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_ActivationWithFeedbackControl:
-    {
-        c = new ActivationWithFeedbackControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_AddTwoDevicesControl:
-    {
-        c = new AddTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_AnalogLiquidLevelControl:
-    {
-        c = new AnalogLiquidLevelControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_AnalogOutInverterControl:
-    {
-        c = new AnalogOutInverterControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_ConcentrationControl:
-    {
-        c = new ConcentrationControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_DivideTwoDevicesControl:
-    {
-        c = new DivideTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_EmergencyInputControl:
-    {
-        c = new EmergencyInputControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_HysteresisControl:
-    {
-        c = new HysteresisControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_LiftPbOnError:
-    {
-        c = new LiftPbOnError(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_LiftPbOnErrorCcsGen2:
-    {
-        c = new LiftPbOnErrorCcsGen2(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_LiftPbOnErrorCcsGen3:
-    {
-        c = new LiftPbOnErrorCcsGen3(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_LiquidLevelPumpControl:
-    {
-        c = new LiquidLevelPumpControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_MaxTwoDevicesControl:
-    {
-        c = new MaxTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_MinTwoDevicesControl:
-    {
-        c = new MinTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_ModbusInverterControl:
-    {
-        c = new ModbusInverterControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_MultiplyTwoDevicesControl:
-    {
-        c = new MultiplyTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_ObserveAndNotifyControl:
-    {
-        c = new ObserveAndNotifyControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_OrderedShutdownControl:
-    {
-        c = new OrderedShutdownControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_ProtectionControl:
-    {
-        c = new ProtectionControl(f);
-        if (cr.m_protectionControl == NULL)
-        {
-            cr.m_protectionControl = static_cast<ProtectionControl*>(c);
-        }
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_SubtractTwoDevicesControl:
-    {
-        c = new SubtractTwoDevicesControl(f);
-        cr.addControl(c);
-        break;
-    }
-    case E_ControlSerializationType_DeviceProtectionChecker:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_ProtectionConstantDeltaChecker:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_ProtectionProportionalChecker:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_ProtectionCurrentLimitsChecker:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_DeviceThresholdChecker:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_CalculateOnTwoDevicesControl:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_ProtectionCheckerBase:
-        throw "Bad Deserialisation";
-    case E_ControlSerializationType_T_OperationNode:
-        throw "Bad Deserialisation";
-    default:
-        throw "Bad Deserialisation";
-    }
+    p->serialize(f);
+}
 
-    return c;
+ControlBase* Serializer<ControlRepository>::deserializeNextControl(F_FILE* f, ControlRepository& cr)
+{
+int elementStartPosition;
+elementStartPosition = f_tell(f);
+
+deserializeRecordSize(f);
+
+uint8_t classType;
+M_FREAD_VARIABLE(classType, f);
+
+if (f_seek(f, elementStartPosition, F_SEEK_SET) != F_NO_ERROR)
+    throw "File operation Failed";
+
+ControlBase* c;
+switch (classType)
+{
+case E_ControlSerializationType_ControlBase:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_LiquidLevel3Sensors:
+{
+    c = new LiquidLevel3Sensors;
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_PidControl:
+{
+    c = new PidControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_ActivationWithFeedbackControl:
+{
+    c = new ActivationWithFeedbackControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_AddTwoDevicesControl:
+{
+    c = new AddTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_AnalogLiquidLevelControl:
+{
+    c = new AnalogLiquidLevelControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_AnalogOutInverterControl:
+{
+    c = new AnalogOutInverterControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_ConcentrationControl:
+{
+    c = new ConcentrationControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_DivideTwoDevicesControl:
+{
+    c = new DivideTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_EmergencyInputControl:
+{
+    c = new EmergencyInputControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_HysteresisControl:
+{
+    c = new HysteresisControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_LiftPbOnError:
+{
+    c = new LiftPbOnError(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_LiftPbOnErrorCcsGen2:
+{
+    c = new LiftPbOnErrorCcsGen2(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_LiftPbOnErrorCcsGen3:
+{
+    c = new LiftPbOnErrorCcsGen3(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_LiquidLevelPumpControl:
+{
+    c = new LiquidLevelPumpControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_MaxTwoDevicesControl:
+{
+    c = new MaxTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_MinTwoDevicesControl:
+{
+    c = new MinTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_ModbusInverterControl:
+{
+    c = new ModbusInverterControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_MultiplyTwoDevicesControl:
+{
+    c = new MultiplyTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_ObserveAndNotifyControl:
+{
+    c = new ObserveAndNotifyControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_OrderedShutdownControl:
+{
+    c = new OrderedShutdownControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_ProtectionControl:
+{
+    c = new ProtectionControl(f);
+    if (cr.m_protectionControl == NULL)
+    {
+        cr.m_protectionControl = static_cast<ProtectionControl*>(c);
+    }
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_SubtractTwoDevicesControl:
+{
+    c = new SubtractTwoDevicesControl(f);
+    cr.addControl(c);
+    break;
+}
+case E_ControlSerializationType_DeviceProtectionChecker:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_ProtectionConstantDeltaChecker:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_ProtectionProportionalChecker:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_ProtectionCurrentLimitsChecker:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_DeviceThresholdChecker:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_CalculateOnTwoDevicesControl:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_ProtectionCheckerBase:
+    throw "Bad Deserialisation";
+case E_ControlSerializationType_T_OperationNode:
+    throw "Bad Deserialisation";
+default:
+    throw "Bad Deserialisation";
+}
+
+return c;
 }
 

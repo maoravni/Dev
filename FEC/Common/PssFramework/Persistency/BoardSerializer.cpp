@@ -11,8 +11,8 @@
 #include <board_setup.h>
 
 FecBoardConfiguration::FecBoardConfiguration() :
-        m_boardType(E_BoardType_Fec), m_boardCableId(0), m_numOfPsocs(0), m_uartBaudRate(0), m_loggerIp(0), m_lastConfigurationHash(
-                0), m_lastConfigurationTimestamp(0)
+        m_boardType(E_BoardType_Fec), m_boardCableId(0), m_numOfPsocs(0), m_uartBaudRate(0), m_loggerIp(0), m_lastConfigurationHash1(
+                0), m_lastConfigurationHash2(0), m_lastConfigurationTimestamp(0)
 {
     memset(m_psocsCableId, 0, sizeof(m_psocsCableId));
 }
@@ -45,7 +45,8 @@ void FecBoardConfiguration::getParametersFromBoard()
     }
     m_uartBaudRate = PscMessageHandler::getInstance()->m_usartBaudRate;
     m_loggerIp = CLogger::getInstance().getOutputUdpIpAddress();
-    m_lastConfigurationHash = PscMessageHandler::getInstance()->m_lastConfigurationHash;
+    m_lastConfigurationHash1 = PscMessageHandler::getInstance()->m_lastConfigurationHash1;
+    m_lastConfigurationHash2 = PscMessageHandler::getInstance()->m_lastConfigurationHash2;
     m_lastConfigurationTimestamp = PscMessageHandler::getInstance()->m_lastConfigurationTimestamp;
 }
 
@@ -69,7 +70,8 @@ void FecBoardConfiguration::setParametersToBoard()
     }
     ChangeUsartBaudrate(USART3, m_uartBaudRate);
     CLogger::getInstance().setOutputUdpIpAddress(m_loggerIp);
-    PscMessageHandler::getInstance()->m_lastConfigurationHash = m_lastConfigurationHash;
+    PscMessageHandler::getInstance()->m_lastConfigurationHash1 = m_lastConfigurationHash1;
+    PscMessageHandler::getInstance()->m_lastConfigurationHash2 = m_lastConfigurationHash2;
     PscMessageHandler::getInstance()->m_lastConfigurationTimestamp = m_lastConfigurationTimestamp;
 }
 

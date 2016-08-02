@@ -20,7 +20,8 @@ public:
     void serialize(F_FILE* f, ControlRepository &e);
     void deserialize(F_FILE* f, ControlRepository &e);
 
-    ControlBase* deserializeControl(F_FILE* f, ControlRepository &e);
+    void serializeControl(F_FILE* f, ControlBase* p);
+    ControlBase* deserializeNextControl(F_FILE* f, ControlRepository &e);
 };
 
 #endif /* CONTROLREPOSITORYSERIALIZER_H_ */

@@ -568,8 +568,9 @@ void ConfigurationSerializer::execute()
     m_obsolete = true;
     m_timeout = 0;
 
-//    PersistencyManager::getInstance()->serializeConfiguration();
-//    printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
+    PersistencyManager::getInstance()->serializeConfiguration();
+    printf("Obsever Count: %d\n", ElementRepository::getInstance().getObserverCount());
+
 }
 
 void ForcedUpdateTimeoutQueueNode::execute()

@@ -22,8 +22,9 @@ private:
     uint16_t m_psocsCableId[10];
     uint32_t m_uartBaudRate;
     uint32_t m_loggerIp;
-    uint32_t m_lastConfigurationHash;
-    uint32_t m_lastConfigurationTimestamp;
+    uint64_t m_lastConfigurationHash1;
+    uint64_t m_lastConfigurationHash2;
+    uint64_t m_lastConfigurationTimestamp;
 
 public:
     FecBoardConfiguration();

@@ -20,7 +20,8 @@ public:
     void serialize(F_FILE* f, ElementRepository &e);
     void deserialize(F_FILE* f, ElementRepository &e);
 
-    void deserializeElement(F_FILE* f, ElementRepository &e);
+    void serializeElement(F_FILE* f, ElementBase* e);
+    void deserializeNextElement(F_FILE* f, ElementRepository &e);
 };
 
 #endif /* REPOSITORYSERIALIZERS_H_ */

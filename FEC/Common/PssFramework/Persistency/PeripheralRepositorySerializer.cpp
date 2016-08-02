@@ -19,6 +19,7 @@ struct T_InternalPeripheralIndexes
     uint16_t m_digitalInputsIndex;
     uint16_t m_analogInputsIndex;
     uint16_t m_analogCurrentOutputsIndex;
+    uint16_t m_mi3i2cIrSensorIndex;
 };
 
 void Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository& pr)
@@ -57,7 +58,7 @@ void Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository
         entityMapRecord.filePos = f_tell(f);
         entityMapVec.push_back(entityMapRecord);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing peripheral %d @ %d", entityMapRecord.pssId,
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing peripheral {[PSSID:%d]} @ %d", entityMapRecord.pssId,
                 entityMapRecord.filePos);
 
         pr.m_periphVector[i]->serialize(f);
@@ -71,6 +72,7 @@ void Serializer<PeripheralRepository>::serialize(F_FILE* f, PeripheralRepository
     ipi.m_dryContactOutputIndex = pr.m_dryContactOutput->getPeripheralRepIndex();
     ipi.m_internalTemperatureSensorsIndex = pr.m_internalTemperatureSensors->getPeripheralRepIndex();
     ipi.m_swPwmOutputIndex = pr.m_swPwmOutput->getPeripheralRepIndex();
+    ipi.m_mi3i2cIrSensorIndex = pr.m_mi3i2cIrSensorPeripheral->getPeripheralRepIndex();
 
     M_FWRITE_VARIABLE(ipi, f);
 
@@ -106,7 +108,7 @@ void Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralReposito
     {
         M_FREAD_VARIABLE(mapRecord, f);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping peripheral %d @ %d", mapRecord.pssId, mapRecord.filePos);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping peripheral {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
 
         mapVec.push_back(mapRecord);
     }
@@ -126,6 +128,7 @@ void Serializer<PeripheralRepository>::deserialize(F_FILE* f, PeripheralReposito
     pr.m_dryContactOutput = dynamic_cast<DryContactDigitalOutput*>(pr.getPeripheralByIndex(ipi.m_dryContactOutputIndex));
     pr.m_internalTemperatureSensors = dynamic_cast<InternalTemperatureSensors*>(pr.getPeripheralByIndex(ipi.m_internalTemperatureSensorsIndex));
     pr.m_swPwmOutput = dynamic_cast<SwPwmOutputPeripheral*>(pr.getPeripheralByIndex(ipi.m_swPwmOutputIndex));
+    pr.m_mi3i2cIrSensorPeripheral = dynamic_cast<Mi3I2CIrPeripheral*>(pr.getPeripheralByIndex(ipi.m_mi3i2cIrSensorIndex));
 }
 
 void Serializer<PeripheralRepository>::serializePeripheral(F_FILE* f, PeripheralBase* p)
@@ -149,7 +152,7 @@ void Serializer<PeripheralRepository>::serializePeripheral(F_FILE* f, Peripheral
     {
         M_FREAD_VARIABLE(mapRecord, f);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping peripheral %d @ %d", mapRecord.pssId, mapRecord.filePos);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping peripheral {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
 
         mapVec.push_back(mapRecord);
     }

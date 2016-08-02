@@ -45,7 +45,7 @@ void Serializer<ElementRepository>::serialize(F_FILE* f, ElementRepository& e)
         elementMapRecord.filePos = f_tell(f);
         elementMapVec.push_back(elementMapRecord);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing element %d @ %d", elementMapRecord.pssId,
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Serializing element {[PSSID:%d]} @ %d", elementMapRecord.pssId,
                 elementMapRecord.filePos);
 
         e.m_elementList[i]->serialize(f);
@@ -83,19 +83,55 @@ void Serializer<ElementRepository>::deserialize(F_FILE* f, ElementRepository& e)
     {
         M_FREAD_VARIABLE(mapRecord, f);
 
-        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping element %d @ %d", mapRecord.pssId, mapRecord.filePos);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping element {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
 
         mapVec.push_back(mapRecord);
     }
 
     for (int i = 0; i < numOfElements; ++i)
     {
-        deserializeElement(f, e);
+        deserializeNextElement(f, e);
     }
 
 }
 
-void Serializer<ElementRepository>::deserializeElement(F_FILE* f, ElementRepository& e)
+void Serializer<ElementRepository>::serializeElement(F_FILE* f, ElementBase* e)
+{
+    // read the record size:
+    //uint16_t recordSize;
+    deserializeRecordSize(f);
+
+    // read the version:
+    deserializeVersion(f);
+
+    uint16_t numOfElements;
+
+    M_FREAD_VARIABLE(numOfElements, f);
+
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Reading %d elements", numOfElements);
+
+    EntityMapRecord mapRecord;
+    T_EntityMapRecordVector mapVec;
+
+    for (int i = 0; i < numOfElements; ++i)
+    {
+        M_FREAD_VARIABLE(mapRecord, f);
+
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Mapping element {[PSSID:%d]} @ %d", mapRecord.pssId, mapRecord.filePos);
+
+        mapVec.push_back(mapRecord);
+    }
+    // after reading the map record, we can go directly to the position of the peripheral and serialize it:
+    int elementIndex = e->getElementIndex();
+    int elementPosition = mapVec[elementIndex].filePos;
+
+    if (f_seek(f, elementPosition, F_SEEK_SET) != F_NO_ERROR)
+        throw "File operation Failed";
+
+    e->serialize(f);
+}
+
+void Serializer<ElementRepository>::deserializeNextElement(F_FILE* f, ElementRepository& e)
 {
     int elementStartPosition;
     uint16_t elementRecordSize;

@@ -75,11 +75,14 @@
 #define MSG_GetCableIdReplay 0x16
 #define MSG_GetDefinedPeripheals 0x1
 #define MSG_GetDefinedPeriphealsReply 0x1
+#define MSG_GetHashAndModifiedDate 0x19
+#define MSG_GetHashAndModifiedDateReply 0x19
 #define MSG_GetLeakageDetectionParametersReply 0x317
 #define MSG_GetPID 0x304
 #define MSG_GetPIDReply 0x305
 #define MSG_GetStatus 0x400
 #define MSG_InitControl 0x300
+#define MSG_LastModifiedDate 0x21
 #define MSG_NextAppPacket 0x1001
 #define MSG_PSSReadyForRecovery 0x31
 #define MSG_ResetBoard 0x50
@@ -200,9 +203,11 @@ M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetBoardType + APP_MSG, MessageGetBoardTypeHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetCableId + APP_MSG, MessageGetCableIdHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetDefinedPeripheals + APP_MSG, MessageGetDefinedPeriphealsHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetHashAndModifiedDate + APP_MSG, MessageGetHashAndModifiedDateHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetPID + APP_MSG, MessageGetPIDHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_GetStatus + APP_MSG, MessageGetStatusHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_InitControl + APP_MSG, MessageInitControlHandler)
+	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_LastModifiedDate + APP_MSG, MessageLastModifiedDateHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_NextAppPacket + APP_MSG, MessageNextAppPacketHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ResetBoard + APP_MSG, MessageResetBoardHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ResetToOnControl + APP_MSG, MessageResetToOnControlHandler)

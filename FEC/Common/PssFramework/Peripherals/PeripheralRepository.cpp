@@ -355,6 +355,7 @@ void PeripheralRepository::destroyAllPeripherals()
     m_digitalInputs = NULL;
     m_analogCurrentOutputs = NULL;
     m_analogInputs = NULL;
+    m_mi3i2cIrSensorPeripheral = NULL;
 }
 
 int PeripheralRepository::getPeripheralCount()

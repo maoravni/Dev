@@ -76,8 +76,9 @@ private:
     uint16_t m_deviceType;
     uint16_t m_boardAddress;
     uint32_t m_usartBaudRate;
-    uint32_t m_lastConfigurationHash;
-    uint32_t m_lastConfigurationTimestamp;
+    uint64_t m_lastConfigurationHash1;
+    uint64_t m_lastConfigurationHash2;
+    uint64_t m_lastConfigurationTimestamp;
 
     CBinarySemaphore m_postMessageSemaphore;
 

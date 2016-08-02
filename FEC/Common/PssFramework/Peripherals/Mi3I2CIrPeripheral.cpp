@@ -62,6 +62,9 @@ Mi3I2CIrPeripheral::Mi3I2CIrPeripheral()
     powerEnable();
 
     m_resetCount = ElementRepository::getInstance().addElementU32();
+
+    m_updateCycleFinishedSem.create();
+    m_updateCycleFinishedSem.take(0);
 }
 
 Mi3I2CIrPeripheral::~Mi3I2CIrPeripheral()
@@ -185,14 +188,15 @@ void Mi3I2CIrPeripheral::run()
                 // if retries are exceeded, we need to reset the I2C bus and increment the failure count.
                 if (allSensorInvalidRetries > M_RETRIES_AFTER_ALL_INVALID)
                 {
-                    m_resetCount->setValue(m_resetCount->getValueU32()+1);
-                    M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Resetting I2C power. Reset Count: %d", m_resetCount->getValueU32());
+                    m_resetCount->setValue(m_resetCount->getValueU32() + 1);
+                    M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Resetting I2C power. Reset Count: %d",
+                            m_resetCount->getValueU32());
                     m_performReset = true;
                 }
             }
-        }
 
-        m_updateCycleFinishedSem.give();
+            m_updateCycleFinishedSem.give();
+        }
 
         delayUntil(&m_previousWakeupTime, m_updateInterval);
     }
@@ -248,8 +252,20 @@ void Mi3I2CIrPeripheral::serialize(F_FILE* f)
 
 void Mi3I2CIrPeripheral::setIsInSerialization(bool isInSerialization)
 {
+    portBASE_TYPE semResult;
+
     if (isInSerialization)
-        m_updateCycleFinishedSem.take(10000);
+    {
+        m_updateCycleFinishedSem.take(getUpdateInterval()*10);
+//        for (int i = 0; i < 10; ++i)
+//        {
+//            semResult = m_updateCycleFinishedSem.take(10000);
+//            if (semResult == pdPASS)
+//                break;
+//        }
+//        if (semResult == pdFAIL)
+//            throw "Cannot halt Mi3 task";
+    }
     else
         m_updateCycleFinishedSem.give();
 }
