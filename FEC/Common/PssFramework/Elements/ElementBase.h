@@ -163,6 +163,7 @@ public:
     virtual void sendDeviceStatus() = 0;
     virtual void sendCurrentErrors() = 0;
     virtual void sendCurrentWarnings() = 0;
+    virtual E_ValueType getValueType() = 0;
 
     virtual void setValueValid(bool valid) = 0;
     virtual bool isValid() = 0;

@@ -205,6 +205,7 @@ public:
     virtual void sendDeviceStatus();
     virtual void sendCurrentErrors();
     virtual void sendCurrentWarnings();
+    virtual E_ValueType getValueType();
 
     virtual void updateErrorBits(E_PSSErrors error, bool state);
     virtual void updateWarningBits(E_PSSErrors warning, bool state);
@@ -505,6 +506,55 @@ inline void ValidationElement<_type>::deserialize(F_FILE* f)
 {
     Serializer<ValidationElement<_type> > s;
     s.deserialize(f, *this);
+}
+
+template<class _type>
+inline E_ValueType ValidationElement<_type>::getValueType()
+{
+    static_assert(sizeof(_type) == 0, "Please implement template specialization for the specific type");
+    throw "Not Implemented";
+}
+
+template<>
+inline E_ValueType ValidationElement<std::int8_t>::getValueType()
+{
+    return E_ValueType_S8;
+}
+
+template<>
+inline E_ValueType ValidationElement<std::int16_t>::getValueType()
+{
+    return E_ValueType_S16;
+}
+
+template<>
+inline E_ValueType ValidationElement<std::int32_t>::getValueType()
+{
+    return E_ValueType_S32;
+}
+
+template<>
+inline E_ValueType ValidationElement<std::uint8_t>::getValueType()
+{
+    return E_ValueType_U8;
+}
+
+template<>
+inline E_ValueType ValidationElement<std::uint16_t>::getValueType()
+{
+    return E_ValueType_U16;
+}
+
+template<>
+inline E_ValueType ValidationElement<std::uint32_t>::getValueType()
+{
+    return E_ValueType_U32;
+}
+
+template<>
+inline E_ValueType ValidationElement<float>::getValueType()
+{
+    return E_ValueType_Float;
 }
 
 #endif /* VALIDATIONELEMENT_H_ */

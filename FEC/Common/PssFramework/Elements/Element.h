@@ -75,6 +75,7 @@ public:
     virtual void sendDeviceStatus();
     virtual void sendCurrentErrors();
     virtual void sendCurrentWarnings();
+    virtual E_ValueType getValueType();
 
     virtual bool hasError() {return false;}
     virtual bool hasWarning() {return false;}
@@ -252,6 +253,55 @@ inline void Element<_type>::deserialize(F_FILE* f)
 {
     Serializer<Element<_type> > s;
     s.deserialize(f, *this);
+}
+
+template<class _type>
+inline E_ValueType Element<_type>::getValueType()
+{
+    static_assert(sizeof(_type) == 0, "Please implement template specialization for the specific type");
+    throw "Not Implemented";
+}
+
+template<>
+inline E_ValueType Element<std::int8_t>::getValueType()
+{
+    return E_ValueType_S8;
+}
+
+template<>
+inline E_ValueType Element<std::int16_t>::getValueType()
+{
+    return E_ValueType_S16;
+}
+
+template<>
+inline E_ValueType Element<std::int32_t>::getValueType()
+{
+    return E_ValueType_S32;
+}
+
+template<>
+inline E_ValueType Element<std::uint8_t>::getValueType()
+{
+    return E_ValueType_U8;
+}
+
+template<>
+inline E_ValueType Element<std::uint16_t>::getValueType()
+{
+    return E_ValueType_U16;
+}
+
+template<>
+inline E_ValueType Element<std::uint32_t>::getValueType()
+{
+    return E_ValueType_U32;
+}
+
+template<>
+inline E_ValueType Element<float>::getValueType()
+{
+    return E_ValueType_Float;
 }
 
 #endif /* ELEMENT_H_ */

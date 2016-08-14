@@ -185,6 +185,7 @@ enum E_TemperatureErrorMessages
 
 enum E_ValueType
 {
+    E_ValueType_None = 0,
     E_ValueType_S8 = 1,
     E_ValueType_S16 = 2,
     E_ValueType_S32 = 3,
