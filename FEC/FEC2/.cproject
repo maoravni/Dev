@@ -108,7 +108,7 @@
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1057049590" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
 									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
-									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
+									<listOptionValue builtIn="false" value="NUSE_IWDG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -261,7 +261,8 @@
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1664665840" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
 									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
-									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
+									<listOptionValue builtIn="false" value="USE_IWDG"/>
+									<listOptionValue builtIn="false" value="NDRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -270,7 +271,7 @@
 									<listOptionValue builtIn="false" value="USE_EMBEDDED_PHY"/>
 									<listOptionValue builtIn="false" value="FEC2_BOARD"/>
 									<listOptionValue builtIn="false" value="CPP_FRAMEWORK"/>
-									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="NDEBUG"/>
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.1309078736" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.language.v6.1.0.1971907083" name="Language" superClass="iar.arm.toolchain.compiler.option.language.v6.1.0" value="iar.arm.toolchain.compiler.option.language.auto.v6.2.2" valueType="enumerated"/>
@@ -462,7 +463,6 @@
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.918269919" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
 									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
-									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -472,6 +472,7 @@
 									<listOptionValue builtIn="false" value="FEC2_BOARD"/>
 									<listOptionValue builtIn="false" value="CPP_FRAMEWORK"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
+									<listOptionValue builtIn="false" value="USE_IWDG"/>
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.cppInlineSemantics.v6.1.0.1530747520" name="Use C++ inline semantics" superClass="iar.arm.toolchain.compiler.option.cppInlineSemantics.v6.1.0"/>
 								<option id="iar.arm.toolchain.compiler.option.preprocessorOut.v6.2.0.1178685255" name="Preprocessor output to file" superClass="iar.arm.toolchain.compiler.option.preprocessorOut.v6.2.0" value="true" valueType="boolean"/>
