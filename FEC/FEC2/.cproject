@@ -107,7 +107,8 @@
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1057049590" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
-									<listOptionValue builtIn="false" value="NUSE_IWDG"/>
+									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
+									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -259,8 +260,8 @@
 								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.highBalance.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.559142012" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1664665840" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
-									<listOptionValue builtIn="false" value="USE_IWDG"/>
-									<listOptionValue builtIn="false" value="NDRYER_DEBUG"/>
+									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
+									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -269,7 +270,7 @@
 									<listOptionValue builtIn="false" value="USE_EMBEDDED_PHY"/>
 									<listOptionValue builtIn="false" value="FEC2_BOARD"/>
 									<listOptionValue builtIn="false" value="CPP_FRAMEWORK"/>
-									<listOptionValue builtIn="false" value="NDEBUG"/>
+									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.1309078736" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.language.v6.1.0.1971907083" name="Language" superClass="iar.arm.toolchain.compiler.option.language.v6.1.0" value="iar.arm.toolchain.compiler.option.language.auto.v6.2.2" valueType="enumerated"/>
@@ -460,6 +461,8 @@
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.918269919" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
+									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
 									<listOptionValue builtIn="false" value="USE_BOOT"/>
@@ -469,7 +472,6 @@
 									<listOptionValue builtIn="false" value="FEC2_BOARD"/>
 									<listOptionValue builtIn="false" value="CPP_FRAMEWORK"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
-									<listOptionValue builtIn="false" value="USE_IWDG"/>
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.cppInlineSemantics.v6.1.0.1530747520" name="Use C++ inline semantics" superClass="iar.arm.toolchain.compiler.option.cppInlineSemantics.v6.1.0"/>
 								<option id="iar.arm.toolchain.compiler.option.preprocessorOut.v6.2.0.1178685255" name="Preprocessor output to file" superClass="iar.arm.toolchain.compiler.option.preprocessorOut.v6.2.0" value="true" valueType="boolean"/>
@@ -608,7 +610,7 @@
 							<option id="iar.arm.toolchain.option.AgatonSax::rtcCheckNonInstrumentedPointers.v6.8.0.1905932723" name="Check pointers from non-&#10;instrumented memory" superClass="iar.arm.toolchain.option.AgatonSax::rtcCheckNonInstrumentedPointers.v6.8.0"/>
 							<option id="iar.arm.toolchain.option.AgatonSax::rtcNrTrackedPointers.v6.8.0.1546128173" name="Number of entries:" superClass="iar.arm.toolchain.option.AgatonSax::rtcNrTrackedPointers.v6.8.0"/>
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="iar.arm.toolchain.targetPlatform.v5.4.0.208091099" isAbstract="false" name="IAR Target platform for ARM (ELF)" osList="win32,linux" superClass="iar.arm.toolchain.targetPlatform.v5.4.0"/>
-							<builder buildPath="${ProjDirPath/Debug}" enabledIncrementalBuild="true" id="iar.arm.toolchain.builder.2.1881277646" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" stopOnErr="true" superClass="iar.arm.toolchain.builder.2"/>
+							<builder buildPath="${ProjDirPath/Debug}" enabledIncrementalBuild="true" id="iar.arm.toolchain.builder.2.1881277646" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="false" stopOnErr="true" superClass="iar.arm.toolchain.builder.2"/>
 							<tool id="iar.arm.toolchain.compiler.v5.4.1.656040009" name="IAR C/C++ Compiler for ARM" superClass="iar.arm.toolchain.compiler.v5.4.1">
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0.1083690762" name="Generate debug information" superClass="iar.arm.toolchain.compiler.option.debugInfo.v5.4.0" valueType="boolean"/>
 								<option defaultValue="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" id="iar.arm.toolchain.compiler.option.optLevel.v5.4.0.1886720539" name="Optimization level:" superClass="iar.arm.toolchain.compiler.option.optLevel.v5.4.0" value="iar.arm.toolchain.compiler.option.optLevel.none.v5.4.0" valueType="enumerated"/>
@@ -665,6 +667,7 @@
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1228584014" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
 									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM4"/>
@@ -683,6 +686,7 @@
 								<option id="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0.226675750" name="C++ without exceptions" superClass="iar.arm.toolchain.compiler.option.noExceptions.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0.2036758505" name="C++ without RTTI" superClass="iar.arm.toolchain.compiler.option.noRTTI.v6.1.0" value="false" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.1795967652" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
+								<option id="iar.arm.toolchain.compiler.option.preincludeFile.v6.2.12.1213212079" superClass="iar.arm.toolchain.compiler.option.preincludeFile.v6.2.12" valueType="includeFiles"/>
 								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1638884611" name="IAR C/C++ Compiler Input Type"/>
 								<inputType id="iar.arm.toolchain.compiler.inputTypeMfc.v5.5.2.1354606619" name="IAR C/C++ Compiler MFC Input Type"/>
 								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.952500914" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>

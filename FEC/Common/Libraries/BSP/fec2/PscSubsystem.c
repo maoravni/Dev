@@ -134,6 +134,9 @@ uint8_t Psc_GetLSBIpAddress()
 
 uint16_t Psc_GetCableId()
 {
+#ifdef DRYER_DEBUG
+    return 4;
+#else
     int adcValue;
     int i;
     float scale;
@@ -152,6 +155,7 @@ uint16_t Psc_GetCableId()
 
 
     return Psc_CableId;
+#endif
 }
 
 uint8_t Psc_GetNodeId()
@@ -186,6 +190,7 @@ uint8_t Psc_GetBoardType()
 
 uint8_t Psc_GetNumberOfSlaves()
 {
+    Psc_GetBoardType();
     if (Psc_BoardType == E_BoardType_Fec3)
         return 10;
     else

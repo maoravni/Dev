@@ -220,48 +220,21 @@ void ModbusInverterSchneiderAtv32::setInverterType()
 void ModbusInverterSchneiderAtv32::setupInverterMinSpeed(float value)
 {
     m_minSpeed = (int16_t)(value * 10);
-//    writeSingleReg(getSlaveId(), 3105, (int16_t)(value * 10));
-//    vTaskDelay(10);
-//    storeConfiguration();
 }
 
 void ModbusInverterSchneiderAtv32::setupInverterMaxSpeed(float value)
 {
     m_maxSpeed = (int16_t)(value * 10);
-//    E_ModbusError result;
-//    uint16_t regValue;
-//    uint32_t bufLength;
-//    // write the max frequency
-//    writeSingleReg(getSlaveId(), 3103, (int16_t)(value * 10));
-//    vTaskDelay(10);
-//    // write the high speed
-//    writeSingleReg(getSlaveId(), 3104, (int16_t)(value * 10));
-//    vTaskDelay(10);
-//
-//    result = readHoldingRegs(getSlaveId(), 3103, 1, (uint8_t*) &regValue, bufLength);
-//    regValue = SWAP_16(regValue);
-//    printf("3103: %d\n", regValue);
-//
-//    result = readHoldingRegs(getSlaveId(), 3104, 1, (uint8_t*) &regValue, bufLength);
-//    regValue = SWAP_16(regValue);
-//    printf("3104: %d\n", regValue);
-//    storeConfiguration();
 }
 
 void ModbusInverterSchneiderAtv32::setupInverterAccelRate(float value)
 {
     m_accelRate = (int16_t)(value * 10);
-//    writeSingleReg(getSlaveId(), 9001, (int16_t)(value * 10));
-//    vTaskDelay(10);
-//    storeConfiguration();
 }
 
 void ModbusInverterSchneiderAtv32::setupInverterDecelRate(float value)
 {
     m_decelRate = (int16_t)(value * 10);
-//    writeSingleReg(getSlaveId(), 9002, (int16_t)(value * 10));
-//    vTaskDelay(10);
-//    storeConfiguration();
 }
 
 void ModbusInverterSchneiderAtv32::setupInverter()

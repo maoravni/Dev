@@ -66,6 +66,14 @@ ModbusInverterUnidriveM200::ModbusInverterUnidriveM200(uint8_t slaveId) :
     setInverterType();
     m_driveStatus = ElementRepository::getInstance().addValidationElementU16();
     m_driveStatus->setValue(0);
+
+    m_minSpeed = (int16_t) 0x8000;
+    m_maxSpeed = (int16_t) 0x8000;
+    m_accelRate = (int16_t) 0x8000;
+    m_decelRate = (int16_t) 0x8000;
+    m_nominalRpm = (int16_t) 0x8000;
+    m_nominalCurrent = (int16_t) 0x8000;
+    m_nominalFrequency = (int16_t) 0x8000;
 }
 
 ModbusInverterUnidriveM200::~ModbusInverterUnidriveM200()
@@ -165,38 +173,63 @@ void ModbusInverterUnidriveM200::setInverterType()
 
 void ModbusInverterUnidriveM200::setupInverterMinSpeed(float value)
 {
-    writeSingleReg(getSlaveId(), M_MIN_SPEED_ADDRESS, (int16_t) value * 100);
+    m_minSpeed = (int16_t) value * 100;
+}
+
+void ModbusInverterUnidriveM200::sendInverterMinSpeed()
+{
+    writeSingleReg(getSlaveId(), M_MIN_SPEED_ADDRESS, m_minSpeed);
     vTaskDelay(10);
 }
 
 void ModbusInverterUnidriveM200::setupInverterMaxSpeed(float value)
 {
-    writeSingleReg(getSlaveId(), M_MAX_SPEED_ADDRESS, (int16_t) value * 100);
+    m_maxSpeed = (int16_t) value * 100;
+}
+
+void ModbusInverterUnidriveM200::sendInverterMaxSpeed()
+{
+    writeSingleReg(getSlaveId(), M_MAX_SPEED_ADDRESS, m_maxSpeed);
     vTaskDelay(10);
 }
 
 void ModbusInverterUnidriveM200::setupInverterAccelRate(float value)
 {
+    m_accelRate = (int16_t) value * 10;
+}
+
+void ModbusInverterUnidriveM200::sendInverterAccelRate()
+{
     // select acceleration rate reference register 0
     writeSingleReg(getSlaveId(), 209, 0);
     vTaskDelay(10);
     // write the acceleration rate.
-    writeSingleReg(getSlaveId(), M_ACCEL_RATE_ADDRESS, (int16_t) value * 10);
+    writeSingleReg(getSlaveId(), M_ACCEL_RATE_ADDRESS, m_accelRate);
     vTaskDelay(10);
 }
 
 void ModbusInverterUnidriveM200::setupInverterDecelRate(float value)
 {
+    m_decelRate = (int16_t) value * 10;
+}
+
+void ModbusInverterUnidriveM200::sendInverterDecelRate()
+{
     // select deceleration rate reference register 0
     writeSingleReg(getSlaveId(), 219, 0);
     vTaskDelay(10);
     //write the deceleration rate.
-    writeSingleReg(getSlaveId(), M_DECEL_RATE_ADDRESS, (int16_t) value * 10);
+    writeSingleReg(getSlaveId(), M_DECEL_RATE_ADDRESS, m_decelRate);
     vTaskDelay(10);
 }
 
 void ModbusInverterUnidriveM200::setupInverter()
 {
+    sendInverterMinSpeed();
+    sendInverterMaxSpeed();
+    sendInverterAccelRate();
+    sendInverterDecelRate();
+
     for (int i = 0; i < sizeof(UnidriveRegisterSetup) && UnidriveRegisterSetup[i].regAddress != 0; ++i)
     {
         writeSingleReg(getSlaveId(), UnidriveRegisterSetup[i].regAddress, UnidriveRegisterSetup[i].value);

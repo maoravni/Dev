@@ -22,6 +22,9 @@ PersistencyManager* PersistencyManager::p_instance = NULL;
 
 PersistencyManager::PersistencyManager()
 {
+#ifdef NO_PERSISTENCY
+    return;
+#endif
     m_fecBoardConfiguration.getParametersFromBoard();
 }
 

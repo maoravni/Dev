@@ -219,7 +219,7 @@ E_PsocSpiError PsocHandler::execute()
 
 //        m_activeFrame->serialNumber = m_activeFrame->transmitBuffer.header.serialNumber;
 #ifdef WIN32
-		psocError = E_PsocSpiError_Ok;
+        psocError = E_PsocSpiError_Ok;
 #else
 #ifdef PIPELINED
         psocError = executeCommunication((uint8_t*) &m_requestFrame->transmitBuffer);
@@ -419,12 +419,11 @@ E_PsocSpiError PsocHandler::getVersion(CBinarySemaphore* completeSemaphore, T_Ps
     M_PSOC_REQUEST_BLOCKING_EPILOGUE(frame);
 
     memcpy(&version, &frame->receiveBuffer.data.psocVersion, sizeof(T_PsocVersion));
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Get Psoc Version: %d: firmware %d.%d.%d.%d --- icd %d.%d.%d.%d board %d", m_psocIndex,
-            version.firmwareVersion.split.major, version.firmwareVersion.split.minor,
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Get Psoc Version: %d: firmware %d.%d.%d.%d --- icd %d.%d.%d.%d board %d",
+            m_psocIndex, version.firmwareVersion.split.major, version.firmwareVersion.split.minor,
             version.firmwareVersion.split.build, version.firmwareVersion.split.revision,
             version.protocolVersion.split.major, version.protocolVersion.split.minor,
-            version.protocolVersion.split.build, version.protocolVersion.split.revision,
-            version.boardType);
+            version.protocolVersion.split.build, version.protocolVersion.split.revision, version.boardType);
     return frame->responseStatus;
 }
 
@@ -438,7 +437,8 @@ E_PsocSpiError PsocHandler::getTemperaturePwmDiSensors()
     frame->messageHandler = &g_readTemperaturePwmDISensorsHandler;
     // todo: pass board voltage
 //    frame->transmitBuffer.data.writeMultipleDevices.voltage = Psc_GetBoardVoltage24V();
-    g_readTemperaturePwmDISensorsHandler.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber, m_pwmOutputs, m_analogOutputs, Psc_GetBoardVoltage24V());
+    g_readTemperaturePwmDISensorsHandler.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber,
+            m_pwmOutputs, m_analogOutputs, Psc_GetBoardVoltage24V());
     return E_PsocSpiError_Ok;
 }
 
@@ -452,7 +452,8 @@ E_PsocSpiError PsocHandler::getAnalogsFeedbacksErrors()
     frame->messageHandler = &g_readAnalogsFeedbacksErrors;
     // todo: pass board voltage
 //    frame->transmitBuffer.data.psocRequestWithVoltage.voltage = Psc_GetBoardVoltage24V();
-    g_readAnalogsFeedbacksErrors.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber, m_pwmOutputs, m_analogOutputs, Psc_GetBoardVoltage24V());
+    g_readAnalogsFeedbacksErrors.prepareTransmitBufferOutputs(&frame->transmitBuffer, m_lastSerialNumber, m_pwmOutputs,
+            m_analogOutputs, Psc_GetBoardVoltage24V());
     return E_PsocSpiError_Ok;
 }
 
@@ -521,8 +522,9 @@ E_PsocSpiError PsocHandler::configTemperatureSensor(CBinarySemaphore* completeSe
         E_PsocTemperatureSensorType channelType, E_PsocTemperatureSensorFilterType filterType, float hardLimit,
         float corrA, float corrB, E_MissingDevicePriority priority)
 {
-    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "configTemperatureSensor: psocIndex=%d channelIndex=%d hardLimit=%f missPrio=%d",
-            m_psocIndex, channelIndex, hardLimit, priority);
+    M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+            "configTemperatureSensor: psocIndex=%d channelIndex=%d hardLimit=%f missPrio=%d", m_psocIndex, channelIndex,
+            hardLimit, priority);
 
     T_SpiFrameStruct* frame;
     M_PSOC_REQUEST_PROLOGUE(frame);
@@ -928,22 +930,22 @@ void PsocHandler::handleSystemErrorBits(uint16_t systemErrors)
     {
 //        if (systemErrors != 0)
 //        {
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PSoC %d System Error %x", m_psocIndex, systemErrors);
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Error Xor %x", errorsXored);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SafetyRelayLow, E_PSSErrors_PsocSafetyError);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_HardTemperatureLimit, E_PSSErrors_DeviceExceedsHardLimits);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_CableIdNotMatching, E_PSSErrors_CableIdNotMatching);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_Pt100MissingSensor, E_PSSErrors_SensorMalfunction);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_Pt100CalResistorError, E_PSSErrors_SensorMalfunction);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SoftTemperatureLimit, E_PSSErrors_DeviceExceedsSoftLimits);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SsrOverheating, E_PSSErrors_SsrOverheating);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_MissingCurrentSensor, E_PSSErrors_SensorMalfunction);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SsrAlwaysOn, E_PSSErrors_SsrAlwaysOn);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_OverCurrentLimit, E_PSSErrors_CurrentLoopAboveLimit);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_PrintBarLifted, E_PSSErrors_PrintBarLifted);
-            M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_LiquidDetectorError, E_PSSErrors_PsocLiquidDetectorError);
-            //            M_CHECK_FOR_SYSTEM_WARNING(E_PsocWarningBits_MissingTemperatureSensor,
-            //                    E_PSSWarnings_PsocMissingTemperatureSensor);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "PSoC %d System Error %x", m_psocIndex, systemErrors);
+        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "Error Xor %x", errorsXored);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SafetyRelayLow, E_PSSErrors_PsocSafetyError);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_HardTemperatureLimit, E_PSSErrors_DeviceExceedsHardLimits);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_CableIdNotMatching, E_PSSErrors_CableIdNotMatching);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_Pt100MissingSensor, E_PSSErrors_SensorMalfunction);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_Pt100CalResistorError, E_PSSErrors_SensorMalfunction);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SoftTemperatureLimit, E_PSSErrors_DeviceExceedsSoftLimits);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SsrOverheating, E_PSSErrors_SsrOverheating);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_MissingCurrentSensor, E_PSSErrors_SensorMalfunction);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_SsrAlwaysOn, E_PSSErrors_SsrAlwaysOn);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_OverCurrentLimit, E_PSSErrors_CurrentLoopAboveLimit);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_PrintBarLifted, E_PSSErrors_PrintBarLifted);
+        M_CHECK_FOR_SYSTEM_ERROR(E_PsocErrorBits_LiquidDetectorError, E_PSSErrors_PsocLiquidDetectorError);
+        //            M_CHECK_FOR_SYSTEM_WARNING(E_PsocWarningBits_MissingTemperatureSensor,
+        //                    E_PSSWarnings_PsocMissingTemperatureSensor);
 //        }
 //        else
 //        {

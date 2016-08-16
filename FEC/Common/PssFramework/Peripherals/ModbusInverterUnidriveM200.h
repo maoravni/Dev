@@ -17,6 +17,13 @@ class ModbusInverterUnidriveM200: /*public OutputPeripheralBase, public InputPer
 {
 private:
     ElementBase* m_driveStatus;
+    int16_t m_maxSpeed;
+    int16_t m_minSpeed;
+    int16_t m_accelRate;
+    int16_t m_decelRate;
+    int16_t m_nominalFrequency;
+    int16_t m_nominalCurrent;
+    int16_t m_nominalRpm;
 
 public:
     ModbusInverterUnidriveM200(uint8_t slaveId);
@@ -42,6 +49,12 @@ public:
 
     virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
+
+private:
+    virtual void sendInverterMinSpeed();
+    virtual void sendInverterMaxSpeed();
+    virtual void sendInverterAccelRate();
+    virtual void sendInverterDecelRate();
 };
 
 #endif /* MODBUSINVERTER_H_ */

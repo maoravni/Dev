@@ -73,12 +73,20 @@ uint8_t Psc_SetIpAddress()
 
 uint16_t Psc_GetCableId()
 {
+#ifdef DRYER_DEBUG
+    return 1;
+#else
     return (uint16_t)Get_SSID_dig();
+#endif
 }
 
 uint8_t Psc_GetNodeId()
 {
+#ifdef DRYER_DEBUG
+    return 1;
+#else
     return nod_id_get();
+#endif
 }
 
 uint8_t Psc_GetControllerId()
