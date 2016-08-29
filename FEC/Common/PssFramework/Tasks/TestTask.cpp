@@ -294,17 +294,19 @@ void TestTask::run()
 
     delay(1000);
 
-//#ifdef FEC2_BOARD
-//    Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
-//
-//    PeripheralRepository::getInstance().addPeripheral(mi3Periph);
-//
-//    Mi3Sensor* mi3Sensor = mi3Periph->getSensorByAddress(0x14);
-////    ElementBase* element = mi3Sensor->t;
-//    mi3Sensor->writeAmbientBackgroundCompensation(true);
-//    mi3Sensor->setI2CChannel(1);
-//    mi3Periph->setBoardInReady(true);
-//    mi3Periph->setUpdateInterval(25);
+#define IR_TEST
+#ifdef IR_TEST
+    Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
+
+    PeripheralRepository::getInstance().addPeripheral(mi3Periph);
+
+    Mi3Sensor* mi3Sensor = mi3Periph->getSensorByAddress(0x14);
+//    ElementBase* element = mi3Sensor->t;
+    mi3Sensor->setAmbientBackgroundCompensation(true);
+    mi3Sensor->setI2CChannel(1);
+    mi3Periph->setBoardInReady(true);
+    mi3Periph->setUpdateInterval(25);
+#endif
 //
 //    ControlBase* conc = new ConcentrationControl();
 //#endif
@@ -322,7 +324,7 @@ void TestTask::run()
 //    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
 // filesystem test
-#define EEPROM_TEST
+//#define EEPROM_TEST
 #ifdef EEPROM_TEST
 
 #define TEST_SER

@@ -486,6 +486,9 @@ bool Mi3Sensor::readTargetTemp()
             m_numberOfReadFailures = 0;
         }
     }
+#ifdef DEBUG
+    printf("IR %d: %f\n", m_address, val);
+#endif
     m_targTempElement->setValue(val);
 //    taskEXIT_CRITICAL();
 //    printf("MI3 Address %d: %f\n", m_address, val);
