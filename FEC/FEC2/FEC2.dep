@@ -5,7 +5,9 @@
   <fileChecksum>3283674815</fileChecksum>
   <configuration>
     <name>Debug</name>
-    <outputs/>
+    <outputs>
+      <file>$PROJ_DIR$\Source\Main.cpp</file>
+    </outputs>
     <forcedrebuild>
       <name>[MULTI_TOOL]</name>
       <tool>ILINK</tool>

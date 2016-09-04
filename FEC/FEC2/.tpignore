@@ -2,7 +2,6 @@
 \Q/DebugWithWatchdog/\E.*
 \Q/settings/NewFec.dni\E
 \Q/settings/NewFec_Eclipse Debug.jlink\E
-\Q/settings/\E.*
 \Q/Release/\E.*
 \Q/Debug F4/\E.*
 \Q/DebugJtag/\E.*

@@ -619,6 +619,16 @@ struct PSSErrorNotificationWithSecondaryMsg {
 	unsigned short secondaryPssId;
 	};
 
+struct PSSErrorNotificationWithInfoMsg {
+	unsigned short cableId;
+	unsigned short pssId;
+	unsigned int errors;
+	unsigned short secondaryPssId;
+	unsigned int additionalError;
+	char dataType;
+	int dataValue;
+	};
+
 struct PSSGetErrorsMsg {
 	unsigned short cableId;
 	unsigned short pssId;
@@ -1003,6 +1013,7 @@ union PSSMsgType{
 	struct PSSAutoTuneMsg pSSAutoTuneMsg;
 	struct PSSErrorNotificationMsg pSSErrorNotificationMsg;
 	struct PSSErrorNotificationWithSecondaryMsg pSSErrorNotificationWithSecondaryMsg;
+	struct PSSErrorNotificationWithInfoMsg pSSErrorNotificationWithInfoMsg;
 	struct PSSGetErrorsMsg pSSGetErrorsMsg;
 	struct PSSGetVersionMsg pSSGetVersionMsg;
 	struct PSSGetVersionReplyMsg pSSGetVersionReplyMsg;

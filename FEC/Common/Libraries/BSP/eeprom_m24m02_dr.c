@@ -87,7 +87,7 @@ typedef union _dev_select_val_
 } DEV_SELECT_VAL_UT, *DEV_SELECT_VAL_PUT;
 
 /* --- PRIVATE FUNCTIONS ---------------------------------------------------- */
-void delay_ms(uint32_t ms);
+//void delay_ms(uint32_t ms);
 void ee_rd_buf(uint32_t mem_addr, uint32_t len, uint8_t *data_ptr);
 void ee_wr_buf(uint32_t mem_addr, uint32_t len, uint8_t *data_ptr, uint8_t ctrl_byte_val);
 /* --- PRIVATE_DATA --------------------------------------------------------- */
@@ -305,15 +305,15 @@ void i2c_init(void)
 /*============================================================================*/
 /*     * P R I V A T E   F U N C T I O N S   I M P L E M E N T A T I O N *    */
 /*============================================================================*/
-void delay_ms(uint32_t ms)
-{
-    volatile uint32_t nCount;
-    RCC_ClocksTypeDef RCC_Clocks;
-    RCC_GetClocksFreq(&RCC_Clocks);
-    nCount = (RCC_Clocks.HCLK_Frequency / 10000) * ms;
-    for (; nCount != 0; nCount--)
-        ;
-}/***************************************************************************/
+//void delay_ms(uint32_t ms)
+//{
+//    volatile uint32_t nCount;
+//    RCC_ClocksTypeDef RCC_Clocks;
+//    RCC_GetClocksFreq(&RCC_Clocks);
+//    nCount = (RCC_Clocks.HCLK_Frequency / 10000) * ms;
+//    for (; nCount != 0; nCount--)
+//        ;
+//}/***************************************************************************/
 
 #define U8_i2cee_chip_addr 0x0a
 

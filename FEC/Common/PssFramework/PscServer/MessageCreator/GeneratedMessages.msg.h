@@ -95,6 +95,7 @@
 #define MSG_AutoTune 0x308
 #define MSG_ErrorNotification 0x13
 #define MSG_ErrorNotificationWithSecondary 0x23
+#define MSG_ErrorNotificationWithInfo 0x25
 #define MSG_GetErrors 0x13
 #define MSG_GetVersion 0x5
 #define MSG_GetVersionReply 0x5

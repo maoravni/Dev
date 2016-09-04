@@ -54,6 +54,9 @@
 #include <Controls/ControlRepository.h>
 #include <tm_stm32f4_usart_dma.h>
 #include <usart.h>
+#include <glcd.h>
+#include <fonts/font5x7.h>
+#include <fonts/Liberation_Sans20x28_Numbers.h>
 
 TestTask::TestTask()
 {
@@ -294,7 +297,7 @@ void TestTask::run()
 
     delay(1000);
 
-#define IR_TEST
+//#define IR_TEST
 #ifdef IR_TEST
     Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
 
@@ -485,11 +488,30 @@ void TestTask::run()
 
 #endif
 
+//#define GLCD_TEST
+#ifdef GLCD_TEST
+    glcd_init();
+//    glcd_clear_buffer();
+//    glcd_write();
+    glcd_font(Liberation_Sans20x28_Numbers, 20, 28, '.', '9', MIKRO);
+    glcd_draw_string_xy(0, 0, "123456");
+    glcd_write();
+        //glcd_clear_buffer();
+//            glcd_tiny_set_font(Font5x7,5,7,32,127);
+//            glcd_tiny_draw_string(0,0,"Hello World!");
+//            glcd_write();
+#endif
+
+    char c = 0;
     for (;;)
     {
-//        usart3_set_dir(true);
-//        TM_USART_DMA_Send(USART3, data, 8);
-//        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "test log");
+#ifdef GLCD_TEST
+        glcd_clear_buffer();
+        //glcd_clear()
+        glcd_draw_char_xy(0, 0, c+'0');
+        c = (c + 1) % 10;
+        glcd_write();
+#endif
         delay(1000);
     }
 

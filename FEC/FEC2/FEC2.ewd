@@ -751,7 +751,7 @@
         <debug>1</debug>
         <option>
           <name>JLinkSpeed</name>
-          <state>1000</state>
+          <state>15000</state>
         </option>
         <option>
           <name>CCJLinkDoLogfile</name>
@@ -799,7 +799,7 @@
         </option>
         <option>
           <name>CCJLinkSpeedRadioV2</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCUSBDevice</name>
