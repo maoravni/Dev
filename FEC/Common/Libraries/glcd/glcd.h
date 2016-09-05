@@ -306,6 +306,8 @@ typedef struct {
 //extern glcd_BoundingBox_t *glcd_bbox_selected;
 extern glcd_FontConfig_t font_current;
 
+void glcd_print_debug_buffer();
+
 #ifdef __cplusplus
 }
 #endif

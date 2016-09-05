@@ -36,6 +36,9 @@
 #include <opto_out.h>
 //#include <trcUser.h>
 
+#include <glcd.h>
+#include <fonts/font5x7.h>
+
 #define mainCHECK_TASK_PRIORITY             ( tskIDLE_PRIORITY + 3 )
 
 /**
@@ -272,6 +275,20 @@ void vInitTask(void *pvParameters)
 
     //loggerInstance.enableOutputUdp(true);
 
+    glcd_init();
+
+    char message[26];
+    glcd_font(Font5x7, 5, 7, 32, 127, STANG);
+    glcd_clear_buffer();
+    glcd_draw_string_xy(0, 0, "Landa FEC3");
+    sprintf(message, "Cable ID: %d", Psc_GetCableId());
+    glcd_draw_string_xy(0, 8, message);
+    sprintf(message, "IP: %d.%d.%d.%d", 172, 30, 30, 100+Psc_GetCableId());
+    glcd_draw_string_xy(0, 16, message);
+//    glcd_print_debug_buffer();
+    glcd_write();
+
+
 #ifndef WIN32
     lwip_igmp_start();
 #endif
@@ -349,8 +366,8 @@ void vInitTask(void *pvParameters)
     PscMessageHandler::getInstance();
     PscMasterServer::getInstance();
 
-    TestTask *testTask = new TestTask();
-    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
+//    TestTask *testTask = new TestTask();
+//    portBASE_TYPE res = testTask->create("testTask", DEFAULT_THREAD_STACKSIZE + 2000, 3);
 
     //    uiTraceStart();.
 
@@ -495,6 +512,7 @@ void vApplicationIdleHook(void)
 {
     StatusLed::m_idleWasExecuted = true;
     led_light(CPU_ACTIVITY_LED8);
+
 }
 
 }

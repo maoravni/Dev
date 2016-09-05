@@ -9,6 +9,7 @@
 #include <leds.h>
 #include <stdio.h>
 #include <PscSubsystem.h>
+#include <glcd.h>
 
 StatusLed StatusLed::m_singletonInstance;
 bool StatusLed::m_idleWasExecuted;
@@ -56,13 +57,17 @@ void StatusLed::run()
 
 	for (;;)
 	{
+	    static char freeMem[25];
+	    sprintf(freeMem, "Free: %06d", xPortGetFreeHeapSize());
+	    glcd_draw_string_xy(0, 24, freeMem);
+	    glcd_write();
 #ifdef WIN32
 		printf("Led Toggle\n");
 #endif
 		/* Delay for half the flash period then turn the LED on. */
 		delayUntil(&xLastFlashTime, m_flashRate);
 		//GPIO_WriteBit(m_pPort, m_pin, m_bState ? Bit_SET : Bit_RESET);
-		led_toggle(ALIVE_LED);
+//		led_toggle(ALIVE_LED);
 
 		/* Delay for half the flash period then turn the LED off. */
 		//delayUntil(&xLastFlashTime, M_FLASH_RATE);

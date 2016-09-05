@@ -36,6 +36,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "glcd.h"
+#include <stdlib.h>
 
 /** \addtogroup GlobalVars Global Variables
  *  @{
@@ -166,3 +167,25 @@ void glcd_scroll_line(void)
 	glcd_update_bbox(0,0,GLCD_LCD_WIDTH - 1,GLCD_LCD_HEIGHT - 1);
 }
 
+void glcd_print_debug_buffer()
+{
+    int i, j, k;
+    char byte, bit;
+    for (i = 0; i < GLCD_LCD_HEIGHT/8; ++i)
+    {
+        for (j = 0; j < 8; ++j)
+        {
+            for (k = 0; k < GLCD_LCD_WIDTH; ++k)
+            {
+                byte = *(glcd_buffer_selected+i*GLCD_LCD_WIDTH + k);
+                bit = (byte >> j) & 1;
+                if (bit == 0)
+                    printf(".");
+                else
+                    printf("X");
+            }
+            printf("\n");
+        }
+    }
+    printf("\n");
+}

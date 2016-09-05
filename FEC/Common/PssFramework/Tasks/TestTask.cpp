@@ -490,11 +490,13 @@ void TestTask::run()
 
 //#define GLCD_TEST
 #ifdef GLCD_TEST
-    glcd_init();
+//    glcd_init();
 //    glcd_clear_buffer();
 //    glcd_write();
     glcd_font(Liberation_Sans20x28_Numbers, 20, 28, '.', '9', MIKRO);
+    //glcd_font(Font5x7, 5, 7, 32, 127, STANG);
     glcd_draw_string_xy(0, 0, "123456");
+    glcd_print_debug_buffer();
     glcd_write();
         //glcd_clear_buffer();
 //            glcd_tiny_set_font(Font5x7,5,7,32,127);
@@ -509,9 +511,16 @@ void TestTask::run()
         glcd_clear_buffer();
         //glcd_clear()
         glcd_draw_char_xy(0, 0, c+'0');
+//        glcd_draw_string_xy(0, 8, "           Landa");
+//        glcd_draw_string_xy(0, 16, "Landa");
+//        glcd_draw_string_xy(0, 24, "     Landa");
         c = (c + 1) % 10;
+//        glcd_print_debug_buffer();
         glcd_write();
 #endif
+        char message[1024];
+        getRunTimeStats(message);
+        printf(message);
         delay(1000);
     }
 
