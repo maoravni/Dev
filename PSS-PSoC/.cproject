@@ -58,7 +58,8 @@
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0.1755789531" name="Disable static clustering" superClass="iar.arm.toolchain.compiler.option.optStaticClustering.v5.4.0" valueType="boolean"/>
 								<option defaultValue="true" id="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0.983413710" name="Disable instruction scheduling" superClass="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.199395527" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.2516002" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.2516002" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1543209821" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1626268949" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="true" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.799975555" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>
@@ -116,7 +117,8 @@
 									<listOptionValue builtIn="false" value="NDEBUG"/>
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.665276817" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
-								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1779647919" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.v5.4.1"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1779647919" name="IAR C/C++ Compiler Input Type"/>
+								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.89777220" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
 							</tool>
 							<tool id="iar.arm.toolchain.assembler.v5.4.0.1173313290" name="IAR Assembler for ARM" superClass="iar.arm.toolchain.assembler.v5.4.0">
 								<option defaultValue="false" id="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0.1305998866" name="Generate debug information" superClass="iar.arm.toolchain.assembler.option.debugInfo.v5.4.0" valueType="boolean"/>

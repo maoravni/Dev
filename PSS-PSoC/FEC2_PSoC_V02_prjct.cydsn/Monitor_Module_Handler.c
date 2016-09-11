@@ -497,7 +497,8 @@ void Calc_Cable_IDs(void)
 
 	if ((StoredIDs4MMCU.ID[0] == StoredIDs4MMCU.ID[1])
 		&& (StoredIDs4MMCU.ID[1] == StoredIDs4MMCU.ID[2])
-		&& (StoredIDs4MMCU.ID[2]))
+		// maor: remove this check so when no cable is connected no error is blinked.
+		/*&& (StoredIDs4MMCU.ID[2])*/)
 
 	{
 		if (!StoredIDs4MMCU.ID[0])
