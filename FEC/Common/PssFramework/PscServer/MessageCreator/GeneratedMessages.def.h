@@ -9,39 +9,6 @@
 //                                                        *
 //*********************************************************
 
-struct BSSBlanketCleaningStateMsg {
-	unsigned short cableId;
-	char blanketCleaningState;
-	};
-
-struct BSSIccsEngageStateMsg {
-	unsigned short cableId;
-	char ccsEngageState;
-	};
-
-struct PolisherMoveMsg {
-	unsigned short cableId;
-	};
-
-struct PolisherRecoveryMsg {
-	unsigned short cableId;
-	};
-
-struct PolisherSetParamsMsg {
-	unsigned short cableId;
-	unsigned short polisherSpeed;
-	};
-
-struct PolisherStatusNotificationMsg {
-	unsigned short cableId;
-	char polisherState;
-	unsigned short polisherStatus;
-	};
-
-struct PolisherStopMsg {
-	unsigned short cableId;
-	};
-
 struct PSSActivateActivationWithFeedbackControlMsg {
 	unsigned short cableId;
 	unsigned short pssId;
@@ -585,11 +552,6 @@ struct PSSNextAppPacket {
 	char* payload;
 	};
 
-struct PSSReadyForRecoveryMsg {
-	unsigned short cableId;
-	char readyForRecoveryState;
-	};
-
 struct PSSResetBoardMsg {
 	unsigned short cableId;
 	char startupApp;
@@ -862,151 +824,7 @@ struct PSSWriteModbusRegister {
 	unsigned short registerValue;
 	};
 
-struct TMCAckMsg {
-	unsigned int originalRequestMsgId;
-	unsigned int originalRequestSN;
-	unsigned short cableId;
-	unsigned int status;
-	};
-
-struct RevolverBrushForwardMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverBrushReverseMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverCleancycleMsg {
-	unsigned short cableId;
-	};
-
-struct TMCErrorNotificationMsg {
-	unsigned short cableId;
-	unsigned short errorListSize;
-	RevolverErrorData errorList[25];
-	};
-
-struct RevolverGetStatusMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverGotoNextBladeMsg {
-	unsigned short cableId;
-	};
-
-struct TMCKeepAliveMsg {
-	int dummy;
-	};
-
-struct TMCKeepAliveReplyMsg {
-	int dummy;
-	};
-
-struct RevolverHardResetMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverMoveToOnMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverMoveToReadyMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverMoveToStandbyMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverSetHomePositionMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverInitMsg {
-	unsigned short cableId;
-	unsigned short isUnprotectedMode;
-	};
-
-struct RevolverRecoveryMsg {
-	unsigned short cableId;
-	};
-
-struct TMCSeqEndedMsg {
-	unsigned int originalRequestMsgId;
-	unsigned int originalRequestSN;
-	unsigned short cableId;
-	unsigned int status;
-	};
-
-struct RevolverSetMotorsOffMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverSetParamsMsg {
-	unsigned short cableId;
-	unsigned short blanketRevolutionParams;
-	unsigned short brushSpeed;
-	unsigned short revolutionTimeout;
-	unsigned short brushTimeout;
-	unsigned short distanceFromNipsensorToRevolver;
-	};
-
-struct RevolverSetZeroPositionMsg {
-	unsigned short cableId;
-	};
-
-struct RevolverStatusNotificationMsg {
-	unsigned short cableId;
-	char revolverState;
-	unsigned short revolverStatus;
-	char brushState;
-	unsigned short brushStatus;
-	unsigned short activeBlade;
-	char tmcRevolverState;
-	};
-
-struct RevolverStopbrushMsg {
-	unsigned short cableId;
-	};
-
-struct TMCWarningNotificationMsg {
-	unsigned short cableId;
-	unsigned int warnings;
-	};
-
-struct TMCGetVersionMsg {
-	unsigned short cableId;
-	};
-
-struct TMCGetVersionReplyMsg {
-	unsigned short cableId;
-	unsigned __int64 firmwareVersion;
-	unsigned __int64 protocolVersion;
-	};
-
-struct TMCSetControlsMsg {
-	unsigned short cableId;
-	char isRevolverExist;
-	char isPolisherExist;
-	};
-
-struct WaitDisengageTubApprovleMsg {
-	unsigned short cableId;
-	};
-
-struct WaitStopPumpsApprovleMsg {
-	unsigned short cableId;
-	};
-
 union PSSMsgType{
-	struct BSSBlanketCleaningStateMsg bSSBlanketCleaningStateMsg;
-	struct BSSIccsEngageStateMsg bSSIccsEngageStateMsg;
-	struct PolisherMoveMsg polisherMoveMsg;
-	struct PolisherRecoveryMsg polisherRecoveryMsg;
-	struct PolisherSetParamsMsg polisherSetParamsMsg;
-	struct PolisherStatusNotificationMsg polisherStatusNotificationMsg;
-	struct PolisherStopMsg polisherStopMsg;
 	struct PSSActivateActivationWithFeedbackControlMsg pSSActivateActivationWithFeedbackControlMsg;
 	struct PSSActivateConcentrationControlMsg pSSActivateConcentrationControlMsg;
 	struct PSSActivateLeakageDetectionControlMsg pSSActivateLeakageDetectionControlMsg;
@@ -1073,7 +891,6 @@ union PSSMsgType{
 	struct PSSInitControlMsg pSSInitControlMsg;
 	struct PSSLastModifiedDateMsg pSSLastModifiedDateMsg;
 	struct PSSNextAppPacket pSSNextAppPacket;
-	struct PSSReadyForRecoveryMsg pSSReadyForRecoveryMsg;
 	struct PSSResetBoardMsg pSSResetBoardMsg;
 	struct PSSResetToOnControlMsg pSSResetToOnControlMsg;
 	struct PSSSetLeakageDetectionParametersMsg pSSSetLeakageDetectionParametersMsg;
@@ -1111,32 +928,4 @@ union PSSMsgType{
 	struct PSSWarningNotificationMsg pSSWarningNotificationMsg;
 	struct PSSWarningNotificationWithSecondaryMsg pSSWarningNotificationWithSecondaryMsg;
 	struct PSSWriteModbusRegister pSSWriteModbusRegister;
-	struct TMCAckMsg tMCAckMsg;
-	struct RevolverBrushForwardMsg revolverBrushForwardMsg;
-	struct RevolverBrushReverseMsg revolverBrushReverseMsg;
-	struct RevolverCleancycleMsg revolverCleancycleMsg;
-	struct TMCErrorNotificationMsg tMCErrorNotificationMsg;
-	struct RevolverGetStatusMsg revolverGetStatusMsg;
-	struct RevolverGotoNextBladeMsg revolverGotoNextBladeMsg;
-	struct TMCKeepAliveMsg tMCKeepAliveMsg;
-	struct TMCKeepAliveReplyMsg tMCKeepAliveReplyMsg;
-	struct RevolverHardResetMsg revolverHardResetMsg;
-	struct RevolverMoveToOnMsg revolverMoveToOnMsg;
-	struct RevolverMoveToReadyMsg revolverMoveToReadyMsg;
-	struct RevolverMoveToStandbyMsg revolverMoveToStandbyMsg;
-	struct RevolverSetHomePositionMsg revolverSetHomePositionMsg;
-	struct RevolverInitMsg revolverInitMsg;
-	struct RevolverRecoveryMsg revolverRecoveryMsg;
-	struct TMCSeqEndedMsg tMCSeqEndedMsg;
-	struct RevolverSetMotorsOffMsg revolverSetMotorsOffMsg;
-	struct RevolverSetParamsMsg revolverSetParamsMsg;
-	struct RevolverSetZeroPositionMsg revolverSetZeroPositionMsg;
-	struct RevolverStatusNotificationMsg revolverStatusNotificationMsg;
-	struct RevolverStopbrushMsg revolverStopbrushMsg;
-	struct TMCWarningNotificationMsg tMCWarningNotificationMsg;
-	struct TMCGetVersionMsg tMCGetVersionMsg;
-	struct TMCGetVersionReplyMsg tMCGetVersionReplyMsg;
-	struct TMCSetControlsMsg tMCSetControlsMsg;
-	struct WaitDisengageTubApprovleMsg waitDisengageTubApprovleMsg;
-	struct WaitStopPumpsApprovleMsg waitStopPumpsApprovleMsg;
 };

@@ -120,6 +120,8 @@ public:
     virtual int32_t getValueI32() const = 0;
     virtual float getValueF() const = 0;
 
+    virtual const void* getValueP() const = 0;
+
     bool isMonitoringEnabled() const
     {
         return m_monitoringEnabled;

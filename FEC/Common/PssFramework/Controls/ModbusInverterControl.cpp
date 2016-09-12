@@ -46,9 +46,9 @@ ModbusInverterControl::~ModbusInverterControl()
 
 void ModbusInverterControl::startRecovery()
 {
-	raiseError(0, E_PSSErrors_ActivationFailed, false);
-	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+	raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
+	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 }
 
 void ModbusInverterControl::updateSetpoints()
@@ -81,7 +81,7 @@ bool ModbusInverterControl::setSetpointActivationDelay(float value, uint32_t act
 	m_controlState = E_ControlState_Move2Ready;
 	m_stopping = false;
 
-	raiseError(0, E_PSSErrors_ActivationFailed, false);
+	raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
 
 	// remove current timeouts if they exist:
 	ModbusSchedulerTask::getInstance()->addTimeout(this, 0, M_TIMEOUT_DELAY);
@@ -211,21 +211,21 @@ void ModbusInverterControl::execute()
 		{
 			if (getControlExceptions() != 0)
 			{
-				raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-				raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+				raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+				raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 			}
 		}
 		else
 		{
 			if (m_requestedSetpoint->isInWarningRange(inputValue))
 			{
-				raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-				raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
+				raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+				raiseWarningWithInfo(0, E_PSSWarnings_ControlExceedsLimits, true, m_outputFrequency->getValueType(), m_outputFrequency->getValueP(), 0);
 			}
 			else
 			{
-				raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
-				raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+				raiseErrorWithInfo(0, E_PSSErrors_ControlExceedsLimits, true, m_outputFrequency->getValueType(), m_outputFrequency->getValueP(), 0);
+				raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 			}
 		}
 		break;
@@ -342,8 +342,8 @@ bool ModbusInverterControl::onMove2Standby()
 		m_requestedSetpoint->setValue((int)0);
 	}
 	m_controlState = E_ControlState_Standby;
-	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 	m_stopping = true;
 	endMove2Standby();
 	execute();
@@ -358,8 +358,8 @@ bool ModbusInverterControl::onReset2On()
 		m_setpoint->setValue(0);
 		m_requestedSetpoint->setValue(0);
 	}
-	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 	m_stopping = true;
 	endReset2On();
 	execute();
@@ -375,8 +375,8 @@ bool ModbusInverterControl::onMove2Error()
 		m_requestedSetpoint->setValue(0);
 	}
 	m_stopping = true;
-	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 	endMove2Error();
 	execute();
 	return true;
@@ -392,8 +392,8 @@ bool ModbusInverterControl::onStopOnEmr()
 	}
 	m_controlState = E_ControlState_Standby;
 	m_stopping = true;
-	raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-	raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 	endStopOnEmr();
 	execute();
 	return true;

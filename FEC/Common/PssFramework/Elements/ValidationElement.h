@@ -156,6 +156,11 @@ public:
         return m_value;
     }
 
+    virtual const void* getValueP() const
+    {
+        return &m_value;
+    }
+
     virtual _type& operator()();
 
     virtual bool hasError()

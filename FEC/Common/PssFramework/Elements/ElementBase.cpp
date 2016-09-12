@@ -203,34 +203,6 @@ void ElementBase::sendDeviceStatus(float value)
     PscMasterServer::getInstance().sendMessage(replyMessage);
 }
 
-//void ElementBase::updateErrorsBits(E_PSSErrors error, bool state)
-//{
-//    uint32_t previousErrorBits = m_errorBits;
-//
-//    if (state)
-//        m_errorBits |= error;
-//    else
-//        m_errorBits &= ~error;
-//
-//    if (m_errorBits != 0)
-//        m_sta
-//    if (m_errorBits != previousErrorBits && m_pssId != 0)
-//        PscMasterServer::getInstance().sendError(Psc_ControllerId, m_pssId, m_errorBits);
-//}
-//
-//void ElementBase::updateWarningBits(E_PSSErrors warning, bool state)
-//{
-//    uint32_t previousWarningBits = m_errorBits;
-//
-//    if (state)Rva
-//        m_warningBits |= warning;
-//    else
-//        m_warningBits &= ~warning;
-//
-//    if (m_warningBits != previousWarningBits)
-//        PscMasterServer::getInstance().sendWarning(Psc_ControllerId, m_pssId, m_warningBits);
-//}
-
 bool ElementBase::checkIfCanSendUpdate()
 {
     portTickType currentTicks = xTaskGetTickCount();

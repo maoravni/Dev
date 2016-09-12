@@ -147,6 +147,8 @@ void Serializer<ModbusInverterSchneiderAtv32>::serialize(F_FILE* f, ModbusInvert
     M_FWRITE_VARIABLE(p.m_nominalCurrent, f);
     M_FWRITE_VARIABLE(p.m_nominalRpm, f);
 
+    M_FWRITE_ELEMENT_REFERENCE(p.m_driveStatus, f);
+
     updateRecordSize(f);
 }
 
@@ -168,6 +170,9 @@ void Serializer<ModbusInverterSchneiderAtv32>::deserialize(F_FILE* f, ModbusInve
     M_FREAD_VARIABLE(p.m_nominalFrequency, f);
     M_FREAD_VARIABLE(p.m_nominalCurrent, f);
     M_FREAD_VARIABLE(p.m_nominalRpm, f);
+
+    M_FREAD_AND_REFERENCE_ELEMENT(p.m_driveStatus, f);
+
 }
 
 void Serializer<ModbusInverterCommanderSK>::serialize(F_FILE* f, ModbusInverterCommanderSK& p)
@@ -207,6 +212,8 @@ void Serializer<ModbusInverterUnidriveM200>::serialize(F_FILE* f, ModbusInverter
     Serializer<ModbusInverterPeripheralBase> baseS;
     baseS.serialize(f, *(dynamic_cast<ModbusInverterPeripheralBase*>(&p)));
 
+    M_FWRITE_ELEMENT_REFERENCE(p.m_driveStatus, f);
+
     updateRecordSize(f);
 }
 
@@ -220,6 +227,8 @@ void Serializer<ModbusInverterUnidriveM200>::deserialize(F_FILE* f, ModbusInvert
 
     Serializer<ModbusInverterPeripheralBase> baseS;
     baseS.deserialize(f, p);
+
+    M_FREAD_AND_REFERENCE_ELEMENT(p.m_driveStatus, f);
 }
 
 void Serializer<Modbus6RTDPeripheral>::serialize(F_FILE* f, Modbus6RTDPeripheral& p)

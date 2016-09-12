@@ -310,7 +310,16 @@ void Parse_Command(uint8_t *pTxData);
 *   none
 *******************************************************************************/
 void Checksum_Calc(U_MasterRxMsg * pMasterRxMsg);
+uint8_t Checksum_Calc_Compare(uint8_t* data, uint8_t reg2, uint8_t rxChecksum);
 
+void I2C1_init(uint32_t baudrate);
+void I2C2_init(uint32_t baudrate);
+uint8_t I2C_read_ack(I2C_TypeDef* I2Cx);
+uint8_t I2C_read_nack(I2C_TypeDef* I2Cx);
+uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+uint8_t I2C_stop(I2C_TypeDef* I2Cx);
+uint8_t I2C_write(I2C_TypeDef* I2Cx, uint8_t data);
 
 #ifdef __cplusplus
 }

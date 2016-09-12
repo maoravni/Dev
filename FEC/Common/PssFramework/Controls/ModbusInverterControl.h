@@ -14,6 +14,7 @@
 
 class ModbusInverterControl: public ControlBase
 {
+protected:
     ValidationElementFloat* m_requestedSetpoint;
     ElementBase* m_enableOutput; //!< This output enables power to the inverter
     ElementBase* m_setpoint;

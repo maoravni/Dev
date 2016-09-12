@@ -87,6 +87,7 @@
 #define MSG_AutoTune 0x308
 #define MSG_ErrorNotification 0x13
 #define MSG_ErrorNotificationWithSecondary 0x23
+#define MSG_ErrorNotificationWithInfo 0x25
 #define MSG_GetErrors 0x13
 #define MSG_GetVersion 0x5
 #define MSG_GetVersionReply 0x5
@@ -113,28 +114,6 @@
 #define MSG_WarningNotification 0x14
 #define MSG_WarningNotificationWithSecondary 0x24
 #define MSG_WriteModbusRegister 0x112
-#define MSG_RevolverAck 0x1
-#define MSG_RevolverBrushForward 0x10
-#define MSG_RevolverBrushReverse 0x9
-#define MSG_RevolverCleancycle 0x12
-#define MSG_RevolverErrorNotification 0x5
-#define MSG_RevolverGetStatus 0x3
-#define MSG_RevolverGotoNextBlade 0x8
-#define MSG_RevolverKeepAlive 0x17
-#define MSG_RevolverKeepAliveReply 0x17
-#define MSG_RevolverHardReset 0x20
-#define MSG_RevolverMoveToOn 0x19
-#define MSG_RevolverMoveToReady 0x16
-#define MSG_RevolverMoveToStandby 0x18
-#define MSG_RevolverSetHomePosition 0x1014
-#define MSG_RevolverInit 0x6
-#define MSG_RevolverRecovery 0x13
-#define MSG_RevolverSeqEnded 0x2
-#define MSG_RevolverSetParams 0x15
-#define MSG_RevolverSetZeroPosition 0x7
-#define MSG_RevolverStatusNotification 0x3
-#define MSG_RevolverStopbrush 0x11
-#define MSG_RevolverWarningNotification 0x4
 
 M_BEGIN_MESSAGE_MAP(CMessageTask, PscMessageHandler)
 	M_MESSAGE_MAP_ENTRY(PscMessageHandler, MSG_ActivateActivationWithFeedbackControl + APP_MSG, MessageActivateActivationWithFeedbackControlHandler)

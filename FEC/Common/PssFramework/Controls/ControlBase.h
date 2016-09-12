@@ -204,8 +204,10 @@ public:
     virtual void logDependencyCheckFailures(E_ActivationState state, E_ControlState controlState, E_PSSErrors error);
     virtual void clearDependencyCheckFailures(E_PSSErrors error);
 
-    virtual bool raiseError(uint16_t secondaryPssId, E_PSSErrors error, bool errorState);
-    virtual bool raiseWarning(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState);
+    virtual bool raiseErrorSimple(uint16_t secondaryPssId, E_PSSErrors error, bool errorState);
+    virtual bool raiseWarningSimple(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState);
+    virtual bool raiseErrorWithInfo(uint16_t secondaryPssId, E_PSSErrors error, bool errorState, uint8_t dataType, const void *dataValue, uint32_t additionalError);
+    virtual bool raiseWarningWithInfo(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState, uint8_t dataType, const void *dataValue, uint32_t additionalError);
     virtual void checkAllDependencies(E_ActivationState state, E_ControlState controlState,
             bool &resultConsiderDeactivateOnChange, bool &resultIgnoreDeactiveOnChange);
     virtual bool checkAllDependenciesForOppositeState();

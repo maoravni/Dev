@@ -55,6 +55,8 @@ private:
     virtual void sendInverterMaxSpeed();
     virtual void sendInverterAccelRate();
     virtual void sendInverterDecelRate();
+
+    template <class T> friend class Serializer;
 };
 
 #endif /* MODBUSINVERTER_H_ */

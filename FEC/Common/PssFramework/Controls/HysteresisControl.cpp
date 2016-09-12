@@ -36,7 +36,7 @@ void HysteresisControl::updateNotification(ElementBase* element)
 {
     if (element == m_output)
     {
-        raiseError(element->getPssId(), E_PSSErrors_SensorMalfunction, !m_output->isValid());
+        raiseErrorSimple(element->getPssId(), E_PSSErrors_SensorMalfunction, !m_output->isValid());
         if (!m_output->isValid())
             move2Error(MSG_ActivatePIDControl, m_lastSn);
         return;
@@ -185,8 +185,8 @@ void HysteresisControl::execute()
             {
                 if (getControlExceptions() != 0)
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
             else
@@ -194,11 +194,13 @@ void HysteresisControl::execute()
                 if ((inputValue < m_activateSetpointElement->getMinWorking())
                         || (inputValue >= m_activateSetpointElement->getMaxWorking()))
                 {
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
+                    raiseWarningWithInfo(0, E_PSSWarnings_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
                 }
                 else
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
+                    raiseErrorWithInfo(0, E_PSSErrors_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
         }

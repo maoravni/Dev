@@ -2434,6 +2434,9 @@ void PscMessageHandler::MessageDefineModbusInverterControlHandler(unsigned long 
             payload->cableId, payload->pssId, payload->enableId, payload->outputFrequencyPSSId,
             payload->outputCurrentPSSId, payload->outputSetPointPSSId);
 
+    // TODO: query the peripheral of the devices, and make sure they come from the the same inverter.
+    // TODO: query the peripheral of the devices for the inverter type, and instantiate a proper class when there's a difference.
+
 // TODO: Add a check, so when an allocation fails we move the board to error state.
     ModbusInverterControl* control = new ModbusInverterControl();
     control->setPssId(payload->pssId);

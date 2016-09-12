@@ -238,7 +238,7 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
         // if we are already at the requested activation state, ignore the dependencies and start the activation.
         if ((m_previousActivationState == E_ActivationState_Active) || m_lastDependencyResult)
         {
-            raiseError(0, E_PSSErrors_ActivationFailed, false);
+            raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
             clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
 
             setActivationState(E_ActivationState_Active, sn);
@@ -266,7 +266,7 @@ bool ActivationWithFeedbackControl::activateControl(int outputValue, uint32_t ti
         checkAllDependencies(E_ActivationState_Inactive, m_controlState, m_lastDependencyResult, depsIgnore);
         if ((m_previousActivationState == E_ActivationState_Inactive) || !m_lastDependencyResult)
         {
-            raiseError(0, E_PSSErrors_ActivationFailed, false);
+            raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
             clearDependencyCheckFailures(E_PSSErrors_ActivationFailed);
 
             setActivationState(E_ActivationState_Inactive, sn);
@@ -431,7 +431,7 @@ void ActivationWithFeedbackControl::timeoutExpired(uint16_t timeoutType)
             m_lastSn = 0;
         }
         setActivationState(m_previousActivationState, 0);
-        raiseError(0, E_PSSErrors_ActivationFailed, true);
+        raiseErrorSimple(0, E_PSSErrors_ActivationFailed, true);
         logFeedbackCheckFailures(m_activationState, E_PSSErrors_ActivationFailed);
         logDependencyCheckFailures(m_activationState, m_controlState, E_PSSErrors_ActivationFailed);
         break;
@@ -527,14 +527,14 @@ void ActivationWithFeedbackControl::logFeedbackCheckFailures(E_ActivationState a
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, false))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback cleared: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, true))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback failed: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
@@ -552,14 +552,14 @@ void ActivationWithFeedbackControl::logFeedbackCheckFailures(E_ActivationState a
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, true))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback failed: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, false))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback cleared: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
@@ -580,14 +580,14 @@ void ActivationWithFeedbackControl::logFeedbackCheckFailures(E_ActivationState a
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, false))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback cleared: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, true))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback failed: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
@@ -605,14 +605,14 @@ void ActivationWithFeedbackControl::logFeedbackCheckFailures(E_ActivationState a
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, true))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback failed: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, false))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "ActivationWithFeedbackControl operation {[PSSID:%d]} feedback cleared: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
@@ -695,10 +695,10 @@ void ActivationWithFeedbackControl::setActivationState(E_ActivationState activat
     {
     case E_ActivationState_Unknown:
         writeOutputs(E_ActivationState_Unknown);
-        raiseError(0, E_PSSErrors_ActivationFailed, false);
+        raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
         for (T_DeviceCheckerListIterator i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
         {
-            raiseError((*i).getPssId(), E_PSSErrors_ActivationFailed, false);
+            raiseErrorSimple((*i).getPssId(), E_PSSErrors_ActivationFailed, false);
             (*i).resetPreviousCheckResult();
         }
         break;
@@ -928,7 +928,7 @@ void ActivationWithFeedbackControl::clearFeedbackCheckFailures(E_PSSErrors error
     T_DeviceCheckerListIterator i;
     for (i = m_feedbackCheckers.begin(); i != m_feedbackCheckers.end(); ++i)
     {
-        raiseError((*i).getPssId(), error, false);
+        raiseErrorWithInfo((*i).getPssId(), error, false, 0, 0, 0);
     }
 }
 

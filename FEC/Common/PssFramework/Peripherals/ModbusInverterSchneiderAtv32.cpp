@@ -21,8 +21,37 @@
 #define M_INVERTER_AUTOTUNE_STATE 9609
 #define M_INVERTER_AUTOMATIC_AUTOTUNE 9615
 #define M_INVERTER_COM_SCAN_INPUT_ADDRESS 12741
+#define M_INVERTER_FAULT_ADDRESS 7121
 
 //#define M_OUTPUT_ENABLE_RETRIES 10
+struct T_FaultToString
+{
+    uint16_t code;
+    char* message;
+};
+
+static const T_FaultToString g_Atv32FaultToString[] =
+{
+        0, "[No fault] (nOF)", 1, "[Calibration error] (InF)", 2, "[Control Eeprom] (EEF1)", 3, "[Incorrect config.] (CFF)",
+        4, "[Invalid config.] (CFI)", 5, "[Modbus com.] (SLF1)", 6, "[int. com.link] (ILF)", 7, "[Com. network] (CnF)",
+        8, "[External flt-LI/Bit] (EPF1)", 9, "[Overcurrent] (OCF)", 10, "[Precharge] (CrF)", 11,
+        "[Speed fdback loss] (SPF)", 16, "[Drive overheat] (OHF)", 17, "[Motor overload] (OLF)", 18,
+        "[Overbraking] (ObF)", 19, "[Mains overvoltage] (OSF)", 20, "[1 output phase loss] (OPF1)", 21,
+        "[Input phase loss] (PHF)", 22, "[Undervoltage] (USF)", 23, "[Motor short circuit] (SCF1)", 24,
+        "[Overspeed] (SOF)", 25, "[Auto-tuning] (tnF)", 26, "[Rating error] (InF1)", 27, "[PWR Calib.] (InF2)", 28,
+        "[Int.serial link] (InF3)", 29, "[Int.Mfg area] (InF4)", 30, "[Power Eeprom] (EEF2)", 31,
+        "[Impedant sh. circuit] (SCF2)", 32, "[Ground short circuit] (SCF3)", 33, "[3out ph loss] (OPF2)", 34,
+        "[CAN com.] (COF)", 35, "[Brake control] (bLF)", 38, "[External fault com.] (EPF2)", 41,
+        "[Brake feedback] (brF)", 42, "[PC com.] (SLF2)", 43, "[Enc. coupl.] (ECF)", 44, "[Torque/current lim] (SSF)",
+        45, "[HMI com.] (SLF3)", 46, "[Power removal] (PrF)", 49, "[LI6=PTC probe] (PtFL)", 50, "[PTC fault] (OtFL)",
+        51, "[Internal- I measure] (InF9)", 52, "[Internal-mains circuit] (InFA)", 53, "[Internal- th. sensor] (InFb)",
+        54, "[IGBT overheat] (tJF)", 55, "[IGBT short circuit] (SCF4)", 56, "[Motor short circuit] (SCF5)", 57,
+        "[Torque time-out] (SrF)", 58, "[Out. contact. stuck] (FCF1)", 59, "[Out. contact. open.] (FCF2)", 61,
+        "[AI2 input] (AI2F)", 64, "[input contactor] (LCF)", 66, "[Diff. I fault] (dCF)", 67,
+        "[IGBT desaturation] (HdF)", 68, "[Internal-option] (InF6)", 69, "[internal- CPU] (InFE)", 71,
+        "[AI3 4-20mA loss] (LFF3)", 73, "[Cards pairing] (HCF)", 76, "[Load fault] (dLF)", 77, "[Bad conf] (CFI2)", 99,
+        "[Ch.sw. fault] (CSF)", 100, "[Pr.Underload.Flt] (ULF)", 101, "[Proc.Overload Flt] (OLC)", 105,
+        "[Angle error] (ASF)", 107, "[Safety fault] (SAFF)", 108, "[FB fault] (FbE)", 109, "[FB stop flt.] (FbES)", };
 
 struct T_Atv32StatusWordBits
 {
@@ -105,10 +134,7 @@ static const T_Atv32RegisterSetup Atv32RegisterSetup[] =
 ModbusInverterSchneiderAtv32::ModbusInverterSchneiderAtv32(uint8_t slaveId) :
         ModbusInverterPeripheralBase(slaveId)
 {
-//    setInverterType();
     setInverterType();
-    //setupInverter();
-    //resetInverter();
     m_minSpeed = (int16_t) 0x8000;
     m_maxSpeed = (int16_t) 0x8000;
     m_accelRate = (int16_t) 0x8000;
@@ -116,6 +142,10 @@ ModbusInverterSchneiderAtv32::ModbusInverterSchneiderAtv32(uint8_t slaveId) :
     m_nominalRpm = (int16_t) 0x8000;
     m_nominalCurrent = (int16_t) 0x8000;
     m_nominalFrequency = (int16_t) 0x8000;
+
+    m_lastFaultCode = 0;
+
+    m_driveStatus = ElementRepository::getInstance().addValidationElementU16();
 }
 
 ModbusInverterSchneiderAtv32::~ModbusInverterSchneiderAtv32()
@@ -176,6 +206,7 @@ void ModbusInverterSchneiderAtv32::readInputs()
 
     m_outputFrequency->setValue((float) (outFreq * m_frequencyMultiplier));
     m_outputCurrent->setValue((float) (outCurrent * m_currentMultiplier));
+    m_driveStatus->setValue(statusWord.word);
 
     if (m_outputEnable != NULL)
     {
@@ -206,6 +237,34 @@ void ModbusInverterSchneiderAtv32::readInputs()
             return;
         }
         m_setpointUpdated = false;
+    }
+
+    if (statusWord.bits.faultDetected == 1)
+    {
+        uint16_t faultCode;
+        error = readHoldingRegs(getSlaveId(), M_INVERTER_FAULT_ADDRESS, 1, (uint8_t*)&faultCode, buffLength);
+        if (error != E_ModbusError_Ok)
+        {
+            ++m_numOfFailedReads;
+            if (m_numOfFailedReads > M_NUMBER_OF_RETRIES)
+            {
+                // TODO: Set the control at an error.
+                m_outputCurrent->setValueValid(false);
+                m_outputFrequency->setValueValid(false);
+                m_outputFrequency->setValue(0);
+                m_outputCurrent->setValue(0);
+                setUpdateInterval(10000);
+            }
+            return;
+        }
+
+        faultCode = SWAP_16(faultCode);
+
+        if (faultCode != m_lastFaultCode)
+        {
+            M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Modbus Inverter Fault Code %d: %s", faultCode, g_Atv32FaultToString[faultCode]);
+            m_lastFaultCode = faultCode;
+        }
     }
 }
 

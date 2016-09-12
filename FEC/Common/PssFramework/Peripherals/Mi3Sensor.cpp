@@ -46,7 +46,7 @@
 #define NUM_OF_RX_BYTES               6
 
 //uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
-uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+//uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
 //uint8_t I2C_write(I2C_TypeDef* I2Cx, uint8_t data);
 //uint8_t I2C_read_ack(I2C_TypeDef* I2Cx);
 //uint8_t I2C_read_nack(I2C_TypeDef* I2Cx);
@@ -54,6 +54,7 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
 
 //extern xSemaphoreHandle i2cTransferCompleteSemaphore;
 
+#ifdef 0
 /*****************/
 /* global unions */
 /*****************/
@@ -182,7 +183,7 @@ uint8_t I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
     TimeOut = 0;
     return (I2C_restart(I2Cx, address, direction));
 #else
-	return 1;
+    return 1;
 #endif
 }
 
@@ -288,7 +289,7 @@ uint8_t I2C_read_ack(I2C_TypeDef* I2Cx)
     uint8_t data = I2C_ReceiveData(I2Cx);
     return data;
 #else
-	return 0;
+    return 0;
 #endif
 }
 
@@ -315,7 +316,7 @@ uint8_t I2C_read_nack(I2C_TypeDef* I2Cx)
     uint8_t data = I2C_ReceiveData(I2Cx);
     return data;
 #else
-	return 0;
+    return 0;
 #endif
 }
 
@@ -357,6 +358,8 @@ bool Rotated_Checksum_Calc(uint8_t* buffer)
     checksum = (buffer[4] + buffer[5] + buffer[0] + buffer[1] + buffer[2] + 5);
     return (checksum == buffer[3]);
 }
+
+#endif
 
 // todo: conside moving the pointer when reading the sensors, and not when initializing the sensor.
 // this is a question of performance vs storage
@@ -427,7 +430,7 @@ uint8_t Mi3Sensor::read(uint8_t reg, uint8_t* data)
     }
     reg2 = I2C_read_ack(m_i2cChannel);
     rxChecksum = I2C_read_nack(m_i2cChannel); // read one byte and don't request another byte, stop transmission
-    if (Checksum_Calc(data, reg2, rxChecksum))
+    if (Checksum_Calc_Compare(data, reg2, rxChecksum))
     {
         ErrorReg |= E_I2cErrors_ChecksumError;
     }

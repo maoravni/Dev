@@ -130,65 +130,6 @@ void ControlBase::setMonitoringEnabled(bool monitoringEnabled)
         sendNotification();
 }
 
-//void ControlBase::raiseError(E_PSSErrors error, bool errorState)
-//{
-//    uint32_t lastError = m_errorBits;
-//
-//    if (errorState)
-//    {
-//        m_errorBits |= error;
-//        if (m_errorBits != lastError)
-//            PscMasterServer::getInstance().sendError(Psc_ControllerId, getPssId(), m_errorBits);
-//        setControlExceptions(E_ExceptionState_Set, E_ExceptionState_Unchanged);
-//    }
-//    else
-//    {
-//        m_errorBits &= ~error;
-//        if (m_errorBits != lastError)
-//            PscMasterServer::getInstance().sendError(Psc_ControllerId, getPssId(), m_errorBits);
-//        if (m_errorBits == 0)
-//            setControlExceptions(E_ExceptionState_Reset, E_ExceptionState_Unchanged);
-//    }
-//}
-//
-//bool ControlBase::isErrorRaised(E_PSSErrors error)
-//{
-//    return ((m_errorBits & error) != 0);
-//}
-//
-//void ControlBase::raiseWarning(E_PSSWarnings warning, bool warningState)
-//{
-//    uint32_t lastWarning = m_warningBits;
-//
-//    if (warningState)
-//    {
-//        m_warningBits |= warning;
-//        if (m_warningBits != lastWarning)
-//            PscMasterServer::getInstance().sendWarning(Psc_ControllerId, getPssId(), m_warningBits);
-//        setControlExceptions(E_ExceptionState_Unchanged, E_ExceptionState_Set);
-//    }
-//    else
-//    {
-//        m_warningBits &= ~warning;
-//        if (m_warningBits != lastWarning)
-//            PscMasterServer::getInstance().sendWarning(Psc_ControllerId, getPssId(), m_warningBits);
-//        if (m_warningBits == 0)
-//            setControlExceptions(E_ExceptionState_Unchanged, E_ExceptionState_Reset);
-//    }
-//}
-
-//void ControlBase::sendCurrentErrors()
-//{
-//    // TODO: send all current errors from the protection checkers
-//    sendErrors()
-//}
-//
-//void ControlBase::sendCurrentWarnings()
-//{
-//    // TODO: send all current errors from the protection checkers
-//    PscMasterServer::getInstance().sendWarning(Psc_ControllerId, getPssId(), M_PSS_ID_ALL, m_warningBits);
-//}
-
 void ControlBase::setControlExceptions(E_ExceptionState errors, E_ExceptionState warnings)
 {
     switch (errors)
@@ -226,7 +167,8 @@ bool ControlBase::move2Error(uint32_t msgId, uint32_t sn)
     {
         if (m_lastSn != 0 && sn != 0)
         {
-            PscMasterServer::getInstance().sendSeqEnded(msgId, m_lastSn, Psc_ControllerId, getPssId(), E_SeqEndedStatus_Error);
+            PscMasterServer::getInstance().sendSeqEnded(msgId, m_lastSn, Psc_ControllerId, getPssId(),
+                    E_SeqEndedStatus_Error);
             m_lastSn = 0;
         }
 //        m_lastSn = sn;
@@ -259,7 +201,8 @@ void ControlBase::clearProtectionCheckErrors()
 
     for (i = m_protectionCheckers.begin(); i != m_protectionCheckers.end(); ++i)
     {
-        raiseError((*i)->getPssId(), (*i)->getErrorType(), false);
+        raiseErrorSimple((*i)->getPssId(), (*i)->getErrorType(), false);
+        raiseWarningSimple((*i)->getPssId(), (*i)->getWarningType(), false);
     }
 
     m_isProtectionActive = false;
@@ -314,16 +257,18 @@ bool ControlBase::executeProtectionCheck(/*E_PSSErrors error*/)
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_WARNING, "Device {[PSSID:%d]} exceeds warning limits",
                         (*i)->getProtectionElement()->getPssId());
                 m_isProtectionWarningActive = true;
-                m_errorBitManager.raiseWarning((*i)->getPssId(), (*i)->getWarningType(), true);
-                m_errorBitManager.raiseError((*i)->getPssId(), (*i)->getErrorType(), false);
+                m_errorBitManager.raiseWarningWithInfo((*i)->getPssId(), (*i)->getWarningType(), true,
+                        (*i)->getProtectionElement()->getValueType(), (*i)->getProtectionElement()->getValueP(), 0);
+                m_errorBitManager.raiseErrorWithInfo((*i)->getPssId(), (*i)->getErrorType(), false, 0, 0, 0);
             }
             if ((*i)->getProtectionState() >= E_DeviceProtectionState_SoftLimitExceeded)
             {
                 M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Device {[PSSID:%d]} exceeds limits",
                         (*i)->getProtectionElement()->getPssId());
                 m_isProtectionActive = true;
-                m_errorBitManager.raiseError((*i)->getPssId(), (*i)->getErrorType(), true);
-                m_errorBitManager.raiseWarning((*i)->getPssId(), (*i)->getWarningType(), false);
+                m_errorBitManager.raiseErrorWithInfo((*i)->getPssId(), (*i)->getErrorType(), true,
+                        (*i)->getProtectionElement()->getValueType(), (*i)->getProtectionElement()->getValueP(), 0);
+                m_errorBitManager.raiseWarningWithInfo((*i)->getPssId(), (*i)->getWarningType(), false, 0, 0, 0);
 //                return true;
             }
         }
@@ -338,8 +283,8 @@ bool ControlBase::executeProtectionCheck(/*E_PSSErrors error*/)
             currentInRange = ((*i)->getProtectionState() == E_DeviceProtectionState_InRange);
             if (currentInRange)
             {
-                m_errorBitManager.raiseError((*i)->getPssId(), (*i)->getErrorType(), false);
-                m_errorBitManager.raiseWarning((*i)->getPssId(), (*i)->getWarningType(), false);
+                m_errorBitManager.raiseErrorWithInfo((*i)->getPssId(), (*i)->getErrorType(), false, 0, 0, 0);
+                m_errorBitManager.raiseWarningWithInfo((*i)->getPssId(), (*i)->getWarningType(), false, 0, 0, 0);
             }
 //                (*i)->raiseError(/*m_secondaryPssId, */error, false, 0);
 //            if (currentInRange == false)
@@ -390,11 +335,33 @@ void ControlBase::endStopOnEmr()
 }
 
 // return true when the error bits have changed.
-bool ControlBase::raiseError(uint16_t secondaryPssId, E_PSSErrors error, bool errorState)
+bool ControlBase::raiseErrorSimple(uint16_t secondaryPssId, E_PSSErrors error, bool errorState)
 {
     uint32_t previousErrorBits, newErrorBits;
     previousErrorBits = m_errorBitManager.getErrors(secondaryPssId);
-    newErrorBits = m_errorBitManager.raiseError(secondaryPssId, error, errorState);
+    newErrorBits = m_errorBitManager.raiseErrorSimple(secondaryPssId, error, errorState);
+    if (previousErrorBits != newErrorBits)
+    {
+        if (newErrorBits == 0)
+        {
+            setControlExceptions(E_ExceptionState_Reset, E_ExceptionState_Unchanged);
+        }
+        else
+        {
+            setControlExceptions(E_ExceptionState_Set, E_ExceptionState_Unchanged);
+        }
+        return true;
+    }
+    return false;
+}
+
+bool ControlBase::raiseErrorWithInfo(uint16_t secondaryPssId, E_PSSErrors error, bool errorState, uint8_t dataType,
+        const void* dataValue, uint32_t additionalError)
+{
+    uint32_t previousErrorBits, newErrorBits;
+    previousErrorBits = m_errorBitManager.getErrors(secondaryPssId);
+    newErrorBits = m_errorBitManager.raiseErrorWithInfo(secondaryPssId, error, errorState, dataType, dataValue,
+            additionalError);
     if (previousErrorBits != newErrorBits)
     {
         if (newErrorBits == 0)
@@ -411,11 +378,33 @@ bool ControlBase::raiseError(uint16_t secondaryPssId, E_PSSErrors error, bool er
 }
 
 // return true when the error bits have changed.
-bool ControlBase::raiseWarning(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState)
+bool ControlBase::raiseWarningSimple(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState)
 {
     uint32_t previousWarningBits, newWarningBits;
     previousWarningBits = m_errorBitManager.getWarnings(secondaryPssId);
-    newWarningBits = m_errorBitManager.raiseWarning(secondaryPssId, warning, warningState);
+    newWarningBits = m_errorBitManager.raiseWarningSimple(secondaryPssId, warning, warningState);
+    if (previousWarningBits != newWarningBits)
+    {
+        if (newWarningBits == 0)
+        {
+            setControlExceptions(E_ExceptionState_Unchanged, E_ExceptionState_Reset);
+        }
+        else
+        {
+            setControlExceptions(E_ExceptionState_Unchanged, E_ExceptionState_Set);
+        }
+        return true;
+    }
+    return false;
+}
+
+bool ControlBase::raiseWarningWithInfo(uint16_t secondaryPssId, E_PSSWarnings warning, bool warningState,
+        uint8_t dataType, const void* dataValue, uint32_t additionalError)
+{
+    uint32_t previousWarningBits, newWarningBits;
+    previousWarningBits = m_errorBitManager.getWarnings(secondaryPssId);
+    newWarningBits = m_errorBitManager.raiseWarningWithInfo(secondaryPssId, warning, warningState, dataType, dataValue,
+            additionalError);
     if (previousWarningBits != newWarningBits)
     {
         if (newWarningBits == 0)
@@ -578,14 +567,14 @@ void ControlBase::logDependencyCheckFailures(E_ActivationState activationState, 
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, false))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, true))
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
                             M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
                                     "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
                                     getPssId(), (*i).getElement()->getPssId());
@@ -603,17 +592,17 @@ void ControlBase::logDependencyCheckFailures(E_ActivationState activationState, 
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, true))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, false))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
 //                    (*i).m_previousCheckResult = temp;
                     }
                 }
@@ -631,17 +620,17 @@ void ControlBase::logDependencyCheckFailures(E_ActivationState activationState, 
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, false))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, true))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
 //                    (*i).m_previousCheckResult = temp;
                     }
                 }
@@ -656,17 +645,17 @@ void ControlBase::logDependencyCheckFailures(E_ActivationState activationState, 
                 {
                     if (temp)
                     {
-                        if (raiseError((*i).getPssId(), error, true))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, true, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency failed: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
                     }
                     else
                     {
-                        if (raiseError((*i).getPssId(), error, false))
-                        M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
-                                "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}", getPssId(),
-                                (*i).getElement()->getPssId());
+                        if (raiseErrorWithInfo((*i).getPssId(), error, false, (*i).getElement()->getValueType(), (*i).getElement()->getValueP(), 0))
+                            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG,
+                                    "Activation operation {[PSSID:%d]} dependency cleared: Device {[PSSID:%d]}",
+                                    getPssId(), (*i).getElement()->getPssId());
 //                    (*i).m_previousCheckResult = temp;
                     }
                 }
@@ -680,7 +669,7 @@ void ControlBase::clearDependencyCheckFailures(E_PSSErrors error)
     T_DeviceCheckerListIterator i;
     for (i = m_dependentCheckers.begin(); i != m_dependentCheckers.end(); ++i)
     {
-        raiseError((*i).getPssId(), error, false);
+        raiseErrorWithInfo((*i).getPssId(), error, false, 0, 0, 0);
         // TODO: Check if the resetPreviousCheckResult call is required.
         (*i).resetPreviousCheckResult();
     }

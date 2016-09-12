@@ -13,6 +13,8 @@
 class ModbusInverterSchneiderAtv32: public ModbusInverterPeripheralBase
 {
 private:
+    ElementBase* m_driveStatus;
+
     int16_t m_maxSpeed;
     int16_t m_minSpeed;
     int16_t m_accelRate;
@@ -20,6 +22,8 @@ private:
     int16_t m_nominalFrequency;
     int16_t m_nominalCurrent;
     int16_t m_nominalRpm;
+
+    uint16_t m_lastFaultCode;
 
 public:
     ModbusInverterSchneiderAtv32(uint8_t slaveId);

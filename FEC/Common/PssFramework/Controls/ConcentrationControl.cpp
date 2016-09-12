@@ -39,7 +39,7 @@ void ConcentrationControl::updateNotification(ElementBase* element)
 {
     if (element == m_concentration || element == m_tankLevel)
     {
-        raiseError(element->getPssId(), E_PSSErrors_SensorMalfunction, !element->isValid());
+        raiseErrorSimple(element->getPssId(), E_PSSErrors_SensorMalfunction, !element->isValid());
         if (!element->isValid())
             move2Error(MSG_ActivateConcentrationControlMsg, m_lastSn);
     }
@@ -94,21 +94,21 @@ void ConcentrationControl::executeLimitsCheck(ValidationElementFloat* checkingEl
     {
         if (getControlExceptions() != 0)
         {
-            raiseError(pssId, E_PSSErrors_ControlExceedsLimits, false);
-            raiseWarning(pssId, E_PSSWarnings_ControlExceedsLimits, false);
+            raiseErrorSimple(pssId, E_PSSErrors_ControlExceedsLimits, false);
+            raiseWarningSimple(pssId, E_PSSWarnings_ControlExceedsLimits, false);
         }
     }
     else
     {
         if (checkingElement->isInWarningRange(inputValue))
         {
-            raiseError(pssId, E_PSSErrors_ControlExceedsLimits, false);
-            raiseWarning(pssId, E_PSSWarnings_ControlExceedsLimits, true);
+            raiseErrorSimple(pssId, E_PSSErrors_ControlExceedsLimits, false);
+            raiseWarningWithInfo(pssId, E_PSSWarnings_ControlExceedsLimits, true, checkingElement->getValueType(), checkingElement->getValueP(), 0);
         }
         else
         {
-            raiseError(pssId, E_PSSErrors_ControlExceedsLimits, true);
-            raiseWarning(pssId, E_PSSWarnings_ControlExceedsLimits, false);
+            raiseErrorWithInfo(pssId, E_PSSErrors_ControlExceedsLimits, true, checkingElement->getValueType(), checkingElement->getValueP(), 0);
+            raiseWarningSimple(pssId, E_PSSWarnings_ControlExceedsLimits, false);
         }
     }
 }
@@ -216,10 +216,10 @@ void ConcentrationControl::resetControl()
     m_conditionerValve->setValue(0);
     m_waterValve->setValue(0);
 
-    raiseError(m_concentration->getPssId(), E_PSSErrors_ControlExceedsLimits, false);
-    raiseError(m_tankLevel->getPssId(), E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(m_concentration->getPssId(), E_PSSWarnings_ControlExceedsLimits, false);
-    raiseWarning(m_tankLevel->getPssId(), E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(m_concentration->getPssId(), E_PSSErrors_ControlExceedsLimits, false);
+    raiseErrorSimple(m_tankLevel->getPssId(), E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(m_concentration->getPssId(), E_PSSWarnings_ControlExceedsLimits, false);
+    raiseWarningSimple(m_tankLevel->getPssId(), E_PSSWarnings_ControlExceedsLimits, false);
 }
 
 bool ConcentrationControl::onInitControl()

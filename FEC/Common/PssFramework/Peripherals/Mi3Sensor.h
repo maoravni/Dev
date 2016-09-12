@@ -185,10 +185,6 @@ private:
 #define M_I2C_IR_SENSOR_BAUD_RATE 10000
 #define M_I2C_EEPROM_BAUD_RATE 200000
 
-void I2C1_init(uint32_t baudrate);
-void I2C2_init(uint32_t baudrate);
-//void I2C1_DMA_IRQ_init();
-
 typedef std::vector<Mi3Sensor*> T_SensorList;
 typedef std::vector<Mi3Sensor*>::iterator T_SensorListIterator;
 

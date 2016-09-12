@@ -91,7 +91,7 @@ void PidControl::updateNotification(ElementBase* element)
 {
     if (element == m_output)
     {
-        raiseError(element->getPssId(), E_PSSErrors_SensorMalfunction, !m_output->isValid());
+        raiseErrorSimple(element->getPssId(), E_PSSErrors_SensorMalfunction, !m_output->isValid());
         if (!m_output->isValid())
             move2Error(MSG_ActivatePIDControl, m_lastSn);
         return;
@@ -238,21 +238,21 @@ void PidControl::execute()
             {
                 if (getControlExceptions() != 0)
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
             else
             {
                 if (m_setpoint->isInWarningRange(inputValue))
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+                    raiseWarningWithInfo(0, E_PSSWarnings_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
                 }
                 else
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+                    raiseErrorWithInfo(0, E_PSSErrors_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
         }
@@ -320,8 +320,8 @@ bool PidControl::setSetpoint(float sp, float loRange, float hiRange, float loWar
     m_feedForward = feedForward;
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     if (delay == 0)
     {
@@ -411,8 +411,8 @@ bool PidControl::onMove2Standby(uint32_t delay)
     m_pidCalc.Initialize();
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     endMove2Standby();
 //    m_input->updateObservers();
@@ -448,8 +448,8 @@ bool PidControl::onReset2On()
     cancelAutoTune();
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     endReset2On();
 //    m_input->updateObservers();
@@ -461,8 +461,8 @@ bool PidControl::onInitControl()
 //    m_input->updateObservers();
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     endInitControl();
     return true;
@@ -491,8 +491,8 @@ bool PidControl::onStopOnEmr()
     m_pidCalc.Initialize();
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     endStopOnEmr();
 //    m_input->updateObservers();
@@ -502,8 +502,8 @@ bool PidControl::onStopOnEmr()
 bool PidControl::onRecoverFromEmr()
 {
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     endRecoverFromEmr();
     return true;

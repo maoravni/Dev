@@ -76,9 +76,9 @@ void LiftPbOnErrorCcsGen3::updateNotification(ElementBase* element)
         M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Print bars lifted");
     }
     if (m_pbOk->getPssId() != 0)
-        raiseError(m_pbOk->getPssId(), E_PSSErrors_PrintBarLifted, !pbOk);
+        raiseErrorSimple(m_pbOk->getPssId(), E_PSSErrors_PrintBarLifted, !pbOk);
     else
-        raiseError(M_PSS_ID_ALL, E_PSSErrors_PrintBarLifted, !pbOk);
+        raiseErrorSimple(M_PSS_ID_ALL, E_PSSErrors_PrintBarLifted, !pbOk);
     if (m_pbOk->getValueU32() != (uint32_t)pbOk)
         m_pbOk->setValue(pbOk);
 }

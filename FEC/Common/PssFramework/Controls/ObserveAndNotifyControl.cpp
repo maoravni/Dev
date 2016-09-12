@@ -87,8 +87,8 @@ bool ObserveAndNotifyControl::setSetpoint(float sp, float loRange, float hiRange
     m_setpoint->setValue(sp);
 
     // lower the warnings/errors, in case they were raised previously.
-    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 
     sendNotification();
 
@@ -125,20 +125,21 @@ void ObserveAndNotifyControl::execute()
             {
                 if (getControlExceptions() != 0)
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, false);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
             else
             {
                 if (m_setpoint->isInWarningRange(inputValue))
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, false);
-                    raiseWarning(0, E_PSSWarnings_ControlExceedsLimits, true);
+                    raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+                    raiseWarningWithInfo(0, E_PSSWarnings_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
                 }
                 else
                 {
-                    raiseError(0, E_PSSErrors_ControlExceedsLimits, true);
+                    raiseErrorWithInfo(0, E_PSSErrors_ControlExceedsLimits, true, m_input->getValueType(), m_input->getValueP(), 0);
+                    raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
                 }
             }
         }

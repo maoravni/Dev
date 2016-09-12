@@ -415,7 +415,60 @@ void PscMasterServer::sendError(uint16_t boardId, uint16_t pssId, uint16_t secon
     sendMessage(reply);
 }
 
+void PscMasterServer::sendErrorWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t errors, uint32_t additionalError, char dataType, void* dataValue)
+{
+    PscMessageStruct reply;
+    PSSErrorNotificationWithInfoMsg &payload = reply.payload.pSSErrorNotificationWithInfoMsg;
+
+    //TODO: Check if the board address should be hard-coded.
+    reply.header.id.split.src = 0x5;
+    reply.header.id.split.dst = 0x1;
+    reply.header.id.split.id = MSG_ErrorNotificationWithInfo;
+    reply.header.length = sizeof(reply.header) + sizeof(payload);
+    payload.cableId = boardId;
+    payload.pssId = pssId;
+    payload.secondaryPssId = secondaryPssId;
+    payload.errors = errors;
+    payload.additionalError = additionalError;
+    payload.dataType = dataType;
+    payload.dataValue = *(uint32_t*)dataValue;
+
+    int logLevel = M_LOGGER_LEVEL_ERROR;
+    if (errors == 0)
+        logLevel = M_LOGGER_LEVEL_DEBUG;
+
+    M_LOGGER_LOGF(logLevel, "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+            pssId, secondaryPssId, errors);
+
+    sendMessage(reply);
+}
+
 void PscMasterServer::sendWarning(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings)
+{
+    PscMessageStruct reply;
+    PSSWarningNotificationWithSecondaryMsg &payload = reply.payload.pSSWarningNotificationWithSecondaryMsg;
+
+    //TODO: Check if the board address should be hard-coded.
+    reply.header.id.split.src = 0x5;
+    reply.header.id.split.dst = 0x1;
+    reply.header.id.split.id = MSG_WarningNotificationWithSecondary;
+    reply.header.length = sizeof(reply.header) + sizeof(payload);
+    payload.cableId = boardId;
+    payload.pssId = pssId;
+    payload.secondaryPssId = secondaryPssId;
+    payload.warnings = warnings;
+
+    int logLevel = M_LOGGER_LEVEL_WARNING;
+    if (warnings == 0)
+        logLevel = M_LOGGER_LEVEL_DEBUG;
+
+    M_LOGGER_LOGF(logLevel, "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x",
+            boardId, pssId, secondaryPssId, warnings);
+
+    sendMessage(reply);
+}
+
+void PscMasterServer::sendWarningWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings, uint32_t additionalWarnings, char dataType, void* dataValue)
 {
     PscMessageStruct reply;
     PSSWarningNotificationWithSecondaryMsg &payload = reply.payload.pSSWarningNotificationWithSecondaryMsg;

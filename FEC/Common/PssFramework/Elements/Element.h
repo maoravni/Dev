@@ -32,6 +32,10 @@ public:
         return m_value;
     }
 
+    virtual const void* getValueP() const
+    {
+        return &m_value;
+    }
 
 //    virtual _type& operator=(const _type& rhs);
     virtual _type& operator()();
@@ -39,7 +43,7 @@ public:
 #ifdef __GNUC__
     virtual void setValue(const int value);
 #endif
-    virtual void setValue(const uint8_t value);
+//    virtual void setValue(const uint8_t value);
     virtual void setValue(const uint32_t value);
     virtual void setValue(const int32_t value);
     virtual void setValue(const float value);
@@ -135,12 +139,12 @@ inline _type& Element<_type>::operator()()
 }
 
 typedef Element<float> ElementFloat;
-typedef Element<uint8_t> ElementU8;
-typedef Element<uint16_t> ElementU16;
-typedef Element<uint32_t> ElementU32;
-typedef Element<int8_t> ElementI8;
-typedef Element<int16_t> ElementI16;
-typedef Element<int32_t> ElementI32;
+typedef Element<std::uint8_t> ElementU8;
+typedef Element<std::uint16_t> ElementU16;
+typedef Element<std::uint32_t> ElementU32;
+typedef Element<std::int8_t> ElementI8;
+typedef Element<std::int16_t> ElementI16;
+typedef Element<std::int32_t> ElementI32;
 
 #ifdef __GNUC__
 template<class _type>
@@ -150,11 +154,11 @@ inline void Element<_type>::setValue(const int value)
 }
 #endif
 
-template<class _type>
-inline void Element<_type>::setValue(const uint8_t value)
-{
-    _setValue((_type)value);
-}
+//template<class _type>
+//inline void Element<_type>::setValue(const uint8_t value)
+//{
+//    _setValue((_type)value);
+//}
 
 template<class _type>
 inline void Element<_type>::setValue(const uint32_t value)

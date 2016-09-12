@@ -128,7 +128,8 @@ public:
      * @param pssId
      * @param status
      */
-    void sendSeqEnded(unsigned long messageId, unsigned long sn, uint16_t boardId, uint16_t pssId, E_SeqEndedStatus status);
+    void sendSeqEnded(unsigned long messageId, unsigned long sn, uint16_t boardId, uint16_t pssId,
+            E_SeqEndedStatus status);
 
     /**
      * Send ACK Command to the OPC.
@@ -142,7 +143,9 @@ public:
     void sendAck(unsigned long messageId, unsigned long sn, uint16_t boardId, uint16_t pssId, E_AckStatus status);
 
     void sendError(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t errors);
+    void sendErrorWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t errors, uint32_t additionalErrors, char dataType, void* dataValue);
     void sendWarning(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings);
+    void sendWarningWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings, uint32_t additionalWarnings, char dataType, void* dataValue);
 
 };
 
