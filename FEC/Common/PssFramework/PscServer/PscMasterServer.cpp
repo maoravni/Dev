@@ -200,7 +200,8 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
 
     uint16_t cableId;
 
-    while ((cableId = Psc_GetCableId()) == 0xffff);
+    while ((cableId = Psc_GetCableId()) == 0xffff)
+        ;
 
     uint16_t port = M_DEFAULT_TMC_SERVER_PORT + cableId;
     m_pTcpConnector = new CTcpConnectorSocket(port);
@@ -208,7 +209,8 @@ portBASE_TYPE PscMasterServer::onCreate(const portCHAR * const pcName, unsigned 
     reset();
 
     // create the TCP connector
-    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, M_TASK_PRIORITY_TCP_CONNECTOR_LOW_PRIORITY, M_TASK_PRIORITY_TCP_CONNECTOR_HIGH_PRIORITY)) != pdPASS)
+    if ((res = m_pTcpConnector->create("PscTcp", usStackDepth, M_TASK_PRIORITY_TCP_CONNECTOR_LOW_PRIORITY,
+    M_TASK_PRIORITY_TCP_CONNECTOR_HIGH_PRIORITY)) != pdPASS)
         return res;
 
     CLogger::getInstance().enableOutputUdp(true);
@@ -356,8 +358,8 @@ void PscMasterServer::sendSeqEnded(unsigned long messageId, unsigned long sn, ui
     if (status != E_AckStatus_Success)
         logLevel = M_LOGGER_LEVEL_WARNING;
 
-    M_LOGGER_LOGF(logLevel, "Sequence Ended ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
-            messageId, boardId, pssId, status, sn);
+    M_LOGGER_LOGF(logLevel, "Sequence Ended ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d", messageId,
+            boardId, pssId, status, sn);
     sendMessage(reply);
 }
 
@@ -384,8 +386,8 @@ void PscMasterServer::sendAck(unsigned long messageId, unsigned long sn, uint16_
     if (status != E_AckStatus_Success)
         logLevel = M_LOGGER_LEVEL_ERROR;
 
-    M_LOGGER_LOGF(logLevel, "Ack Message ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d",
-            messageId, boardId, pssId, status, sn);
+    M_LOGGER_LOGF(logLevel, "Ack Message ID 0x%x, controller=%d, zone={[PSSID:%d]}, status=%d sn=%d", messageId,
+            boardId, pssId, status, sn);
 
     sendMessage(reply);
 }
@@ -409,13 +411,15 @@ void PscMasterServer::sendError(uint16_t boardId, uint16_t pssId, uint16_t secon
     if (errors == 0)
         logLevel = M_LOGGER_LEVEL_DEBUG;
 
-    M_LOGGER_LOGF(logLevel, "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+    M_LOGGER_LOGF(logLevel,
+            "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
             pssId, secondaryPssId, errors);
 
     sendMessage(reply);
 }
 
-void PscMasterServer::sendErrorWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t errors, uint32_t additionalError, char dataType, void* dataValue)
+void PscMasterServer::sendErrorWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t errors,
+        uint32_t additionalError, char dataType, const void* dataValue)
 {
     PscMessageStruct reply;
     PSSErrorNotificationWithInfoMsg &payload = reply.payload.pSSErrorNotificationWithInfoMsg;
@@ -431,13 +435,16 @@ void PscMasterServer::sendErrorWithInfo(uint16_t boardId, uint16_t pssId, uint16
     payload.errors = errors;
     payload.additionalError = additionalError;
     payload.dataType = dataType;
-    payload.dataValue = *(uint32_t*)dataValue;
+    payload.dataValue = *(uint32_t*) dataValue;
+    if (dataType == 0)
+        payload.dataValue = 0;
 
     int logLevel = M_LOGGER_LEVEL_ERROR;
     if (errors == 0)
         logLevel = M_LOGGER_LEVEL_DEBUG;
 
-    M_LOGGER_LOGF(logLevel, "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+    M_LOGGER_LOGF(logLevel,
+            "Error notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
             pssId, secondaryPssId, errors);
 
     sendMessage(reply);
@@ -462,13 +469,15 @@ void PscMasterServer::sendWarning(uint16_t boardId, uint16_t pssId, uint16_t sec
     if (warnings == 0)
         logLevel = M_LOGGER_LEVEL_DEBUG;
 
-    M_LOGGER_LOGF(logLevel, "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x",
-            boardId, pssId, secondaryPssId, warnings);
+    M_LOGGER_LOGF(logLevel,
+            "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+            pssId, secondaryPssId, warnings);
 
     sendMessage(reply);
 }
 
-void PscMasterServer::sendWarningWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings, uint32_t additionalWarnings, char dataType, void* dataValue)
+void PscMasterServer::sendWarningWithInfo(uint16_t boardId, uint16_t pssId, uint16_t secondaryPssId, uint32_t warnings,
+        uint32_t additionalWarnings, char dataType, const void* dataValue)
 {
     PscMessageStruct reply;
     PSSWarningNotificationWithSecondaryMsg &payload = reply.payload.pSSWarningNotificationWithSecondaryMsg;
@@ -487,8 +496,9 @@ void PscMasterServer::sendWarningWithInfo(uint16_t boardId, uint16_t pssId, uint
     if (warnings == 0)
         logLevel = M_LOGGER_LEVEL_DEBUG;
 
-    M_LOGGER_LOGF(logLevel, "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x",
-            boardId, pssId, secondaryPssId, warnings);
+    M_LOGGER_LOGF(logLevel,
+            "Warning notification sent: controller=%d, pssId={[PSSID:%d]}, secondary={[PSSID:%d]}, error=%x", boardId,
+            pssId, secondaryPssId, warnings);
 
     sendMessage(reply);
 }

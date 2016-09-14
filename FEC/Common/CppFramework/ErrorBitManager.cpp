@@ -35,10 +35,18 @@ uint32_t ErrorBitManager::raiseErrorWithInfo(uint16_t secondaryPssId, E_PSSError
         bitContainer->m_errorBits |= error;
         if (bitContainer->m_errorBits != lastError)
         {
-            M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSID {[PSSID:%d]} issued error %x caused by PSSID {[PSSID:%d]}",
-                    getPssId(), error, secondaryPssId);
-            PscMasterServer::getInstance().sendError(Psc_ControllerId, getPssId(), secondaryPssId,
-                    bitContainer->m_errorBits);
+            if (dataType == E_ValueType_Float)
+            {
+                M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSID {[PSSID:%d]} issued error %x caused by PSSID {[PSSID:%d]}, add=%x, value=%f",
+                        getPssId(), error, secondaryPssId, additionalError, *(float*)dataValue);
+            }
+            else
+            {
+                M_LOGGER_LOGF(M_LOGGER_LEVEL_DEBUG, "PSSID {[PSSID:%d]} issued error %x caused by PSSID {[PSSID:%d]}, add=%x, value=%x",
+                        getPssId(), error, secondaryPssId, additionalError, *(uint32_t*)dataValue);
+            }
+            PscMasterServer::getInstance().sendErrorWithInfo(Psc_ControllerId, getPssId(), secondaryPssId,
+                    bitContainer->m_errorBits, additionalError, dataType, dataValue);
         }
     }
     else

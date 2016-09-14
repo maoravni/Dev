@@ -20,7 +20,8 @@ protected:
     ElementBase* m_setpoint;
     ElementBase* m_outputCurrent;
     ElementBase* m_outputFrequency;
-    ElementBase* m_driveStatus;
+    //ElementBase* m_driveStatus;
+    ModbusInverterPeripheralBase* m_inverterPeripheral;
 //    T_ElementVector m_protectionElements;
 
     bool m_stopping;

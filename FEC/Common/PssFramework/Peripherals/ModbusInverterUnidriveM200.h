@@ -50,6 +50,11 @@ public:
     virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
 
+    virtual uint16_t getLastFaultCode() const
+    {
+        return 0;
+    }
+
 private:
     virtual void sendInverterMinSpeed();
     virtual void sendInverterMaxSpeed();

@@ -24,7 +24,7 @@ ModbusInverterControl::ModbusInverterControl()
 	m_outputCurrent = NULL;
 	m_outputFrequency = NULL;
 	m_setpoint = NULL;
-	m_driveStatus = NULL;
+	m_inverterPeripheral = NULL;
 	m_stopping = false;
 	m_requestedSetpoint = ElementRepository::getInstance().addValidationElementFloat();
 	m_lastSn = 0;
@@ -48,6 +48,7 @@ void ModbusInverterControl::startRecovery()
 {
 	raiseErrorSimple(0, E_PSSErrors_ActivationFailed, false);
 	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_InverterFault, false);
 	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 }
 
@@ -146,7 +147,8 @@ void ModbusInverterControl::setOutputFrequencyElement(ElementBase* element)
 
     if (periph != NULL && periph->getPeripheralType() == E_PeripheralType_Inverter && m_enableOutput != NULL)
     {
-        dynamic_cast<ModbusInverterPeripheralBase*>(periph)->setOutputEnableElement(m_enableOutput);
+        m_inverterPeripheral = dynamic_cast<ModbusInverterPeripheralBase*>(periph);
+        m_inverterPeripheral->setOutputEnableElement(m_enableOutput);
     }
 }
 
@@ -241,6 +243,11 @@ void ModbusInverterControl::updateNotification(ElementBase* element)
 		//        sendNotification();
 		move2Error(MSG_ActivateInverterControl, m_lastSn);
 	}
+	else if (m_outputFrequency->hasError() || m_outputCurrent->hasError())
+	{
+	    raiseErrorWithInfo(0, E_PSSErrors_InverterFault, true, 0, 0, m_inverterPeripheral->getLastFaultCode());
+	    move2Error(MSG_ActivateInverterControl, m_lastSn);
+	}
 	else
 	{
 		if (m_controlState == E_ControlState_Error)
@@ -264,9 +271,9 @@ void ModbusInverterControl::updateNotification(ElementBase* element)
 	        setSetpointActivationDelay(m_setpoint->getValueF(), 0);
 	    }
 	}
-	else if (element == m_driveStatus)
-	{
-	}
+//	else if (element == m_driveStatus)
+//	{
+//	}
 	else
 	{
 		// if it's not the input and not the setpoint, then it must be the protection.
@@ -359,6 +366,7 @@ bool ModbusInverterControl::onReset2On()
 		m_requestedSetpoint->setValue(0);
 	}
 	raiseErrorSimple(0, E_PSSErrors_ControlExceedsLimits, false);
+    raiseErrorSimple(0, E_PSSErrors_InverterFault, false);
 	raiseWarningSimple(0, E_PSSWarnings_ControlExceedsLimits, false);
 	m_stopping = true;
 	endReset2On();

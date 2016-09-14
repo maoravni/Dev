@@ -912,7 +912,7 @@ void Serializer<ModbusInverterControl>::serialize(F_FILE* f, ModbusInverterContr
     M_FWRITE_ELEMENT_REFERENCE(c.m_setpoint, f);
     M_FWRITE_ELEMENT_REFERENCE(c.m_outputCurrent, f);
     M_FWRITE_ELEMENT_REFERENCE(c.m_outputFrequency, f);
-    M_FWRITE_ELEMENT_REFERENCE(c.m_driveStatus, f);
+    //M_FWRITE_ELEMENT_REFERENCE(c.m_inverterPeripheral, f);
 
     updateRecordSize(f);
 }
@@ -931,7 +931,7 @@ void Serializer<ModbusInverterControl>::deserialize(F_FILE* f, ModbusInverterCon
     M_FREAD_AND_REFERENCE_ELEMENT(c.m_setpoint, f);
     M_FREAD_AND_REFERENCE_ELEMENT(c.m_outputCurrent, f);
     M_FREAD_AND_REFERENCE_ELEMENT(c.m_outputFrequency, f);
-    M_FREAD_AND_REFERENCE_ELEMENT(c.m_driveStatus, f);
+    //M_FREAD_AND_REFERENCE_ELEMENT(c.m_driveStatus, f);
 
 }
 

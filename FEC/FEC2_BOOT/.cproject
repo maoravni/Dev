@@ -65,6 +65,7 @@
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.959174902" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/STM32F4x7_ETH_LwIP/Utilities/Third_Party/lwip_v1.3.2/src/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/PssFramework}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Libraries/tm_stm32fall}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/3rdParty/FreeRTOS_EC/Source}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/ConfigFiles}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/SW/CMSIS}&quot;"/>
@@ -264,6 +265,9 @@
 								<option id="iar.arm.toolchain.compiler.option.generateLineDirectives.v6.2.0.1637340500" name="Generate #line directives" superClass="iar.arm.toolchain.compiler.option.generateLineDirectives.v6.2.0" value="true" valueType="boolean"/>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1013559241" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32F4XX"/>
+									<listOptionValue builtIn="false" value="GLCD_INIT_NHD_C12832A1Z_FSW_FBW_3V3"/>
+									<listOptionValue builtIn="false" value="GLCD_CONTROLLER_ST7565R"/>
+									<listOptionValue builtIn="false" value="GLCD_DEVICE_STM32F4XX"/>
 									<listOptionValue builtIn="false" value="FEC2_BOARD"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>

@@ -97,6 +97,7 @@ public:
     virtual void setupInverter() = 0;
     virtual void setInverterType() = 0;
     virtual void resetInverter() = 0;
+    virtual uint16_t getLastFaultCode() const = 0;
 
     template <class T> friend class Serializer;
 

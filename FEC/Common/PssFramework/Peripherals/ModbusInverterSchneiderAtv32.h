@@ -46,6 +46,12 @@ public:
 
     virtual void serialize(F_FILE* f);
     virtual int deserialize(F_FILE* f);
+
+    virtual uint16_t getLastFaultCode() const
+    {
+        return m_lastFaultCode;
+    }
+
 private:
     void storeConfiguration();
     void performInverterAutotune();
