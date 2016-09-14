@@ -64,6 +64,7 @@
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.918646978" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.959174902" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/STM32F4x7_ETH_LwIP/Utilities/Third_Party/lwip_v1.3.2/src/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/glcd}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/PssFramework}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Libraries/tm_stm32fall}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/3rdParty/FreeRTOS_EC/Source}&quot;"/>
@@ -238,6 +239,7 @@
 								<option id="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0.1813385530" name="Disable instruction scheduling" superClass="iar.arm.toolchain.compiler.option.optScheduling.v5.4.0"/>
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.1490043024" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.1007052363" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Libraries/glcd}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/STM32F4x7_ETH_LwIP/Utilities/Third_Party/lwip_v1.3.2/src/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/Libraries/tm_stm32fall}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Common/PssFramework}&quot;"/>
@@ -275,6 +277,7 @@
 									<listOptionValue builtIn="false" value="USE_USB_OTG_FS"/>
 									<listOptionValue builtIn="false" value="USE_EMBEDDED_PHY"/>
 								</option>
+								<option id="iar.arm.toolchain.compiler.option.additionalUserOptions.2041311602" name="Use command line options" superClass="iar.arm.toolchain.compiler.option.additionalUserOptions" value="--silent" valueType="string"/>
 								<inputType id="iar.arm.toolchain.compiler.inputType.v5.4.1.1099611248" name="IAR C/C++ Compiler Input Type"/>
 								<inputType id="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0.426146573" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.cpp.v6.12.0"/>
 								<inputType id="iar.arm.toolchain.compiler.inputType.c.v6.12.0.1295175244" name="IAR C/C++ Compiler Input Type" superClass="iar.arm.toolchain.compiler.inputType.c.v6.12.0"/>
