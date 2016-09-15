@@ -635,6 +635,7 @@
 								<option id="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0.1067056076" name="Processor mode:" superClass="iar.arm.toolchain.compiler.option.cpuMode.v5.4.0" value="iar.arm.toolchain.compiler.option.cpuMode.thumb.v5.4.0" valueType="enumerated"/>
 								<option id="iar.arm.toolchain.compiler.option.incPaths.v5.4.0.800438627" name="Additional include directories" superClass="iar.arm.toolchain.compiler.option.incPaths.v5.4.0" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/CMSIS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/glcd}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/tm_stm32fall}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/FreeRTOS-Plus-FAT-SL}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Common/Libraries/uffs/src/platform/STM32F2}&quot;"/>
@@ -676,6 +677,9 @@
 								</option>
 								<option id="iar.arm.toolchain.compiler.option.defines.v5.4.0.1228584014" name="Defined Symbols:" superClass="iar.arm.toolchain.compiler.option.defines.v5.4.0" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
+									<listOptionValue builtIn="false" value="GLCD_INIT_NHD_C12832A1Z_FSW_FBW_3V3"/>
+									<listOptionValue builtIn="false" value="GLCD_CONTROLLER_ST7565R"/>
+									<listOptionValue builtIn="false" value="GLCD_DEVICE_STM32F4XX"/>
 									<listOptionValue builtIn="false" value="NO_PERSISTENCY"/>
 									<listOptionValue builtIn="false" value="DRYER_DEBUG"/>
 									<listOptionValue builtIn="false" value="STM32F427_437xx"/>

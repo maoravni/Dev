@@ -152,46 +152,49 @@ void Mi3I2CIrPeripheral::run()
     {
         semResult = m_updateCycleFinishedSem.take(1000);
 
-        if (m_boardInReady && semResult == pdPASS)
+        if (semResult == pdPASS)
         {
-            if (m_performReset)
+            if (m_boardInReady)
             {
-                m_performReset = false;
-                // todo: check if we need to re-initialize the i2c busses.
-                powerDisable();
-                delay(M_I2C_POWERDOWN_TIME);
-                powerEnable();
-                delay(M_I2C_POWERUP_TIME);
-                allSensorInvalidRetries = 0;
-                m_previousWakeupTime = getTickCount();
-            }
-            allSensorsInvalid = false;
-
-            for (it = m_sensorList.begin(); it != m_sensorList.end(); ++it)
-            {
-                (*it)->readTargetTemp();
-                // set allSensorsInvalid to TRUE if at least one sensor is working.
-                allSensorsInvalid |= ((*it)->getTargTempElement()->isValid());
-                delay(10);
-            }
-
-            if (allSensorsInvalid)
-            {
-                //if we're here it means at least one sensor is working.
-                allSensorInvalidRetries = 0;
-            }
-            else
-            {
-                // if we're here it means all sensors are not responding.
-                ++allSensorInvalidRetries;
-
-                // if retries are exceeded, we need to reset the I2C bus and increment the failure count.
-                if (allSensorInvalidRetries > M_RETRIES_AFTER_ALL_INVALID)
+                if (m_performReset)
                 {
-                    m_resetCount->setValue(m_resetCount->getValueU32() + 1);
-                    M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Resetting I2C power. Reset Count: %d",
-                            m_resetCount->getValueU32());
-                    m_performReset = true;
+                    m_performReset = false;
+                    // todo: check if we need to re-initialize the i2c busses.
+                    powerDisable();
+                    delay(M_I2C_POWERDOWN_TIME);
+                    powerEnable();
+                    delay(M_I2C_POWERUP_TIME);
+                    allSensorInvalidRetries = 0;
+                    m_previousWakeupTime = getTickCount();
+                }
+                allSensorsInvalid = false;
+
+                for (it = m_sensorList.begin(); it != m_sensorList.end(); ++it)
+                {
+                    (*it)->readTargetTemp();
+                    // set allSensorsInvalid to TRUE if at least one sensor is working.
+                    allSensorsInvalid |= ((*it)->getTargTempElement()->isValid());
+                    delay(10);
+                }
+
+                if (allSensorsInvalid)
+                {
+                    //if we're here it means at least one sensor is working.
+                    allSensorInvalidRetries = 0;
+                }
+                else
+                {
+                    // if we're here it means all sensors are not responding.
+                    ++allSensorInvalidRetries;
+
+                    // if retries are exceeded, we need to reset the I2C bus and increment the failure count.
+                    if (allSensorInvalidRetries > M_RETRIES_AFTER_ALL_INVALID)
+                    {
+                        m_resetCount->setValue(m_resetCount->getValueU32() + 1);
+                        M_LOGGER_LOGF(M_LOGGER_LEVEL_ERROR, "Resetting I2C power. Reset Count: %d",
+                                m_resetCount->getValueU32());
+                        m_performReset = true;
+                    }
                 }
             }
 
@@ -256,7 +259,7 @@ void Mi3I2CIrPeripheral::setIsInSerialization(bool isInSerialization)
 
     if (isInSerialization)
     {
-        m_updateCycleFinishedSem.take(getUpdateInterval()*10);
+        m_updateCycleFinishedSem.take(getUpdateInterval() * 10);
 //        for (int i = 0; i < 10; ++i)
 //        {
 //            semResult = m_updateCycleFinishedSem.take(10000);

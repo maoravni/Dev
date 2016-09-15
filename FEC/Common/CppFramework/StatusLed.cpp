@@ -66,13 +66,13 @@ void StatusLed::run()
 #endif
 		/* Delay for half the flash period then turn the LED on. */
 		delayUntil(&xLastFlashTime, m_flashRate);
-		//GPIO_WriteBit(m_pPort, m_pin, m_bState ? Bit_SET : Bit_RESET);
-//		led_toggle(ALIVE_LED);
+//		GPIO_WriteBit(m_pPort, m_pin, m_bState ? Bit_SET : Bit_RESET);
+		led_toggle(ALIVE_LED);
 
 		/* Delay for half the flash period then turn the LED off. */
-		//delayUntil(&xLastFlashTime, M_FLASH_RATE);
+//		delayUntil(&xLastFlashTime, M_FLASH_RATE);
 		//GPIO_WriteBit(m_pPort, m_pin, m_bState ? Bit_SET : Bit_RESET);
-		//off(ALIVE_LED);
+//		off(ALIVE_LED);
 	}
 
 }
