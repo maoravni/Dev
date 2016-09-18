@@ -20,6 +20,9 @@
 #include <fec2/I2C_Handler.h>
 #include <Win32/PortAllocations.h>
 
+extern "C" xSemaphoreHandle I2C1BusySemaphore;
+extern "C" xSemaphoreHandle I2C2BusySemaphore;
+
 #define I2C_TIMEOUT     10000
 #define TIMEOUT_CHECK(x)     x++; if(x > I2C_TIMEOUT){return(0);}
 
@@ -78,24 +81,24 @@ void I2C1_init(uint32_t baudrate)
      * 2. SDA on PB7 or PB9
      */
     GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_8; // we are going to use PB6 and PB8
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;       // set pins to alternate function
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;      // set GPIO speed
-    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD; // set output to open drain --> the line has to be only pulled low, not driven high
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;           // Disable pull up resistors
-    GPIO_Init(GPIOB, &GPIO_InitStruct);                 // init GPIOB
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;// set pins to alternate function
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;// set GPIO speed
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;// set output to open drain --> the line has to be only pulled low, not driven high
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;// Disable pull up resistors
+    GPIO_Init(GPIOB, &GPIO_InitStruct);// init GPIOB
 
     // Connect I2C1 pins to AF
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_I2C1); // SCL
-    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_I2C1); // SDA
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_I2C1);// SCL
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_I2C1);// SDA
 
     // configure I2C1
-    I2C_InitStruct.I2C_ClockSpeed = baudrate;         // 100kHz
-    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;         // I2C mode
-    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2; // 50% duty cycle --> standard
-    I2C_InitStruct.I2C_OwnAddress1 = 0x00;          // own address, not relevant in master mode
-    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;        // Enable acknowledge when reading (can be changed later on)
-    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit; // set address length to 7 bit addresses
-    I2C_Init(I2C1, &I2C_InitStruct);                // init I2C1
+    I2C_InitStruct.I2C_ClockSpeed = baudrate;// 100kHz
+    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;// I2C mode
+    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2;// 50% duty cycle --> standard
+    I2C_InitStruct.I2C_OwnAddress1 = 0x00;// own address, not relevant in master mode
+    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;// Enable acknowledge when reading (can be changed later on)
+    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;// set address length to 7 bit addresses
+    I2C_Init(I2C1, &I2C_InitStruct);// init I2C1
 
 //    // Slow down the PCLK frequency.
 //    I2C1->CR2 = (I2C1->CR2 & 0xFFC0) | 11;
@@ -122,25 +125,25 @@ void I2C2_init(uint32_t baudrate)
     // enable clock for SCL and SDA pins
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
 
-    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1; // we are going to use PF0 and PF1
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;       // set pins to alternate function
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;      // set GPIO speed
-    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD; // set output to open drain --> the line has to be only pulled low, not driven high
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;           // Disable pull up resistors
-    GPIO_Init(GPIOF, &GPIO_InitStruct);                 // init GPIOB
+    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;// we are going to use PF0 and PF1
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;// set pins to alternate function
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;// set GPIO speed
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;// set output to open drain --> the line has to be only pulled low, not driven high
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;// Disable pull up resistors
+    GPIO_Init(GPIOF, &GPIO_InitStruct);// init GPIOB
 
     // Connect I2C2 pins to AF
-    GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C2); // SCL
-    GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C2); // SDA
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource0, GPIO_AF_I2C2);// SCL
+    GPIO_PinAFConfig(GPIOF, GPIO_PinSource1, GPIO_AF_I2C2);// SDA
 
     // configure I2C2
-    I2C_InitStruct.I2C_ClockSpeed = baudrate;         // 100kHz
-    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;         // I2C mode
-    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2; // 50% duty cycle --> standard
-    I2C_InitStruct.I2C_OwnAddress1 = 0x00;          // own address, not relevant in master mode
-    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;        // Enable acknowledge when reading (can be changed later on)
-    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit; // set address length to 7 bit addresses
-    I2C_Init(I2C2, &I2C_InitStruct);                // init I2C2
+    I2C_InitStruct.I2C_ClockSpeed = baudrate;// 100kHz
+    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;// I2C mode
+    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2;// 50% duty cycle --> standard
+    I2C_InitStruct.I2C_OwnAddress1 = 0x00;// own address, not relevant in master mode
+    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;// Enable acknowledge when reading (can be changed later on)
+    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;// set address length to 7 bit addresses
+    I2C_Init(I2C2, &I2C_InitStruct);// init I2C2
 
 //    // Slow down the PCLK frequency.
 //    I2C2->CR2 = (I2C2->CR2 & 0xFFC0) | 11;
@@ -222,14 +225,14 @@ uint8_t I2C_restart(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction)
      */
     switch (direction)
     {
-    case I2C_Direction_Transmitter:
+        case I2C_Direction_Transmitter:
         while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
         {
             TIMEOUT_CHECK(TimeOut);
         }
         TimeOut = 0;
         break;
-    case I2C_Direction_Receiver:
+        case I2C_Direction_Receiver:
         while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
         {
             TIMEOUT_CHECK(TimeOut);
@@ -368,7 +371,7 @@ Mi3Sensor::Mi3Sensor()
     m_targTempElement = ElementRepository::getInstance().addValidationElementFloat();
     m_numberOfReadFailures = 0;
     m_i2cChannel = I2C1;
-
+    m_semaphoreHandle = &I2C1BusySemaphore;
 }
 
 Mi3Sensor::Mi3Sensor(F_FILE* f)
@@ -376,7 +379,6 @@ Mi3Sensor::Mi3Sensor(F_FILE* f)
     Serializer<Mi3Sensor> s;
     s.deserialize(f, *this);
 }
-
 
 SensorConfiguration::SensorConfiguration()
 {
@@ -417,7 +419,8 @@ uint8_t Mi3Sensor::read(uint8_t reg, uint8_t* data)
     uint8_t rxChecksum;
     portBASE_TYPE semResult;
 
-//    I2C_Cmd(m_i2cChannel, ENABLE);
+    if (xSemaphoreTake(*m_semaphoreHandle, 5000) != pdPASS)
+        return E_I2cErrors_Timeout;
 
     Error = I2C_start(m_i2cChannel, m_address, I2C_Direction_Transmitter); // start a transmission in Master transmitter mode
 //    vTaskDelay(1);
@@ -443,7 +446,7 @@ uint8_t Mi3Sensor::read(uint8_t reg, uint8_t* data)
         ErrorReg |= E_I2cErrors_RegAddressError;
     }
 
-//    I2C_Cmd(m_i2cChannel, DISABLE);
+    xSemaphoreGive(*m_semaphoreHandle);
 
     return ErrorReg;
 }
@@ -615,10 +618,14 @@ bool Mi3Sensor::setI2CChannel(int channelIndex)
     {
     case 1:
         m_i2cChannel = I2C1;
+        m_semaphoreHandle = &I2C1BusySemaphore;
         break;
     case 2:
         if (Psc_GetBoardType() == E_BoardType_Fec3)
+        {
             m_i2cChannel = I2C2;
+            m_semaphoreHandle = &I2C2BusySemaphore;
+        }
         else
             return false;
         break;

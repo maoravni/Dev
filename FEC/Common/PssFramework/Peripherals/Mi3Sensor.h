@@ -116,6 +116,7 @@ private:
     uint8_t m_numberOfReadFailures;
 
     I2C_TypeDef* m_i2cChannel;
+    xSemaphoreHandle* m_semaphoreHandle;
 
 public:
     Mi3Sensor();

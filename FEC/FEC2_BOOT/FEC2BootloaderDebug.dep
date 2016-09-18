@@ -2,12 +2,10 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>633573819</fileChecksum>
+  <fileChecksum>1874485997</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\..\FEC2\Source\Main.cpp</file>
-      <file>$PROJ_DIR$\Debug\Fec2Bootloader.out</file>
       <file>$PROJ_DIR$\SW\APPLIC\src\main_boot.cpp</file>
     </outputs>
     <forcedrebuild>
@@ -21,6 +19,9 @@
     <forcedrebuild>
       <name>[MULTI_TOOL]</name>
       <tool>ILINK</tool>
+    </forcedrebuild>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
     </forcedrebuild>
   </configuration>
 </project>

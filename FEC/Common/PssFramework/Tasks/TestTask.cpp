@@ -295,9 +295,9 @@ void TestTask::run()
     Safety_out_ctrl(ACTIVE);
     (GPIOD->ODR &= (~GPIO_Pin_12));
 
-    delay(1000);
+    delay(1500);
 
-//#define IR_TEST
+#define IR_TEST
 #ifdef IR_TEST
     Mi3I2CIrPeripheral *mi3Periph = new Mi3I2CIrPeripheral();
 
@@ -327,7 +327,7 @@ void TestTask::run()
 //    CLogger::getInstance().updateOutputUdpIpAddress(addr);
 
 // filesystem test
-//#define EEPROM_TEST
+#define EEPROM_TEST
 #ifdef EEPROM_TEST
 
 #define TEST_SER
